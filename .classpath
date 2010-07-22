@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="ressources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="lib/junit/junit-4.8.1.jar" sourcepath="lib/junit/junit-4.8.1-src.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://kentbeck.github.com/junit/javadoc/latest"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/slick/slick.jar" sourcepath="lib/slick/src">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/jumpnevolve/lib/slick/javadoc.zip!/javadoc"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/lwjgl/lwjgl.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/jumpnevolve/lib/lwjgl/lwjgl-docs-2.5.zip!/javadoc"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jumpnevolve/lib/lwjgl/bin"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/junit/hamcrest-all-1.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

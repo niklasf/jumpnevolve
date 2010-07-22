@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_tjcTcJJhEd-D1fG_mLVkIQ" name="default">
+  <elementImport xmi:id="_tkHo4JJhEd-D1fG_mLVkIQ">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+  </elementImport>
+  <elementImport xmi:id="_tkHo4ZJhEd-D1fG_mLVkIQ">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+  </elementImport>
+  <elementImport xmi:id="_tkHo4pJhEd-D1fG_mLVkIQ">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#UnlimitedNatural"/>
+  </elementImport>
+  <elementImport xmi:id="_tkHo45JhEd-D1fG_mLVkIQ">
+    <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+  </elementImport>
+  <packagedElement xmi:type="uml:Package" xmi:id="_weuY0JJhEd-D1fG_mLVkIQ" name="com.googlecode.jumpnevolve.graphics">
+    <packagedElement xmi:type="uml:Class" xmi:id="_vc6WgJJhEd-D1fG_mLVkIQ" name="Engine">
+      <ownedOperation xmi:id="_2m4C0JJhEd-D1fG_mLVkIQ" name="public static Engine getInstance">
+        <ownedParameter xmi:id="_Zn7KwJJiEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_65knEJJhEd-D1fG_mLVkIQ" name="public void addState">
+        <ownedParameter xmi:id="_cJ6mYJJiEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_cJ7NcJJiEd-D1fG_mLVkIQ" name="AbstractState state"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ezFoEJJiEd-D1fG_mLVkIQ" name="public void switchState">
+        <ownedParameter xmi:id="_kUNuUJJiEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_kUOVYJJiEd-D1fG_mLVkIQ" name="AbstractState state"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_mS-hEJJiEd-D1fG_mLVkIQ" name="public void start">
+        <ownedParameter xmi:id="_nFdG4JJiEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_pKPCEJJiEd-D1fG_mLVkIQ" name="AbstractState">
+      <generalization xmi:id="_Br-5kJJjEd-D1fG_mLVkIQ" general="_24_4IJJiEd-D1fG_mLVkIQ"/>
+      <ownedOperation xmi:id="_sG0H8JJiEd-D1fG_mLVkIQ" name="public final int getID">
+        <ownedParameter xmi:id="_uNuxIJJiEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_HKZqEJJjEd-D1fG_mLVkIQ" name="Timer">
+      <generalization xmi:id="_JgtaIJJjEd-D1fG_mLVkIQ" general="_24_4IJJiEd-D1fG_mLVkIQ"/>
+      <ownedOperation xmi:id="_QT3I8JJjEd-D1fG_mLVkIQ" name="public void start">
+        <ownedParameter xmi:id="_SNC4IJJjEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_SNDfMJJjEd-D1fG_mLVkIQ" name="float secounds"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_WhKYsJJjEd-D1fG_mLVkIQ" name="public boolean didFinish">
+        <ownedParameter xmi:id="_Xyrq8JJjEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_YjMscJJkEd-D1fG_mLVkIQ" name="com.googlecode.jumpnevolve.graphics.world">
+      <packagedElement xmi:type="uml:Class" xmi:id="_jhwrwJJkEd-D1fG_mLVkIQ" name="World">
+        <generalization xmi:id="_uBmuwJJkEd-D1fG_mLVkIQ" general="_pKPCEJJiEd-D1fG_mLVkIQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_9TN3oJJkEd-D1fG_mLVkIQ" name="AbstractObject">
+        <generalization xmi:id="__FoQcJJkEd-D1fG_mLVkIQ" general="_24_4IJJiEd-D1fG_mLVkIQ"/>
+        <ownedOperation xmi:id="_D2KnQJJlEd-D1fG_mLVkIQ" name="public boolean touches">
+          <ownedParameter xmi:id="_MqKMcJJlEd-D1fG_mLVkIQ" direction="return"/>
+          <ownedParameter xmi:id="_MqKzgJJlEd-D1fG_mLVkIQ" name="AbstractObject object"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_OcwygJJlEd-D1fG_mLVkIQ" name="public float getMass">
+          <ownedParameter xmi:id="_QY4g8JJlEd-D1fG_mLVkIQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_RFUJIJJlEd-D1fG_mLVkIQ" name="public Vector getVelocity">
+          <ownedParameter xmi:id="_StXFAJJlEd-D1fG_mLVkIQ" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_UHqf0JJlEd-D1fG_mLVkIQ" name="public void applyForce">
+          <ownedParameter xmi:id="_lP3W4JJlEd-D1fG_mLVkIQ" direction="return"/>
+          <ownedParameter xmi:id="_lP3W4ZJlEd-D1fG_mLVkIQ" name="Vector force"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_nKGO8JJlEd-D1fG_mLVkIQ" name="public void finalizeStep">
+          <ownedParameter xmi:id="_p38VQJJlEd-D1fG_mLVkIQ" direction="return"/>
+          <ownedParameter xmi:id="_p38VQZJlEd-D1fG_mLVkIQ" name="boolean undo"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="__fh20JJnEd-D1fG_mLVkIQ" name="public Vector getPosition">
+          <ownedParameter xmi:id="_A5RQ8JJoEd-D1fG_mLVkIQ" direction="return"/>
+          <ownedParameter xmi:id="_A5RQ8ZJoEd-D1fG_mLVkIQ" name="Vector force"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_HVyBYJJoEd-D1fG_mLVkIQ" name="public boolean isStatic">
+          <ownedParameter xmi:id="_IaN54JJoEd-D1fG_mLVkIQ" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_y0FJ0JJlEd-D1fG_mLVkIQ" name="Ball">
+        <generalization xmi:id="_4TkRUJJlEd-D1fG_mLVkIQ" general="_9TN3oJJkEd-D1fG_mLVkIQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_5VtDwJJlEd-D1fG_mLVkIQ" name="Box">
+        <generalization xmi:id="_7hC58JJlEd-D1fG_mLVkIQ" general="_9TN3oJJkEd-D1fG_mLVkIQ"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_CnzhQJJmEd-D1fG_mLVkIQ" name="&lt;&lt;interface>> Camera">
+        <generalization xmi:id="_HxnTsJJmEd-D1fG_mLVkIQ" general="_24_4IJJiEd-D1fG_mLVkIQ"/>
+        <ownedOperation xmi:id="_EzzewJJmEd-D1fG_mLVkIQ" name="public Vector getPosition">
+          <ownedParameter xmi:id="_GxWwkJJmEd-D1fG_mLVkIQ" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_1XaMwJJmEd-D1fG_mLVkIQ" name="RessourceManager">
+      <ownedOperation xmi:id="_5IbnUJJmEd-D1fG_mLVkIQ" name="public static RessourceManager getInstance">
+        <ownedParameter xmi:id="_6pRvAJJmEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7NIC8JJmEd-D1fG_mLVkIQ" name="public RessourceManager">
+        <ownedParameter xmi:id="_8vAscJJmEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_8vAscZJmEd-D1fG_mLVkIQ" name="RessourceManager wrapped"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ARSgYJJnEd-D1fG_mLVkIQ" name="public void schedule">
+        <ownedParameter xmi:id="_BmdjkJJnEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_BmdjkZJnEd-D1fG_mLVkIQ" name="String path"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_G7V9kJJnEd-D1fG_mLVkIQ" name="public void setProxy">
+        <ownedParameter xmi:id="_IFT2UJJnEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_IFUdYJJnEd-D1fG_mLVkIQ" name="Image image"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_JXXUEJJnEd-D1fG_mLVkIQ" name="public Image get">
+        <ownedParameter xmi:id="_9if3gJJpEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_9igekJJpEd-D1fG_mLVkIQ" name="String path"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_MvbcEJJnEd-D1fG_mLVkIQ" name="public RessourceManager pop">
+        <ownedParameter xmi:id="_N52AwJJnEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_24_4IJJiEd-D1fG_mLVkIQ" name="&lt;&lt;interface>> Pollable">
+      <ownedOperation xmi:id="_7rhL8JJiEd-D1fG_mLVkIQ" name="public void doStep">
+        <ownedParameter xmi:id="_rs5rwJJlEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_rs5rwZJlEd-D1fG_mLVkIQ" name="float secounds"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_UpMVAJJkEd-D1fG_mLVkIQ" name="com.googlecode.jumpnevolve.graphics.gui">
+      <packagedElement xmi:type="uml:Class" xmi:id="_XgstoJJkEd-D1fG_mLVkIQ" name="GUI">
+        <generalization xmi:id="_dUdcAJJkEd-D1fG_mLVkIQ" general="_pKPCEJJiEd-D1fG_mLVkIQ"/>
+        <generalization xmi:id="_3c1WQJJoEd-D1fG_mLVkIQ" general="_pKPCEJJiEd-D1fG_mLVkIQ"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_QNL8YJJnEd-D1fG_mLVkIQ" name="com.googlecode.jumpnevolve.game">
+    <packagedElement xmi:type="uml:Class" xmi:id="_SzOKgJJnEd-D1fG_mLVkIQ" name="Level [Serializable]">
+      <ownedOperation xmi:id="_WM7RQJJnEd-D1fG_mLVkIQ" name="public World createWorld">
+        <ownedParameter xmi:id="_XJ4owJJnEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ekvQwJJnEd-D1fG_mLVkIQ" name="Figure">
+      <generalization xmi:id="_iiSEYJJnEd-D1fG_mLVkIQ" general="_5VtDwJJlEd-D1fG_mLVkIQ"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_kwbW8JJnEd-D1fG_mLVkIQ" name="SlidingCamera">
+      <generalization xmi:id="_pVCfsJJpEd-D1fG_mLVkIQ" general="_CnzhQJJmEd-D1fG_mLVkIQ"/>
+      <ownedOperation xmi:id="_mmQQIJJnEd-D1fG_mLVkIQ" name="moveTo">
+        <ownedParameter xmi:id="_r9gosJJnEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_r9gosZJnEd-D1fG_mLVkIQ" name="Vector point"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_pjW6cJJnEd-D1fG_mLVkIQ" name="slideTo">
+        <ownedParameter xmi:id="_vt80cJJnEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_vt80cZJnEd-D1fG_mLVkIQ" name="Vector point"/>
+        <ownedParameter xmi:id="_vt9bgJJnEd-D1fG_mLVkIQ" name="float time"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_y9LwkJJnEd-D1fG_mLVkIQ" name="ObjectFocusingCamera">
+      <generalization xmi:id="_2qmdgJJnEd-D1fG_mLVkIQ" general="_kwbW8JJnEd-D1fG_mLVkIQ"/>
+      <ownedOperation xmi:id="_4LHOAJJnEd-D1fG_mLVkIQ" name="public ObjectFocusingCamera">
+        <ownedParameter xmi:id="_6IxNgJJnEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_6IxNgZJnEd-D1fG_mLVkIQ" name="AbstractObject object"/>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_eaynYJJjEd-D1fG_mLVkIQ" name="com.googlecode.jumpnevolve.math">
+    <packagedElement xmi:type="uml:Class" xmi:id="_hbafwJJjEd-D1fG_mLVkIQ" name="Vector">
+      <ownedAttribute xmi:id="_i_W-wJJjEd-D1fG_mLVkIQ" name="float x" aggregation="composite"/>
+      <ownedAttribute xmi:id="_j0SboJJjEd-D1fG_mLVkIQ" name="float y" aggregation="composite"/>
+      <ownedOperation xmi:id="_lz3GsJJjEd-D1fG_mLVkIQ" name="public float abs">
+        <ownedParameter xmi:id="_onsgQJJjEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_rPXtIJJjEd-D1fG_mLVkIQ" name="public float squaredAbs">
+        <ownedParameter xmi:id="_s13w4JJjEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_t5JLwJJjEd-D1fG_mLVkIQ" name="public float mul">
+        <ownedParameter xmi:id="_wUbicJJjEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_wUbicZJjEd-D1fG_mLVkIQ" name="Vector vec"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_xoJNEJJjEd-D1fG_mLVkIQ" name="public Vector mul">
+        <ownedParameter xmi:id="_Crl4QJJqEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_Crl4QZJqEd-D1fG_mLVkIQ" name="float scalar"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7i17oJJjEd-D1fG_mLVkIQ" name="public Vector add">
+        <ownedParameter xmi:id="_Dh08sJJqEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_Dh1jwJJqEd-D1fG_mLVkIQ" name="Vector vec"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_9bXjgJJjEd-D1fG_mLVkIQ" name="public Vector div">
+        <ownedParameter xmi:id="_EKSD0JJqEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_EKSD0ZJqEd-D1fG_mLVkIQ" name="float scalar"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="__OiKQJJjEd-D1fG_mLVkIQ" name="public Vector sub">
+        <ownedParameter xmi:id="_Er9NgJJqEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_Er90kJJqEd-D1fG_mLVkIQ" name="Vector vec"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_EcgD8JJkEd-D1fG_mLVkIQ" name="public Vector getDirection">
+        <ownedParameter xmi:id="_Ft-rMJJqEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_GHNJ4JJyEd-D1fG_mLVkIQ" name="Rectangle">
+      <ownedAttribute xmi:id="_KmQIEJJyEd-D1fG_mLVkIQ" name="x" aggregation="composite"/>
+      <ownedAttribute xmi:id="_LPGQwJJyEd-D1fG_mLVkIQ" name="y" aggregation="composite"/>
+      <ownedAttribute xmi:id="_LrhHAJJyEd-D1fG_mLVkIQ" name="width" aggregation="composite"/>
+      <ownedAttribute xmi:id="_MLyigJJyEd-D1fG_mLVkIQ" name="height" aggregation="composite"/>
+      <ownedOperation xmi:id="_N1OlgJJyEd-D1fG_mLVkIQ" name="public float getArea">
+        <ownedParameter xmi:id="_O0C-MJJyEd-D1fG_mLVkIQ" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_RreeUJJyEd-D1fG_mLVkIQ" name="public static Rectangle getBoundingRect">
+        <ownedParameter xmi:id="_VyjBYJJyEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_VyjocJJyEd-D1fG_mLVkIQ" name="Rectangle first"/>
+        <ownedParameter xmi:id="_VyjocZJyEd-D1fG_mLVkIQ" name="Rectangle secound"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_cQacsJJyEd-D1fG_mLVkIQ" name="public boolean overlaps">
+        <ownedParameter xmi:id="_emY1kJJyEd-D1fG_mLVkIQ" direction="return"/>
+        <ownedParameter xmi:id="_emY1kZJyEd-D1fG_mLVkIQ" name="Rectangle other"/>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
