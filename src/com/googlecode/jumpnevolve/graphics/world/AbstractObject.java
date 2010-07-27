@@ -47,7 +47,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	/*
 	 * Gibt den Status des Objekts zurück: Bei Gegnern und Figur den
 	 * Alive-Status, bei Objekten, ob aktiviert oder nicht, bei Landschaft immer
-	 * false
+	 * true
+	 * 
+	 * soll dazu benutzt werden, ob das Objekt berechnet werden muss oder nicht
+	 * (ob es als Hndernis fungieren könnte)
 	 */
 	public abstract boolean getState();
 

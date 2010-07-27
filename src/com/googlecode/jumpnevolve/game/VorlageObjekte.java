@@ -21,7 +21,8 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author Erik Wagner TODO: init-Methode vervollständigen....................
+ * @author Erik Wagner TODO: init-Methode vervollständigen
+ * 
  *         TODO: Ableiten und Beispiel erschaffen
  */
 public abstract class VorlageObjekte extends AbstractObject {
