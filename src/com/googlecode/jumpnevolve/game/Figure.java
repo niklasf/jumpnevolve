@@ -22,7 +22,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * 
- * @author Erik Wagner TODO: init-Methode vervollständigen....................
+ * @author Erik Wagner TODO: init-Methode vervollständigen
+ * 
  *         TODO: Ableiten und Beispiel erschaffen
  * 
  */

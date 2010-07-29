@@ -35,6 +35,12 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * Methoden die definieren, wie die Attribute des Objekts, das das aktuelle
 	 * Objekt gecrasht hat verändert werden z.B.: schneller, langsamer,
 	 * zusätzliche Kraft, Tod
+	 * 
+	 * Möglichkeiten, Attribute zu ändern:
+	 * 
+	 * //sich selbst aktivieren / deaktivieren //Tod des Gegners oder von sich
+	 * selbst //Änderung der Geschwindigkeit //Setzen der Geschwindigkeit (auch
+	 * das Setzen nur des x-/y-Anteils z.B. auf 0) //Addieren einer Kraft
 	 */
 	protected abstract void crashedByPlayer(Figure player);
 
