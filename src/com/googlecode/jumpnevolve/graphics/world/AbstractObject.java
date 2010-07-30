@@ -118,6 +118,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 */
 	public void newCalculationRound() {
 		this.alreadyDone.clear();
+		this.addDone(this, true);
 	}
 
 	/**
