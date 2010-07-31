@@ -18,6 +18,7 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.*;
 
 /**
@@ -35,10 +36,11 @@ public abstract class VorlageGegner extends AbstractObject {
 	 * @param position
 	 * @param dimension
 	 * @param force
+	 * @param worldOfThis
 	 */
 	protected VorlageGegner(byte type, Vector position, Vector dimension,
-			Vector force) {
-		super(type, position, dimension, force);
+			Vector force, World worldOfThis) {
+		super(type, position, dimension, force, worldOfThis);
 		this.init();
 	}
 
@@ -46,9 +48,11 @@ public abstract class VorlageGegner extends AbstractObject {
 	 * @param type
 	 * @param position
 	 * @param dimension
+	 * @param worldOfThis
 	 */
-	protected VorlageGegner(byte type, Vector position, Vector dimension) {
-		super(type, position, dimension);
+	protected VorlageGegner(byte type, Vector position, Vector dimension,
+			World worldOfThis) {
+		super(type, position, dimension, worldOfThis);
 		this.init();
 	}
 

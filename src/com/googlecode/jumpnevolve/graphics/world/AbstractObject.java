@@ -60,11 +60,13 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 */
 	public abstract boolean getState();
 
-	Vector position;
-	Vector oldPosition;
-	Vector force;
-	Vector dimension;
-	final byte type;
+	private Vector position;
+	private Vector oldPosition;
+	private Vector velocity;
+	private Vector force;
+	private Vector dimension;
+	private Shape thisShape;
+	public final byte type;
 	public static final byte TYPE_BALL = 0;
 	public static final byte TYPE_BOX = 1;
 	private static int Id = 0;
@@ -76,24 +78,32 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * speichert den Zustand der Kollision (Ja oder Nein)
 	 */
 	private HashMap<Integer, Boolean> alreadyDone;
+	public final World worldOfThis;
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
-			Vector force) {
+			Vector force, World worldOfThis) {
 		this.type = type;
 		this.position = position;
 		this.oldPosition = position;
+		this.velocity = Vector.ZERO;
 		this.dimension = dimension;
 		this.force = force;
 		this.id = Id++;
+		this.worldOfThis = worldOfThis;
+		this.calculateNewShape();
 	}
 
-	protected AbstractObject(byte type, Vector position, Vector dimension) {
+	protected AbstractObject(byte type, Vector position, Vector dimension,
+			World worldOfThis) {
 		this.type = type;
 		this.position = position;
 		this.oldPosition = position;
+		this.velocity = Vector.ZERO;
 		this.dimension = dimension;
 		this.force = Vector.ZERO;
 		this.id = Id++;
+		this.worldOfThis = worldOfThis;
+		this.calculateNewShape();
 	}
 
 	/**
@@ -136,7 +146,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * @return Aktuelle Geschwindigkeit anhand der alten Position
 	 */
 	public final Vector getVelocity() {
-		return this.position.sub(this.oldPosition);
+		return this.velocity;
 	}
 
 	public final Vector getForce() {
@@ -151,6 +161,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		return this.dimension;
 	}
 
+	public final Shape getShape() {
+		return this.thisShape;
+	}
+
 	public void applyForce(Vector force) {
 		this.force = this.force.add(force);
 	}
@@ -161,6 +175,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 
 	public final Vector getPosition() {
 		return this.position;
+	}
+
+	public final Vector getOldPosition() {
+		return this.oldPosition;
 	}
 
 	public boolean isStatic() {
@@ -176,15 +194,29 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 */
 	public void setVelocity(Vector velocity) {
 		this.force = Vector.ZERO;
-		this.oldPosition = this.position.sub(velocity);
+		this.velocity = velocity;
+	}
+
+	public void calculateNewShape() {
+		switch (this.type) {
+		case TYPE_BALL:
+			this.thisShape = new Circle(this.getPosition(), this.getDimension());
+			break;
+		case TYPE_BOX:
+			this.thisShape = new Rectangle(this.getPosition(), this
+					.getDimension());
+			break;
+		default:
+			// FIXME: Fehlermeldung ausgeben
+		}
 	}
 
 	protected void setNewPosition(float seconds) {
 		/* Berechnung der neuen Position durch den Verlet-Algorithmus */
 		Vector acceleration = ((this.getForce()).div(this.getMass()))
 				.mul(seconds * seconds);
-		Vector newPosition = (((this.position).add(this.position))
-				.sub(this.oldPosition)).add(acceleration);
+		Vector velocity = this.velocity.mul(seconds);
+		Vector newPosition = this.position.add(velocity).add(acceleration);
 		this.oldPosition = this.position;
 		this.position = newPosition;
 	}
@@ -206,28 +238,8 @@ public abstract class AbstractObject implements Pollable, Drawable {
 			 */
 			return this.alreadyDone.get(other.getID());
 		}
-		Shape thisShape;
-		Shape otherShape;
-		switch (this.type) {
-		case TYPE_BALL:
-			thisShape = new Circle(this.getPosition(), this.getDimension());
-			break;
-		case TYPE_BOX:
-			thisShape = new Rectangle(this.getPosition(), this.getDimension());
-			break;
-		default:
-			return false;
-		}
-		switch (other.type) {
-		case TYPE_BALL:
-			otherShape = new Circle(this.getPosition(), this.getDimension());
-			break;
-		case TYPE_BOX:
-			otherShape = new Rectangle(this.getPosition(), this.getDimension());
-			break;
-		default:
-			return false;
-		}
+		Shape thisShape = this.getShape();
+		Shape otherShape = other.getShape();
 		if (thisShape.doesCollide(otherShape)) {
 			/* Gegenseitiger Aufruf der Crash-Methoden */
 			this.crashedByObject(other);

@@ -18,6 +18,7 @@
 package com.googlecode.jumpnevolve.graphics.world;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -37,83 +38,43 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class World extends AbstractState {
 
+	private Object[][] objectList;
+
 	public static final float ZOOM = 200;
 
-	public static final float TILE_WIDTH = 0.1f;
+	public final int subareaWidth, subareaHeight;
 
-	abstract public class Tile implements Drawable {
+	public final int horizontalSubareas, verticalSubareas;
 
-		abstract public void draw(Graphics g);
-
-		abstract public boolean isPassable();
-	}
-
-	private Tile[][] tileMap;
-
-	public World(int columns, int rows) {
-		// Array erzuegen
-		this.tileMap = new Tile[columns][];
-		for (int x = 0; x < columns; x++) {
-			this.tileMap[x] = new Tile[rows];
-		}
-
-		/*
-		 * FIXME: sollte doch von Level zu Level unterschiedlich sein, mit
-		 * Löchern und so
-		 */
-		// Boden
-		setRectangle(0, 10, 20, 2, new Tile() {
-			@Override
-			public void draw(Graphics g) {
-				g.drawRect(0, 0, TILE_WIDTH, TILE_WIDTH);
-			}
-
-			@Override
-			public boolean isPassable() {
-				return false;
-			}
-
-		});
-	}
-
-	public int getColumns() {
-		return this.tileMap.length;
-	}
-
-	public int getRows() {
-		return this.tileMap[0].length;
-	}
-
-	public void setPosition(int column, int row, Tile value) {
-		if (column >= 0 && row >= 0 && column < getColumns() && row < getRows()) {
-			this.tileMap[column][row] = value;
-		}
-	}
-
-	public void setRectangle(int column, int row, int right, int down,
-			Tile value) {
-		for (int x = column; x < column + right && x < this.tileMap.length; x++) {
-			for (int y = row; y < row + down && y < this.tileMap[x].length; y++) {
-				if (x >= 0 && y >= 0) {
-					this.tileMap[x][y] = value;
-				}
-			}
-		}
-	}
-
-	public Tile getPosition(int column, int row) {
-		if (column >= 0 && row >= 0 && column < getColumns() && row < getRows()) {
-			return this.tileMap[column][row];
-		} else {
-			return null;
-		}
-	}
+	public final int width, height;
 
 	private ArrayList<Pollable> pollables = new ArrayList<Pollable>();
 
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 
 	private Camera camera;
+
+	public World(int subareaWidth, int subareaHeight, int width, int height) {
+		this.subareaWidth = subareaWidth;
+		this.subareaHeight = subareaHeight;
+		this.width = width;
+		this.height = height;
+		int horizontalSubareas = (int) Math.ceil((float) width
+				/ (float) subareaWidth);
+		int verticalSubareas = (int) Math.ceil((float) height
+				/ (float) subareaHeight);
+		if (verticalSubareas < 6) {
+			verticalSubareas = 1;
+		}
+		this.horizontalSubareas = horizontalSubareas;
+		this.verticalSubareas = verticalSubareas;
+		this.objectList = new Object[horizontalSubareas][verticalSubareas];
+		for (int i = 0; i < objectList.length; i++) {
+			for (int j = 0; j < objectList[i].length; j++) {
+				objectList[i][j] = new LinkedList<AbstractObject>();
+			}
+		}
+	}
 
 	@Override
 	public void poll(Input input, float secounds) {
@@ -137,12 +98,23 @@ public class World extends AbstractState {
 					this.pollables.add((Pollable) object);
 				}
 			}
-			if (object instanceof Drawable && !(object instanceof Tile)) {
+			if (object instanceof Drawable) {
 				if (!this.drawables.contains(object)) {
 					this.drawables.add((Drawable) object);
 				}
 			}
+			if (object instanceof AbstractObject) {
+				add((AbstractObject) object);
+			}
 		}
+	}
+
+	private void add(AbstractObject object) {
+		// TODO: Objekt in entsprechende LinkedLists einfügen
+	}
+
+	public void changedPosition(AbstractObject object) {
+		// TODO: Objekt in entsprechende LinkedLists einfügen / löschen
 	}
 
 	@Override
@@ -155,18 +127,6 @@ public class World extends AbstractState {
 			g.translate(Engine.getInstance().getWidth() / ZOOM / 2.0f
 					- cameraPosition.x, Engine.getInstance().getHeight() / ZOOM
 					/ 2.0f - cameraPosition.y);
-		}
-
-		// Tilemap zeichen
-		for (int x = 0; x < this.tileMap.length; x++) {
-			for (int y = 0; y < this.tileMap[x].length; y++) {
-				if (this.tileMap[x][y] != null) {
-					g.pushTransform();
-					g.translate(x * TILE_WIDTH, y * TILE_WIDTH);
-					this.tileMap[x][y].draw(g);
-					g.popTransform();
-				}
-			}
 		}
 
 		// Andere Objekte zeichnen
