@@ -22,5 +22,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/junit/hamcrest-all-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/phys2d/phys2d-060408.jar" sourcepath="lib/phys2d/src"/>
+	<classpathentry kind="lib" path="lib/slick/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="lib/slick/jogg-0.0.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
