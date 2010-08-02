@@ -28,7 +28,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * Jeder Zustand, den die Grafikengine einnehmen kann, muss von dieser Klasse
  * abgeleitet werden.
  * 
- * @author Niklas Fiekas
+ * @author Erik Wagner, Niklas Fiekas
  */
 public abstract class AbstractState extends BasicGameState implements Pollable,
 		Drawable {
@@ -103,6 +103,8 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 		}
 		
 		g.resetTransform();
+		
+		// TODO: Allgemeiner machen
 		g.drawString("Bewegung: Links, Rechts   Sprung: Leertaste    Neu anfangen: 0   Beenden: Esc", 10, 30);
 	}
 

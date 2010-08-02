@@ -23,8 +23,9 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * @author niklas
- *
+ * Stein.
+ * 
+ * @author Niklas Fiekas
  */
 public class Stone extends BasicEntity {
 	@Override

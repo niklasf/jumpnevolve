@@ -36,7 +36,13 @@ import org.newdawn.slick.Sound;
  * @author Niklas Fiekas
  */
 public class SoundTest {
+	
+	/**
+	 * @param args Kommandozeilenargumente werden ignoriert.
+	 */
 	public static void main(String[] args) {
+		
+		// Wikipedia Beispielsound in einem neuen Thread abspielen
 		try {
 			new Sound(
 					new URL("http://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg")).play();
@@ -45,6 +51,8 @@ public class SoundTest {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
+		// Den Hauptthread warten lassen
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {

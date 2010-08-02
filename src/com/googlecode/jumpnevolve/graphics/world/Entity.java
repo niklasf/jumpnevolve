@@ -29,11 +29,28 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
  * zumächst {@link #init(Body)} und
  * {@link #simulatedWorldChanged(SimulatedWorld)} aufgerufen worden.
  * 
- * @author Niklas Fikeas
+ * @author Erik Wagner
  */
 public interface Entity extends Pollable, Drawable {
+
+	/**
+	 * Sobald das physikalische Objekt erzeugt wurde, wird das dem Entity Objekt
+	 * mitgeteilt.
+	 * 
+	 * @param body
+	 *            Physikalisches Objekt.
+	 */
 	public void init(Body body);
 
+	/**
+	 * Wird aufgerufen, wenn eine Kollision vorliegt.
+	 * 
+	 * @param event
+	 *            Weitere Informationen zum Konflikt und die vorerst verwendete
+	 *            Lösung.
+	 * @param other
+	 *            Das andere, an der Kollision beteiligte, physikalische Objekt.
+	 */
 	public void collisionOccured(CollisionEvent event, Body other);
 
 	public void simulatedWorldChanged(SimulatedWorld simulatedWorld);

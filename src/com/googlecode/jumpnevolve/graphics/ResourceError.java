@@ -18,8 +18,10 @@
 package com.googlecode.jumpnevolve.graphics;
 
 /**
- * @author niklas
- *
+ * Wird geworfen, wenn ein Fehler beim Laden von Resourcen auftritt und kein
+ * Ersatz verfügbar ist.
+ * 
+ * @author Niklas Fiekas
  */
 public class ResourceError extends Error {
 

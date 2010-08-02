@@ -28,8 +28,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * @author niklas
- *
+ * @author Erik Wagner
  */
 public class SimpleFootSoldier extends BasicEntity {
 	

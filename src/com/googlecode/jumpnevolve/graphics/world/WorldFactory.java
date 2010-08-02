@@ -22,7 +22,7 @@ import net.phys2d.raw.World;
 /**
  * Kapselt den Vorgang des Erzeugens einer Welt.
  * 
- * @author Niklas Fiekas
+ * @author Erik Wagner
  */
 public interface WorldFactory {
 

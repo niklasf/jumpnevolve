@@ -20,8 +20,7 @@ package com.googlecode.jumpnevolve.game;
 import org.newdawn.slick.Graphics;
 
 /**
- * @author niklas
- *
+ * @author Erik Wagner
  */
 public class ArmouredFootSoldier extends SimpleFootSoldier {
 	

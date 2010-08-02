@@ -23,8 +23,9 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * @author niklas
- *
+ * Ein Holzbalken.
+ * 
+ * @author Niklas Fiekas
  */
 public class Wood extends BasicEntity {
 	

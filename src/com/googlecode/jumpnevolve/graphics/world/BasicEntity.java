@@ -24,38 +24,42 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 /**
- * @author niklas
- *
+ * Eine erweiterbare Implementierung von {@link Entity}.
+ * 
+ * @author Erik Wagner
  */
 public class BasicEntity implements Entity {
-	
+
 	protected SimulatedWorld world;
-	
+
 	protected Body body;
 
 	public void draw(Graphics g) {
 		g.draw(this.world.shapeForBody(this.body));
-		g.drawOval(- 0.1f, - 0.1f, 0.2f, 0.2f);
+		g.drawOval(-0.1f, -0.1f, 0.2f, 0.2f);
 	}
 
-	public void poll(Input input, float secounds) {	}
+	public void poll(Input input, float secounds) {
+	}
 
 	public void init(Body body) {
 		this.body = body;
 	}
-	
+
 	public void simulatedWorldChanged(SimulatedWorld simulatedWorld) {
 		this.world = simulatedWorld;
 	}
 
-	public void collisionOccured(CollisionEvent event, Body other) { }
-	
+	public void collisionOccured(CollisionEvent event, Body other) {
+	}
+
 	/**
-	 * Ein Entity das nichts tut.
-	 * Um nichts zu tun, muss es auch nicht initialisiert werden.
+	 * Ein Entity das nichts tut. Um nichts zu tun, muss es auch nicht
+	 * initialisiert werden.
 	 */
 	public static final BasicEntity NULL = new BasicEntity() {
 		@Override
-		public void draw(Graphics g) { }
+		public void draw(Graphics g) {
+		}
 	};
 }

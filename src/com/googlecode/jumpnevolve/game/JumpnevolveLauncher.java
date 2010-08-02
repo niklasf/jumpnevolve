@@ -20,21 +20,27 @@ package com.googlecode.jumpnevolve.game;
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
- * @author niklas
- *
+ * Läd und startet die Anwendung aus dem bin-Verzeichnis oder einem Archiv.
+ * 
+ * @author Niklas Fiekas
  */
 public class JumpnevolveLauncher {
 
 	/**
-	 * @param args Kommandozeilenargumente
+	 * @param args
+	 *            Kommandozeilenargumente werden an {@link Jumpnevolve}
+	 *            weitergegeben.
 	 */
 	public static void main(String[] args) {
-		JarClassLoader jcl = new JarClassLoader();
-        try {
-            jcl.invokeMain("com.googlecode.jumpnevolve.game.Jumpnevolve", args);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+
+		// Der JarClassLoader kann auch native Bibliotheken aus einem Archiv
+		// laden, wenn das nötig ist.
+		try {
+			new JarClassLoader().invokeMain(
+					"com.googlecode.jumpnevolve.game.Jumpnevolve", args);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 }

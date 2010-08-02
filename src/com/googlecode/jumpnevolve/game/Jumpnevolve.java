@@ -38,7 +38,7 @@ public class Jumpnevolve {
 	 * Startet das Spiel.
 	 * 
 	 * @param args
-	 *            Kommandozeilenargumente
+	 *            Kommandozeilenargumente werden ignoriert.
 	 */
 	public static void main(String[] args) {
 		try {

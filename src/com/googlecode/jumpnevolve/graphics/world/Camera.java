@@ -22,11 +22,15 @@ import net.phys2d.math.ROVector2f;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 
 /**
- * @author niklas
- *
+ * Schnittstelle für eine Kameraeinstellung. Die Kamera bestimmt, welche
+ * Objekte oder Punkte im Bildmittelpunkt liegen.
+ * 
+ * @author Niklas Fiekas
  */
 public interface Camera extends Pollable {
 	
+	/**
+	 * @return Der Ortsvektor des gewünschten Bildmittelpunkts.
+	 */
 	public ROVector2f getPosition();
-	
 }

@@ -145,10 +145,14 @@ public class Engine extends AppGameContainer {
 	 *            Der neue Zustand
 	 */
 	public void switchState(AbstractState state) {
-		// Zustand wechseln
+		// Zustand laden
 		if (this.states.getState(state.getID()) == null) {
 			this.states.addState(state);
 		}
+		
+		// Zustand wechseln
+		// Das passiert mit einem weißen Blitz.
+		// TODO: Übergang allgemeiner machen
 		if (this.states.getCurrentStateID() != state.getID()) {
 			this.states.enterState(state.getID(), null, new FadeInTransition(Color.white, 1000));
 		}

@@ -40,7 +40,7 @@ import com.googlecode.jumpnevolve.graphics.world.WorldFactory;
 /**
  * Ein einfaches Level zur Demonstration des Programms.
  * 
- * @author Niklas Fiekas
+ * @author Leoni Fiekas
  */
 public class DemoLevel implements WorldFactory {
 

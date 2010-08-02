@@ -29,8 +29,9 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * @author niklas
- *
+ * Ein Gegner, der auf der Stelle springt.
+ * 
+ * @author Erik Wagner, Niklas Fiekas
  */
 public class JumpingSoldier extends BasicEntity {
 	

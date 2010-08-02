@@ -32,33 +32,46 @@ import com.googlecode.jumpnevolve.graphics.ResourceError;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 
 /**
- * @author niklas
- *
+ * Ein Partikelsystem, das verschiedene Effekte zeichnen und animieren kann.
+ * 
+ * @author Niklas Fiekas
  */
 public class ParticleEffect implements Drawable, Pollable {
 
 	static {
+		// Es wird eine Grafikvorlage für einen Partikel benötigt.
+		// Die Vorlage ist in der Mitte weiß und wird kreisförmig nach außen
+		// hin transparent.
 		ResourceManager.getInstance().schedule("particle.png");
 	}
 
 	private ParticleSystem system;
-	
+
 	private Vector2f position;
-	
+
 	private ParticleEmitterFactory factory;
-	
+
+	/**
+	 * Erzeugt ein neues Partikelsystem.
+	 * 
+	 * @param position
+	 *            Ortsvektor der Position des Systems.
+	 * @param factory
+	 *            Implementierung des Effekts.
+	 */
 	public ParticleEffect(ROVector2f position, ParticleEmitterFactory factory) {
 		this.position = new Vector2f(position);
 		this.factory = factory;
 	}
-	
+
 	private void createSystem() {
-		if(this.system == null) {
+		if (this.system == null) {
 			try {
-				this.system = new ParticleSystem(ResourceManager.getInstance().getImage("particle.png"), 200);
+				this.system = new ParticleSystem(ResourceManager.getInstance()
+						.getImage("particle.png"), 200);
 				this.system.addEmitter(this.factory.createParticleEmitter());
 				this.factory = null;
-			} catch(ResourceError e) {
+			} catch (ResourceError e) {
 				Log.error(e);
 			}
 		}
@@ -78,6 +91,11 @@ public class ParticleEffect implements Drawable, Pollable {
 		this.system.update((int) (secounds * 1000));
 	}
 
+	/**
+	 * @return Ein Drawable, das diesen Effekt zeichnet. Der Effekt selbst ist
+	 *         Drawable und Pollable. Diese Methode kann verwendet werden, wenn
+	 *         er nur als Drawable repräsentiert werden soll.
+	 */
 	public Drawable getDrawable() {
 		return new Drawable() {
 			public void draw(Graphics g) {
@@ -85,7 +103,12 @@ public class ParticleEffect implements Drawable, Pollable {
 			}
 		};
 	}
-	
+
+	/**
+	 * @return Ein Pollable, das diesen Effekt animiert. Der Effekt selbst ist
+	 *         Drawable und Pollable. Diese Methode kann verwendet werden, wenn
+	 *         er nur als Pollable repräsentiert werden soll.
+	 */
 	public Pollable getPollable() {
 		return new Pollable() {
 			public void poll(Input input, float secounds) {

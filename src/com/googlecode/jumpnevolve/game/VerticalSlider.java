@@ -27,8 +27,10 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * @author niklas
- *
+ * Eine Plattform die nach unten fährt, wenn sie mit Gewicht belastet wird
+ * und nach oben fährt, wenn sie nicht belastet wird.
+ * 
+ * @author Niklas Fiekas
  */
 public class VerticalSlider extends BasicEntity {
 	
@@ -37,6 +39,10 @@ public class VerticalSlider extends BasicEntity {
 	private float upperBorder;
 	private float lowerBorder;
 	
+	/**
+	 * @param upperBorder Obere Grenze
+	 * @param lowerBorder Untere Grenze
+	 */
 	public VerticalSlider(float upperBorder, float lowerBorder) {
 		this.upperBorder = upperBorder;
 		this.lowerBorder = lowerBorder;

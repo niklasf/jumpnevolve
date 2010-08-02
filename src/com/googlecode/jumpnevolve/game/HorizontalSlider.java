@@ -22,38 +22,50 @@ import net.phys2d.raw.Body;
 import org.newdawn.slick.Input;
 
 /**
- * @author niklas
- *
+ * Eine Plattform die sich innerhalb gegebener Grenzen horizontal mit konstanter
+ * Geschwindigkeit bewegt.
+ * 
+ * @author Niklas Fiekas
  */
 public class HorizontalSlider extends Wood {
-	
+
 	public static final short LEFT = -1;
 	public static final short RIGHT = 1;
-	
+
 	public static final float MASS = 1.0f;
-	
+
 	private short dir;
-	
+
 	private float leftBorder;
 	private float rightBorder;
-	
+
+	/**
+	 * @param dir Die Richtung {@code HorizontalSlider.LEFT} oder {@code
+	 *            HorizontalSlider.RIGHT} in die sich die Plattform am Anfang
+	 *            bewegt.
+	 * @param leftBorder
+	 *            Die linke Grenze.
+	 * @param rightBorder
+	 *            Die rechte Grenze.
+	 */
 	public HorizontalSlider(short dir, float leftBorder, float rightBorder) {
 		this.dir = dir;
 		this.leftBorder = leftBorder;
 		this.rightBorder = rightBorder;
 	}
-	
+
 	@Override
 	public void poll(Input input, float secounds) {
-		if(this.body.getPosition().getX() < this.leftBorder) {
+		if (this.body.getPosition().getX() < this.leftBorder) {
 			this.dir = RIGHT;
 		}
-		if(this.body.getPosition().getX() > this.rightBorder) {
+		if (this.body.getPosition().getX() > this.rightBorder) {
 			this.dir = LEFT;
 		}
-		this.body.setPosition(this.body.getPosition().getX() + this.dir * secounds * 0.0004f, this.body.getPosition().getY());
+		this.body.setPosition(this.body.getPosition().getX() + this.dir
+				* secounds * 0.0004f, this.body.getPosition().getY());
 	}
-	
+
 	@Override
 	public void init(Body body) {
 		super.init(body);

@@ -18,8 +18,9 @@
 package com.googlecode.jumpnevolve.graphics;
 
 /**
- * @author niklas
- *
+ * Schnittstelle, die {@link Drawable} und {@link Pollable} kombiniert.
+ * 
+ * @author Niklas Fiekas
  */
 public interface DrawablePollable extends Drawable, Pollable {
 
