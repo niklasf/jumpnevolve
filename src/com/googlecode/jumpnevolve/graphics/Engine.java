@@ -20,15 +20,23 @@ package com.googlecode.jumpnevolve.graphics;
 import java.awt.SplashScreen;
 
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.util.Log;
 
 /**
  * @author niklas
  * 
  */
 public class Engine extends AppGameContainer {
+	
+	/**
+	 * Die gewünschte Anzahl an Frames pro Sekunde.
+	 */
+	public static final int TARGET_FPS = 60;
 
 	private static Engine instance;
 
@@ -55,12 +63,17 @@ public class Engine extends AppGameContainer {
 		return instance;
 	}
 
+	private boolean fullscreen = true;
+
 	private StateBasedGame states;
 
 	private Engine(StateBasedGame states) throws SlickException {
+		// Mit leerer Zustandsliste initialisieren
 		super(states);
-
 		this.states = states;
+
+		// Einstellungen
+		setTargetFrameRate(TARGET_FPS);
 	}
 
 	/**
@@ -87,6 +100,42 @@ public class Engine extends AppGameContainer {
 		return this.states.getState(state.getID()) != null;
 	}
 
+	@Override
+	public void start() {
+		// Vollbildmodus starten
+		try {
+			super.setDisplayMode(800, 600, this.fullscreen);
+		} catch (SlickException e) {
+			throw new GraphicsError(e);
+		}
+		
+		// SplashScreen schließen
+		SplashScreen splash = SplashScreen.getSplashScreen();
+		if (splash != null) {
+			// Künstlich warten
+			if(this.fullscreen) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException ex) {	}
+			}
+			
+			try {
+				splash.close();
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Log.warn("No Java Splash Screen had been created");
+		}
+
+		// Anwendung starten
+		try {
+			super.start();
+		} catch (SlickException e) {
+			throw new GraphicsError(e);
+		}
+	}
+
 	/**
 	 * Bereitet den neuen Zustand vor, beendet den alten und startet den neuen.
 	 * Der alte Zustand wird nicht neu initialisiert, wenn neuer und alter
@@ -96,39 +145,12 @@ public class Engine extends AppGameContainer {
 	 *            Der neue Zustand
 	 */
 	public void switchState(AbstractState state) {
+		// Zustand wechseln
 		if (this.states.getState(state.getID()) == null) {
 			this.states.addState(state);
 		}
 		if (this.states.getCurrentStateID() != state.getID()) {
-			this.states.enterState(state.getID());
-		}
-	}
-	
-	@Override
-	public void start() {
-		// Vollbildmodus starten
-		try {
-			super.setDisplayMode(800, 600, false);
-		} catch (SlickException e) {
-			throw new GraphicsError(e);
-		}
-		
-		// SplashScreen schließen
-		// TODO: Erst nach dem Laden erledigen
-		SplashScreen splash = SplashScreen.getSplashScreen();
-		if(splash != null) {
-			try {
-				splash.close();
-			} catch(IllegalStateException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		// Anwendung starten
-		try {
-			super.start();
-		} catch (SlickException e) {
-			throw new GraphicsError(e);
+			this.states.enterState(state.getID(), null, new FadeInTransition(Color.white, 1000));
 		}
 	}
 }

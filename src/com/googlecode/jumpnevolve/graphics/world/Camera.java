@@ -17,12 +17,16 @@
 
 package com.googlecode.jumpnevolve.graphics.world;
 
-import com.googlecode.jumpnevolve.math.Vector;
+import net.phys2d.math.ROVector2f;
+
+import com.googlecode.jumpnevolve.graphics.Pollable;
 
 /**
  * @author niklas
  *
  */
-public interface Camera {
-	public Vector getPosition();
+public interface Camera extends Pollable {
+	
+	public ROVector2f getPosition();
+	
 }

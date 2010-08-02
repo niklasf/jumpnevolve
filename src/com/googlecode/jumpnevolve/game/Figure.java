@@ -17,53 +17,109 @@
 
 package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
-import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Vector;
+import net.phys2d.math.Vector2f;
+import net.phys2d.raw.Body;
+import net.phys2d.raw.BodyList;
+import net.phys2d.raw.CollisionEvent;
+
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
+
+import com.googlecode.jumpnevolve.graphics.AbstractState;
+import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.world.BasicEntity;
 
 /**
- * 
- * @author Erik Wagner TODO: init-Methode vervollständigen
- * 
- *         TODO: Ableiten und Beispiel erschaffen
- * 
+ * @author niklas
+ *
  */
-public abstract class Figure extends AbstractObject {
+public class Figure extends BasicEntity {
+        
+        public static final float MASS = 80.0f;
+        public static final float WIDTH = 0.5f;
+        public static final float HEIGHT = 1.5f;
+        
+        private boolean couldTryToJump = false;
+        
+        @Override
+        public void draw(Graphics g) {
+                g.pushTransform();
+                g.scale(0.6f / AbstractState.ZOOM, 0.49f / AbstractState.ZOOM);
+                if(this.body.getVelocity().getX() >= 0) {
+                        g.drawImage(ResourceManager.getInstance().getImage("figure-cross.png"), - 64, -60);
+                } else {
+                        g.drawImage(ResourceManager.getInstance().getRevertedImage("figure-cross.png"), - 66, -60);
+                }
+                g.popTransform();
+                // super.draw(g);
+        }
 
-	public boolean alive;
+        @Override
+        public void poll(Input input, float secounds) {
+                if(input.isKeyDown(Input.KEY_ESCAPE)) {
+                        Log.info("Exit scheduled.");
+                        Engine.getInstance().exit();
+                }
+                if(input.isKeyDown(Input.KEY_0)) {
+                        Engine.getInstance().switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+                }
+                
+                if(input.isKeyDown(Input.KEY_RIGHT)) {
+                        this.body.addForce(new Vector2f(240.0f  *3, 0.0f));
+                }
+                if(input.isKeyDown(Input.KEY_LEFT)) {
+                        this.body.addForce(new Vector2f(-240.0f * 3, 0.0f));
+                }
+                if(input.isKeyDown(Input.KEY_SPACE)) {
+                        boolean canJump = false;
 
-	/**
-	 * @param type
-	 * @param position
-	 * @param dimension
-	 * @param worldOfThis
-	 */
-	protected Figure(byte type, Vector position, Vector dimension,
-			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
-		this.init();
-	}
+                        if (this.couldTryToJump) {
+                                BodyList touching = this.body.getTouching();
+                                for (int i = 0; i < touching.size(); i++) {
+                                        if (touching.get(i).getPosition().getY() > this.body
+                                                        .getPosition().getY() + 0.7f) {
+                                                canJump = true;
+                                                break;
+                                        }
+                                }
+                        }
 
-	/**
-	 * @param type
-	 * @param position
-	 * @param dimension
-	 * @param force
-	 * @param worldOfThis
-	 */
-	protected Figure(byte type, Vector position, Vector dimension,
-			Vector force, World worldOfThis) {
-		super(type, position, dimension, force, worldOfThis);
-		this.init();
-	}
+                        if (canJump) {
+                                this.body.addForce(new Vector2f(0.0f, -40000.0f));
+                                this.couldTryToJump = false;
+                        }
+                }
+                
+                
+                if(this.body.getPosition().getY() > 20.0f) {
+                        Engine.getInstance().switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+                }
+        }
 
-	private void init() {
-		this.alive = true;
-		this.setVelocity(Vector.ZERO);
-	}
+        @Override
+        public void collisionOccured(CollisionEvent event, Body other) {
+                if (event.getPoint().getY() > this.body.getPosition().getY() + 0.5f && Math.abs(event.getNormal().getX()) != 1.0f) {
+                        this.couldTryToJump = true;
+                }
+                if(this.world.entityForBody(other) instanceof ArmouredFootSoldier) {
+                        Engine.getInstance().switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+                } else if(this.world.entityForBody(other) instanceof SimpleFootSoldier) {
+                        if(Math.abs(event.getNormal().getX()) == 1 || other.getPosition().getY() < this.body.getPosition().getY()) {
+                                Engine.getInstance().switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+                        } else {
+                                this.world.remove(other);
+                        }
+                } else if(this.world.entityForBody(other) instanceof JumpingSoldier) {
+                        Engine.getInstance().switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+                }
+        }
 
-	@Override
-	public boolean getState() {
-		return this.alive;
-	}
+        @Override
+        public void init(Body body) {
+                super.init(body);
+                body.setCanRest(false);
+                body.setMaxVelocity(3.0f, 100.0f);
+        }
 }

@@ -17,29 +17,68 @@
 
 package com.googlecode.jumpnevolve.game;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.swing.JOptionPane;
+
+import org.newdawn.slick.Image;
+import org.newdawn.slick.util.Log;
+
 import com.googlecode.jumpnevolve.graphics.Engine;
-import com.googlecode.jumpnevolve.graphics.world.World;
 
 /**
- * @author niklas
- *
+ * @author Niklas Fiekas
  */
 public class Jumpnevolve {
+	
+	public static Image wood;
 
 	/**
 	 * Startet das Spiel.
 	 * 
-	 * @param args Kommandozeilenargumente
+	 * @param args
+	 *            Kommandozeilenargumente
 	 */
 	public static void main(String[] args) {
-		Engine engine = Engine.getInstance();
-		
-		Level level = new Level();
-		
-		World world = level.createWorld();
-		engine.switchState(world);
-	
-		engine.start();
-	}
+		try {
+			// TODO: Logging einrichten
+			
+			// Grafikengine holen und initialisieren
+			// Wenn es Probleme mit der Auflösung gibt, wird hier möglicherweise
+			// eine Exception geworfen.
+			Engine engine = Engine.getInstance();
 
+			// TODO: Ressourcen laden
+
+			// TODO: Hauptmenü laden
+
+			// Demolevel laden und darstellen
+			engine.switchState(new DemoLevel(new LevelWorldFactory()).getSimulatedWorld());
+
+			// Die Engine starten.
+			// Das Programm wird automatisch aufgeräumt und beendet,
+			// wenn der Benutzer das Fenster schließt.
+			engine.start();
+		} catch (Throwable e) {
+			// Versuchen alle Fehler abzufangen und sie in den Log zu schreiben
+			try {
+				Log.error(e);
+			} catch (Throwable ex) {
+				System.err.println("Error in log implementation.");
+			}
+
+			// Eine Meldung anzeigen, damit das Programm nicht kommentarlos
+			// schließt
+			// TODO: Mehr Informationen zu verschiedenen Fehler und die
+			// Möglichkeit einen Bug Report zu senden
+			StringWriter messageWriter = new StringWriter();
+			PrintWriter message = new PrintWriter(messageWriter);
+			message.println("Es ist ein unerwarteter Fehler aufgetreten.");
+			message.println("Das Programm muss geschlossen werden.");
+			message.println();
+			e.printStackTrace(message);
+			JOptionPane.showMessageDialog(null, messageWriter.toString());
+		}
+	}
 }
