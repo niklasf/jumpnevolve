@@ -38,13 +38,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class World extends AbstractState {
 
-	private Object[][] objectList;
+	private LinkedList<AbstractObject>[] objectList;
 
 	public static final float ZOOM = 200;
 
-	public final int subareaWidth, subareaHeight;
+	public final int subareaWidth;
 
-	public final int horizontalSubareas, verticalSubareas;
+	public final int horizontalSubareas;
 
 	public final int width, height;
 
@@ -52,32 +52,29 @@ public class World extends AbstractState {
 
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 
+	private ArrayList<AbstractObject> objects = new ArrayList<AbstractObject>();
+
 	private Camera camera;
 
-	public World(int subareaWidth, int subareaHeight, int width, int height) {
+	@SuppressWarnings("unchecked")
+	public World(int subareaWidth, int width, int height) {
 		this.subareaWidth = subareaWidth;
-		this.subareaHeight = subareaHeight;
 		this.width = width;
 		this.height = height;
-		int horizontalSubareas = (int) Math.ceil((float) width
+		this.horizontalSubareas = (int) Math.ceil((float) width
 				/ (float) subareaWidth);
-		int verticalSubareas = (int) Math.ceil((float) height
-				/ (float) subareaHeight);
-		if (verticalSubareas < 6) {
-			verticalSubareas = 1;
+		this.objectList = new LinkedList[horizontalSubareas];
+		for (int i = 0; i < this.objectList.length; i++) {
+			this.objectList[i] = new LinkedList<AbstractObject>();
 		}
-		this.horizontalSubareas = horizontalSubareas;
-		this.verticalSubareas = verticalSubareas;
-		this.objectList = new Object[horizontalSubareas][verticalSubareas];
-		for (int i = 0; i < objectList.length; i++) {
-			for (int j = 0; j < objectList[i].length; j++) {
-				objectList[i][j] = new LinkedList<AbstractObject>();
-			}
-		}
+
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
+		for (AbstractObject object : this.objects) {
+			object.newCalculationRound();
+		}
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
 		}
@@ -104,17 +101,58 @@ public class World extends AbstractState {
 				}
 			}
 			if (object instanceof AbstractObject) {
-				add((AbstractObject) object);
+				if (!this.objects.contains(object)) {
+					this.objects.add((AbstractObject) object);
+					addToObjectList((AbstractObject) object);
+				}
 			}
 		}
 	}
 
-	private void add(AbstractObject object) {
-		// TODO: Objekt in entsprechende LinkedLists einfügen
+	private void addToObjectList(AbstractObject object) {
+		int start = (int) (object.getHorizontalStart());
+		int end = (int) (object.getHorizontalEnd());
+		for (int i = start; i <= end; i++) {
+			this.objectList[i].add(object);
+		}
 	}
 
 	public void changedPosition(AbstractObject object) {
-		// TODO: Objekt in entsprechende LinkedLists einfügen / löschen
+		int start = (int) (object.getHorizontalStart());
+		int end = (int) (object.getHorizontalEnd());
+		int oldStart = (int) (object.getOldHorizontalStart());
+		int oldEnd = (int) (object.getOldHorizontalEnd());
+		if (start < oldStart) {
+			for (int i = start; i < oldStart; i++) {
+				this.objectList[i].add(object);
+			}
+		}
+		if (start > oldStart) {
+			for (int i = oldStart; i < start; i++) {
+				this.objectList[i].remove(object);
+			}
+		}
+		if (end > oldEnd) {
+			for (int i = oldEnd + 1; i <= end; i++) {
+				this.objectList[i].add(object);
+			}
+		}
+		if (end < oldEnd) {
+			for (int i = end + 1; i <= oldEnd; i++) {
+				this.objectList[i].remove(object);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public LinkedList<AbstractObject>[] getNeighbours(AbstractObject object) {
+		int start = (int) (object.getHorizontalStart());
+		int end = (int) (object.getHorizontalEnd());
+		ArrayList<LinkedList<AbstractObject>> returns = new ArrayList<LinkedList<AbstractObject>>();
+		for (int i = start; i <= end; i++) {
+			returns.add(this.objectList[i]);
+		}
+		return (LinkedList<AbstractObject>[]) returns.toArray();
 	}
 
 	@Override

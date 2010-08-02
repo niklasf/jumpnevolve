@@ -18,6 +18,9 @@
 package com.googlecode.jumpnevolve.graphics.world;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.*;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -60,12 +63,18 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 */
 	public abstract boolean getState();
 
+	/*
+	 * Setzt die Standard-Werte für jede Runde (z.B. Schwerkraft)
+	 */
+	public abstract void setStandardsPerRound();
+
 	private Vector position;
 	private Vector oldPosition;
 	private Vector velocity;
 	private Vector force;
 	private Vector dimension;
 	private Shape thisShape;
+	private Shape thisOldShape;
 	public final byte type;
 	public static final byte TYPE_BALL = 0;
 	public static final byte TYPE_BOX = 1;
@@ -123,12 +132,15 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	}
 
 	/**
-	 * Leert die "Schon berechnet"-HashMap, damit die Kollisionen neu berechnet
-	 * werden können
+	 * Muss vor jeder Runde neu aufgerufen werden
+	 * 
+	 * Nimmt Einstellungen vor, die vor einer neuen Berechnungsrunde erneuert
+	 * werden müssen
 	 */
 	public void newCalculationRound() {
 		this.alreadyDone.clear();
 		this.addDone(this, true);
+		this.setStandardsPerRound();
 	}
 
 	/**
@@ -161,8 +173,28 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		return this.dimension;
 	}
 
+	public final float getHorizontalStart() {
+		return this.thisShape.getLeftEnd();
+	}
+
+	public final float getHorizontalEnd() {
+		return this.thisShape.getRightEnd();
+	}
+
+	public final float getOldHorizontalStart() {
+		return this.thisOldShape.getLeftEnd();
+	}
+
+	public final float getOldHorizontalEnd() {
+		return this.thisOldShape.getRightEnd();
+	}
+
 	public final Shape getShape() {
 		return this.thisShape;
+	}
+
+	public final Shape getOldShape() {
+		return this.thisOldShape;
 	}
 
 	public void applyForce(Vector force) {
@@ -198,6 +230,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	}
 
 	public void calculateNewShape() {
+		this.thisOldShape = this.thisShape;
 		switch (this.type) {
 		case TYPE_BALL:
 			this.thisShape = new Circle(this.getPosition(), this.getDimension());
@@ -264,6 +297,17 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		} else if (other instanceof Figure) {
 			this.crashedByPlayer((Figure) other);
 		} else {
+		}
+	}
+
+	@Override
+	public void poll(Input input, float secounds) {
+		LinkedList<AbstractObject>[] neighbours = this.worldOfThis
+				.getNeighbours(this);
+		for (LinkedList<AbstractObject> neighboursSub : neighbours) {
+			for (AbstractObject neighbour : neighboursSub) {
+				this.doesCollide(neighbour);
+			}
 		}
 	}
 }

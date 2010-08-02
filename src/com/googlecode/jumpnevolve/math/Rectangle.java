@@ -217,4 +217,14 @@ public class Rectangle implements Shape {
 		return "(" + this.x + ", " + this.y + "): " + this.width + " x "
 				+ this.height;
 	}
+
+	@Override
+	public float getLeftEnd() {
+		return this.x;
+	}
+
+	@Override
+	public float getRightEnd() {
+		return this.x + this.width;
+	}
 }

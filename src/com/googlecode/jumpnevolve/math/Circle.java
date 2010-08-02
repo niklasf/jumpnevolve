@@ -143,4 +143,16 @@ public class Circle implements Shape {
 	public String toString() {
 		return "M: " + this.position + " r: " + this.radius;
 	}
+
+	@Override
+	public float getLeftEnd() {
+		// TODO Auto-generated method stub
+		return this.position.x - this.radius;
+	}
+
+	@Override
+	public float getRightEnd() {
+		// TODO Auto-generated method stub
+		return this.position.x + this.radius;
+	}
 }

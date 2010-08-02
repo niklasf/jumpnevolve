@@ -25,8 +25,8 @@ package com.googlecode.jumpnevolve.math;
 public interface Shape {
 	/**
 	 * <p>
-	 * Prüft, ob sich die geometrische Figuren überlappen. Eine Berührung
-	 * ist keine Kollision.
+	 * Prüft, ob sich die geometrische Figuren überlappen. Eine Berührung ist
+	 * keine Kollision.
 	 * </p>
 	 * 
 	 * <p>
@@ -53,4 +53,14 @@ public interface Shape {
 	 * @return Der Ortsvektor des Mittelpunkts.
 	 */
 	public Vector getCenter();
+
+	/**
+	 * @return Die x-Koordinate des linken Endes des Objekts
+	 */
+	public float getLeftEnd();
+
+	/**
+	 * @return Die x-Koordinate des rechten Endes des Objekts
+	 */
+	public float getRightEnd();
 }
