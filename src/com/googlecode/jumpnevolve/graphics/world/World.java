@@ -57,7 +57,7 @@ public class World extends AbstractState {
 	private Camera camera;
 
 	@SuppressWarnings("unchecked")
-	public World(int subareaWidth, int width, int height) {
+	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
 		this.width = width;
 		this.height = height;
@@ -77,6 +77,9 @@ public class World extends AbstractState {
 		}
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
+		}
+		for (AbstractObject object : this.objects) {
+			object.finalizeStep(false);
 		}
 	}
 
@@ -141,6 +144,17 @@ public class World extends AbstractState {
 			for (int i = end + 1; i <= oldEnd; i++) {
 				this.objectList[i].remove(object);
 			}
+		}
+	}
+
+	public void removeFromAllLists(AbstractObject object) {
+		this.pollables.remove(object);
+		this.drawables.remove(object);
+		this.objects.remove(object);
+		int start = (int) (object.getHorizontalStart());
+		int end = (int) (object.getHorizontalEnd());
+		for (int i = start; i <= end; i++) {
+			this.objectList[i].remove(object);
 		}
 	}
 

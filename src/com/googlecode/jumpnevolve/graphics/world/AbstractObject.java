@@ -80,6 +80,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	public static final byte TYPE_BOX = 1;
 	private static int Id = 0;
 	public final int id;
+	private float currentSecounds;
 
 	/*
 	 * HashMap um abzuspeichern, welche Objekte schon behnadelt wurden, dadurch
@@ -87,6 +88,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * speichert den Zustand der Kollision (Ja oder Nein)
 	 */
 	private HashMap<Integer, Boolean> alreadyDone;
+
+	/*
+	 * Die World-Instanz in der dieses Objekt gespeichert wurde
+	 */
 	public final World worldOfThis;
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
@@ -99,7 +104,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.force = force;
 		this.id = Id++;
 		this.worldOfThis = worldOfThis;
-		this.calculateNewShape();
+		this.setNewShape();
 	}
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
@@ -112,7 +117,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.force = Vector.ZERO;
 		this.id = Id++;
 		this.worldOfThis = worldOfThis;
-		this.calculateNewShape();
+		this.setNewShape();
 	}
 
 	/**
@@ -123,10 +128,18 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 *            kollidiert
 	 * @return Ob es schon berechnet wurde
 	 */
-	public boolean alreadyDone(AbstractObject other) {
+	public final boolean alreadyDone(AbstractObject other) {
 		return this.alreadyDone.containsKey(other.getID());
 	}
 
+	/**
+	 * Fügt den Kollisions-Status mit dem anderen Objekt der HashMap hinzu
+	 * 
+	 * @param other
+	 *            Das andere Objekt
+	 * @param state
+	 *            Der Kollisions-Status
+	 */
 	private void addDone(AbstractObject other, boolean state) {
 		this.alreadyDone.put(other.getID(), state);
 	}
@@ -150,8 +163,11 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		return this.id;
 	}
 
+	/**
+	 * @return Die Masse des Objekts
+	 */
 	public final float getMass() {
-		return 0;
+		return 1; // FIXME: Masse-Variable erstellen und zurückgeben
 	}
 
 	/**
@@ -161,54 +177,100 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		return this.velocity;
 	}
 
+	/**
+	 * @return Die Kraft die z.Z. auf das Objekt wirkt
+	 */
 	public final Vector getForce() {
 		return this.force;
 	}
 
-	public byte getType() {
+	/**
+	 * @return Der Typ der mathematischen Figur (vgl. Typ-Konstanten)
+	 */
+	public final byte getType() {
 		return this.type;
 	}
 
+	/**
+	 * @return "Dimension" des Objekts; bei einer BOX: Höhe und Breite; bei
+	 *         einem BALL: Radius (entspricht dem Betrag des Vektors)
+	 */
 	public final Vector getDimension() {
 		return this.dimension;
 	}
 
+	/**
+	 * @return Die x-Koordinate des linken Endes des Objekts
+	 */
 	public final float getHorizontalStart() {
 		return this.thisShape.getLeftEnd();
 	}
 
+	/**
+	 * @return Die x-Koordinate des rechten Endes des Objekts
+	 */
 	public final float getHorizontalEnd() {
 		return this.thisShape.getRightEnd();
 	}
 
+	/**
+	 * @return Die x-Koordinate des linken Endes des Objekts vor einer
+	 *         Berechnungsrunde
+	 */
 	public final float getOldHorizontalStart() {
 		return this.thisOldShape.getLeftEnd();
 	}
 
+	/**
+	 * @return Die x-Koordinate des rechten Endes des Objekts vor einer
+	 *         Berechnungsrunde
+	 */
 	public final float getOldHorizontalEnd() {
 		return this.thisOldShape.getRightEnd();
 	}
 
+	/**
+	 * @return Die mathematische Figur, die das Objekt beschreibt
+	 */
 	public final Shape getShape() {
 		return this.thisShape;
 	}
 
+	/**
+	 * @return Die mathematische Figur, die das Objekt (vor einer
+	 *         Berechnungsrunde) beschreibt
+	 */
 	public final Shape getOldShape() {
 		return this.thisOldShape;
 	}
 
+	/**
+	 * @return addiert eine Kraft zur Kraft, die aktuell auf das Objekt wirkt
+	 */
 	public void applyForce(Vector force) {
 		this.force = this.force.add(force);
 	}
 
+	/**
+	 * Führt Berechnungen / Einstellungen am Ende einer Berechnungsrunde aus
+	 */
 	public void finalizeStep(boolean undo) {
-
+		this.setNewPosition(this.currentSecounds);
 	}
 
+	/**
+	 * @return Die aktuelle Position des Objekts; ACHTUNG: Abhängig von der Form
+	 *         des Objekts; BOX: obere, rechte Ecke; BALL: Mittelpunkt
+	 */
 	public final Vector getPosition() {
 		return this.position;
 	}
 
+	/**
+	 * @return Die aktuelle Position des Objekts vor einer Berechnungsrunde;
+	 *         ACHTUNG: Abhängig von der Form des Objekts; BOX: obere, rechte
+	 *         Ecke; BALL: Mittelpunkt
+	 */
 	public final Vector getOldPosition() {
 		return this.oldPosition;
 	}
@@ -229,7 +291,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.velocity = velocity;
 	}
 
-	public void calculateNewShape() {
+	/**
+	 * Berechnet und setzt die mathematische Figur des Objekts neu
+	 */
+	public final void setNewShape() {
 		this.thisOldShape = this.thisShape;
 		switch (this.type) {
 		case TYPE_BALL:
@@ -244,14 +309,22 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		}
 	}
 
-	protected void setNewPosition(float seconds) {
-		/* Berechnung der neuen Position durch den Verlet-Algorithmus */
+	/**
+	 * Berechnet die neue Position des Objekts und setzt diese als aktuelle
+	 * Position
+	 * 
+	 * @param seconds
+	 *            Seit der letzten Berechnung vergangene Zeit
+	 */
+	private void setNewPosition(float secounds) {
 		Vector acceleration = ((this.getForce()).div(this.getMass()))
-				.mul(seconds * seconds);
-		Vector velocity = this.velocity.mul(seconds);
+				.mul(secounds * secounds);
+		Vector velocity = this.velocity.mul(secounds);
 		Vector newPosition = this.position.add(velocity).add(acceleration);
 		this.oldPosition = this.position;
 		this.position = newPosition;
+		this.setNewShape();
+		this.worldOfThis.changedPosition(this);
 	}
 
 	/**
@@ -287,6 +360,14 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		}
 	}
 
+	/**
+	 * Ruft je nach Objekt-Typ die entsprechende Crash-Methode auf
+	 * 
+	 * Wird bei einem Crash aufgerufen
+	 * 
+	 * @param other
+	 *            Das andere Objekt
+	 */
 	private void crashedByObject(AbstractObject other) {
 		if (other instanceof VorlageGegner) {
 			this.crashedByEnemy((VorlageGegner) other);
@@ -302,6 +383,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 
 	@Override
 	public void poll(Input input, float secounds) {
+		this.currentSecounds = secounds;
 		LinkedList<AbstractObject>[] neighbours = this.worldOfThis
 				.getNeighbours(this);
 		for (LinkedList<AbstractObject> neighboursSub : neighbours) {
