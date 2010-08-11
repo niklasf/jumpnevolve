@@ -17,6 +17,7 @@
 
 package com.googlecode.jumpnevolve.graphics.world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -384,9 +385,9 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	@Override
 	public void poll(Input input, float secounds) {
 		this.currentSecounds = secounds;
-		LinkedList<AbstractObject>[] neighbours = this.worldOfThis
+		ArrayList<LinkedList<AbstractObject>> neighbours = this.worldOfThis
 				.getNeighbours(this);
-		for (LinkedList<AbstractObject> neighboursSub : neighbours) {
+		for (LinkedList<AbstractObject> neighboursSub: neighbours) {
 			for (AbstractObject neighbour : neighboursSub) {
 				this.doesCollide(neighbour);
 			}

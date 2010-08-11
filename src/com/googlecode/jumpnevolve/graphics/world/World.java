@@ -38,7 +38,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class World extends AbstractState {
 
-	private LinkedList<AbstractObject>[] objectList;
+	private ArrayList<LinkedList<AbstractObject>> objectList;
 
 	public final int subareaWidth;
 
@@ -54,16 +54,15 @@ public class World extends AbstractState {
 
 	private Camera camera;
 
-	@SuppressWarnings("unchecked")
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
 		this.width = width;
 		this.height = height;
 		this.horizontalSubareas = (int) Math.ceil((float) width
 				/ (float) subareaWidth);
-		this.objectList = new LinkedList[horizontalSubareas];
-		for (int i = 0; i < this.objectList.length; i++) {
-			this.objectList[i] = new LinkedList<AbstractObject>();
+		this.objectList = new ArrayList<LinkedList<AbstractObject>>(this.horizontalSubareas);
+		for (int i = 0; i < this.horizontalSubareas; i++) {
+			this.objectList.add(new LinkedList<AbstractObject>());
 		}
 
 	}
@@ -114,7 +113,7 @@ public class World extends AbstractState {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
 		for (int i = start; i <= end; i++) {
-			this.objectList[i].add(object);
+			this.objectList.get(i).add(object);
 		}
 	}
 
@@ -125,22 +124,22 @@ public class World extends AbstractState {
 		int oldEnd = (int) (object.getOldHorizontalEnd());
 		if (start < oldStart) {
 			for (int i = start; i < oldStart; i++) {
-				this.objectList[i].add(object);
+				this.objectList.get(i).add(object);
 			}
 		}
 		if (start > oldStart) {
 			for (int i = oldStart; i < start; i++) {
-				this.objectList[i].remove(object);
+				this.objectList.get(i).remove(object);
 			}
 		}
 		if (end > oldEnd) {
 			for (int i = oldEnd + 1; i <= end; i++) {
-				this.objectList[i].add(object);
+				this.objectList.get(i).add(object);
 			}
 		}
 		if (end < oldEnd) {
 			for (int i = end + 1; i <= oldEnd; i++) {
-				this.objectList[i].remove(object);
+				this.objectList.get(i).remove(object);
 			}
 		}
 	}
@@ -152,19 +151,19 @@ public class World extends AbstractState {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
 		for (int i = start; i <= end; i++) {
-			this.objectList[i].remove(object);
+			this.objectList.get(i).remove(object);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public LinkedList<AbstractObject>[] getNeighbours(AbstractObject object) {
+	public ArrayList<LinkedList<AbstractObject>> getNeighbours(AbstractObject object) {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
 		ArrayList<LinkedList<AbstractObject>> returns = new ArrayList<LinkedList<AbstractObject>>();
 		for (int i = start; i <= end; i++) {
-			returns.add(this.objectList[i]);
+			returns.add(this.objectList.get(i));
 		}
-		return (LinkedList<AbstractObject>[]) returns.toArray();
+		return returns;
 	}
 
 	@Override
