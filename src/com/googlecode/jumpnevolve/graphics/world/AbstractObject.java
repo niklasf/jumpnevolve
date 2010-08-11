@@ -246,7 +246,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	}
 
 	/**
-	 * @return addiert eine Kraft zur Kraft, die aktuell auf das Objekt wirkt
+	 * Addiert eine Kraft zur Kraft, die aktuell auf das Objekt wirkt
 	 */
 	public void applyForce(Vector force) {
 		this.force = this.force.add(force);
