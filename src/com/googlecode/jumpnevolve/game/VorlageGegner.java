@@ -19,30 +19,17 @@ package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.math.*;
 
 /**
- * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
  *         TODO: Ableiten und Beispiel erschaffen
  * 
  */
-public abstract class Figure extends AbstractObject {
+public abstract class VorlageGegner extends AbstractObject {
 
 	public boolean alive;
-
-	/**
-	 * @param type
-	 * @param position
-	 * @param dimension
-	 * @param worldOfThis
-	 */
-	protected Figure(byte type, Vector position, Vector dimension,
-			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
-		this.init();
-	}
 
 	/**
 	 * @param type
@@ -51,15 +38,26 @@ public abstract class Figure extends AbstractObject {
 	 * @param force
 	 * @param worldOfThis
 	 */
-	protected Figure(byte type, Vector position, Vector dimension,
+	protected VorlageGegner(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
 		super(type, position, dimension, force, worldOfThis);
 		this.init();
 	}
 
+	/**
+	 * @param type
+	 * @param position
+	 * @param dimension
+	 * @param worldOfThis
+	 */
+	protected VorlageGegner(byte type, Vector position, Vector dimension,
+			World worldOfThis) {
+		super(type, position, dimension, worldOfThis);
+		this.init();
+	}
+
 	private void init() {
 		this.alive = true;
-		this.setVelocity(Vector.ZERO);
 	}
 
 	@Override

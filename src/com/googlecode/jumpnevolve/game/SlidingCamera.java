@@ -15,14 +15,24 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.googlecode.jumpnevolve.graphics.world;
+package com.googlecode.jumpnevolve.game;
 
+import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author niklas
  *
  */
-public interface Camera {
-	public Vector getPosition();
+public class SlidingCamera implements Camera {
+
+	/* (non-Javadoc)
+	 * @see com.googlecode.jumpnevolve.graphics.world.Camera#getPosition()
+	 */
+	@Override
+	public Vector getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

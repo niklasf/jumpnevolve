@@ -1,182 +1,265 @@
-/*
- * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.googlecode.jumpnevolve.graphics;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
+import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.loading.LoadingList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
- * Der ResourceManager läd Ressourcen wie Bilder oder Sounds vom Dateisystem.
- * Wenn mehrmals nach einer Ressource gefragt wird, kann sie jederzeit aus dem
- * Cache geholt werden.
+ * <a href=
+ * "http://slick.cokeandcode.com/wiki/doku.php?id=resource_manager_tutorial"
+ * >Klasse, die Sounds, Bilder, Animationen und Texte verwaltet</a>
  * 
- * @author Niklas Fiekas
+ * @author spiegel
  */
 public class ResourceManager {
 
-	private static ResourceManager instance;
+	private static String SPRITE_SHEET_REF = "__SPRITE_SHEET_";
 
-	private LinkedList<String> schedule = new LinkedList<String>();
+	private static ResourceManager _instance = new ResourceManager();
 
-	private HashMap<String, Image> images = new HashMap<String, Image>();
-
-	private HashMap<String, Sound> sounds = new HashMap<String, Sound>();
+	private Map<String, Sound> soundMap;
+	private Map<String, Image> imageMap;
+	private Map<String, ResourceAnimationData> animationMap;
+	private Map<String, String> textMap;
 
 	private ResourceManager() {
-
+		this.soundMap = new HashMap<String, Sound>();
+		this.imageMap = new HashMap<String, Image>();
+		this.animationMap = new HashMap<String, ResourceAnimationData>();
+		this.textMap = new HashMap<String, String>();
 	}
 
-	private String normalizeIdentifier(String identifier) {
-		if (!identifier.startsWith("resources/")) {
-			return identifier;
-		} else {
-			throw new ResourceError(
-					"Resource identifiers should not start with resources/");
-		}
+	public final static ResourceManager getInstance() {
+		return _instance;
 	}
 
-	/**
-	 * Fügt Ressourcen in die Wartschleife ein, sodass sie geladen werden,
-	 * sobald die Möglichkeit besteht.
-	 * 
-	 * @param identifier
-	 *            Pfad zur Ressource.
-	 */
-	public void schedule(String identifier) {
-		identifier = normalizeIdentifier(identifier);
-		if (!this.schedule.contains(identifier)
-				&& !this.images.containsKey(identifier)
-				&& !this.sounds.containsKey(identifier)) {
-			this.schedule.add(identifier);
-		}
+	public void loadResources(InputStream is) throws SlickException {
+		loadResources(is, false);
 	}
 
-	private void load(String identifier) {
+	public void loadResources(InputStream is, boolean deferred)
+			throws SlickException {
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+				.newInstance();
+		DocumentBuilder docBuilder = null;
 		try {
-			if (identifier.endsWith(".png")) { // Bild laden
-				this.images.put(identifier, new Image(identifier));
-			} else if (identifier.endsWith(".png?reverse")) { // Umgedrehted
-																// Bild laden
-				this.images.put(identifier, getImage(
-						identifier.substring(0, identifier.indexOf('?')))
-						.getFlippedCopy(true, false));
-			} else if (identifier.endsWith(".ogg")) { // Sound laden
-				this.sounds.put(identifier, new Sound(identifier));
-			} else { // Ressourcentyp unbekannt
-				throw new ResourceError("Unkown ressource type: " + identifier);
+			docBuilder = docBuilderFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new SlickException("Could not load resources", e);
+		}
+		Document doc = null;
+		try {
+			doc = docBuilder.parse(is);
+		} catch (SAXException e) {
+			throw new SlickException("Could not load resources", e);
+		} catch (IOException e) {
+			throw new SlickException("Could not load resources", e);
+		}
+
+		// normalize text representation
+		doc.getDocumentElement().normalize();
+
+		NodeList listResources = doc.getElementsByTagName("resource");
+
+		int totalResources = listResources.getLength();
+
+		if (deferred) {
+			LoadingList.setDeferredLoading(true);
+		}
+
+		for (int resourceIdx = 0; resourceIdx < totalResources; resourceIdx++) {
+
+			Node resourceNode = listResources.item(resourceIdx);
+
+			if (resourceNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element resourceElement = (Element) resourceNode;
+
+				String type = resourceElement.getAttribute("type");
+
+				if (type.equals("image")) {
+					addElementAsImage(resourceElement);
+				} else if (type.equals("sound")) {
+					addElementAsSound(resourceElement);
+				} else if (type.equals("text")) {
+					addElementAsText(resourceElement);
+				} else if (type.equals("font")) {
+
+				} else if (type.equals("animation")) {
+					addElementAsAnimation(resourceElement);
+				}
 			}
+		}
+
+	}
+
+	private void addElementAsAnimation(Element resourceElement)
+			throws SlickException {
+		loadAnimation(resourceElement.getAttribute("id"), resourceElement
+				.getTextContent(), Integer.valueOf(resourceElement
+				.getAttribute("tw")), Integer.valueOf(resourceElement
+				.getAttribute("th")), Integer.valueOf(resourceElement
+				.getAttribute("duration")));
+	}
+
+	private void loadAnimation(String id, String spriteSheetPath, int tw,
+			int th, int duration) throws SlickException {
+		if (spriteSheetPath == null || spriteSheetPath.length() == 0)
+			throw new SlickException("Image resource [" + id
+					+ "] has invalid path");
+
+		loadImage(SPRITE_SHEET_REF + id, spriteSheetPath);
+
+		this.animationMap.put(id, new ResourceAnimationData(SPRITE_SHEET_REF
+				+ id, tw, th, duration));
+	}
+
+	public final Animation getAnimation(String ID) {
+		ResourceAnimationData rad = this.animationMap.get(ID);
+
+		SpriteSheet spr = new SpriteSheet(getImage(rad.getImageId()), rad.tw,
+				rad.th);
+
+		Animation animation = new Animation(spr, rad.duration);
+
+		return animation;
+	}
+
+	private void addElementAsText(Element resourceElement)
+			throws SlickException {
+		loadText(resourceElement.getAttribute("id"), resourceElement
+				.getTextContent());
+	}
+
+	public String loadText(String id, String value) throws SlickException {
+		if (value == null)
+			throw new SlickException("Text resource [" + id
+					+ "] has invalid value");
+
+		this.textMap.put(id, value);
+
+		return value;
+	}
+
+	public String getText(String ID) {
+		return this.textMap.get(ID);
+	}
+
+	private void addElementAsSound(Element resourceElement)
+			throws SlickException {
+		loadSound(resourceElement.getAttribute("id"), resourceElement
+				.getTextContent());
+	}
+
+	public Sound loadSound(String id, String path) throws SlickException {
+		if (path == null || path.length() == 0)
+			throw new SlickException("Sound resource [" + id
+					+ "] has invalid path");
+
+		Sound sound = null;
+
+		try {
+			sound = new Sound(path);
 		} catch (SlickException e) {
-			throw new ResourceError(e);
+			throw new SlickException("Could not load sound", e);
 		}
+
+		this.soundMap.put(id, sound);
+
+		return sound;
 	}
 
-	/**
-	 * Läd die gewünschte Bildressource vom Dateisystem oder aus dem Cache.
-	 * 
-	 * @param id
-	 *            Pfad zur Bildressource.
-	 * @return Das Bild.
-	 */
-	public Image getImage(String id) {
-		id = normalizeIdentifier(id);
-
-		Image image = this.images.get(id);
-		if (image == null) {
-			load(id);
-			return this.images.get(id);
-		} else {
-			return image;
-		}
+	public final Sound getSound(String ID) {
+		return this.soundMap.get(ID);
 	}
 
-	/**
-	 * Erzeugt ein Bild das in X-Richtung umgedreht wurde oder holt es aus dem
-	 * Cache.
-	 * 
-	 * @param id
-	 *            Pfad zur Bildressource.
-	 * @return Das umgedrehte Bild.
-	 */
-	public Image getRevertedImage(String id) {
-		id = normalizeIdentifier(id);
-
-		Image image = this.images.get(id + "?reverse");
-		if (image == null) {
-			load(id + "?reverse");
-			return this.images.get(id + "?reverse");
-		} else {
-			return image;
-		}
+	private final void addElementAsImage(Element resourceElement)
+			throws SlickException {
+		loadImage(resourceElement.getAttribute("id"), resourceElement
+				.getTextContent());
 	}
 
-	/**
-	 * Läd eine Sounddatei vom Dateisystem oder aus dem Cache.
-	 * 
-	 * @param id
-	 *            Pfad zur Soundresource.
-	 * @return Die Sounddatei.
-	 */
-	public Sound getSound(String id) {
-		id = normalizeIdentifier(id);
+	public Image loadImage(String id, String path) throws SlickException {
+		if (path == null || path.length() == 0)
+			throw new SlickException("Image resource [" + id
+					+ "] has invalid path");
 
-		Sound sound = this.sounds.get(id);
-		if (sound == null) {
-			load(id);
-			return this.sounds.get(id);
-		} else {
-			return sound;
-		}
-	}
-
-	/**
-	 * Arbeitet die Liste aller angeforderten Ressourcen ab und versucht sie zu
-	 * laden.
-	 */
-	public void load() {
-		ArrayList<String> loaded = new ArrayList<String>(this.schedule.size());
-
-		// Ressourcen laden
+		Image image = null;
 		try {
-			for (String id : this.schedule) {
-				load(id);
-				loaded.add(id);
-			}
-		} finally {
-
-			// Aus der Warteschleife löschen
-			for (String id : loaded) {
-				this.schedule.remove(id);
-			}
+			image = new Image(path);
+		} catch (SlickException e) {
+			throw new SlickException("Could not load image", e);
 		}
+
+		this.imageMap.put(id, image);
+
+		return image;
 	}
 
-	/**
-	 * @return Der von der gesamten Anwendung geteilte ResourceManager.
-	 */
-	public static ResourceManager getInstance() {
-		if (instance == null) {
-			instance = new ResourceManager();
+	public final Image getImage(String ID) {
+		return this.imageMap.get(ID);
+	}
+
+	class ResourceAnimationData {
+		int duration;
+		int tw;
+		int th;
+		String imageId;
+
+		public ResourceAnimationData(String id, int tw, int th, int duration) {
+			this.imageId = id;
+			this.tw = tw;
+			this.th = th;
+			this.duration = duration;
 		}
-		return instance;
+
+		public final int getDuration() {
+			return this.duration;
+		}
+
+		public final void setDuration(int duration) {
+			this.duration = duration;
+		}
+
+		public final int getTw() {
+			return this.tw;
+		}
+
+		public final void setTw(int tw) {
+			this.tw = tw;
+		}
+
+		public final int getTh() {
+			return this.th;
+		}
+
+		public final void setTh(int th) {
+			this.th = th;
+		}
+
+		public final String getImageId() {
+			return this.imageId;
+		}
+
+		public final void setImageId(String imageId) {
+			this.imageId = imageId;
+		}
+
 	}
 }

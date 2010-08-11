@@ -22,27 +22,13 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
  *         TODO: Ableiten und Beispiel erschaffen
- * 
  */
-public abstract class Figure extends AbstractObject {
+public abstract class VorlageObjekte extends AbstractObject {
 
-	public boolean alive;
-
-	/**
-	 * @param type
-	 * @param position
-	 * @param dimension
-	 * @param worldOfThis
-	 */
-	protected Figure(byte type, Vector position, Vector dimension,
-			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
-		this.init();
-	}
+	protected boolean notActivated;
 
 	/**
 	 * @param type
@@ -51,19 +37,30 @@ public abstract class Figure extends AbstractObject {
 	 * @param force
 	 * @param worldOfThis
 	 */
-	protected Figure(byte type, Vector position, Vector dimension,
+	protected VorlageObjekte(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
 		super(type, position, dimension, force, worldOfThis);
 		this.init();
 	}
 
+	/**
+	 * @param type
+	 * @param position
+	 * @param dimension
+	 * @param worldOfThis
+	 */
+	protected VorlageObjekte(byte type, Vector position, Vector dimension,
+			World worldOfThis) {
+		super(type, position, dimension, worldOfThis);
+		this.init();
+	}
+
 	private void init() {
-		this.alive = true;
-		this.setVelocity(Vector.ZERO);
+		this.notActivated = false;
 	}
 
 	@Override
 	public boolean getState() {
-		return this.alive;
+		return this.notActivated;
 	}
 }

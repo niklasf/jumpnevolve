@@ -17,8 +17,6 @@
 
 package com.googlecode.jumpnevolve.graphics;
 
-import java.util.LinkedList;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.BasicGameState;
@@ -28,52 +26,17 @@ import org.newdawn.slick.state.StateBasedGame;
  * Jeder Zustand, den die Grafikengine einnehmen kann, muss von dieser Klasse
  * abgeleitet werden.
  * 
- * @author Erik Wagner, Niklas Fiekas
+ * @author Niklas Fiekas
  */
 public abstract class AbstractState extends BasicGameState implements Pollable,
 		Drawable {
-	
-	/**
-	 * Umrechnungsfaktor zwischen Pixelkoordinaten und den Koordinaten der Welt.
-	 */
-	public static final float ZOOM = 40f;
 
 	private static int id = 0;
 
 	private final int ID;
-	
-	private LinkedList<Pollable> pollables = new LinkedList<Pollable>();
-	private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
 	public AbstractState() {
 		this.ID = id++;
-		add(this);
-	}
-	
-	public void add(Object object) {
-		if(object instanceof Pollable) {
-			if(!this.pollables.contains(object)) {
-				this.pollables.add((Pollable) object);
-			}
-		}
-		if(object instanceof Drawable) {
-			if(!this.drawables.contains(object)) {
-				this.drawables.add((Drawable) object);
-			}
-		}
-	}
-	
-	public void addBackground(Object object) {
-		if(object instanceof Pollable) {
-			if(!this.pollables.contains(object)) {
-				this.pollables.addFirst((Pollable) object);
-			}
-		}
-		if(object instanceof Drawable) {
-			if(!this.drawables.contains(object)) {
-				this.drawables.addFirst((Drawable) object);
-			}
-		}
 	}
 
 	@Override
@@ -95,29 +58,14 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 	@Override
 	public final void render(GameContainer container, StateBasedGame game,
 			Graphics g) {
-		g.translate(Engine.getInstance().getWidth() / 2.0f, Engine.getInstance().getHeight() / 2.0f);
-		g.scale(ZOOM, ZOOM);
-		
-		for(Drawable drawable: this.drawables) {
-			drawable.draw(g);
-		}
-		
-		g.resetTransform();
-		
-		// TODO: Allgemeiner machen
-		g.drawString("Bewegung: Links, Rechts   Sprung: Leertaste    Neu anfangen: 0   Beenden: Esc", 10, 30);
+		g.pushTransform();
+		draw(g);
+		g.popTransform();
 	}
 
 	@Override
 	public final void update(GameContainer container, StateBasedGame game,
 			int delta) {
-		for(Pollable pollable: this.pollables) {
-			pollable.poll(container.getInput(), delta / 1000.0f);
-		}
-	}
-	
-	@Override
-	public void init(GameContainer container, StateBasedGame game) {
-		ResourceManager.getInstance().load();
+		poll(container.getInput(), delta / 1000.0f);
 	}
 }

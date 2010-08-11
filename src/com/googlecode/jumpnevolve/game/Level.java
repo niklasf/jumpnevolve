@@ -17,29 +17,45 @@
 
 package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.graphics.Engine;
+import java.io.Serializable;
+
+import org.newdawn.slick.Input;
+
+import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author niklas
  *
  */
-public class Jumpnevolve {
+public class Level implements Serializable {
 
-	/**
-	 * Startet das Spiel.
-	 * 
-	 * @param args Kommandozeilenargumente
-	 */
-	public static void main(String[] args) {
-		Engine engine = Engine.getInstance();
+	private static final long serialVersionUID = -3874163846250300376L;
+
+	abstract class PollableCamera implements Camera, Pollable {
 		
-		Level level = new Level();
-		
-		World world = level.createWorld();
-		engine.switchState(world);
-	
-		engine.start();
 	}
+	
+	public World createWorld() {
+		World world =  new World(15, 20);
+		
+		world.setCamera(new PollableCamera() {
+			Vector pos = Vector.ZERO;
+			
+			@Override
+			public Vector getPosition() {
+				return this.pos;
+			}
 
+			@Override
+			public void poll(Input input, float secounds) {
+				this.pos = this.pos.add(new Vector(1, 1).mul(secounds));
+			}
+		});
+		world.add(world.getCamera());
+		
+		return world;
+	}
 }

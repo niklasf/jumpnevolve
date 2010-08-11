@@ -15,14 +15,16 @@
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.googlecode.jumpnevolve.graphics.world;
+package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 
 /**
  * @author niklas
  *
  */
-public interface Camera {
-	public Vector getPosition();
+public class ObjectFocusingCamera extends SlidingCamera {
+	public ObjectFocusingCamera(AbstractObject object) {
+		
+	}
 }
