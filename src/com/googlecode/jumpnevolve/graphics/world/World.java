@@ -155,7 +155,6 @@ public class World extends AbstractState {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public ArrayList<LinkedList<AbstractObject>> getNeighbours(AbstractObject object) {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
