@@ -17,9 +17,6 @@
 
 package com.googlecode.jumpnevolve.graphics.effects;
 
-import net.phys2d.math.ROVector2f;
-import net.phys2d.math.Vector2f;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ParticleSystem;
@@ -30,6 +27,7 @@ import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.ResourceError;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Partikelsystem, das verschiedene Effekte zeichnen und animieren kann.
@@ -47,7 +45,7 @@ public class ParticleEffect implements Drawable, Pollable {
 
 	private ParticleSystem system;
 
-	private Vector2f position;
+	private Vector position;
 
 	private ParticleEmitterFactory factory;
 
@@ -59,8 +57,8 @@ public class ParticleEffect implements Drawable, Pollable {
 	 * @param factory
 	 *            Implementierung des Effekts.
 	 */
-	public ParticleEffect(ROVector2f position, ParticleEmitterFactory factory) {
-		this.position = new Vector2f(position);
+	public ParticleEffect(Vector position, ParticleEmitterFactory factory) {
+		this.position = position;
 		this.factory = factory;
 	}
 
@@ -80,7 +78,7 @@ public class ParticleEffect implements Drawable, Pollable {
 	public void draw(Graphics g) {
 		createSystem();
 		g.pushTransform();
-		g.translate(this.position.getX(), this.position.getY());
+		g.translate(this.position.x, this.position.y);
 		g.scale(1.0f / AbstractState.ZOOM, 1.0f / AbstractState.ZOOM);
 		this.system.render();
 		g.popTransform();

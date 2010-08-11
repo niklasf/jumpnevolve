@@ -38,6 +38,8 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 	public AbstractState() {
 		this.ID = id++;
 	}
+	
+	public static final float ZOOM = 200;
 
 	@Override
 	public final int getID() {

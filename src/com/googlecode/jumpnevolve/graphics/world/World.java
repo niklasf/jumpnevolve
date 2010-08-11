@@ -40,8 +40,6 @@ public class World extends AbstractState {
 
 	private LinkedList<AbstractObject>[] objectList;
 
-	public static final float ZOOM = 200;
-
 	public final int subareaWidth;
 
 	public final int horizontalSubareas;
