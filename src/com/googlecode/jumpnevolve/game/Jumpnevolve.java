@@ -34,9 +34,9 @@ public class Jumpnevolve {
 	public static void main(String[] args) {
 		Engine engine = Engine.getInstance();
 		
-		Level level = new Level();
+		// TODO: Testwelt, Hauptmenü o.ä erzeugen
+		World world = null;
 		
-		World world = level.createWorld();
 		engine.switchState(world);
 	
 		engine.start();
