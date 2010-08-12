@@ -18,13 +18,28 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Camera;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author niklas
- *
+ * Eine Kameraimplementierung, die die Kamera permanent auf ein Objekt richtet.
+ * 
+ * @author Niklas Fiekas
  */
-public class ObjectFocusingCamera extends SlidingCamera {
+public class ObjectFocusingCamera implements Camera {
+
+	protected AbstractObject object;
+
+	/**
+	 * @param object
+	 *            Das Objekt, das zentriert werden soll.
+	 */
 	public ObjectFocusingCamera(AbstractObject object) {
-		
+		this.object = object;
+	}
+
+	@Override
+	public Vector getPosition() {
+		return this.object.getPosition();
 	}
 }
