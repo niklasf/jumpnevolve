@@ -82,6 +82,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	private static int Id = 0;
 	public final int id;
 	private float currentSecounds;
+	private float mass = 1;
 
 	/*
 	 * HashMap um abzuspeichern, welche Objekte schon behnadelt wurden, dadurch
@@ -168,7 +169,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * @return Die Masse des Objekts
 	 */
 	public final float getMass() {
-		return 1; // FIXME: Masse-Variable erstellen und zurückgeben
+		return this.mass;
 	}
 
 	/**
