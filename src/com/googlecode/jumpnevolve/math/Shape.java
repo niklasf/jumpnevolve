@@ -74,7 +74,7 @@ public interface Shape {
 	 * @return Die Seite dieses Objekts, die berührt wird, in Form eines Bytes
 	 *         (vgl. Konstanten)
 	 */
-	public byte getTouchedSideOfThis(Shape other, Vector velocity);
+	public byte getTouchedSideOfThis(Shape other);
 
 	/**
 	 * 

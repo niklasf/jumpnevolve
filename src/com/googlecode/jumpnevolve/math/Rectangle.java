@@ -228,75 +228,56 @@ public class Rectangle implements Shape {
 		return this.x + this.width;
 	}
 
-	// FIXME: Wo beginnt das Koordinatensystem (Punkt: 0|0)?
-	// Links-Oben oder Links-Unten? Zur Zeit: Links-Oben wie bei
-	// Java2D
-	//
-	// Bezieht sich auf alle 7 nachfolgenden Methoden
 	@Override
-	public byte getTouchedSideOfThis(Shape other, Vector velocity) {
+	public byte getTouchedSideOfThis(Shape other) {
 		// TODO kreise einfügen
-		// FIXME: Abfangen, wenn die Geschwindigkeit in einer oder beiden
-		// Koordinaten 0 ist und verarbeiten
 		if (other instanceof Rectangle) {
-			Vector overlap;
+			Vector directionToCorner;
 			switch (this.getTouchedCorner((Rectangle) other)) {
 			case Shape.OBEN_LINKS:
-				if (velocity.x <= 0) {
+				directionToCorner = ((Rectangle) other).getLowRightCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.showMoreUpwards(this.getHighLeftCorner()
+						.sub(this.getCenter()))) {
 					return Shape.OBEN;
-				}
-				if (velocity.y <= 0) {
-					return Shape.LINKS;
-				}
-				overlap = ((Rectangle) other).getLowRightCorner().sub(
-						this.getHighLeftCorner());
-				if (overlap.x / velocity.x < overlap.y / velocity.y) {
-					return Shape.LINKS;
 				} else {
-					return Shape.OBEN;
+					return Shape.LINKS;
 				}
 			case Shape.OBEN_RECHTS:
-				if (velocity.x >= 0) {
+				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
+						this.getCenter());
+				if (directionToCorner.showMoreUpwards(this.getHighRightCorner()
+						.sub(this.getCenter()))) {
 					return Shape.OBEN;
-				}
-				if (velocity.y <= 0) {
-					return Shape.LINKS;
-				}
-				overlap = ((Rectangle) other).getLowLeftCorner().sub(
-						this.getHighRightCorner());
-				if (overlap.x / velocity.x < overlap.y / velocity.y) {
-					return Shape.RECHTS;
 				} else {
-					return Shape.OBEN;
+					return Shape.RECHTS;
 				}
 			case Shape.UNTEN_LINKS:
-				if (velocity.x <= 0) {
-					return Shape.OBEN;
-				}
-				if (velocity.y >= 0) {
-					return Shape.LINKS;
-				}
-				overlap = ((Rectangle) other).getHighRightCorner().sub(
-						this.getLowLeftCorner());
-				if (overlap.x / velocity.x < overlap.y / velocity.y) {
+				directionToCorner = ((Rectangle) other).getHighRightCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.showMoreUpwards(this.getLowLeftCorner()
+						.sub(this.getCenter()))) {
 					return Shape.LINKS;
 				} else {
 					return Shape.UNTEN;
 				}
 			case Shape.UNTEN_RECHTS:
-				if (velocity.x >= 0) {
-					return Shape.OBEN;
-				}
-				if (velocity.y >= 0) {
-					return Shape.LINKS;
-				}
-				overlap = ((Rectangle) other).getHighLeftCorner().sub(
-						this.getLowRightCorner());
-				if (overlap.x / velocity.x < overlap.y / velocity.y) {
+				directionToCorner = ((Rectangle) other).getHighLeftCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.showMoreUpwards(this.getLowRightCorner()
+						.sub(this.getCenter()))) {
 					return Shape.RECHTS;
 				} else {
 					return Shape.UNTEN;
 				}
+			case Shape.OBEN:
+				return Shape.OBEN;
+			case Shape.UNTEN:
+				return Shape.UNTEN;
+			case Shape.RECHTS:
+				return Shape.RECHTS;
+			case Shape.LINKS:
+				return Shape.LINKS;
 			default:
 				break;
 			}
@@ -306,13 +287,23 @@ public class Rectangle implements Shape {
 
 	private byte getTouchedCorner(Rectangle other) {
 		if (this.isPointInThis(other.getHighLeftCorner())) {
+			if (this.isPointInThis(other.getHighRightCorner())) {
+				return Shape.UNTEN;
+			} else if (this.isPointInThis(other.getLowLeftCorner())) {
+				return Shape.RECHTS;
+			}
 			return Shape.UNTEN_RECHTS;
-		} else if (this.isPointInThis(other.getHighRightCorner())) {
-			return Shape.UNTEN_LINKS;
+		} else if (this.isPointInThis(other.getLowRightCorner())) {
+			if (this.isPointInThis(other.getHighRightCorner())) {
+				return Shape.LINKS;
+			} else if (this.isPointInThis(other.getLowLeftCorner())) {
+				return Shape.OBEN;
+			}
+			return Shape.OBEN_LINKS;
 		} else if (this.isPointInThis(other.getLowLeftCorner())) {
 			return Shape.OBEN_RECHTS;
-		} else if (this.isPointInThis(other.getLowRightCorner())) {
-			return Shape.OBEN_LINKS;
+		} else if (this.isPointInThis(other.getHighRightCorner())) {
+			return Shape.UNTEN_LINKS;
 		} else {
 			return Shape.KEIN_ERGEBNIS;
 		}

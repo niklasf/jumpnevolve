@@ -155,7 +155,7 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public byte getTouchedSideOfThis(Shape other, Vector velocity) {
+	public byte getTouchedSideOfThis(Shape other) {
 		// TODO rechtecke einfügen
 		if (other instanceof Circle) {
 			Vector direction = other.getCenter().sub(this.getCenter());
@@ -165,9 +165,6 @@ public class Circle implements Shape {
 			} else if (direction.x < -absY) {
 				return Shape.LINKS;
 			} else {
-				// FIXME: Wo beginnt das Koordinatensystem (Punkt: 0|0)?
-				// Links-Oben oder Links-Unten? Zur Zeit: Links-Oben wie bei
-				// Java2D
 				if (direction.y > 0) {
 					return Shape.UNTEN;
 				} else {

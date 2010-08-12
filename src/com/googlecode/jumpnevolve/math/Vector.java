@@ -102,6 +102,9 @@ public class Vector implements Cloneable {
 	 *            Divisor
 	 * @return Quotient
 	 */
+	/*
+	 * FIXME: Abfangen, wenn abs() 0 sein sollte
+	 */
 	public Vector div(float scalar) {
 		return new Vector(this.x / scalar, this.y / scalar);
 	}
@@ -118,6 +121,9 @@ public class Vector implements Cloneable {
 
 	/**
 	 * @return Ein Einheitsvektor, der die Richtung beschreibt.
+	 */
+	/*
+	 * FIXME: Abfangen, wenn abs() 0 sein sollte
 	 */
 	public Vector getDirection() {
 		float abs = this.abs();
@@ -235,6 +241,20 @@ public class Vector implements Cloneable {
 	 */
 	public Vector sub(Vector vec) {
 		return new Vector(this.x - vec.x, this.y - vec.y);
+	}
+
+	/**
+	 * Gibt an, welcher Vektor mehr nach oben zeigt Dass der
+	 * Koordinatensystemanfang Oben-Links wird beachtet: Der Vektor (0|-1) zeigt
+	 * nach OBEN, der Vektor (0|1) nach UNTEN
+	 * 
+	 * @param other
+	 *            Der andere Vektor
+	 * @return true, wenn dieser Vektor mehr nach oben zeigt als der andere,
+	 *         sonst false
+	 */
+	public boolean showMoreUpwards(Vector other) {
+		return this.getDirection().y < other.getDirection().y;
 	}
 
 	@Override
