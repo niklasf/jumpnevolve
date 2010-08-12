@@ -87,7 +87,20 @@ public class Vector implements Cloneable {
 	 * @return Summe
 	 */
 	public Vector add(Vector vec) {
-		return new Vector(this.x + vec.x, this.y + vec.y);
+		return add(vec.x, vec.y);
+	}
+
+	/**
+	 * @see #add(Vector)
+	 * 
+	 * @param vx
+	 *            Das erste Element des Summanden
+	 * @param vy
+	 *            Das zweite Element des Summanden
+	 * @return Summe
+	 */
+	public Vector add(float vx, float vy) {
+		return new Vector(this.x + vx, this.y + vy);
 	}
 
 	@Override
@@ -102,9 +115,6 @@ public class Vector implements Cloneable {
 	 *            Divisor
 	 * @return Quotient
 	 */
-	/*
-	 * FIXME: Abfangen, wenn abs() 0 sein sollte
-	 */
 	public Vector div(float scalar) {
 		return new Vector(this.x / scalar, this.y / scalar);
 	}
@@ -113,17 +123,25 @@ public class Vector implements Cloneable {
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Vector) {
 			Vector vec = (Vector) object;
-			return vec.x == this.x && vec.y == this.y;
+			return equals(vec.x, vec.y);
 		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * @return Ein Einheitsvektor, der die Richtung beschreibt.
+	 * @param vx
+	 *            Das erste Element des zweiten Vektors
+	 * @param vy
+	 *            Das zweite Element des zweiten Vektors
+	 * @return {@code true}, wenn beide Vektoren identisch sind.
 	 */
-	/*
-	 * FIXME: Abfangen, wenn abs() 0 sein sollte
+	public boolean equals(float vx, float vy) {
+		return this.x == vx && this.y == vy;
+	}
+
+	/**
+	 * @return Ein Einheitsvektor, der die Richtung beschreibt.
 	 */
 	public Vector getDirection() {
 		float abs = this.abs();
@@ -131,12 +149,28 @@ public class Vector implements Cloneable {
 	}
 
 	/**
+	 * @param other
+	 *            Der zweite Ortsvektor
 	 * @return Der Abstand zwischen den beiden Orten, die durch die Vektoren
 	 *         beschrieben werden.
 	 */
 	public float getDistance(Vector other) {
-		float deltaX = this.x - other.x;
-		float deltaY = this.y - other.y;
+		return getDistance(other.x, other.y);
+	}
+
+	/**
+	 * @see #getDistance(Vector)
+	 * 
+	 * @param ox
+	 *            Das erste Element des zweiten Ortsvektors
+	 * @param oy
+	 *            Das zweite Element des zweiten Ortsvektors
+	 * @return Der Abstand zwischen den beiden Orten, die durch die Vektoren
+	 *         beschrieben werden.
+	 */
+	public float getDistance(float ox, float oy) {
+		float deltaX = this.x - ox;
+		float deltaY = this.y - oy;
 		return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 	}
 
@@ -207,6 +241,19 @@ public class Vector implements Cloneable {
 	}
 
 	/**
+	 * @see #mul(Vector)
+	 * 
+	 * @param vx
+	 *            Das erste Element des zweiten Vektors
+	 * @param vy
+	 *            Das zweite Element des zweiten Vektors
+	 * @return Skalarprodukt
+	 */
+	public float mul(float vx, float vy) {
+		return this.x * vx + this.y * vy;
+	}
+
+	/**
 	 * Multipliziert zwei Vektoren wie Listen:
 	 * 
 	 * <pre>
@@ -218,7 +265,20 @@ public class Vector implements Cloneable {
 	 * @return Listenprodukt
 	 */
 	public Vector mulAsLists(Vector vector) {
-		return new Vector(this.x * vector.x, this.y * vector.y);
+		return mulAsLists(vector.x, vector.y);
+	}
+
+	/**
+	 * @see #mulAsLists(Vector)
+	 * 
+	 * @param vx
+	 *            Das erste Element des zweiten Vektors
+	 * @param vy
+	 *            Das zweite Element des zweiten Vektors
+	 * @return Listenprodukt
+	 */
+	public Vector mulAsLists(float vx, float vy) {
+		return new Vector(this.x * vx, this.y * vy);
 	}
 
 	/**
@@ -240,7 +300,20 @@ public class Vector implements Cloneable {
 	 * @return Differenz
 	 */
 	public Vector sub(Vector vec) {
-		return new Vector(this.x - vec.x, this.y - vec.y);
+		return sub(vec.x, vec.y);
+	}
+
+	/**
+	 * @see #sub(Vector)
+	 * 
+	 * @param vx
+	 *            Das erste Element des Subtrahenten
+	 * @param vy
+	 *            Das zweite Element des Subtrahenten
+	 * @return Differenz
+	 */
+	public Vector sub(float vx, float vy) {
+		return new Vector(this.x - vx, this.y - vy);
 	}
 
 	/**
@@ -252,13 +325,39 @@ public class Vector implements Cloneable {
 	 *            Der andere Vektor
 	 * @return true, wenn dieser Vektor mehr nach oben zeigt als der andere,
 	 *         sonst false
+	 * 
+	 * @deprecated Besser ist ab Revision 55
+	 *             <code>first.{@link #ang()} < secound.{@link #ang()}</code>,
+	 *             wobei {@code first} und {@code secound} die beiden Vektoren
+	 *             sind.
 	 */
+	@Deprecated
 	public boolean showMoreUpwards(Vector other) {
 		return this.getDirection().y < other.getDirection().y;
 	}
 
+	/**
+	 * @param other
+	 *            Ein weiterer Vektor
+	 * @return Der Innenwinkel zwischen den beiden Vektoren im Bogenmaß.
+	 */
+	public float ang(Vector other) {
+		return (float) Math.acos(mul(other) / abs() / other.abs());
+	}
+
+	/**
+	 * Der Innenwinkel im Bogenmaß zwischen dem Vektor und einem Vektor, der
+	 * nach oben zeigt.
+	 * 
+	 * @see #UP
+	 * @see #ang(Vector)
+	 */
+	public float ang() {
+		return ang(Vector.UP);
+	}
+
 	@Override
 	public String toString() {
-		return "(" + this.x + ", " + this.y + ")";
+		return "Vector(" + this.x + ", " + this.y + ")";
 	}
 }
