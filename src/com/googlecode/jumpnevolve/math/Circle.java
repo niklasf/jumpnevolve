@@ -156,7 +156,6 @@ public class Circle implements Shape {
 
 	@Override
 	public byte getTouchedSideOfThis(Shape other) {
-		// TODO rechtecke einfügen
 		if (other instanceof Circle) {
 			Vector direction = other.getCenter().sub(this.getCenter());
 			float absY = Math.abs(direction.y);
@@ -171,6 +170,23 @@ public class Circle implements Shape {
 					return Shape.OBEN;
 				}
 			}
+		} else if (other instanceof Rectangle) {
+			if (other.getLowEnd() > this.getCenter().y - this.radius * 0.7f) {
+				return Shape.OBEN;
+			} else if (other.getUpEnd() < this.getCenter().y + this.radius
+					* 0.7f) {
+				return Shape.UNTEN;
+			} else if (other.getLeftEnd() > this.getCenter().x + this.radius
+					* 0.7f) {
+				return Shape.RECHTS;
+			} else if (other.getRightEnd() < this.getCenter().x - this.radius
+					* 0.7f) {
+				return Shape.LINKS;
+			} else {
+				Rectangle x = new Rectangle(this.getCenter(),
+						this.radius * 0.35f, this.radius * 0.35f);
+				return x.getTouchedSideOfThis(other);
+			}
 		}
 		return 0;
 	}
@@ -178,5 +194,15 @@ public class Circle implements Shape {
 	@Override
 	public boolean isPointInThis(Vector p) {
 		return this.getCenter().getDistance(p) < this.radius;
+	}
+
+	@Override
+	public float getUpEnd() {
+		return this.getCenter().y - this.radius;
+	}
+
+	@Override
+	public float getLowEnd() {
+		return this.getCenter().y + this.radius;
 	}
 }

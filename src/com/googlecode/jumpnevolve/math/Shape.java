@@ -64,6 +64,10 @@ public interface Shape {
 	 */
 	public float getRightEnd();
 
+	public float getUpEnd();
+
+	public float getLowEnd();
+
 	/**
 	 * 
 	 * @param other
@@ -86,23 +90,29 @@ public interface Shape {
 
 	/*
 	 * Konstanten, die die Seiten bezeichnen
+	 * 
+	 * So beschrieben, dass der negierte Wert die gegenüberliegende Seite
+	 * bezeichnet
 	 */
-	public final static byte OBEN = 0;
-	public final static byte UNTEN = 1;
+	public final static byte OBEN = 1;
 	public final static byte RECHTS = 2;
-	public final static byte LINKS = 3;
+	public final static byte LINKS = -RECHTS;
+	public final static byte UNTEN = -OBEN;
 
 	/*
 	 * Konstanten, die die Ecken bezeichnen
+	 * 
+	 * So beschrieben, dass der negierte Wert die gegenüberliegende Ecke
+	 * bezeichnet
 	 */
-	public final static byte OBEN_RECHTS = 4;
-	public final static byte UNTEN_RECHTS = 5;
-	public final static byte OBEN_LINKS = 6;
-	public final static byte UNTEN_LINKS = 7;
+	public final static byte OBEN_RECHTS = 3;
+	public final static byte UNTEN_RECHTS = 4;
+	public final static byte OBEN_LINKS = -UNTEN_RECHTS;
+	public final static byte UNTEN_LINKS = -OBEN_RECHTS;
 
 	/*
 	 * Konstante, die bei einem Fehler ausgegeben wird (wenn die Berechnung
 	 * nicht greift)
 	 */
-	public final static byte KEIN_ERGEBNIS = -1;
+	public final static byte KEIN_ERGEBNIS = 0;
 }

@@ -230,7 +230,6 @@ public class Rectangle implements Shape {
 
 	@Override
 	public byte getTouchedSideOfThis(Shape other) {
-		// TODO kreise einfügen
 		if (other instanceof Rectangle) {
 			Vector directionToCorner;
 			switch (this.getTouchedCorner((Rectangle) other)) {
@@ -281,6 +280,8 @@ public class Rectangle implements Shape {
 			default:
 				break;
 			}
+		} else if (other instanceof Circle) {
+			return (byte) -other.getTouchedSideOfThis(this);
 		}
 		return Shape.KEIN_ERGEBNIS;
 	}
@@ -339,5 +340,15 @@ public class Rectangle implements Shape {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public float getUpEnd() {
+		return this.getHighLeftCorner().y;
+	}
+
+	@Override
+	public float getLowEnd() {
+		return this.getLowLeftCorner().y;
 	}
 }
