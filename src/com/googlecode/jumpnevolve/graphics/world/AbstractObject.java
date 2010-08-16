@@ -32,7 +32,7 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author niklas TODO: Java-Doc kontrollieren und vervollständigen
+ * @author Erik Wagner
  */
 public abstract class AbstractObject implements Pollable, Drawable {
 	/*
@@ -307,7 +307,8 @@ public abstract class AbstractObject implements Pollable, Drawable {
 					.getDimension());
 			break;
 		default:
-			// FIXME: Fehlermeldung ausgeben
+			// TODO: Fehlermeldung ausgeben
+			// Bzw. leicht umbauen
 		}
 	}
 
