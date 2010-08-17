@@ -46,6 +46,12 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * selbst //Änderung der Geschwindigkeit //Setzen der Geschwindigkeit (auch
 	 * das Setzen nur des x-/y-Anteils z.B. auf 0) //Addieren einer Kraft
 	 */
+	
+	// TODO: Zu viele Abhängigkeiten in die Richtung nach unten.
+	// Eventuell durch
+	//   crashed(AbstractObject object, Crash event)
+	// ersetzen, wobei der event Parameter vielleicht auch nicht benötigt wird.
+	
 	protected abstract void crashedByPlayer(Figure player);
 
 	protected abstract void crashedByObjekt(VorlageObjekte objekt);
@@ -62,6 +68,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * soll dazu benutzt werden, ob das Objekt berechnet werden muss oder nicht
 	 * (ob es als Hndernis fungieren könnte)
 	 */
+	
+	// TODO: Dafür waren Drawable und Pollable gedacht.
+	// AbstractObject sollte nach dem Entwurf immer simuliert werden können.
+	
 	public abstract boolean getState();
 
 	/*
@@ -89,12 +99,13 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * brauchen 2 Objekte nur einmal auf einen Crash zuprüfen; Der boolean-Wert
 	 * speichert den Zustand der Kollision (Ja oder Nein)
 	 */
+	
 	private HashMap<Integer, Boolean> alreadyDone;
 
 	/*
 	 * Die World-Instanz in der dieses Objekt gespeichert wurde
 	 */
-	public final World worldOfThis;
+	public final World world;
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
@@ -105,7 +116,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.dimension = dimension;
 		this.force = force;
 		this.id = Id++;
-		this.worldOfThis = worldOfThis;
+		this.world = worldOfThis;
 		this.setNewShape();
 	}
 
@@ -118,7 +129,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.dimension = dimension;
 		this.force = Vector.ZERO;
 		this.id = Id++;
-		this.worldOfThis = worldOfThis;
+		this.world = worldOfThis;
 		this.setNewShape();
 	}
 
@@ -327,7 +338,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.oldPosition = this.position;
 		this.position = newPosition;
 		this.setNewShape();
-		this.worldOfThis.changedPosition(this);
+		this.world.changedPosition(this);
 	}
 
 	/**
@@ -339,7 +350,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 *            kollidiert
 	 * @return Kollisionsstatus (Kollidieren die Objekte oder nicht)
 	 */
-	public final boolean doesCollide(AbstractObject other) {
+	protected final boolean doesCollide(AbstractObject other) {
 		if (this.alreadyDone(other)) {
 			/*
 			 * Gibt den Kollisionstatus dirket zurück, wenn die Objekte schon
@@ -387,7 +398,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	@Override
 	public void poll(Input input, float secounds) {
 		this.currentSecounds = secounds;
-		ArrayList<LinkedList<AbstractObject>> neighbours = this.worldOfThis
+		ArrayList<LinkedList<AbstractObject>> neighbours = this.world
 				.getNeighbours(this);
 		for (LinkedList<AbstractObject> neighboursSub: neighbours) {
 			for (AbstractObject neighbour : neighboursSub) {
