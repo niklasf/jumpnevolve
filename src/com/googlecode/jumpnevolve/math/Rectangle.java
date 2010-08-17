@@ -236,7 +236,7 @@ public class Rectangle implements Shape {
 			case Shape.OBEN_LINKS:
 				directionToCorner = ((Rectangle) other).getLowRightCorner()
 						.sub(this.getCenter());
-				if (directionToCorner.showMoreUpwards(this.getHighLeftCorner()
+				if (directionToCorner.isMoreUpwards(this.getHighLeftCorner()
 						.sub(this.getCenter()))) {
 					return Shape.OBEN;
 				} else {
@@ -245,7 +245,7 @@ public class Rectangle implements Shape {
 			case Shape.OBEN_RECHTS:
 				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
 						this.getCenter());
-				if (directionToCorner.showMoreUpwards(this.getHighRightCorner()
+				if (directionToCorner.isMoreUpwards(this.getHighRightCorner()
 						.sub(this.getCenter()))) {
 					return Shape.OBEN;
 				} else {
@@ -254,7 +254,7 @@ public class Rectangle implements Shape {
 			case Shape.UNTEN_LINKS:
 				directionToCorner = ((Rectangle) other).getHighRightCorner()
 						.sub(this.getCenter());
-				if (directionToCorner.showMoreUpwards(this.getLowLeftCorner()
+				if (directionToCorner.isMoreUpwards(this.getLowLeftCorner()
 						.sub(this.getCenter()))) {
 					return Shape.LINKS;
 				} else {
@@ -263,7 +263,7 @@ public class Rectangle implements Shape {
 			case Shape.UNTEN_RECHTS:
 				directionToCorner = ((Rectangle) other).getHighLeftCorner()
 						.sub(this.getCenter());
-				if (directionToCorner.showMoreUpwards(this.getLowRightCorner()
+				if (directionToCorner.isMoreUpwards(this.getLowRightCorner()
 						.sub(this.getCenter()))) {
 					return Shape.RECHTS;
 				} else {

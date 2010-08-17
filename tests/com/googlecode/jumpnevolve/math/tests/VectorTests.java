@@ -201,4 +201,16 @@ public class VectorTests {
 		assertThat(Vector.UP.ang(new Vector(1.0f, -1.0f)), is((float) Math.PI / 4.0f));
 		assertThat(new Vector(635.0f, 2.0f).ang(), is(greaterThan(new Vector(-1.0f, -1.0f).ang())));
 	}
+	
+	/**
+	 * Test method for
+	 * {@link com.googlecode.jumpnevolve.math.Vector#isMoreUpwards(com.googlecode.jumpnevolve.math.Vector)}
+	 * .
+	 */
+	@Test
+	public void testIsMoreUpwards() {
+		assertThat(Vector.UP.isMoreUpwards(Vector.DOWN), is(true));
+		assertThat(Vector.LEFT.isMoreUpwards(Vector.RIGHT), is(false));
+		assertThat(Vector.UP.mul(3).isMoreUpwards(Vector.UP), is(false));
+	}
 }

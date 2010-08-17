@@ -317,17 +317,16 @@ public class Vector implements Cloneable {
 	}
 
 	/**
-	 * Gibt an, welcher Vektor mehr nach oben zeigt Dass der
-	 * Koordinatensystemanfang Oben-Links wird beachtet: Der Vektor (0|-1) zeigt
-	 * nach OBEN, der Vektor (0|1) nach UNTEN
+	 * Gibt an, ob der Vektor <b>stärker</b> nach oben ({@link #UP}) zeigt, als
+	 * der andere. Dabei wird nur die Richtung, nicht der Betrag beachtet.
 	 * 
 	 * @param other
 	 *            Der andere Vektor
 	 * @return true, wenn dieser Vektor mehr nach oben zeigt als der andere,
 	 *         sonst false
 	 */
-	public boolean showMoreUpwards(Vector other) {
-		return this.ang() < other.ang();
+	public boolean isMoreUpwards(Vector other) {
+		return getDirection().y < other.getDirection().y;
 	}
 
 	/**
