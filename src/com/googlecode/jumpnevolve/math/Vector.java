@@ -325,15 +325,9 @@ public class Vector implements Cloneable {
 	 *            Der andere Vektor
 	 * @return true, wenn dieser Vektor mehr nach oben zeigt als der andere,
 	 *         sonst false
-	 * 
-	 * @deprecated Besser ist ab Revision 55
-	 *             <code>first.{@link #ang()} < secound.{@link #ang()}</code>,
-	 *             wobei {@code first} und {@code secound} die beiden Vektoren
-	 *             sind.
 	 */
-	@Deprecated
 	public boolean showMoreUpwards(Vector other) {
-		return this.getDirection().y < other.getDirection().y;
+		return this.ang() < other.ang();
 	}
 
 	/**
