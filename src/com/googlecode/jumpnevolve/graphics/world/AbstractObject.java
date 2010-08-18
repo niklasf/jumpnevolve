@@ -30,6 +30,17 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * <p>
+ * Ein abstraktes Objekt in einer physikalisch simulierten Welt mit Figur
+ * und Masse.
+ * </p>
+ * 
+ * <p>
+ * Callbacks können überschrieben werden, haben aber eine
+ * Standartimplementierung die in den meisten Fällen auch aufgerufen werden
+ * sollte.
+ * </p>
+ * 
  * @author Erik Wagner
  */
 public class AbstractObject implements Pollable, Drawable {
