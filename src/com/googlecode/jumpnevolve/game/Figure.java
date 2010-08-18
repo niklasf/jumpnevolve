@@ -31,7 +31,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public abstract class Figure extends AbstractObject {
 
-	public boolean alive;
+	private boolean alive;
 
 	/**
 	 * @param type
@@ -61,6 +61,10 @@ public abstract class Figure extends AbstractObject {
 	private void init() {
 		this.alive = true;
 		this.setVelocity(Vector.ZERO);
+	}
+
+	public void setAlive(boolean state) {
+		this.alive = state;
 	}
 
 	@Override
