@@ -22,8 +22,9 @@ import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
- * @author niklas
- *
+ * Adapter für {@link #ParticleEmitter}.
+ * 
+ * @author Niklas Fiekas
  */
 abstract class ParticleEmitterAdapter implements ParticleEmitter {
 

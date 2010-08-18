@@ -24,13 +24,18 @@ import org.newdawn.slick.particles.ParticleSystem;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 
 /**
- * @author niklas
- *
+ * Erzeugt einen Wasserfalleffekt.
+ * 
+ * @author Niklas Fiekas
  */
 public class WaterfallEmitterFactory implements ParticleEmitterFactory {
-	
+
 	private float verticalSize;
-	
+
+	/**
+	 * @param verticalSize
+	 *            Wie tief das Wasser fallen soll, bevor es sich auflöst.
+	 */
 	public WaterfallEmitterFactory(float verticalSize) {
 		this.verticalSize = verticalSize;
 	}
@@ -39,15 +44,15 @@ public class WaterfallEmitterFactory implements ParticleEmitterFactory {
 	public ParticleEmitter createParticleEmitter() {
 		return new ParticleEmitterAdapter() {
 			private static final int INTERVAL = 20;
-			
+
 			private int timer;
-			
+
 			@Override
 			public void update(ParticleSystem system, int delta) {
 				this.timer -= delta;
-				if(this.timer <= 0) {
+				if (this.timer <= 0) {
 					this.timer = INTERVAL;
-					
+
 					Particle p = system.getNewParticle(this, 5000);
 					p.setColor(0.0f, 0.72f, 0.92f, 0.7f);
 					p.setPosition((float) ((Math.random() - 0.5f) * 75.0f), 0);
@@ -57,10 +62,11 @@ public class WaterfallEmitterFactory implements ParticleEmitterFactory {
 			}
 
 			public void updateParticle(Particle particle, int delta) {
-				if(particle.getY() / AbstractState.ZOOM > WaterfallEmitterFactory.this.verticalSize) {
+				if (particle.getY() / AbstractState.ZOOM > WaterfallEmitterFactory.this.verticalSize) {
 					particle.kill();
 				}
-				particle.adjustVelocity(((float) Math.random() - 0.5f) * 0.003f, 0);
+				particle.adjustVelocity(
+						((float) Math.random() - 0.5f) * 0.003f, 0);
 			}
 		};
 	}

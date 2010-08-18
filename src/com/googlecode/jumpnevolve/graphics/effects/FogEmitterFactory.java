@@ -22,8 +22,9 @@ import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 /**
- * @author niklas
- *
+ * Erzeugt einen Nebeleffekt.
+ * 
+ * @author Niklas Fiekas
  */
 public class FogEmitterFactory implements ParticleEmitterFactory {
 	

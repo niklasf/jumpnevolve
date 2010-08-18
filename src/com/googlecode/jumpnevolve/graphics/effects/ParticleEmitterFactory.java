@@ -20,9 +20,14 @@ package com.googlecode.jumpnevolve.graphics.effects;
 import org.newdawn.slick.particles.ParticleEmitter;
 
 /**
- * @author niklas
- *
+ * Implementieren, um Partikeleffekte zur erzeugen.
+ * 
+ * @author Niklas Fiekas
  */
 public interface ParticleEmitterFactory {
+
+	/**
+	 * @return Der erzeugte Partikelemitter.
+	 */
 	public ParticleEmitter createParticleEmitter();
 }
