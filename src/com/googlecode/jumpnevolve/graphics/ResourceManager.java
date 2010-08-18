@@ -26,7 +26,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
 /**
- * Der ResourceManager lÃ¤d Ressourcen wie Bilder oder Sounds vom Dateisystem.
+ * Der ResourceManager läd Ressourcen wie Bilder oder Sounds vom Dateisystem.
  * Wenn mehrmals nach einer Ressource gefragt wird, kann sie jederzeit aus dem
  * Cache geholt werden.
  * 
@@ -91,7 +91,7 @@ public class ResourceManager {
 	}
 
 	/**
-	 * LÃ¤d die gewÃ¼nschte Bildressource vom Dateisystem oder aus dem Cache.
+	 * Läd die gewünschte Bildressource vom Dateisystem oder aus dem Cache.
 	 * 
 	 * @param id
 	 *            Pfad zur Bildressource.
@@ -130,7 +130,7 @@ public class ResourceManager {
 	}
 
 	/**
-	 * LÃ¤d eine Sounddatei vom Dateisystem oder aus dem Cache.
+	 * Läd eine Sounddatei vom Dateisystem oder aus dem Cache.
 	 * 
 	 * @param id
 	 *            Pfad zur Soundresource.

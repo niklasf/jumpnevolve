@@ -33,8 +33,11 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author niklas
- * 
+ * TODO: Klassenbeschreibung
+ * TODO: Dokumentation
+ * TODO: Hinzufügen und entfernen von Objekten prüfen
+ *  
+ * @author Erik Wagner und Niklas Fiekas
  */
 public class World extends AbstractState {
 
