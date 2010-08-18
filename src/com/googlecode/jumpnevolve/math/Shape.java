@@ -55,41 +55,55 @@ public interface Shape {
 	public Vector getCenter();
 
 	/**
-	 * @return Die x-Koordinate des linken Endes des Objekts
+	 * @return Die X-Koordinate des linken Endes des Objekts
 	 */
 	public float getLeftEnd();
 
 	/**
-	 * @return Die x-Koordinate des rechten Endes des Objekts
+	 * @return Die X-Koordinate des rechten Endes des Objekts
 	 */
 	public float getRightEnd();
 
-	public float getUpEnd();
+	/**
+	 * @return Die Y-Koordinate des oberen Endes des Objekts
+	 */
+	public float getUpperEnd();
 
-	public float getLowEnd();
+	/**
+	 * @return Die Y-Koordinate des unteren Endes des Objekts
+	 */
+	public float getLowerEnd();
 
 	/**
 	 * 
 	 * @param other
 	 *            Das andere geometricsche Objekt, das dieses Objekt trifft
-	 * @param velocity
-	 *            Die Geschwindigkeit mit der sich die Objekte auf einander
-	 *            zubewegt haben
-	 * @return Die Seite dieses Objekts, die berührt wird, in Form eines Bytes
-	 *         (vgl. Konstanten)
+	 * @return Die Seite dieses Objekts, die berührt wird als {@link Vector#UP},
+	 *         {@link Vector#DOWN}, {@link Vector#LEFT} oder
+	 *         {@link Vector#RIGHT}.
 	 */
 	public byte getTouchedSideOfThis(Shape other);
 
 	/**
 	 * 
 	 * @param p
-	 *            Der Punkt in Form eines Ortvektors
-	 * @return Befindet sich der Punkt in der Figur oder nicht
+	 *            Der Punkt in Form eines Ortvektors.
+	 * @return {@code true}, wenn der Punkt sich in der Figur befindet.
 	 */
 	public boolean isPointInThis(Vector p);
 
+	/**
+	 * @param center
+	 *            Der neue Ortsvektor des Mittelpunktes.
+	 * @return Eine neue Figur, die sich nur durch den Mittelpunkt von dieser
+	 *         unterscheidet. Die Figur selbst wird nicht verändert.
+	 */
+	public Shape modifyCenter(Vector center);
+	
+	
 	/*
 	 * Konstanten, die die Seiten bezeichnen
+	 * TODO: Enums oder Vektoren verwenden
 	 * 
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Seite
 	 * bezeichnet
@@ -101,6 +115,7 @@ public interface Shape {
 
 	/*
 	 * Konstanten, die die Ecken bezeichnen
+	 * TODO: Enums oder Vektoren verwenden
 	 * 
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Ecke
 	 * bezeichnet
@@ -113,6 +128,7 @@ public interface Shape {
 	/*
 	 * Konstante, die bei einem Fehler ausgegeben wird (wenn die Berechnung
 	 * nicht greift)
+	 * TODO: Enums, Vektoren oder Exceptions verwenden
 	 */
 	public final static byte KEIN_ERGEBNIS = 0;
 }

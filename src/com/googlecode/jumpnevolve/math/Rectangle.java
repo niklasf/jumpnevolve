@@ -343,12 +343,17 @@ public class Rectangle implements Shape {
 	}
 
 	@Override
-	public float getUpEnd() {
+	public float getUpperEnd() {
 		return this.getHighLeftCorner().y;
 	}
 
 	@Override
-	public float getLowEnd() {
+	public float getLowerEnd() {
 		return this.getLowLeftCorner().y;
+	}
+
+	@Override
+	public Shape modifyCenter(Vector center) {
+		return new Rectangle(center, this.width, this.height);
 	}
 }

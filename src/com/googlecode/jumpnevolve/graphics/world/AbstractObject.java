@@ -17,208 +17,198 @@
 
 package com.googlecode.jumpnevolve.graphics.world;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.*;
-import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.Drawable;
-import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
  */
-public abstract class AbstractObject implements Pollable, Drawable {
-	/*
-	 * Methoden die definieren, wie die Attribute des Objekts, das das aktuelle
-	 * Objekt gecrasht hat verändert werden z.B.: schneller, langsamer,
-	 * zusätzliche Kraft, Tod
-	 * 
-	 * Möglichkeiten, Attribute zu ändern:
-	 * 
-	 * //sich selbst aktivieren / deaktivieren //Tod des Gegners oder von sich
-	 * selbst //Änderung der Geschwindigkeit //Setzen der Geschwindigkeit (auch
-	 * das Setzen nur des x-/y-Anteils z.B. auf 0) //Addieren einer Kraft
-	 */
+public class AbstractObject implements Pollable, Drawable {
 
-	// TODO: Zu viele Abhängigkeiten in die Richtung nach unten.
-	// Eventuell durch
-	// crashed(AbstractObject object, Crash event)
-	// ersetzen, wobei der event Parameter vielleicht auch nicht benötigt wird.
-	protected abstract void crashedByPlayer(Figure player);
+	// Attribute
 
-	protected abstract void crashedByObjekt(VorlageObjekte objekt);
+	private Shape shape;
 
-	protected abstract void crashedByEnemy(VorlageGegner gegner);
+	private Shape oldShape;
 
-	protected abstract void crashedByGround(VorlageLandschaft ground);
+	private float mass = 0;
 
-	/*
-	 * Gibt den Status des Objekts zurück: Bei Gegnern und Figur den
-	 * Alive-Status, bei Objekten, ob aktiviert oder nicht, bei Landschaft immer
-	 * true
-	 * 
-	 * soll dazu benutzt werden, ob das Objekt berechnet werden muss oder nicht
-	 * (ob es als Hndernis fungieren könnte)
-	 */
+	private World world;
 
-	// TODO: Dafür waren Drawable und Pollable gedacht.
-	// AbstractObject sollte nach dem Entwurf immer simuliert werden können.
-	/**
-	 * @return Der Status des Objekts
-	 */
-	public abstract boolean getState();
+	
+	// Attribute pro Runde
 
-	/**
-	 * Methode, die die Standard-Werte für jede Runde (z.B. Schwerkraft) neu
-	 * setzt
-	 */
-	public abstract void setStandardsPerRound();
-
-	private Vector position;
-	private Vector oldPosition;
-	private Vector velocity;
 	private Vector force;
-	private Vector dimension;
-	private Shape thisShape;
-	private Shape thisOldShape;
-	public final byte type;
-	public static final byte TYPE_BALL = 0;
-	public static final byte TYPE_BOX = 1;
-	private static int Id = 0;
-	public final int id;
-	private float currentSecounds;
-	private float mass = 1;
-	private final boolean moveable;
 
-	/*
-	 * HashMap um abzuspeichern, welche Objekte schon behnadelt wurden, dadurch
-	 * brauchen 2 Objekte nur einmal auf einen Crash zuprüfen; Der boolean-Wert
-	 * speichert den Zustand der Kollision (Ja oder Nein)
+	private HashSet<AbstractObject> allreadyDone = new HashSet<AbstractObject>();
+
+	private float oldStep;
+
+
+	// Konstruktoren
+
+	/**
+	 * Erzeugt ein neues, bewegliches Objekt.
+	 * 
+	 * @param world
+	 *            Die Welt, zu der das Objekt gehört.
+	 * @param shape
+	 *            Die Form mit Angaben zur Position des Objekts.
+	 * @param mass
+	 *            Die Masse des Objekts.
 	 */
-	private HashMap<Integer, Boolean> alreadyDone;
-
-	/*
-	 * Die World-Instanz in der dieses Objekt gespeichert wurde
-	 */
-	public final World world;
-
-	protected AbstractObject(byte type, Vector position, Vector dimension,
-			Vector force, World worldOfThis, boolean moveable) {
-		this.type = type;
-		this.position = position;
-		this.oldPosition = position;
-		this.velocity = Vector.ZERO;
-		this.dimension = dimension;
-		this.force = force;
-		this.id = Id++;
-		this.world = worldOfThis;
-		this.setNewShape();
-		this.moveable = moveable;
-	}
-
-	protected AbstractObject(byte type, Vector position, Vector dimension,
-			World worldOfThis, boolean moveable) {
-		this(type, position, dimension, Vector.ZERO, worldOfThis, moveable);
+	public AbstractObject(World world, Shape shape, float mass) {
+		this(world, shape);
+		this.mass = mass;
 	}
 
 	/**
-	 * Gibt zurück, ob die Kollision der Objekte schon berechnet wurde
+	 * Erzeugt ein neues, nicht bewegliches Objekt.
 	 * 
+	 * @param world
+	 *            Die Welt, zu der das Objekt gehört.
+	 * @param shape
+	 *            Die Form mit Angaben zur Position des Objekts.
+	 */
+	public AbstractObject(World world, Shape shape) {
+		this.world = world;
+		this.shape = this.oldShape = shape;
+	}
+
+	
+	// Simulationsablauf
+
+	/**
+	 * Bereitet eine Simulationsrunde vor, indem die Werte der letzten Runde
+	 * aufgeräumt werden.
+	 */
+	public final void startRound() {
+		this.allreadyDone.clear();
+		this.addDone(this);
+		this.force = Vector.ZERO;
+	}
+
+	@Override
+	public void poll(Input input, float secounds) {
+		for (LinkedList<AbstractObject> neighboursSub : this.world
+				.getNeighbours(this)) {
+			for (AbstractObject other : neighboursSub) {
+				// Doppelte Tests vermeiden
+				addDone(other);
+				other.addDone(this);
+
+				// Kollisionen mit jedem nachbarn prüfen
+				if (this.shape.doesCollide(other.getShape())) {
+					onCrash(other);
+					other.onCrash(this);
+				}
+			}
+		}
+
+		this.oldStep = secounds;
+	}
+
+	/**
+	 * Schließt eine Simulationsrunde ab, indem die Kraft auf das Objekt
+	 * angewendet wird und es bewegt wird.
+	 */
+	public void endRound() {
+		if (this.mass != 0.0f) { // Beweglich
+			// Verlet-Algorithmus
+			Vector att = this.getForce().div(this.getMass()).mul(
+					this.oldStep * this.oldStep);
+			Vector newPos = this.shape.getCenter().mul(2.0f).sub(
+					this.oldShape.getCenter()).add(att);
+			
+			// FIXME: Wenn geblockte Seiten überschritten wurden wieder rückgängig machen.
+
+			// Neue Form bestimmen
+			Shape newShape = this.shape.modifyCenter(newPos);
+			this.oldShape = this.shape;
+			this.shape = newShape;
+
+			// Welt informieren
+			// TODO: Automatisch alle n Runden machen
+			this.world.changedPosition(this);
+		}
+	}
+
+	/**
 	 * @param other
-	 *            Das Objekt, bei dem geprüft werden soll, ob es mit diesem
-	 *            kollidiert
-	 * @return Ob es schon berechnet wurde
+	 *            Ein Objekt
+	 * @return {@code true}, wenn es in diesem Schritt schon behandelt wurde.
 	 */
 	public final boolean alreadyDone(AbstractObject other) {
-		return this.alreadyDone.containsKey(other.getID());
+		return this.allreadyDone.contains(other);
 	}
 
 	/**
-	 * Fügt den Kollisions-Status mit dem anderen Objekt der HashMap hinzu
-	 * 
 	 * @param other
-	 *            Das andere Objekt
-	 * @param state
-	 *            Der Kollisions-Status
+	 *            Objekt, das in diesem Schritt schon behandelt wurde.
 	 */
-	private void addDone(AbstractObject other, boolean state) {
-		this.alreadyDone.put(other.getID(), state);
+	private void addDone(AbstractObject other) {
+		this.allreadyDone.add(other);
 	}
+	
+
+	// Interaktionen
 
 	/**
-	 * Muss vor jeder Runde neu aufgerufen werden
+	 * Fügt eine Kraft hinzu, die auf das Objekt wirkt.
 	 * 
-	 * Nimmt Einstellungen vor, die vor einer neuen Berechnungsrunde erneuert
-	 * werden müssen
+	 * @param force
+	 *            Die Kraft
 	 */
-	public void newCalculationRound() {
-		this.alreadyDone.clear();
-		this.addDone(this, true);
-		this.setStandardsPerRound();
+	public void applyForce(Vector force) {
+		this.force = this.force.add(force);
 	}
+	
+
+	// Attribute holen und setzen
 
 	/**
-	 * @return ID des AbstractObjects
-	 */
-	public final int getID() {
-		return this.id;
-	}
-
-	/**
-	 * @return Die Masse des Objekts
+	 * @return Die Masse des Objekts.
 	 */
 	public final float getMass() {
 		return this.mass;
 	}
 
 	/**
-	 * @return Aktuelle Geschwindigkeit anhand der alten Position
+	 * @return Aktuelle Geschwindigkeit.
 	 */
 	public final Vector getVelocity() {
-		return this.velocity;
+		return this.shape.getCenter().sub(this.oldShape.getCenter()).div(
+				this.oldStep);
 	}
 
 	/**
-	 * @return Die Kraft die z.Z. auf das Objekt wirkt
+	 * @return Die Kraft die zur Zeit auf das Objekt wirkt.
 	 */
 	public final Vector getForce() {
 		return this.force;
 	}
 
 	/**
-	 * @return Der Typ der mathematischen Figur (vgl. Typ-Konstanten)
-	 */
-	public final byte getType() {
-		return this.type;
-	}
-
-	/**
-	 * @return "Dimension" des Objekts; bei einer BOX: Höhe und Breite; bei
-	 *         einem BALL: Radius (entspricht dem Betrag des Vektors)
-	 */
-	public final Vector getDimension() {
-		return this.dimension;
-	}
-
-	/**
 	 * @return Die x-Koordinate des linken Endes des Objekts
 	 */
 	public final float getHorizontalStart() {
-		return this.thisShape.getLeftEnd();
+		return this.shape.getLeftEnd();
 	}
 
 	/**
 	 * @return Die x-Koordinate des rechten Endes des Objekts
 	 */
 	public final float getHorizontalEnd() {
-		return this.thisShape.getRightEnd();
+		return this.shape.getRightEnd();
 	}
 
 	/**
@@ -226,7 +216,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 *         Berechnungsrunde
 	 */
 	public final float getOldHorizontalStart() {
-		return this.thisOldShape.getLeftEnd();
+		return this.oldShape.getLeftEnd();
 	}
 
 	/**
@@ -234,14 +224,14 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 *         Berechnungsrunde
 	 */
 	public final float getOldHorizontalEnd() {
-		return this.thisOldShape.getRightEnd();
+		return this.oldShape.getRightEnd();
 	}
 
 	/**
 	 * @return Die mathematische Figur, die das Objekt beschreibt
 	 */
 	public final Shape getShape() {
-		return this.thisShape;
+		return this.shape;
 	}
 
 	/**
@@ -249,167 +239,60 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 *         Berechnungsrunde) beschreibt
 	 */
 	public final Shape getOldShape() {
-		return this.thisOldShape;
+		return this.oldShape;
 	}
 
 	/**
-	 * Addiert eine Kraft zur Kraft, die aktuell auf das Objekt wirkt
-	 */
-	public void applyForce(Vector force) {
-		this.force = this.force.add(force);
-	}
-
-	/**
-	 * Führt Berechnungen / Einstellungen am Ende einer Berechnungsrunde aus
-	 */
-	public void finalizeStep(boolean undo) {
-		// TODO: blockierte Wege bedenken
-		if (this.isMoveable()) {
-			this.setNewPosition(this.currentSecounds);
-		}
-	}
-
-	/**
-	 * @return Die aktuelle Position des Objekts; ACHTUNG: Abhängig von der Form
-	 *         des Objekts; BOX: obere, rechte Ecke; BALL: Mittelpunkt
+	 * @return Die aktuelle Position (also der Mittelpunkt) des Objekts.
 	 */
 	public final Vector getPosition() {
-		return this.position;
+		return this.shape.getCenter();
 	}
 
 	/**
-	 * @return Die aktuelle Position des Objekts vor einer Berechnungsrunde;
-	 *         ACHTUNG: Abhängig von der Form des Objekts; BOX: obere, rechte
-	 *         Ecke; BALL: Mittelpunkt
+	 * @return Die Position des Objekts vor einer Berechnungsrunde.
 	 */
 	public final Vector getOldPosition() {
-		return this.oldPosition;
-	}
-
-	public boolean isStatic() {
-		return false;
-	}
-
-	public boolean isMoveable() {
-		return moveable;
-	}
-
-	public void blockWay(byte direction) {
-		// TODO: Array mit blockierten Wegen erstellen und hier füllen
+		return this.oldShape.getCenter();
 	}
 
 	/**
-	 * Setzt die aktuelle Geschwindigkeit auf eine geradlinige neue
-	 * Geschwindigkeit
+	 * @return {@code true}, wenn das Objekt beweglich ist.
+	 */
+	public boolean isMoveable() {
+		return this.mass != 0.0f;
+	}
+
+	/**
+	 * Setzt die aktuelle Geschwindigkeit auf eine gradlienige neue.
 	 * 
 	 * @param velocity
-	 *            neue Geschwindigkeit
+	 *            Die neue Geschwindigkeit
 	 */
 	public void setVelocity(Vector velocity) {
 		this.force = Vector.ZERO;
-		this.velocity = velocity;
+		this.oldShape = this.oldShape.modifyCenter(this.shape.getCenter().sub(
+				velocity.mul(this.oldStep)));
 	}
+	
 
-	/**
-	 * Berechnet und setzt die mathematische Figur des Objekts neu
-	 */
-	public final void setNewShape() {
-		this.thisOldShape = this.thisShape;
-		switch (this.type) {
-		case TYPE_BALL:
-			this.thisShape = new Circle(this.getPosition(), this.getDimension());
-			break;
-		case TYPE_BOX:
-			this.thisShape = new Rectangle(this.getPosition(), this
-					.getDimension());
-			break;
-		default:
-			// TODO: Fehlermeldung ausgeben
-			// Bzw. leicht umbauen
-		}
-	}
-
-	/**
-	 * Berechnet die neue Position des Objekts und setzt diese als aktuelle
-	 * Position
-	 * 
-	 * @param seconds
-	 *            Seit der letzten Berechnung vergangene Zeit
-	 */
-	private void setNewPosition(float secounds) {
-		Vector acceleration = ((this.getForce()).div(this.getMass()))
-				.mul(secounds * secounds);
-		Vector velocity = this.velocity.mul(secounds);
-		Vector newPosition = this.position.add(velocity).add(acceleration);
-		this.oldPosition = this.position;
-		this.position = newPosition;
-		this.setNewShape();
-		this.world.changedPosition(this);
-	}
-
-	/**
-	 * Prüft, ob die beiden Objekte kollidieren. Sollte dies der Fall sein,
-	 * werden die entsprechenden Crash-Methoden aufgerufen
-	 * 
-	 * @param other
-	 *            Das Objekt, bei dem geprüft werden soll, ob es mit diesem
-	 *            kollidiert
-	 * @return Kollisionsstatus (Kollidieren die Objekte oder nicht)
-	 */
-	protected final boolean doesCollide(AbstractObject other) {
-		if (this.alreadyDone(other)) {
-			/*
-			 * Gibt den Kollisionstatus dirket zurück, wenn die Objekte schon
-			 * berechnet wurden
-			 */
-			return this.alreadyDone.get(other.getID());
-		}
-		Shape thisShape = this.getShape();
-		Shape otherShape = other.getShape();
-		if (thisShape.doesCollide(otherShape)) {
-			/* Gegenseitiger Aufruf der Crash-Methoden */
-			this.crashedByObject(other);
-			other.crashedByObject(this);
-			this.addDone(other, true);
-			other.addDone(this, true);
-			return true;
-		} else {
-			this.addDone(other, false);
-			other.addDone(this, false);
-			return false;
-		}
-	}
-
-	/**
-	 * Ruft je nach Objekt-Typ die entsprechende Crash-Methode auf
-	 * 
-	 * Wird bei einem Crash aufgerufen
-	 * 
-	 * @param other
-	 *            Das andere Objekt
-	 */
-	private void crashedByObject(AbstractObject other) {
-		if (other instanceof VorlageGegner) {
-			this.crashedByEnemy((VorlageGegner) other);
-		} else if (other instanceof VorlageObjekte) {
-			this.crashedByObjekt((VorlageObjekte) other);
-		} else if (other instanceof VorlageLandschaft) {
-			this.crashedByGround((VorlageLandschaft) other);
-		} else if (other instanceof Figure) {
-			this.crashedByPlayer((Figure) other);
-		} else {
-		}
-	}
+	// Standartimplementierung für das Zeichnen
 
 	@Override
-	public void poll(Input input, float secounds) {
-		this.currentSecounds = secounds;
-		ArrayList<LinkedList<AbstractObject>> neighbours = this.world
-				.getNeighbours(this);
-		for (LinkedList<AbstractObject> neighboursSub : neighbours) {
-			for (AbstractObject neighbour : neighboursSub) {
-				this.doesCollide(neighbour);
-			}
-		}
+	public void draw(Graphics g) {
+		GraphicUtils.draw(g, this.shape);
+	}
+	
+
+	// Callbacks
+
+	/**
+	 * Wird aufgerufen wenn eine Kollision vorliegt.
+	 * 
+	 * @param other
+	 *            Der Kollisionspartner
+	 */
+	public void onCrash(AbstractObject other) {
+		// FIXME: Seite blocken
 	}
 }

@@ -70,13 +70,13 @@ public class World extends AbstractState {
 	@Override
 	public void poll(Input input, float secounds) {
 		for (AbstractObject object : this.objects) {
-			object.newCalculationRound();
+			object.startRound();
 		}
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
 		}
 		for (AbstractObject object : this.objects) {
-			object.finalizeStep(false);
+			object.endRound();
 		}
 	}
 
@@ -167,6 +167,7 @@ public class World extends AbstractState {
 
 	@Override
 	public void draw(Graphics g) {
+		// TODO: Zoom und Kameraeinstellungen prüfen
 		g.scale(ZOOM, ZOOM);
 
 		// Kameraeinstellung anwenden
@@ -178,7 +179,7 @@ public class World extends AbstractState {
 		}
 
 		// Andere Objekte zeichnen
-		for (Drawable drawable : this.drawables) {
+		for(Drawable drawable : this.drawables) {
 			drawable.draw(g);
 		}
 	}

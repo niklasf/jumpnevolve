@@ -171,9 +171,9 @@ public class Circle implements Shape {
 				}
 			}
 		} else if (other instanceof Rectangle) {
-			if (other.getLowEnd() > this.getCenter().y - this.radius * 0.7f) {
+			if (other.getLowerEnd() > this.getCenter().y - this.radius * 0.7f) {
 				return Shape.OBEN;
-			} else if (other.getUpEnd() < this.getCenter().y + this.radius
+			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
 					* 0.7f) {
 				return Shape.UNTEN;
 			} else if (other.getLeftEnd() > this.getCenter().x + this.radius
@@ -197,12 +197,17 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public float getUpEnd() {
+	public float getUpperEnd() {
 		return this.getCenter().y - this.radius;
 	}
 
 	@Override
-	public float getLowEnd() {
+	public float getLowerEnd() {
 		return this.getCenter().y + this.radius;
+	}
+
+	@Override
+	public Shape modifyCenter(Vector center) {
+		return new Circle(center, this.radius);
 	}
 }

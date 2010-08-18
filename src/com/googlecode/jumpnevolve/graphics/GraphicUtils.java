@@ -21,6 +21,7 @@ import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -53,6 +54,22 @@ public class GraphicUtils {
 	 */
 	public static void draw(Graphics g, Rectangle rect) {
 		g.drawRect(rect.x, rect.y, rect.width, rect.height);
+	}
+
+	/**
+	 * Zeichnet eine Figur.
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Figur
+	 */
+	public static void draw(Graphics g, Shape shape) {
+		if (shape instanceof Circle) {
+			draw(g, (Circle) shape);
+		} else if (shape instanceof Rectangle) {
+			draw(g, (Rectangle) shape);
+		}
 	}
 
 	/**
