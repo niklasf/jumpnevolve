@@ -23,6 +23,10 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.Figure;
+import com.googlecode.jumpnevolve.game.VorlageGegner;
+import com.googlecode.jumpnevolve.game.VorlageLandschaft;
+import com.googlecode.jumpnevolve.game.VorlageObjekte;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -305,5 +309,30 @@ public class AbstractObject implements Pollable, Drawable {
 	 */
 	public void onCrash(AbstractObject other) {
 		// FIXME: Seite blocken
+		
+		// Spezielle Methoden aufrufen
+		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
+		if(other instanceof Figure) {
+			onPlayerCrash((Figure) other);
+		} else if(other instanceof VorlageObjekte) {
+			onObjectCrash((VorlageObjekte) other);
+		} else if(other instanceof VorlageGegner) {
+			onEnemyCrash((VorlageGegner) other);
+		} else if(other instanceof VorlageLandschaft) {
+			onGroundCrash((VorlageLandschaft) other);
+		} else {
+			onMiscCrash(other);
+		}
 	}
+	
+	public void onPlayerCrash(Figure other) { }
+	
+	public void onObjectCrash(VorlageObjekte other) { }
+	
+	public void onEnemyCrash(VorlageGegner other) { }
+	
+	public void onGroundCrash(VorlageLandschaft other) { }
+	
+	public void onMiscCrash(AbstractObject other) {	}
+	
 }
