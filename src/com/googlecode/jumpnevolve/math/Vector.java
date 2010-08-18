@@ -316,6 +316,10 @@ public class Vector implements Cloneable {
 		return new Vector(this.x - vx, this.y - vy);
 	}
 
+	public Vector neg() {
+		return Vector.ZERO.sub(this);
+	}
+
 	/**
 	 * Gibt an, ob der Vektor <b>stärker</b> nach oben ({@link #UP}) zeigt, als
 	 * der andere. Dabei wird nur die Richtung, nicht der Betrag beachtet.
