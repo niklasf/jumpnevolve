@@ -20,7 +20,7 @@ public class NormalGround extends VorlageLandschaft {
 	protected void crashedByEnemy(VorlageGegner gegner) {
 		gegner
 				.blockWay(gegner.getShape().getTouchedSideOfThis(
-						this.getShape()));
+						this.getShape()));// Weg blockieren
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class NormalGround extends VorlageLandschaft {
 	protected void crashedByObjekt(VorlageObjekte objekt) {
 		if (objekt.isMoveable()) {
 			objekt.blockWay(objekt.getShape().getTouchedSideOfThis(
-					this.getShape()));
+					this.getShape()));// Weg blockieren
 		}
 		// Sonst nichts tun
 	}
@@ -42,7 +42,7 @@ public class NormalGround extends VorlageLandschaft {
 	protected void crashedByPlayer(Figure player) {
 		player
 				.blockWay(player.getShape().getTouchedSideOfThis(
-						this.getShape()));
+						this.getShape()));// Weg blockieren
 
 	}
 
