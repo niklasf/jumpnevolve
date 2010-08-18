@@ -58,6 +58,8 @@ public class AbstractObject implements Pollable, Drawable {
 	private float mass = 0;
 
 	private World world;
+	
+	private Vector velocity = Vector.ZERO;
 
 	
 	// Attribute pro Runde
@@ -138,14 +140,16 @@ public class AbstractObject implements Pollable, Drawable {
 	 */
 	public void endRound() {
 		if (this.mass != 0.0f) { // Beweglich
-			// Verlet-Algorithmus
-			Vector att = this.getForce().div(this.getMass()).mul(
-					this.oldStep * this.oldStep);
-			Vector newPos = this.shape.getCenter().mul(2.0f).sub(
-					this.oldShape.getCenter()).add(att);
+			// Bewegungsgleichung lösen:
+			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
+			// konstant ist.
+			Vector acceleration = this.force.div(this.mass);
+			Vector deltaVelocity = acceleration.mul(this.oldStep * this.oldStep * 0.5f);
+			this.velocity = this.velocity.add(deltaVelocity);
+			Vector newPos = this.shape.getCenter().add(this.velocity.mul(this.oldStep));
 			
-			// FIXME: Wenn geblockte Seiten überschritten wurden wieder rückgängig machen.
-
+			// FIXME: Bewegung in geblockte Richtungen verhindern
+			
 			// Neue Form bestimmen
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
@@ -201,8 +205,7 @@ public class AbstractObject implements Pollable, Drawable {
 	 * @return Aktuelle Geschwindigkeit.
 	 */
 	public final Vector getVelocity() {
-		return this.shape.getCenter().sub(this.oldShape.getCenter()).div(
-				this.oldStep);
+		return this.velocity;
 	}
 
 	/**
@@ -286,8 +289,7 @@ public class AbstractObject implements Pollable, Drawable {
 	 */
 	public void setVelocity(Vector velocity) {
 		this.force = Vector.ZERO;
-		this.oldShape = this.oldShape.modifyCenter(this.shape.getCenter().sub(
-				velocity.mul(this.oldStep)));
+		this.velocity = velocity;
 	}
 	
 
