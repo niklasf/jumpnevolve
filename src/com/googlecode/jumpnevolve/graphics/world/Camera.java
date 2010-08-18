@@ -20,9 +20,15 @@ package com.googlecode.jumpnevolve.graphics.world;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author niklas
- *
+ * Wird implementiert um Kameraeinstellungen zu erstellen.
+ * 
+ * @author Niklas Fiekas
  */
 public interface Camera {
+
+	/**
+	 * @return Gibt den Ortsvektor des Mittelpunkts des gewünschten Blickfeldes
+	 *         zurück.
+	 */
 	public Vector getPosition();
 }
