@@ -46,12 +46,11 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * selbst //Änderung der Geschwindigkeit //Setzen der Geschwindigkeit (auch
 	 * das Setzen nur des x-/y-Anteils z.B. auf 0) //Addieren einer Kraft
 	 */
-	
+
 	// TODO: Zu viele Abhängigkeiten in die Richtung nach unten.
 	// Eventuell durch
-	//   crashed(AbstractObject object, Crash event)
+	// crashed(AbstractObject object, Crash event)
 	// ersetzen, wobei der event Parameter vielleicht auch nicht benötigt wird.
-	
 	protected abstract void crashedByPlayer(Figure player);
 
 	protected abstract void crashedByObjekt(VorlageObjekte objekt);
@@ -68,14 +67,17 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * soll dazu benutzt werden, ob das Objekt berechnet werden muss oder nicht
 	 * (ob es als Hndernis fungieren könnte)
 	 */
-	
+
 	// TODO: Dafür waren Drawable und Pollable gedacht.
 	// AbstractObject sollte nach dem Entwurf immer simuliert werden können.
-	
+	/**
+	 * @return Der Status des Objekts
+	 */
 	public abstract boolean getState();
 
-	/*
-	 * Setzt die Standard-Werte für jede Runde (z.B. Schwerkraft)
+	/**
+	 * Methode, die die Standard-Werte für jede Runde (z.B. Schwerkraft) neu
+	 * setzt
 	 */
 	public abstract void setStandardsPerRound();
 
@@ -93,13 +95,13 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	public final int id;
 	private float currentSecounds;
 	private float mass = 1;
+	private final boolean moveable;
 
 	/*
 	 * HashMap um abzuspeichern, welche Objekte schon behnadelt wurden, dadurch
 	 * brauchen 2 Objekte nur einmal auf einen Crash zuprüfen; Der boolean-Wert
 	 * speichert den Zustand der Kollision (Ja oder Nein)
 	 */
-	
 	private HashMap<Integer, Boolean> alreadyDone;
 
 	/*
@@ -108,7 +110,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	public final World world;
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
-			Vector force, World worldOfThis) {
+			Vector force, World worldOfThis, boolean moveable) {
 		this.type = type;
 		this.position = position;
 		this.oldPosition = position;
@@ -118,19 +120,12 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.id = Id++;
 		this.world = worldOfThis;
 		this.setNewShape();
+		this.moveable = moveable;
 	}
 
 	protected AbstractObject(byte type, Vector position, Vector dimension,
-			World worldOfThis) {
-		this.type = type;
-		this.position = position;
-		this.oldPosition = position;
-		this.velocity = Vector.ZERO;
-		this.dimension = dimension;
-		this.force = Vector.ZERO;
-		this.id = Id++;
-		this.world = worldOfThis;
-		this.setNewShape();
+			World worldOfThis, boolean moveable) {
+		this(type, position, dimension, Vector.ZERO, worldOfThis, moveable);
 	}
 
 	/**
@@ -268,7 +263,10 @@ public abstract class AbstractObject implements Pollable, Drawable {
 	 * Führt Berechnungen / Einstellungen am Ende einer Berechnungsrunde aus
 	 */
 	public void finalizeStep(boolean undo) {
-		this.setNewPosition(this.currentSecounds);
+		// TODO: blockierte Wege bedenken
+		if (this.isMoveable()) {
+			this.setNewPosition(this.currentSecounds);
+		}
 	}
 
 	/**
@@ -290,6 +288,14 @@ public abstract class AbstractObject implements Pollable, Drawable {
 
 	public boolean isStatic() {
 		return false;
+	}
+
+	public boolean isMoveable() {
+		return moveable;
+	}
+
+	public void blockWay(byte direction) {
+		// TODO: Array mit blockierten Wegen erstellen und hier füllen
 	}
 
 	/**
@@ -400,7 +406,7 @@ public abstract class AbstractObject implements Pollable, Drawable {
 		this.currentSecounds = secounds;
 		ArrayList<LinkedList<AbstractObject>> neighbours = this.world
 				.getNeighbours(this);
-		for (LinkedList<AbstractObject> neighboursSub: neighbours) {
+		for (LinkedList<AbstractObject> neighboursSub : neighbours) {
 			for (AbstractObject neighbour : neighboursSub) {
 				this.doesCollide(neighbour);
 			}

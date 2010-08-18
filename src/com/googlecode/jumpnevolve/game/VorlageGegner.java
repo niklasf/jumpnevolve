@@ -22,6 +22,8 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.*;
 
 /**
+ * Vorlage für sich bewegende Gegner
+ * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
  *         TODO: Ableiten und Beispiel erschaffen
@@ -40,7 +42,7 @@ public abstract class VorlageGegner extends AbstractObject {
 	 */
 	protected VorlageGegner(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
-		super(type, position, dimension, force, worldOfThis);
+		super(type, position, dimension, force, worldOfThis, true);
 		this.init();
 	}
 
@@ -52,7 +54,7 @@ public abstract class VorlageGegner extends AbstractObject {
 	 */
 	protected VorlageGegner(byte type, Vector position, Vector dimension,
 			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
+		super(type, position, dimension, worldOfThis, true);
 		this.init();
 	}
 

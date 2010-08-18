@@ -22,6 +22,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Vorlage für die Spielfiguren, die vom Spieler gesteuert werden
  * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
@@ -40,7 +41,7 @@ public abstract class Figure extends AbstractObject {
 	 */
 	protected Figure(byte type, Vector position, Vector dimension,
 			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
+		super(type, position, dimension, worldOfThis, true);
 		this.init();
 	}
 
@@ -53,7 +54,7 @@ public abstract class Figure extends AbstractObject {
 	 */
 	protected Figure(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
-		super(type, position, dimension, force, worldOfThis);
+		super(type, position, dimension, force, worldOfThis, true);
 		this.init();
 	}
 

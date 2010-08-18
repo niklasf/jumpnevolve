@@ -22,6 +22,9 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Vorlage für alle Objekte, die etwas anderes sind als sich bewegende Gegner,
+ * Spielfiguren oder unbewegte Landschaft
+ * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
  *         TODO: Ableiten und Beispiel erschaffen
@@ -38,8 +41,8 @@ public abstract class VorlageObjekte extends AbstractObject {
 	 * @param worldOfThis
 	 */
 	protected VorlageObjekte(byte type, Vector position, Vector dimension,
-			Vector force, World worldOfThis) {
-		super(type, position, dimension, force, worldOfThis);
+			Vector force, World worldOfThis, boolean moveable) {
+		super(type, position, dimension, force, worldOfThis, moveable);
 		this.init();
 	}
 
@@ -50,8 +53,8 @@ public abstract class VorlageObjekte extends AbstractObject {
 	 * @param worldOfThis
 	 */
 	protected VorlageObjekte(byte type, Vector position, Vector dimension,
-			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
+			World worldOfThis, boolean moveable) {
+		super(type, position, dimension, worldOfThis, moveable);
 		this.init();
 	}
 

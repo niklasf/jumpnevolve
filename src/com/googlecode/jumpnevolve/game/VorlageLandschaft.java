@@ -22,6 +22,8 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Vorlage für Landschaftsobjekte, die sich nicht bewegen
+ * 
  * @author Erik Wagner TODO: init-Methode vervollständigen
  * 
  *         TODO: Ableiten und Beispiel erschaffen
@@ -38,7 +40,7 @@ public abstract class VorlageLandschaft extends AbstractObject {
 	 */
 	protected VorlageLandschaft(byte type, Vector position, Vector dimension,
 			Vector force, World worldOfThis) {
-		super(type, position, dimension, force, worldOfThis);
+		super(type, position, dimension, force, worldOfThis, false);
 		this.init();
 	}
 
@@ -50,7 +52,7 @@ public abstract class VorlageLandschaft extends AbstractObject {
 	 */
 	protected VorlageLandschaft(byte type, Vector position, Vector dimension,
 			World worldOfThis) {
-		super(type, position, dimension, worldOfThis);
+		super(type, position, dimension, worldOfThis, false);
 		this.init();
 	}
 
