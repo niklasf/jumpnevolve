@@ -264,7 +264,7 @@ public class AbstractObject implements Pollable, Drawable {
 	 * @param force
 	 *            Die Kraft
 	 */
-	public void applyForce(Vector force) {
+	public final void applyForce(Vector force) {
 		this.force = this.force.add(force);
 	}
 
@@ -295,6 +295,16 @@ public class AbstractObject implements Pollable, Drawable {
 	 */
 	protected void blockWay(AbstractObject blocker) {
 
+	}
+
+	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
+	/**
+	 * Überträgt Energie in Form eines Geschwindigkeitsvektors auf das Objekt
+	 * 
+	 * @param energy
+	 *            Die übertragene Energie
+	 */
+	protected void giveEnergy(Vector energy) {
 	}
 
 	// Attribute holen und setzen
@@ -390,28 +400,28 @@ public class AbstractObject implements Pollable, Drawable {
 	/**
 	 * @return {@code true}, wenn das Objekt beweglich ist.
 	 */
-	public boolean isMoveable() {
+	public final boolean isMoveable() {
 		return this.mass != 0.0f;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt blockbar ist.
 	 */
-	public boolean isBlockable() {
+	public final boolean isBlockable() {
 		return this.blockable;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt schiebbar ist.
 	 */
-	public boolean isPushable() {
+	public final boolean isPushable() {
 		return this.pushable;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt lebendig ist.
 	 */
-	public boolean isLiving() {
+	public final boolean isLiving() {
 		return this.living;
 	}
 
@@ -419,7 +429,7 @@ public class AbstractObject implements Pollable, Drawable {
 	 * @return {@code true}, wenn das Objekt aktivierbar ist. Achtung: Nicht
 	 *         unbedingt alle Objekte können das Objekt aktivieren
 	 */
-	public boolean isActivable() {
+	public final boolean isActivable() {
 		return this.activable;
 	}
 
@@ -432,16 +442,6 @@ public class AbstractObject implements Pollable, Drawable {
 	public void setVelocity(Vector velocity) {
 		this.force = Vector.ZERO;
 		this.velocity = velocity;
-	}
-
-	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
-	/**
-	 * Überträgt Energie in Form eines Geschwindigkeitsvektors auf das Objekt
-	 * 
-	 * @param energy
-	 *            Die übertragene Energie
-	 */
-	protected void giveEnergy(Vector energy) {
 	}
 
 	// Standartimplementierung für das Zeichnen
