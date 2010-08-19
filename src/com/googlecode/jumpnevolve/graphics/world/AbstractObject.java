@@ -35,8 +35,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * <p>
- * Ein abstraktes Objekt in einer physikalisch simulierten Welt mit Figur
- * und Masse.
+ * Ein abstraktes Objekt in einer physikalisch simulierten Welt mit Figur und
+ * Masse.
  * </p>
  * 
  * <p>
@@ -58,10 +58,19 @@ public class AbstractObject implements Pollable, Drawable {
 	private float mass = 0;
 
 	private World world;
-	
+
 	private Vector velocity = Vector.ZERO;
 
-	
+	private boolean blockable;
+
+	private boolean pushable;
+
+	private boolean living;
+
+	private boolean activable;
+
+	private AbstractObject activatingObject;
+
 	// Attribute pro Runde
 
 	private Vector force;
@@ -69,7 +78,6 @@ public class AbstractObject implements Pollable, Drawable {
 	private HashSet<AbstractObject> allreadyDone = new HashSet<AbstractObject>();
 
 	private float oldStep;
-
 
 	// Konstruktoren
 
@@ -82,10 +90,27 @@ public class AbstractObject implements Pollable, Drawable {
 	 *            Die Form mit Angaben zur Position des Objekts.
 	 * @param mass
 	 *            Die Masse des Objekts.
+	 * @param blockable
+	 *            Ob das Objekt in seiner Bewegung blockierbar ist
+	 * @param moveable
+	 *            Ob das Objekt durch andere Objekte bewegt werden kann
+	 * @param living
+	 *            Ob das Objekt lebt
+	 * @param activable
+	 *            Ob das Objekt ein anderes bestimmtes Objekt bewegen kann, für
+	 *            diesen Fall muss
+	 *            {@link #setActivatingObject(AbstractObject object)} aufgerufen
+	 *            werden
 	 */
-	public AbstractObject(World world, Shape shape, float mass) {
+	public AbstractObject(World world, Shape shape, float mass,
+			boolean blockable, boolean moveable, boolean living,
+			boolean activable) {
 		this(world, shape);
 		this.mass = mass;
+		this.blockable = blockable;
+		this.pushable = moveable;
+		this.living = living;
+		this.activable = activable;
 	}
 
 	/**
@@ -101,7 +126,6 @@ public class AbstractObject implements Pollable, Drawable {
 		this.shape = this.oldShape = shape;
 	}
 
-	
 	// Simulationsablauf
 
 	/**
@@ -137,19 +161,73 @@ public class AbstractObject implements Pollable, Drawable {
 	/**
 	 * Schließt eine Simulationsrunde ab, indem die Kraft auf das Objekt
 	 * angewendet wird und es bewegt wird.
+	 * 
+	 * Dabei wird darauf geachtet, nicht in geblockt Seiten zu laufen.
 	 */
 	public void endRound() {
 		if (this.mass != 0.0f) { // Beweglich
 			// Bewegungsgleichung lösen:
 			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
 			// konstant ist.
+
+			// FIXME: Bewegung in geblockte Richtungen verhindern, indem die
+			// Kraft und Geschwindigkeit in diese Richtungen blockiert werden (x
+			// bzw. y bei Blockung in entsprechender Richtung auf 0 setzen)
+
+			// FIXME: Richtige Variante der Positionsberechnung auswählen!!!!
+
+			// Alte Möglichkeit (Sehr wahrscheinlich falsch, weil die
+			// Beschleunigung insgesamt mit der Zeit zum Kubik multipliziert
+			// wird
 			Vector acceleration = this.force.div(this.mass);
-			Vector deltaVelocity = acceleration.mul(this.oldStep * this.oldStep * 0.5f);
+			Vector deltaVelocity = acceleration.mul(this.oldStep * this.oldStep
+					* 0.5f);
 			this.velocity = this.velocity.add(deltaVelocity);
-			Vector newPos = this.shape.getCenter().add(this.velocity.mul(this.oldStep));
-			
-			// FIXME: Bewegung in geblockte Richtungen verhindern
-			
+			Vector newPos = this.shape.getCenter().add(
+					this.velocity.mul(this.oldStep));
+
+			/*
+			 * Neue Möglichkeit 1:
+			 * 
+			 * Wahrscheinlich auch falsch, da die Beschleunigung nicht mit 0.5
+			 * multipliziert wird. Der Ansatz ist folgender: Man ändert die
+			 * Geschwindigkeit gemäß v = a * t + v0 und vergisst die
+			 * Beschleunigung bei der Berechnung der Position...
+			 * 
+			 * 
+			 * Vector acceleration = this.force.div(this.mass);
+			 * 
+			 * Vector deltaVelocity = acceleration.mul(this.oldStep);
+			 * 
+			 * this.velocity = this.velocity.add(deltaVelocity);
+			 * 
+			 * Vector newPos = this.shape.getCenter().add(
+			 * this.velocity.mul(this.oldStep));
+			 */
+
+			/*
+			 * Neue Möglichkeit 2:
+			 * 
+			 * Ich glaube, zwar umständlich aber richtig. Die Formel s = 1/2 * a
+			 * * t^2 + v0*t + s0 wird direkt so ausgeführt. Die Geschwindigkeit
+			 * wird erst am Ende neu gesetzt.
+			 * 
+			 * Anmerkung: Das Vorgezogene Multiplizieren der Beschleunigung mit
+			 * der Zeit wird gemacht, um sich diesen Schritt einmal zu ersparen
+			 * (er wird bei v = a * t + v0 am Ende ausgeführt und in der Formel
+			 * s = 1/2 * a * t^2 + v0*t + s0 ist er auch enthalten
+			 * 
+			 * Vector acceleration = this.force.div(this.mass);
+			 * 
+			 * Vector deltaVelocity = acceleration.mul(this.oldStep);
+			 * 
+			 * Vector newPos = this.shape.getCenter().add(
+			 * this.velocity.mul(this.oldStep)).add(
+			 * deltaVelocity.mul(this.oldStep * 0.5f));
+			 * 
+			 * this.velocity = this.velocity.add(deltaVelocity);
+			 */
+
 			// Neue Form bestimmen
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
@@ -177,7 +255,6 @@ public class AbstractObject implements Pollable, Drawable {
 	private void addDone(AbstractObject other) {
 		this.allreadyDone.add(other);
 	}
-	
 
 	// Interaktionen
 
@@ -190,9 +267,45 @@ public class AbstractObject implements Pollable, Drawable {
 	public void applyForce(Vector force) {
 		this.force = this.force.add(force);
 	}
-	
+
+	/**
+	 * Aktiviert das Objekt
+	 * 
+	 * @param activator
+	 *            Das Objekt, durch welches dieses aktiviert wurde
+	 */
+	protected void activate(AbstractObject activator) {
+	}
+
+	/**
+	 * Tötet dieses Objekt
+	 * 
+	 * @param killer
+	 *            Das Objekt, das dieses tötet
+	 */
+	protected void kill(AbstractObject killer) {
+	}
+
+	/**
+	 * Setzt die Richtung zum "Blocker" als blockiert Wird in
+	 * {@link #endRound()} beim Setzen der neuen Position ausgewertet
+	 * 
+	 * @param blocker
+	 *            Das blockende Objekt
+	 */
+	protected void blockWay(AbstractObject blocker) {
+
+	}
 
 	// Attribute holen und setzen
+
+	/**
+	 * @param object
+	 *            Das Objekt das durch dieses Objekt aktiviert wird
+	 */
+	public final void setActivatingObject(AbstractObject object) {
+		this.activatingObject = object;
+	}
 
 	/**
 	 * @return Die Masse des Objekts.
@@ -282,6 +395,35 @@ public class AbstractObject implements Pollable, Drawable {
 	}
 
 	/**
+	 * @return {@code true}, wenn das Objekt blockbar ist.
+	 */
+	public boolean isBlockable() {
+		return this.blockable;
+	}
+
+	/**
+	 * @return {@code true}, wenn das Objekt schiebbar ist.
+	 */
+	public boolean isPushable() {
+		return this.pushable;
+	}
+
+	/**
+	 * @return {@code true}, wenn das Objekt lebendig ist.
+	 */
+	public boolean isLiving() {
+		return this.living;
+	}
+
+	/**
+	 * @return {@code true}, wenn das Objekt aktivierbar ist. Achtung: Nicht
+	 *         unbedingt alle Objekte können das Objekt aktivieren
+	 */
+	public boolean isActivable() {
+		return this.activable;
+	}
+
+	/**
 	 * Setzt die aktuelle Geschwindigkeit auf eine gradlienige neue.
 	 * 
 	 * @param velocity
@@ -291,7 +433,16 @@ public class AbstractObject implements Pollable, Drawable {
 		this.force = Vector.ZERO;
 		this.velocity = velocity;
 	}
-	
+
+	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
+	/**
+	 * Überträgt Energie in Form eines Geschwindigkeitsvektors auf das Objekt
+	 * 
+	 * @param energy
+	 *            Die übertragene Energie
+	 */
+	protected void giveEnergy(Vector energy) {
+	}
 
 	// Standartimplementierung für das Zeichnen
 
@@ -299,7 +450,6 @@ public class AbstractObject implements Pollable, Drawable {
 	public void draw(Graphics g) {
 		GraphicUtils.draw(g, this.shape);
 	}
-	
 
 	// Callbacks
 
@@ -311,30 +461,43 @@ public class AbstractObject implements Pollable, Drawable {
 	 */
 	public void onCrash(AbstractObject other) {
 		// FIXME: Seite blocken
-		
+
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
-		if(other instanceof Figure) {
-			onPlayerCrash((Figure) other);
-		} else if(other instanceof VorlageObjekte) {
-			onObjectCrash((VorlageObjekte) other);
-		} else if(other instanceof VorlageGegner) {
-			onEnemyCrash((VorlageGegner) other);
-		} else if(other instanceof VorlageLandschaft) {
-			onGroundCrash((VorlageLandschaft) other);
-		} else {
-			onMiscCrash(other);
+		if (this.blockable) {
+			onBlockableCrash(other);
 		}
+		if (this.pushable) {
+			onPushableCrash(other);
+		}
+		if (this.living) {
+			onLivingCrash(other);
+		}
+		if (this.activable) {
+			onActivableCrash(other);
+		}
+		onGeneralCrash(other);
 	}
-	
-	public void onPlayerCrash(Figure other) { }
-	
-	public void onObjectCrash(VorlageObjekte other) { }
-	
-	public void onEnemyCrash(VorlageGegner other) { }
-	
-	public void onGroundCrash(VorlageLandschaft other) { }
-	
-	public void onMiscCrash(AbstractObject other) {	}
-	
+
+	public void onBlockableCrash(AbstractObject other) {
+		other.blockWay(this);
+	}
+
+	public void onPushableCrash(AbstractObject other) {
+		other.giveEnergy(this.getVelocity().getDirection().mul(
+				this.getVelocity().abs() * this.getVelocity().abs()
+						* (0.5f * this.getMass())));
+	}
+
+	public void onLivingCrash(AbstractObject other) {
+		other.kill(this);
+	}
+
+	public void onActivableCrash(AbstractObject other) {
+		other.activate(this);
+	}
+
+	public void onGeneralCrash(AbstractObject other) {
+	}
+
 }
