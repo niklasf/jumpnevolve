@@ -23,10 +23,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.Figure;
-import com.googlecode.jumpnevolve.game.VorlageGegner;
-import com.googlecode.jumpnevolve.game.VorlageLandschaft;
-import com.googlecode.jumpnevolve.game.VorlageObjekte;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -103,12 +99,12 @@ public class AbstractObject implements Pollable, Drawable {
 	 *            werden
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
-			boolean blockable, boolean moveable, boolean living,
+			boolean blockable, boolean pushable, boolean living,
 			boolean activable) {
 		this(world, shape);
 		this.mass = mass;
 		this.blockable = blockable;
-		this.pushable = moveable;
+		this.pushable = pushable;
 		this.living = living;
 		this.activable = activable;
 	}
