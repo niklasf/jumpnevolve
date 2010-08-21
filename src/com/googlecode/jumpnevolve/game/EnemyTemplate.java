@@ -13,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class EnemyFactory extends AbstractObject {
+public abstract class EnemyTemplate extends AbstractObject {
 
-	public EnemyFactory(World world, Shape shape, float mass, boolean blockable) {
+	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
 		super(world, shape, mass, blockable, false, true, false);
 		// TODO Auto-generated constructor stub
 	}

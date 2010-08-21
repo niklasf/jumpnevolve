@@ -13,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class GroundFactory extends AbstractObject {
+public abstract class GroundTemplate extends AbstractObject {
 
-	public GroundFactory(World world, Shape shape) {
+	public GroundTemplate(World world, Shape shape) {
 		super(world, shape);
 		// TODO Auto-generated constructor stub
 	}

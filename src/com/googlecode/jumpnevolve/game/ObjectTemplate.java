@@ -13,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class ObjectFactory extends AbstractObject {
+public abstract class ObjectTemplate extends AbstractObject {
 
-	public ObjectFactory(World world, Shape shape, float mass,
+	public ObjectTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean activable) {
 		super(world, shape, 0.0f, blockable, pushable, false, activable);
 	}

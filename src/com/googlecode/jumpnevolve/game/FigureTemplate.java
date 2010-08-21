@@ -13,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class FigureFactory extends AbstractObject {
+public abstract class FigureTemplate extends AbstractObject {
 
-	public FigureFactory(World world, Shape shape, float mass,
+	public FigureTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean living) {
 		super(world, shape, mass, blockable, false, living, false);
 	}
