@@ -28,6 +28,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class ObjectFocusingCamera implements Camera {
 
+	private static final long serialVersionUID = 1698285102541595661L;
+	
 	protected AbstractObject object;
 
 	/**

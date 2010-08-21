@@ -22,6 +22,8 @@ package com.googlecode.jumpnevolve.math;
  */
 public class Rectangle implements Shape {
 
+	private static final long serialVersionUID = -4556824470497571683L;
+
 	/**
 	 * Die X-Koordinate der oberen linken Ecke
 	 */

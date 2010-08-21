@@ -17,6 +17,7 @@
 
 package com.googlecode.jumpnevolve.graphics.world;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -43,9 +44,11 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner
  */
-public class AbstractObject implements Pollable, Drawable {
+public class AbstractObject implements Pollable, Drawable, Serializable {
 
-	// Attribute
+	private static final long serialVersionUID = -3990787994625166974L;
+	
+	// Attribute	
 
 	private Shape shape;
 
@@ -88,7 +91,7 @@ public class AbstractObject implements Pollable, Drawable {
 	 *            Die Masse des Objekts.
 	 * @param blockable
 	 *            Ob das Objekt in seiner Bewegung blockierbar ist
-	 * @param moveable
+	 * @param pushable
 	 *            Ob das Objekt durch andere Objekte bewegt werden kann
 	 * @param living
 	 *            Ob das Objekt lebt

@@ -17,12 +17,16 @@
 
 package com.googlecode.jumpnevolve.math;
 
+import java.io.Serializable;
+
 /**
  * Klasse für Vektoren mit einfacher Gleitkommagenauigkeit.
  * 
  * @author Erik Wagner
  */
-public class Vector implements Cloneable {
+public class Vector implements Cloneable, Serializable {
+
+	private static final long serialVersionUID = -8523089593491945245L;
 
 	/**
 	 * Der Vector (0, 1) zeigt nach unten

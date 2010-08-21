@@ -22,6 +22,8 @@ package com.googlecode.jumpnevolve.math;
  */
 public class Circle implements Shape {
 
+	private static final long serialVersionUID = -4820100555916995691L;
+
 	/**
 	 * Der Ortsvektor des Mittelpunkts
 	 */

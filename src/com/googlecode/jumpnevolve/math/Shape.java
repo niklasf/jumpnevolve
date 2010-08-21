@@ -17,12 +17,14 @@
 
 package com.googlecode.jumpnevolve.math;
 
+import java.io.Serializable;
+
 /**
  * Allgemeine Klasse für eine geometrische Figur.
  * 
  * @author Niklas Fiekas
  */
-public interface Shape {
+public interface Shape extends Serializable {
 	/**
 	 * <p>
 	 * Prüft, ob sich die geometrische Figuren überlappen. Eine Berührung ist

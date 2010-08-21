@@ -17,6 +17,8 @@
 
 package com.googlecode.jumpnevolve.graphics.world;
 
+import java.io.Serializable;
+
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -24,7 +26,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Niklas Fiekas
  */
-public interface Camera {
+public interface Camera extends Serializable {
 
 	/**
 	 * @return Gibt den Ortsvektor des Mittelpunkts des gewünschten Blickfeldes

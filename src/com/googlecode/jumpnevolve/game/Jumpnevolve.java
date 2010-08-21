@@ -34,7 +34,7 @@ public class Jumpnevolve {
 	public static void main(String[] args) {
 		Engine engine = Engine.getInstance();
 		
-		// TODO: Testwelt, Hauptmenü o.ä erzeugen
+		// FIXME: Testwelt, Hauptmenü o.ä erzeugen
 		World world = null;
 		
 		engine.switchState(world);
