@@ -8,7 +8,7 @@ import com.googlecode.jumpnevolve.math.Shape;
  * Die Vorlage für alle Objekte jeder Art.
  * 
  * Objekte zeichnen sich dadurch aus, dass sie sich nicht selbst bewegen und tot
- * sind. Sie können geschoben werden und sind blockbar und auch aktivierbar.
+ * sind. Sie können schiebbar, blockbar und auch aktivierbar sein.
  * 
  * @author Erik Wagner
  * 

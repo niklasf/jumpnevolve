@@ -15,9 +15,18 @@ import com.googlecode.jumpnevolve.math.Shape;
  */
 public abstract class EnemyTemplate extends AbstractObject {
 
+	private boolean alive = true;
+
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
 		super(world, shape, mass, blockable, false, true, false);
 		// TODO Auto-generated constructor stub
 	}
 
+	protected void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
 }

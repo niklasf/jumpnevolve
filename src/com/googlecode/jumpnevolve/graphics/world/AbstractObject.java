@@ -44,11 +44,12 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner
  */
-public class AbstractObject implements Pollable, Drawable, Serializable {
+public abstract class AbstractObject implements Pollable, Drawable,
+		Serializable {
 
 	private static final long serialVersionUID = -3990787994625166974L;
-	
-	// Attribute	
+
+	// Attribute
 
 	private Shape shape;
 
@@ -78,6 +79,17 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 
 	private float oldStep;
 
+	/**
+	 * Array für die blockierten Wege; true entspricht geblockt; Richtungen im
+	 * Uhrzeigersinn, beginnend mit OBEN
+	 */
+
+	private boolean[] blockedWays = new boolean[4];
+
+	// Methode für die spezifischen Einstellungen pro Runde
+
+	protected abstract void specialSettingsPerRound();
+
 	// Konstruktoren
 
 	/**
@@ -92,12 +104,12 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 * @param blockable
 	 *            Ob das Objekt in seiner Bewegung blockierbar ist
 	 * @param pushable
-	 *            Ob das Objekt durch andere Objekte bewegt werden kann
+	 *            Ob das Objekt durch andere Objekte geschoben werden kann
 	 * @param living
 	 *            Ob das Objekt lebt
 	 * @param activable
-	 *            Ob das Objekt ein anderes bestimmtes Objekt bewegen kann, für
-	 *            diesen Fall muss
+	 *            Ob das Objekt ein anderes bestimmtes Objekt aktivieren kann,
+	 *            für diesen Fall muss
 	 *            {@link #setActivatingObject(AbstractObject object)} aufgerufen
 	 *            werden
 	 */
@@ -130,11 +142,15 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	/**
 	 * Bereitet eine Simulationsrunde vor, indem die Werte der letzten Runde
 	 * aufgeräumt werden.
+	 * 
+	 * Auch werden Objekt spezifische Einstellungen vorgenommen.
 	 */
 	public final void startRound() {
 		this.allreadyDone.clear();
 		this.addDone(this);
 		this.force = Vector.ZERO;
+		this.specialSettingsPerRound();
+		this.blockedWays = new boolean[4];
 	}
 
 	@Override
@@ -273,7 +289,7 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 * @param activator
 	 *            Das Objekt, durch welches dieses aktiviert wurde
 	 */
-	protected void activate(AbstractObject activator) {
+	public void activate(AbstractObject activator) {
 	}
 
 	/**
@@ -282,7 +298,7 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 * @param killer
 	 *            Das Objekt, das dieses tötet
 	 */
-	protected void kill(AbstractObject killer) {
+	public void kill(AbstractObject killer) {
 	}
 
 	/**
@@ -292,7 +308,7 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 * @param blocker
 	 *            Das blockende Objekt
 	 */
-	protected void blockWay(AbstractObject blocker) {
+	public void blockWay(AbstractObject blocker) {
 
 	}
 
@@ -303,7 +319,7 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 * @param energy
 	 *            Die übertragene Energie
 	 */
-	protected void giveEnergy(Vector energy) {
+	public void giveEnergy(Vector energy) {
 	}
 
 	// Attribute holen und setzen
@@ -397,6 +413,13 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	}
 
 	/**
+	 * @return Die Welt, in der dieses Objekt exsistiert
+	 */
+	public final World getWorld() {
+		return this.world;
+	}
+
+	/**
 	 * @return {@code true}, wenn das Objekt beweglich ist.
 	 */
 	public final boolean isMoveable() {
@@ -433,6 +456,28 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	}
 
 	/**
+	 * @param direction
+	 *            Richtung, welche abgefragt wird; bezieht sich auf die
+	 *            Richtungs-Konstanten von {@link Shape}
+	 * @return {@code true}, wenn der Weg in Richtung von Direction blockiert
+	 *         ist
+	 */
+	public final boolean isWayBlocked(byte direction) {
+		switch (direction) {
+		case Shape.OBEN:
+			return this.blockedWays[0];
+		case Shape.RECHTS:
+			return this.blockedWays[1];
+		case Shape.UNTEN:
+			return this.blockedWays[2];
+		case Shape.LINKS:
+			return this.blockedWays[3];
+		default:
+			return false;
+		}
+	}
+
+	/**
 	 * Setzt die aktuelle Geschwindigkeit auf eine gradlienige neue.
 	 * 
 	 * @param velocity
@@ -459,8 +504,6 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	 *            Der Kollisionspartner
 	 */
 	public void onCrash(AbstractObject other) {
-		// FIXME: Seite blocken
-
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
 		if (this.blockable) {
@@ -479,7 +522,9 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	}
 
 	public void onBlockableCrash(AbstractObject other) {
-		other.blockWay(this);
+		if (this.blockable) {
+			other.blockWay(this);
+		}
 	}
 
 	public void onPushableCrash(AbstractObject other) {
@@ -489,7 +534,6 @@ public class AbstractObject implements Pollable, Drawable, Serializable {
 	}
 
 	public void onLivingCrash(AbstractObject other) {
-		other.kill(this);
 	}
 
 	public void onActivableCrash(AbstractObject other) {

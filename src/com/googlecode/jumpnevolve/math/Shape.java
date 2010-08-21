@@ -101,36 +101,56 @@ public interface Shape extends Serializable {
 	 *         unterscheidet. Die Figur selbst wird nicht verändert.
 	 */
 	public Shape modifyCenter(Vector center);
-	
-	
+
 	/*
-	 * Konstanten, die die Seiten bezeichnen
-	 * TODO: Enums oder Vektoren verwenden
+	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
 	 * 
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Seite
 	 * bezeichnet
 	 */
+	/**
+	 * Konstante, die die obere Seite des Objekts bezeichnet
+	 */
 	public final static byte OBEN = 1;
+	/**
+	 * Konstante, die die rechte Seite des Objekts bezeichnet
+	 */
 	public final static byte RECHTS = 2;
+	/**
+	 * Konstante, die die links Seite des Objekts bezeichnet
+	 */
 	public final static byte LINKS = -RECHTS;
+	/**
+	 * Konstante, die die untere Seite des Objekts bezeichnet
+	 */
 	public final static byte UNTEN = -OBEN;
 
 	/*
-	 * Konstanten, die die Ecken bezeichnen
-	 * TODO: Enums oder Vektoren verwenden
+	 * Konstanten, die die Ecken bezeichnen TODO: Enums oder Vektoren verwenden
 	 * 
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Ecke
 	 * bezeichnet
 	 */
+	/**
+	 * Konstante, die die obere, rechte Ecke des Objekts bezeichnet
+	 */
 	public final static byte OBEN_RECHTS = 3;
+	/**
+	 * Konstante, die die untere, rechte Ecke des Objekts bezeichnet
+	 */
 	public final static byte UNTEN_RECHTS = 4;
+	/**
+	 * Konstante, die die obere, linke Ecke des Objekts bezeichnet
+	 */
 	public final static byte OBEN_LINKS = -UNTEN_RECHTS;
+	/**
+	 * Konstante, die die untere, linke Ecke des Objekts bezeichnet
+	 */
 	public final static byte UNTEN_LINKS = -OBEN_RECHTS;
 
 	/*
 	 * Konstante, die bei einem Fehler ausgegeben wird (wenn die Berechnung
-	 * nicht greift)
-	 * TODO: Enums, Vektoren oder Exceptions verwenden
+	 * nicht greift) TODO: Enums, Vektoren oder Exceptions verwenden
 	 */
 	public final static byte KEIN_ERGEBNIS = 0;
 }

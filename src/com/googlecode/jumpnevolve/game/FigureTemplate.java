@@ -7,8 +7,8 @@ import com.googlecode.jumpnevolve.math.Shape;
 /**
  * Die Vorlage für alle vom Spieler gesteuerten Figuren.
  * 
- * Figuren zeichnen sich dadurch aus, dass sie sich bewegen, blockbar und lebend
- * sind. Sie können nich geschoben oder aktiviert werden.
+ * Figuren zeichnen sich dadurch aus, dass sie sich bewegen und lebend sind. Sie
+ * können blockbar sein. Sie können nich geschoben oder aktiviert werden.
  * 
  * @author Erik Wagner
  * 
