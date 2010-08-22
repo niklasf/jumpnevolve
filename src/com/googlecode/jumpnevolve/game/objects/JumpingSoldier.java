@@ -32,16 +32,14 @@ public class JumpingSoldier extends EnemyTemplate {
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
 		}
 		if (this.isWayBlocked(Shape.UNTEN)) {
-			this.applyForce(Vector.UP.mul(this.getMass() * 39.24f));
-			// Sprung nach oben (5-fache Schwerkraft - Schwerkraft =
-			// 4-fache-Schwerkraft)
-		} else {
-			this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
+			this.setVelocity(Vector.UP.mul(39.24f)); // Sprung nach oben
 		}
+		this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
 	}
 
 	public void onLivingCrash(AbstractObject other) {
-		// JunpingSoldier kann nur den Spieler töten
+		// JunpingSoldier kann nur den Spieler töten, wenn dieser nicht oberhalb
+		// von ihm ist
 		if (other instanceof FigureTemplate) {
 			if (this.getShape().getTouchedSideOfThis(other.getShape()) != Shape.OBEN) {
 				other.kill(this);

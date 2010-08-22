@@ -8,7 +8,8 @@ import com.googlecode.jumpnevolve.math.Shape;
  * Die Vorlage für alle vom Spieler gesteuerten Figuren.
  * 
  * Figuren zeichnen sich dadurch aus, dass sie sich bewegen und lebend sind. Sie
- * können blockbar sein. Sie können nich geschoben oder aktiviert werden.
+ * können blockbar und in der Lage sein, zu töten. Sie können nich geschoben
+ * oder aktiviert werden.
  * 
  * @author Erik Wagner
  * 
@@ -16,7 +17,7 @@ import com.googlecode.jumpnevolve.math.Shape;
 public abstract class FigureTemplate extends AbstractObject {
 
 	public FigureTemplate(World world, Shape shape, float mass,
-			boolean blockable, boolean living) {
-		super(world, shape, mass, blockable, false, living, false);
+			boolean blockable, boolean living, boolean killable) {
+		super(world, shape, mass, blockable, false, living, false, killable);
 	}
 }

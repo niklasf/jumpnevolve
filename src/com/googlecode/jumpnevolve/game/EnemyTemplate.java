@@ -7,26 +7,26 @@ import com.googlecode.jumpnevolve.math.Shape;
 /**
  * Die Vorlage für jede Art von Gegnern.
  * 
- * Ein Gegner zeichnet sich dadurch aus, dass er lebt und nicht geschoben oder
- * aktiviert werden kann. Er kann blockbar sein, muss es aber nicht.
+ * Ein Gegner zeichnet sich dadurch aus, dass er lebt und töten kann. Er kann
+ * nicht geschoben oder aktiviert werden. Er kann blockbar sein, muss es aber
+ * nicht.
+ * 
+ * Gegner töten normalerweise alle lebenden Objekte auf die sie stoßen bis auf
+ * andere Gegner.
  * 
  * @author Erik Wagner
  * 
  */
 public abstract class EnemyTemplate extends AbstractObject {
 
-	private boolean alive = true;
-
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
-		super(world, shape, mass, blockable, false, true, false);
+		super(world, shape, mass, blockable, false, true, false, true);
 		// TODO Auto-generated constructor stub
 	}
 
-	protected void setAlive(boolean alive) {
-		this.alive = alive;
-	}
-
-	public boolean isAlive() {
-		return alive;
+	public void onLivingCrash(AbstractObject other) {
+		if (other instanceof EnemyTemplate == false) {
+			other.kill(this); // Anderes Objekt töten
+		}
 	}
 }

@@ -71,6 +71,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private AbstractObject activatingObject;
 
+	private boolean alive;
+
+	private boolean killable;
+
 	// Attribute pro Runde
 
 	private Vector force;
@@ -115,13 +119,17 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean living,
-			boolean activable) {
+			boolean activable, boolean killable) {
 		this(world, shape);
 		this.mass = mass;
 		this.blockable = blockable;
 		this.pushable = pushable;
 		this.living = living;
 		this.activable = activable;
+		this.killable = killable;
+		if (this.living) {
+			this.alive = true;
+		}
 	}
 
 	/**
@@ -293,12 +301,18 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
-	 * Tötet dieses Objekt
+	 * Tötet dieses Objekt, wenn der killer töten kann.
+	 * 
+	 * In diese Methode gehören Immunitäten des Objekts gegenüber bestimmten
+	 * Killern.
 	 * 
 	 * @param killer
 	 *            Das Objekt, das dieses tötet
 	 */
 	public void kill(AbstractObject killer) {
+		if (killer.isKillable()) {
+			this.setAlive(false);
+		}
 	}
 
 	/**
@@ -309,7 +323,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
-
 	}
 
 	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
@@ -456,6 +469,13 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
+	 * @return {@code true}, wenn das Objekt töten kann.
+	 */
+	public final boolean isKillable() {
+		return this.killable;
+	}
+
+	/**
 	 * @param direction
 	 *            Richtung, welche abgefragt wird; bezieht sich auf die
 	 *            Richtungs-Konstanten von {@link Shape}
@@ -475,6 +495,14 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		default:
 			return false;
 		}
+	}
+
+	protected final void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
+	public final boolean isAlive() {
+		return alive;
 	}
 
 	/**
@@ -521,21 +549,61 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		onGeneralCrash(other);
 	}
 
+	/**
+	 * Wird aufgerufen, wenn das Objekt auf ein blockbares Objekt trifft.
+	 * 
+	 * Grundsätzlich wird das andere Objekt (other) geblockt, wenn auch dieses
+	 * Objekt (this) blockbar ist.
+	 * 
+	 * @param other
+	 *            Das andere (blockbare) Objekt
+	 */
 	public void onBlockableCrash(AbstractObject other) {
 		if (this.blockable) {
 			other.blockWay(this);
 		}
 	}
 
+	/**
+	 * Wird aufgerufen, wenn dieses Objekt auf ein schiebbares Objekt trifft
+	 * 
+	 * Dem anderen Objekt wird die Energie dieses Objekts übertragen.
+	 * 
+	 * @param other
+	 *            Das andere (schiebbare) Objekt
+	 */
 	public void onPushableCrash(AbstractObject other) {
 		other.giveEnergy(this.getVelocity().getDirection().mul(
 				this.getVelocity().abs() * this.getVelocity().abs()
 						* (0.5f * this.getMass())));
 	}
 
+	/**
+	 * Wird aufgerufen, wenn das Objekt auf ein lebendes Objekt trifft.
+	 * 
+	 * Das andere Objekt wird getötet, wenn dieses Objekt tötungsfähig ist
+	 * (Immunitäten beachten).
+	 * 
+	 * Hierein gehören Eigenschaft des Objekts, die bewirken, dass ein
+	 * tötungsfähiges Objekt (this) ein anderes Objekt tötet (other).
+	 * 
+	 * @param other
+	 *            Das andere (lebende) Objekt
+	 */
 	public void onLivingCrash(AbstractObject other) {
+		if (this.isKillable()) {
+			other.kill(this);
+		}
 	}
 
+	/**
+	 * Wird aufgerufen wenn dieses Objekt auf ein aktivierbares Objekt trifft.
+	 * 
+	 * Das andere Objekt wird aktiviert.
+	 * 
+	 * @param other
+	 *            Das andere (aktivierbare) Objekt
+	 */
 	public void onActivableCrash(AbstractObject other) {
 		other.activate(this);
 	}
