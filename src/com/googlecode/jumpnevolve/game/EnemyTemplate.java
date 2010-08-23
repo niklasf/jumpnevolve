@@ -25,8 +25,9 @@ public abstract class EnemyTemplate extends AbstractObject {
 	}
 
 	public void onLivingCrash(AbstractObject other) {
+		// Anderes Objekt töten, wenn es kein Enemay ist
 		if (other instanceof EnemyTemplate == false) {
-			other.kill(this); // Anderes Objekt töten
+			other.kill(this);
 		}
 	}
 }
