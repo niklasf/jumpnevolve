@@ -502,7 +502,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	public final boolean isAlive() {
-		return alive;
+		return this.alive;
 	}
 
 	/**
