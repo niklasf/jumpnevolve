@@ -19,7 +19,7 @@ public class Ground extends GroundTemplate {
 	}
 
 	@Override
-	protected void specialSettingsPerRound() {
+	protected void specialSettingsPerRound(Input input) {
 		// Nichts tun
 	}
 

@@ -20,8 +20,8 @@ public class WalkingSoldier extends Soldier {
 	}
 
 	@Override
-	protected void specialSettingsPerRound() {
-		super.specialSettingsPerRound();
+	protected void specialSettingsPerRound(Input input) {
+		super.specialSettingsPerRound(input);
 		// TODO: Geschwindigkeiten anpassen
 		if (this.isWayBlocked(Shape.RECHTS)) {
 			this.setVelocity(Vector.LEFT.mul(10.0f));

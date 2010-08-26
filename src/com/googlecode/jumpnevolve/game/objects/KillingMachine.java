@@ -29,7 +29,7 @@ public class KillingMachine extends EnemyTemplate {
 	}
 
 	@Override
-	protected void specialSettingsPerRound() {
+	protected void specialSettingsPerRound(Input input) {
 		if (this.isAlive() == false) {
 			this.getWorld().removeFromAllLists(this);
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde

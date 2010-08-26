@@ -33,10 +33,9 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * TODO: Klassenbeschreibung
- * TODO: Dokumentation
- * TODO: Hinzufügen und entfernen von Objekten prüfen
- *  
+ * TODO: Klassenbeschreibung TODO: Dokumentation TODO: Hinzufügen und entfernen
+ * von Objekten prüfen
+ * 
  * @author Erik Wagner und Niklas Fiekas
  */
 public class World extends AbstractState {
@@ -63,7 +62,8 @@ public class World extends AbstractState {
 		this.height = height;
 		this.horizontalSubareas = (int) Math.ceil((float) width
 				/ (float) subareaWidth);
-		this.objectList = new ArrayList<LinkedList<AbstractObject>>(this.horizontalSubareas);
+		this.objectList = new ArrayList<LinkedList<AbstractObject>>(
+				this.horizontalSubareas);
 		for (int i = 0; i < this.horizontalSubareas; i++) {
 			this.objectList.add(new LinkedList<AbstractObject>());
 		}
@@ -73,7 +73,7 @@ public class World extends AbstractState {
 	@Override
 	public void poll(Input input, float secounds) {
 		for (AbstractObject object : this.objects) {
-			object.startRound();
+			object.startRound(input);
 		}
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
@@ -158,7 +158,8 @@ public class World extends AbstractState {
 		}
 	}
 
-	public ArrayList<LinkedList<AbstractObject>> getNeighbours(AbstractObject object) {
+	public ArrayList<LinkedList<AbstractObject>> getNeighbours(
+			AbstractObject object) {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
 		ArrayList<LinkedList<AbstractObject>> returns = new ArrayList<LinkedList<AbstractObject>>();
@@ -182,7 +183,7 @@ public class World extends AbstractState {
 		}
 
 		// Andere Objekte zeichnen
-		for(Drawable drawable : this.drawables) {
+		for (Drawable drawable : this.drawables) {
 			drawable.draw(g);
 		}
 	}

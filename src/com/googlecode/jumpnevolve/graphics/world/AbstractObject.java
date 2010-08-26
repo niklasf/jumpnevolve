@@ -92,7 +92,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
-	protected abstract void specialSettingsPerRound();
+	protected abstract void specialSettingsPerRound(Input input);
 
 	// Konstruktoren
 
@@ -152,12 +152,15 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * aufgeräumt werden.
 	 * 
 	 * Auch werden Objekt spezifische Einstellungen vorgenommen.
+	 * 
+	 * @param input
+	 *            TODO
 	 */
-	public final void startRound() {
+	public final void startRound(Input input) {
 		this.allreadyDone.clear();
 		this.addDone(this);
 		this.force = Vector.ZERO;
-		this.specialSettingsPerRound();
+		this.specialSettingsPerRound(input);
 		this.blockedWays = new boolean[4];
 	}
 
