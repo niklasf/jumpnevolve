@@ -24,7 +24,7 @@ public class Levelloader implements Runnable {
 		return this.level;
 	}
 	
-	public static Level asyncloadLevel(String source) {
+	public static Level asyncLoadLevel(String source) {
 		Levelloader loader = new Levelloader(source);
 		loader.run();
 		return loader.getLevel();
