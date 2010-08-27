@@ -39,6 +39,7 @@ public class Soldier extends EnemyTemplate {
 		this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
 	}
 
+	@Override
 	public void onLivingCrash(AbstractObject other) {
 		// Soldier kann nur den Spieler töten, wenn dieser nicht oberhalb von
 		// ihm ist
@@ -49,6 +50,7 @@ public class Soldier extends EnemyTemplate {
 		}
 	}
 
+	@Override
 	public void kill(AbstractObject killer) {
 		// Soldier kann nicht durch andere Soldaten getötet werden
 		if (killer instanceof Soldier == false) {

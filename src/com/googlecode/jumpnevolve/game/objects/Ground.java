@@ -15,6 +15,8 @@ import com.googlecode.jumpnevolve.math.Shape;
  */
 public class Ground extends GroundTemplate {
 
+	private static final long serialVersionUID = 7842858995624719370L;
+
 	public Ground(World world, Shape shape) {
 		super(world, shape);
 		// TODO Auto-generated constructor stub
@@ -25,10 +27,12 @@ public class Ground extends GroundTemplate {
 		// Nichts tun
 	}
 
+	@Override
 	public void onActivableCrash(AbstractObject other) {
 		// Boden kann nichts aktivieren
 	}
 
+	@Override
 	public void onPushableCrash(AbstractObject other) {
 		// Boden kann nichts schieben
 	}

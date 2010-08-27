@@ -24,6 +24,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class KillingMachine extends EnemyTemplate {
 
+	private static final long serialVersionUID = -5724600752326575341L;
+
 	public KillingMachine(World world, Shape shape, float mass,
 			boolean blockable) {
 		super(world, shape, mass, true);
@@ -39,6 +41,7 @@ public class KillingMachine extends EnemyTemplate {
 		this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
 	}
 
+	@Override
 	public void onLivingCrash(AbstractObject other) {
 		// KillingMachine versucht alle lebenden Objekte zu töten, wenn diese
 		// nicht oberhalb von ihr sind
@@ -47,6 +50,7 @@ public class KillingMachine extends EnemyTemplate {
 		}
 	}
 
+	@Override
 	public void kill(AbstractObject killer) {
 		// KillingMachine kann von allen Seiten und allen Objekten getötet
 		// werden
