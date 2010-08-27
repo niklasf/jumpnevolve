@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Input;
+
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
@@ -13,6 +15,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class WalkingSoldier extends Soldier {
+
+	private static final long serialVersionUID = 3329079316071279296L;
 
 	public WalkingSoldier(World world, Shape shape, float mass) {
 		super(world, shape, mass);
