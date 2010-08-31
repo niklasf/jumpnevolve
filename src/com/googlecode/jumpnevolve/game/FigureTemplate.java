@@ -3,6 +3,7 @@ package com.googlecode.jumpnevolve.game;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Die Vorlage für alle vom Spieler gesteuerten Figuren.
@@ -16,8 +17,20 @@ import com.googlecode.jumpnevolve.math.Shape;
  */
 public abstract class FigureTemplate extends AbstractObject {
 
+	private Vector save;
+
 	public FigureTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean living, boolean killable) {
 		super(world, shape, mass, blockable, false, living, false, killable);
+		this.save = shape.getCenter();
 	}
+
+	public Vector getLastSave() {
+		return this.save;
+	}
+
+	protected void replace(Vector newPlace) {
+		// FIXME: Position auf newPlace setzen
+	}
+
 }

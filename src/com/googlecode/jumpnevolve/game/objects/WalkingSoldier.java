@@ -18,9 +18,9 @@ public class WalkingSoldier extends Soldier {
 
 	private static final long serialVersionUID = 3329079316071279296L;
 
-	public WalkingSoldier(World world, Shape shape, float mass) {
+	public WalkingSoldier(World world, Vector position) {
 		super(world, shape, mass);
-		// TODO Auto-generated constructor stub
+		// FIXME: shape und mass vorgeben --> position ist gegeben
 	}
 
 	@Override

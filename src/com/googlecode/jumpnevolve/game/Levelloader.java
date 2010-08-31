@@ -1,9 +1,20 @@
 package com.googlecode.jumpnevolve.game;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
+import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Zum Laden von Leveln.
@@ -22,12 +33,58 @@ public class Levelloader {
 	}
 
 	public void run() {
+		InputStream levelFile;
 		try {
-			BufferedReader file = new BufferedReader(new FileReader(source));
-			// Level laden und in this.level speichern
+			String[] sourceSplit = this.source.split(".");
+			if (sourceSplit.length == 2) {
+				if (sourceSplit[1].equals("txt")) {
+					// neues Level aus Textdatei erstellen
+					levelFile = new FileInputStream(source);
+					BufferedReader levelFileReader = new BufferedReader(
+							new InputStreamReader(levelFile));
+					// Level durch Kopfzeile erstellen
+
+					// HashMaps für Objekte zum Zwischenspeichern erstellen
+					HashMap<String, AbstractObject> activableObjects = new HashMap<String, AbstractObject>();
+					ArrayList<AbstractObject> activatingObjects = new ArrayList<AbstractObject>();
+					ArrayList<String> argumtensForActivating = new ArrayList<String>();
+					ArrayList<AbstractObject> otherObjects = new ArrayList<AbstractObject>();
+
+					String current = levelFileReader.readLine();
+					while (current != null) { // Pseudo-Methode ersetzen
+						String[] currentSplit = current.split("_");
+						String[] currentArguments = currentSplit[2].split(",");
+						current = levelFileReader.readLine();
+						if (currentSplit[0].equals("WalkingSoldier")) {
+							otherObjects.add(new WalkingSoldier(this.level,
+									this.toVector(currentSplit[1])));
+						}
+						// TODO: Weitere Klassen einfügen
+					}
+				} else if (sourceSplit[1].equals("bin")) {
+					// Speicherung laden --> Level-Objekt
+					levelFile = new ObjectInputStream(new FileInputStream(
+							source));
+					// Objekt lesen, in Level konvertieren und abspeichern
+					try {
+						Object object = ((ObjectInputStream) levelFile)
+								.readObject();
+						if (object instanceof Level) {
+							this.level = (Level) object;
+						}
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} else {
+				// Ausgabe: Fehler beim Laden des Levels
+				// FIXME: Möglich durch throw new IOException()?
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Ausgabe: Fehler beim Laden des Levels
+		} finally {
+			levelFile.close();
 		}
 	}
 
@@ -40,62 +97,12 @@ public class Levelloader {
 		loader.run();
 		return loader.getLevel();
 	}
-}
 
-class Attribute {
-
-	final String motherString;
-	private String[] partStrings;
-	private int currentAttribute;
-
-	/**
-	 * Erzeugt ein neues Attribut für ein Objekt, das Attribut kann aus mehreren
-	 * Teilen bestehen.
-	 * 
-	 * @param attributeString
-	 *            Der String, aus dem die Attribute entnommen werden
-	 */
-	public Attribute(String attributeString) {
-		motherString = attributeString;
-		int count = 1;
-		for (int i = 0; i < motherString.length(); i++) {
-			if (motherString.charAt(i) == ',') {
-				count++;
-			}
-		}
-		partStrings = new String[count];
-		for (int i = 0; i < count; i++) {
-			for (int j = 0; this.motherString.charAt(i) != ','; j++) {
-				this.partStrings[i] += this.motherString.charAt(i);
-			}
-		}
-	}
-
-	public String[] getAllAttributes() {
-		return this.partStrings;
-	}
-
-	public String getNextAttribut() {
-		String s = this.partStrings[currentAttribute];
-		if (this.currentAttribute < this.getAttributeCount() - 1) {
-			this.currentAttribute++;
-			return s;
-		} else {
-			// FIXME: Fehlermeldung ausgeben, da keine weiteren Attribute
-			// vorhanden
-			return new String();
-		}
-	}
-
-	public void switchToAttribute(int attribteIndex) {
-		if (attribteIndex >= 0 && attribteIndex <= this.getAttributeCount()) {
-			this.currentAttribute = attribteIndex;
-		} else {
-			// FIXME: Fehlermeldung ausgeben, da falscher Index
-		}
-	}
-
-	public int getAttributeCount() {
-		return this.partStrings.length;
+	private Vector toVector(String koordinate) {
+		String[] koordinates = koordinate.split("|");
+		// FIXME: Falscher String (nicht in der Form "50|50") abfangen und
+		// Fehler melden
+		return new Vector(Float.parseFloat(koordinates[0]), Float
+				.parseFloat(koordinates[1]));
 	}
 }
