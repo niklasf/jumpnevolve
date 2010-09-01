@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -42,7 +43,23 @@ public class Levelloader {
 					levelFile = new FileInputStream(source);
 					BufferedReader levelFileReader = new BufferedReader(
 							new InputStreamReader(levelFile));
-					// Level durch Kopfzeile erstellen
+					// Level durch Kopfzeile erstellen --> Größenordnungen
+					String firstLine = levelFileReader.readLine();
+					String[] firstLineSplit = firstLine.split("_");
+					if (firstLineSplit[0].equals("Leveldimensionen") == false) {
+						// FIXME: Fehlermeldung ausgeben und abbrechen
+					}
+					this.level = new Level(Integer.parseInt(firstLineSplit[1]),
+							Integer.parseInt(firstLineSplit[2]), Integer
+									.parseInt(firstLineSplit[3]));
+					// Einstellungen vornehmen
+					String secondLine = levelFileReader.readLine();
+					String[] secondLineSplit = secondLine.split("_");
+					if (firstLineSplit[0].equals("Leveleinstellungen") == false) {
+						// FIXME: Fehlermeldung ausgeben und abbrechen
+					}
+					// FIXME: Einstellungen für das Level vornehmen
+					// Beispiele: verfügbare Charaktere, Timer etc.
 
 					// HashMaps für Objekte zum Zwischenspeichern erstellen
 					HashMap<String, AbstractObject> activableObjects = new HashMap<String, AbstractObject>();
@@ -57,6 +74,9 @@ public class Levelloader {
 						current = levelFileReader.readLine();
 						if (currentSplit[0].equals("WalkingSoldier")) {
 							otherObjects.add(new WalkingSoldier(this.level,
+									this.toVector(currentSplit[1])));
+						} else if (currentSplit[0].equals("JumpingSoldier")) {
+							otherObjects.add(new JumpingSoldier(this.level,
 									this.toVector(currentSplit[1])));
 						}
 						// TODO: Weitere Klassen einfügen

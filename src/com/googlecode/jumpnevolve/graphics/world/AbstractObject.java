@@ -69,8 +69,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private boolean activable;
 
-	private AbstractObject activatingObject;
-
 	private boolean alive;
 
 	private boolean killable;
@@ -304,6 +302,15 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
+	 * Deaktiviert das Objekt
+	 * 
+	 * @param deactivator
+	 *            Das Objekt, durch welches dieses deaktiviert wurde
+	 */
+	public void deactivate(AbstractObject deactivator) {
+	}
+
+	/**
 	 * Tötet dieses Objekt, wenn der killer töten kann.
 	 * 
 	 * In diese Methode gehören Immunitäten des Objekts gegenüber bestimmten
@@ -339,14 +346,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	// Attribute holen und setzen
-
-	/**
-	 * @param object
-	 *            Das Objekt das durch dieses Objekt aktiviert wird
-	 */
-	public final void setActivatingObject(AbstractObject object) {
-		this.activatingObject = object;
-	}
 
 	/**
 	 * @return Die Masse des Objekts.

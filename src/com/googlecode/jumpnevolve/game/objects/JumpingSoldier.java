@@ -17,10 +17,9 @@ public class JumpingSoldier extends Soldier {
 
 	private static final long serialVersionUID = -753627347562694811L;
 
-	public JumpingSoldier(World world, Shape shape, float mass) {
+	public JumpingSoldier(World world, Vector position) {
 		super(world, shape, mass);
-		// TODO shape durch center ersetzen und super ein spezifisches Shape
-		// übergeben
+		// TODO shape durch position erzeugen und super übergeben
 		// TODO Masse festlegen
 	}
 

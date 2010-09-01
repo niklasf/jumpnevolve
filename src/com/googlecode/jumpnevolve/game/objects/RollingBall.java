@@ -21,7 +21,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * Beschreibung: Ein lebender Ball, der rollt
  * 
- * Spezifikationen: blockbar
+ * Spezifikationen: blockbar, nicht schiebbar
  * 
  * Bewegungen: Masse = 5, Laufen nach rechts und links, Springen (0.5 sec)
  * 
