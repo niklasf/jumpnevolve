@@ -41,10 +41,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class RollingBall extends FigureTemplate {
 
-	public RollingBall(World world, Shape shape, float mass, boolean blockable,
-			boolean living, boolean killable) {
-		super(world, shape, mass, blockable, living, killable);
-		// TODO Auto-generated constructor stub
+	public RollingBall(World world, Vector position) {
+		super(world, shape, mass, true, true, true);
+		// FIXME: Shape erstellen
+		// TODO: Masse festlegen
 	}
 
 	@Override

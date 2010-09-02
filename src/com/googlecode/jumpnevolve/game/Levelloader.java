@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
-import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
+import com.googlecode.jumpnevolve.game.objects.*;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -34,8 +33,9 @@ public class Levelloader {
 	}
 
 	public void run() {
-		FileInputStream levelFile = new FileInputStream(source);
 		try {
+			FileInputStream levelFile;
+			levelFile = new FileInputStream(source);
 			String[] sourceSplit = this.source.split(".");
 			if (sourceSplit.length == 2) {
 				if (sourceSplit[1].equals("txt")) {
@@ -63,7 +63,7 @@ public class Levelloader {
 					// HashMaps für Objekte zum Zwischenspeichern erstellen
 					HashMap<String, AbstractObject> activableObjects = new HashMap<String, AbstractObject>();
 					ArrayList<AbstractObject> activatingObjects = new ArrayList<AbstractObject>();
-					ArrayList<String> argumtensForActivating = new ArrayList<String>();
+					ArrayList<String[]> argumtensForActivating = new ArrayList<String>();
 					ArrayList<AbstractObject> otherObjects = new ArrayList<AbstractObject>();
 
 					String current = levelFileReader.readLine();
@@ -77,8 +77,36 @@ public class Levelloader {
 						} else if (currentSplit[0].equals("JumpingSoldier")) {
 							otherObjects.add(new JumpingSoldier(this.level,
 									this.toVector(currentSplit[1])));
+						} else if (currentSplit[0].equals("Soldier")) {
+							otherObjects.add(new Soldier(this.level, this
+									.toVector(currentSplit[1])));
+						} else if (currentSplit[0].equals("KillingMachine")) {
+							otherObjects.add(new KillingMachine(this.level,
+									this.toVector(currentSplit[1])));
+						} else if (currentSplit[0].equals("Button")) {
+							activatingObjects.add(new Button(this.level, this
+									.toVector(currentSplit[1]), this
+									.toFloat(currentArguments[0])));
+							String[] argument = new String[currentArguments.length - 1];
+							for (int i = 1; i < currentArguments.length; i++) {
+								argument[i - 1] = currentArguments[i];
+							}
+							argumtensForActivating.add(argument);
+						} else if (currentSplit[0].equals("Door")) {
+							activableObjects
+									.put(currentArguments[0], new Door(
+											this.level, this
+													.toVector(currentSplit[1])));
+						} else if (currentSplit[0].equals("Ground")) {
+							otherObjects.add(new Ground(this.level, this
+									.toVector(currentSplit[1]), this
+									.toVector(currentArguments[0])));
+						} else if (currentSplit[0].equals("RollingBall")) {
+							otherObjects.add(new RollingBall(this.level, this
+									.toVector(currentSplit[1])));
 						}
 						// TODO: Weitere Klassen einfügen
+						// Aktivierungszuweisungen vollziehen
 					}
 				} else if (sourceSplit[1].equals("bin")) {
 					// Speicherung laden --> Level-Objekt
@@ -101,8 +129,15 @@ public class Levelloader {
 			}
 		} catch (IOException e) {
 			// Ausgabe: Fehler beim Laden des Levels
+		} catch (DataInputException e) {
+
 		} finally {
-			levelFile.close();
+			try {
+				levelFile.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -116,12 +151,18 @@ public class Levelloader {
 		return loader.getLevel();
 	}
 
-	private Vector toVector(String koordinate) {
+	private Vector toVector(String koordinate) throws DataInputException {
 		String[] koordinates = koordinate.split("|");
 		// FIXME: Falscher String (nicht in der Form "50|50") abfangen und
 		// Fehler melden
 		return new Vector(Float.parseFloat(koordinates[0]), Float
 				.parseFloat(koordinates[1]));
+	}
+
+	private float toFloat(String argument) throws DataInputException {
+		// FIXME: Falscher String (nicht in der Form "5.5") abfangen und
+		// Fehler melden
+		return Float.parseFloat(argument);
 	}
 }
 

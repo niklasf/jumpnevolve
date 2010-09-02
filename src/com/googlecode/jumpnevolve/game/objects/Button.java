@@ -7,6 +7,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Input;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * 
@@ -33,7 +34,7 @@ public class Button extends ActivatingObject {
 	private Timer remainingTime = new Timer();
 	private final float activatingTime;
 
-	public Button(World world, float activatingTime) {
+	public Button(World world, Vector position, float activatingTime) {
 		super(world, shape, 0.0f, false, false, true, false);
 		// FIXME: Shape erzeugen und übergeben
 		this.remainingTime.setTime(activatingTime);

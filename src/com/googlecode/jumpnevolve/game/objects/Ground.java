@@ -1,13 +1,15 @@
 package com.googlecode.jumpnevolve.game.objects;
 
-import java.awt.Rectangle;
-
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.GroundTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.math.Rectangle;
+
+;
 
 /**
  * Normaler Boden, der so benutzt werden oder modifizeirt werden kann.
@@ -42,8 +44,7 @@ public class Ground extends GroundTemplate {
 	private static final long serialVersionUID = 7842858995624719370L;
 
 	public Ground(World world, Vector position, Vector dimension) {
-		super(world, (Shape) new Rectangle(position, dimension));
-		// FIXME: Ist das so richtig? --> Funktioniert das Casten so korrekt?
+		super(world, new Rectangle(position, dimension));
 	}
 
 	@Override

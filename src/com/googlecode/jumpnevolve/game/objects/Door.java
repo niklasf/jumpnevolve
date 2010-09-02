@@ -5,6 +5,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Input;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * 
@@ -31,7 +32,7 @@ public class Door extends ObjectTemplate {
 
 	private boolean opneningState = false;
 
-	public Door(World world) {
+	public Door(World world, Vector position) {
 		super(world, shape, 0.0f, true, false, true, false);
 		// FIXME: Shape erstellen
 	}
