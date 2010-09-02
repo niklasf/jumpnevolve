@@ -10,13 +10,22 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Ein Soldat der auf der Stelle steht. Dient hauptsächlich als Super-Klasse,
- * kann aber auch als stehender Soldat benutzt werden.
  * 
- * Soldaten können nur den Spieler töten und nich durch andere Soldaten getötet
- * werden.
+ * Beschreibung: Ein Soldat der steht
  * 
- * Ein Soldat ist blockbar und spürt immer die Schwerkraft.
+ * Spezifikationen: blockbar, nicht schiebbar
+ * 
+ * Bewegungen: Masse = 5; grundsätzlich keine Bewegung; Schwerkraft wirkt
+ * 
+ * Aggressivitäten: nur gegen den Spieler, wenn der nicht von oben kommt
+ * 
+ * Immunitäten: Wird nicht von anderen Soldaten getötet
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
+ * 
+ * Besonderheiten: kann als Vorlage für andere Gegner benutzt werden
  * 
  * @author Erik Wagner
  * 
@@ -25,9 +34,9 @@ public class Soldier extends EnemyTemplate {
 
 	private static final long serialVersionUID = 5378834855856957746L;
 
-	public Soldier(World world, Shape shape, float mass) {
-		super(world, shape, mass, true);
-		// TODO Auto-generated constructor stub
+	public Soldier(World world, Vector position) {
+		super(world, shape, 5.0f, true);
+		// TODO shape durch position erzeugen und super übergeben
 	}
 
 	@Override

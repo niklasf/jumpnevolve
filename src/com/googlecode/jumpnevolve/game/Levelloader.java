@@ -34,13 +34,12 @@ public class Levelloader {
 	}
 
 	public void run() {
-		InputStream levelFile;
+		FileInputStream levelFile = new FileInputStream(source);
 		try {
 			String[] sourceSplit = this.source.split(".");
 			if (sourceSplit.length == 2) {
 				if (sourceSplit[1].equals("txt")) {
 					// neues Level aus Textdatei erstellen
-					levelFile = new FileInputStream(source);
 					BufferedReader levelFileReader = new BufferedReader(
 							new InputStreamReader(levelFile));
 					// Level durch Kopfzeile erstellen --> Größenordnungen
@@ -83,12 +82,11 @@ public class Levelloader {
 					}
 				} else if (sourceSplit[1].equals("bin")) {
 					// Speicherung laden --> Level-Objekt
-					levelFile = new ObjectInputStream(new FileInputStream(
-							source));
+					ObjectInputStream objectLevelFile = new ObjectInputStream(
+							levelFile);
 					// Objekt lesen, in Level konvertieren und abspeichern
 					try {
-						Object object = ((ObjectInputStream) levelFile)
-								.readObject();
+						Object object = objectLevelFile.readObject();
 						if (object instanceof Level) {
 							this.level = (Level) object;
 						}
@@ -124,5 +122,18 @@ public class Levelloader {
 		// Fehler melden
 		return new Vector(Float.parseFloat(koordinates[0]), Float
 				.parseFloat(koordinates[1]));
+	}
+}
+
+class DataInputException extends Exception {
+
+	private final String wrongInput;
+
+	public DataInputException(String wrongInput) {
+		this.wrongInput = wrongInput;
+	}
+
+	public String getWrongInput() {
+		return this.wrongInput;
 	}
 }

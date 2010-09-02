@@ -14,6 +14,12 @@ import com.googlecode.jumpnevolve.math.Shape;
  * 
  * Spezifikationen: nicht blockbar, nicht schiebbar
  * 
+ * Bewegungen: keine
+ * 
+ * Aggressivitäten: keine
+ * 
+ * Immunitäten: keine
+ * 
  * Aktivierung: Aktiviert eine beliebige Anzahl von Objekten für eine gewisse
  * Zeit oder wahlweise auch für immer
  * 

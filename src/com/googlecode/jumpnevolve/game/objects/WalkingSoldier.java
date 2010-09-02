@@ -8,8 +8,23 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Ein Soldier der sich horizontal bewegt und von blockbaren Gegenständen
- * abprallt.
+ * 
+ * Beschreibung: Ein Soldat der nach rechts und links läuft
+ * 
+ * Spezifikationen: siehe Soldier
+ * 
+ * Bewegungen: siehe Soldier; bewegt sich nach rechts und links und prallt von
+ * Wänden ab
+ * 
+ * Aggressivitäten: siehe Soldier
+ * 
+ * Immunitäten: siehe Soldier
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
+ * 
+ * Besonderheiten: keine
  * 
  * @author Erik Wagner
  * 
@@ -19,8 +34,7 @@ public class WalkingSoldier extends Soldier {
 	private static final long serialVersionUID = 3329079316071279296L;
 
 	public WalkingSoldier(World world, Vector position) {
-		super(world, shape, mass);
-		// FIXME: shape und mass vorgeben --> position ist gegeben
+		super(world, position);
 	}
 
 	@Override

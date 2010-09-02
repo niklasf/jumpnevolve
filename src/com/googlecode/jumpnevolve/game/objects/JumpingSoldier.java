@@ -7,8 +7,22 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Der jumpingSoldier ist ein Sodier, der springt, wenn er wieder den Boden
- * berührt.
+ * 
+ * Beschreibung: Ein Soldat der springt
+ * 
+ * Spezifikationen: siehe Soldier
+ * 
+ * Bewegungen: siehe Soldier; springt, wenn er den Boden berührt
+ * 
+ * Aggressivitäten: siehe Soldier
+ * 
+ * Immunitäten: siehe Soldier
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
+ * 
+ * Besonderheiten: keine
  * 
  * @author Erik Wagner
  * 
@@ -18,9 +32,7 @@ public class JumpingSoldier extends Soldier {
 	private static final long serialVersionUID = -753627347562694811L;
 
 	public JumpingSoldier(World world, Vector position) {
-		super(world, shape, mass);
-		// TODO shape durch position erzeugen und super übergeben
-		// TODO Masse festlegen
+		super(world, position);
 	}
 
 	@Override

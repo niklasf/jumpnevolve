@@ -10,14 +10,22 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Eine Tötungsmaschine, die versucht alle zu töten, was ihr begegnet. Sie ist
- * blockbar und töten von allen Seiten außer von unten (anderes Objekt
- * oberhalb).
  * 
- * Dient hauptsächlich als Super-Klasse, kann aber auch als stehende Gefahr
- * benutzt werden.
+ * Beschreibung: Eine Killermaschine, die alles tötet, was sie berührt
  * 
- * Sie verspürt immer die Schwerkraft.
+ * Spezifikationen: blockbar, nicht schiebbar
+ * 
+ * Bewegungen: Masse = 20; grundsätzlich keine Bewegung; Schwerkraft wirkt
+ * 
+ * Aggressivitäten: nur gegen alles, wenn das nicht von oben kommt
+ * 
+ * Immunitäten: keine
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
+ * 
+ * Besonderheiten: kann als Vorlage für andere Killermaschinen benutzt werden
  * 
  * @author Erik Wagner
  * 
@@ -26,10 +34,9 @@ public class KillingMachine extends EnemyTemplate {
 
 	private static final long serialVersionUID = -5724600752326575341L;
 
-	public KillingMachine(World world, Shape shape, float mass,
-			boolean blockable) {
-		super(world, shape, mass, true);
-		// TODO Auto-generated constructor stub
+	public KillingMachine(World world, Vector position) {
+		super(world, shape, 20.0f, true);
+		// TODO shape durch position erzeugen und super übergeben
 	}
 
 	@Override

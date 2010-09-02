@@ -15,6 +15,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 //Aggressivitäten --> nur bei tötenden Objekten, --> daraus folgt, dass killable = true
 //Immunitäten --> nur bei lebenden Objekten --> daraus folgt, dass living = true
 //Aktivierung --> was passiert, wenn das Objekt aktiviert wird und durch wen kann das Objekt aktiviert werden --> daraus folgt, dass activable = true
+//Deaktiierung --> was passiert, wenn das Objekt deaktiviert wird
 //Besonderheiten --> alle sonstigen Abweichungen (z.B. in Bezug auf Schiebe- und Blockeigenschaften)
 
 /**
@@ -28,6 +29,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  * Aggressivitäten: gegen alle Gegner (EnemyTemplate) beim Draufspringen
  * 
  * Immunitäten: keine
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
  * 
  * Besonderheiten: keine
  * 

@@ -20,12 +20,15 @@ public abstract class ActivatingObject extends ObjectTemplate {
 
 	/**
 	 * @param object
-	 *            Das Objekt das durch dieses Objekt aktiviert wird
+	 *            Das Objekt das durch dieses Objekt aktiviert werden soll
 	 */
 	public final void addObjectsToActivate(AbstractObject object) {
 		this.objectsToActivate.add(object);
 	}
 
+	/**
+	 * @return Die Objekte, die durch dieses Objekt aktiviert werden
+	 */
 	public final ArrayList<AbstractObject> getObjectsToActivate() {
 		return this.objectsToActivate;
 	}
