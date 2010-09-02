@@ -1,10 +1,11 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Input;
+
 import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
-import com.googlecode.jumpnevolve.graphics.world.Input;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
