@@ -20,7 +20,7 @@ package com.googlecode.jumpnevolve.math.tests;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
 
@@ -212,5 +212,22 @@ public class VectorTests {
 		assertThat(Vector.UP.isMoreUpwards(Vector.DOWN), is(true));
 		assertThat(Vector.LEFT.isMoreUpwards(Vector.RIGHT), is(false));
 		assertThat(Vector.UP.mul(3).isMoreUpwards(Vector.UP), is(false));
+	}
+	
+	/**
+	 * Test method for
+	 * {@link com.googlecode.jumpnevolve.math.Vector#parseVector(String)}.
+	 */
+	@Test
+	public void testParseVector() {
+		assertThat(Vector.parseVector("17|18"), is(new Vector(17, 18)));
+		assertThat(Vector.parseVector("  (9, 1e-5   "), is(new Vector(9, 1e-5f)));
+		assertThat(Vector.parseVector(Vector.UP.toString()), is(Vector.UP));
+		assertThat(Vector.parseVector("   ( 1.000 , 2.123  \t  )"), is(new Vector(1.0f, 2.123f)));
+		
+		try {
+			Vector.parseVector("(ABC,eee");
+			throw new AssertionError("NumberFormatException expeted.");
+		} catch(NumberFormatException expected) { }
 	}
 }

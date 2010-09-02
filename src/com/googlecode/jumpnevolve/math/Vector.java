@@ -18,6 +18,8 @@
 package com.googlecode.jumpnevolve.math;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Klasse für Vektoren mit einfacher Gleitkommagenauigkeit.
@@ -359,6 +361,22 @@ public class Vector implements Cloneable, Serializable {
 
 	@Override
 	public String toString() {
-		return "Vector(" + this.x + ", " + this.y + ")";
+		return "(" + this.x + ", " + this.y + ")";
+	}
+	
+	private static Pattern vectorPattern = Pattern.compile("\\s*\\(?\\s*([0-9.eE+-]+)\\s*(\\||,)\\s*([0-9.eE+-]+)\\s*\\)?\\s*");
+	
+	/**
+	 * @param s Die Stringdarstellung eines Vektors.
+	 * @return Einer neuer, passender Vektor.
+	 * @throws NumberFormatException Wenn der String kein Vektor ist.
+	 */
+	public static Vector parseVector(String s) {
+		Matcher matcher = vectorPattern.matcher(s);
+		if(matcher.matches()) {
+			return new Vector(Float.parseFloat(matcher.group(1)), Float.parseFloat(matcher.group(3)));
+		} else {
+			throw new NumberFormatException("Input is no vector: " + s);
+		}
 	}
 }
