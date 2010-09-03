@@ -1,9 +1,10 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Input;
+
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
-import com.googlecode.jumpnevolve.graphics.world.Input;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -40,6 +41,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class RollingBall extends FigureTemplate {
+
+	private static final long serialVersionUID = -6066789739733255353L;
 
 	public RollingBall(World world, Vector position) {
 		super(world, shape, mass, true, true, true);
