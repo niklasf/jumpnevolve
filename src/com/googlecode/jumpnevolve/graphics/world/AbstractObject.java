@@ -194,10 +194,39 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
 			// konstant ist.
 
-			// FIXME: Bewegung in geblockte Richtungen verhindern, indem die
-			// Kraft und Geschwindigkeit in diese Richtungen blockiert werden (x
-			// bzw. y bei Blockung in entsprechender Richtung auf 0 setzen)
-
+			// FIXME: Gegenkraft?
+			if (this.isWayBlocked(Shape.OBEN)) {
+				if (this.getForce().y < 0) {
+					this.force = new Vector(this.force.x, 0);
+				}
+				if (this.getVelocity().y < 0) {
+					this.velocity = new Vector(this.velocity.x, 0);
+				}
+			}
+			if (this.isWayBlocked(Shape.UNTEN)) {
+				if (this.getForce().y > 0) {
+					this.force = new Vector(this.force.x, 0);
+				}
+				if (this.getVelocity().y > 0) {
+					this.velocity = new Vector(this.velocity.x, 0);
+				}
+			}
+			if (this.isWayBlocked(Shape.RECHTS)) {
+				if (this.getForce().x > 0) {
+					this.force = new Vector(0, this.force.y);
+				}
+				if (this.getVelocity().x > 0) {
+					this.velocity = new Vector(0, this.velocity.y);
+				}
+			}
+			if (this.isWayBlocked(Shape.LINKS)) {
+				if (this.getForce().x < 0) {
+					this.force = new Vector(0, this.force.y);
+				}
+				if (this.getVelocity().x < 0) {
+					this.velocity = new Vector(0, this.velocity.y);
+				}
+			}
 			// FIXME: Richtige Variante der Positionsberechnung auswählen!!!!
 
 			// Alte Möglichkeit (Sehr wahrscheinlich falsch, weil die
@@ -333,6 +362,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
+		// TODO: Mit Inhalt füllen
 	}
 
 	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...

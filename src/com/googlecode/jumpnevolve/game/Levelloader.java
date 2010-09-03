@@ -36,15 +36,15 @@ public class Levelloader {
 
 	public void run() {
 		FileInputStream levelFile = null;
-		
+
 		try {
 			levelFile = new FileInputStream(this.source);
-			
-			if(this.source.toLowerCase().endsWith(".txt")) {
+
+			if (this.source.toLowerCase().endsWith(".txt")) {
 				// Neues Level aus Textdatei erstellen
 				BufferedReader levelFileReader = new BufferedReader(
 						new InputStreamReader(levelFile));
-				
+
 				// Level durch Kopfzeile erstellen --> Größenordnungen
 				String firstLine = levelFileReader.readLine();
 				String[] firstLineSplit = firstLine.split("_");
@@ -75,17 +75,17 @@ public class Levelloader {
 					String[] currentArguments = currentSplit[2].split(",");
 					current = levelFileReader.readLine();
 					if (currentSplit[0].equals("WalkingSoldier")) {
-						otherObjects.add(new WalkingSoldier(this.level,
-								this.toVector(currentSplit[1])));
+						otherObjects.add(new WalkingSoldier(this.level, this
+								.toVector(currentSplit[1])));
 					} else if (currentSplit[0].equals("JumpingSoldier")) {
-						otherObjects.add(new JumpingSoldier(this.level,
-								this.toVector(currentSplit[1])));
+						otherObjects.add(new JumpingSoldier(this.level, this
+								.toVector(currentSplit[1])));
 					} else if (currentSplit[0].equals("Soldier")) {
 						otherObjects.add(new Soldier(this.level, this
 								.toVector(currentSplit[1])));
 					} else if (currentSplit[0].equals("KillingMachine")) {
-						otherObjects.add(new KillingMachine(this.level,
-								this.toVector(currentSplit[1])));
+						otherObjects.add(new KillingMachine(this.level, this
+								.toVector(currentSplit[1])));
 					} else if (currentSplit[0].equals("Button")) {
 						activatingObjects.add(new Button(this.level, this
 								.toVector(currentSplit[1]), this
@@ -96,10 +96,8 @@ public class Levelloader {
 						}
 						argumtensForActivating.add(argument);
 					} else if (currentSplit[0].equals("Door")) {
-						activableObjects
-								.put(currentArguments[0], new Door(
-										this.level, this
-												.toVector(currentSplit[1])));
+						activableObjects.put(currentArguments[0], new Door(
+								this.level, this.toVector(currentSplit[1])));
 					} else if (currentSplit[0].equals("Ground")) {
 						otherObjects.add(new Ground(this.level, this
 								.toVector(currentSplit[1]), this
@@ -107,12 +105,18 @@ public class Levelloader {
 					} else if (currentSplit[0].equals("RollingBall")) {
 						otherObjects.add(new RollingBall(this.level, this
 								.toVector(currentSplit[1])));
+					} else if (currentSplit[0].equals("Elevator")) {
+						otherObjects.add(new Elevator(this.level, this
+								.toVector(currentSplit[1]), this
+								.toVector(currentArguments[0]), this
+								.toFloat(currentArguments[1]), this
+								.toFloat(currentArguments[2])));
 					}
 					// TODO: Weitere Klassen einfügen
 					// Aktivierungszuweisungen vollziehen
 				}
-			} else if(this.source.toLowerCase().endsWith(".bin")) {
-				
+			} else if (this.source.toLowerCase().endsWith(".bin")) {
+
 				// Speicherung laden --> Level-Objekt
 				ObjectInputStream objectLevelFile = new ObjectInputStream(
 						levelFile);
@@ -136,7 +140,7 @@ public class Levelloader {
 		} catch (DataInputException e) {
 
 		} finally {
-			if(levelFile != null) {
+			if (levelFile != null) {
 				try {
 					levelFile.close();
 				} catch (IOException e) {
@@ -160,7 +164,7 @@ public class Levelloader {
 		// TODO: Vector.parseVector könnte auch direkt verwendet werden.
 		try {
 			return Vector.parseVector(koordinate);
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			throw new DataInputException(koordinate);
 		}
 	}
@@ -171,7 +175,7 @@ public class Levelloader {
 		// bzw. Float.parseFloat direkt im Code verwenden.
 		try {
 			return Float.parseFloat(argument);
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			throw new DataInputException(argument);
 		}
 	}
