@@ -358,4 +358,9 @@ public class Rectangle implements Shape {
 	public Shape modifyCenter(Vector center) {
 		return new Rectangle(center, this.width, this.height);
 	}
+
+	@Override
+	public org.newdawn.slick.geom.Shape toSlickShape() {
+		return new org.newdawn.slick.geom.Rectangle(this.x, this.y, this.width, this.height);
+	}
 }

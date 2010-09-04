@@ -212,4 +212,9 @@ public class Circle implements Shape {
 	public Shape modifyCenter(Vector center) {
 		return new Circle(center, this.radius);
 	}
+
+	@Override
+	public org.newdawn.slick.geom.Shape toSlickShape() {
+		return new org.newdawn.slick.geom.Circle(this.position.x, this.position.y, this.radius);
+	}
 }
