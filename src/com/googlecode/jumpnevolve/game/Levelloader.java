@@ -34,7 +34,7 @@ public class Levelloader {
 		this.source = source;
 	}
 
-	public void run() {
+	public void loadLevel() {
 		FileInputStream levelFile = null;
 
 		try {
@@ -156,7 +156,7 @@ public class Levelloader {
 
 	public static Level asyncLoadLevel(String source) {
 		Levelloader loader = new Levelloader(source);
-		loader.run();
+		loader.loadLevel();
 		return loader.getLevel();
 	}
 
