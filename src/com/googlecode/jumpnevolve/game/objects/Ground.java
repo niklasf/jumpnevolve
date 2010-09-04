@@ -61,4 +61,7 @@ public class Ground extends GroundTemplate {
 	public void onPushableCrash(AbstractObject other) {
 		// Boden kann nichts schieben
 	}
+
+	// TODO: draw-Methode einfügen
+
 }

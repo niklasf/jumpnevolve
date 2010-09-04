@@ -18,7 +18,6 @@ public abstract class GroundTemplate extends AbstractObject {
 
 	public GroundTemplate(World world, Shape shape) {
 		super(world, shape, 0.0f, true, false, false, false, false);
-		// TODO Auto-generated constructor stub
 	}
 
 }

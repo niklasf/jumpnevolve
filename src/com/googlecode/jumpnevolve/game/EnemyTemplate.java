@@ -21,7 +21,6 @@ public abstract class EnemyTemplate extends AbstractObject {
 
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
 		super(world, shape, mass, blockable, false, true, false, true);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void onLivingCrash(AbstractObject other) {

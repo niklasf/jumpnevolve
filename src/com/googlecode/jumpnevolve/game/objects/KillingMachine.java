@@ -6,6 +6,7 @@ import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -35,8 +36,7 @@ public class KillingMachine extends EnemyTemplate {
 	private static final long serialVersionUID = -5724600752326575341L;
 
 	public KillingMachine(World world, Vector position) {
-		super(world, shape, 20.0f, true);
-		// TODO shape durch position erzeugen und super übergeben
+		super(world, new Rectangle(position, new Vector(28, 28)), 20.0f, true);
 	}
 
 	@Override

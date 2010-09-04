@@ -7,8 +7,10 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.sun.corba.se.impl.interceptors.PICurrent;
 
 /**
  * 
@@ -36,17 +38,14 @@ public class Button extends ActivatingObject {
 	private final float activatingTime;
 
 	public Button(World world, Vector position, float activatingTime) {
-		super(world, shape, 0.0f, false, false, true, false);
-		// FIXME: Shape erzeugen und übergeben
+		super(world, new Rectangle(position, new Vector(30, 30)), 0.0f, false,
+				false, true, false);
 		this.remainingTime.setTime(activatingTime);
 		this.activatingTime = activatingTime;
 	}
 
-	public Button(World world) {
-		super(world, shape, 0.0f, false, false, true, false);
-		// FIXME: Shape erzeugen und übergeben
-		this.remainingTime.setTime(activatingTime);
-		this.activatingTime = 0;
+	public Button(World world, Vector position) {
+		this(world, position, 0);
 	}
 
 	@Override
@@ -80,4 +79,5 @@ public class Button extends ActivatingObject {
 			}
 		}
 	}
+	// TODO: draw-Methode einfügen
 }

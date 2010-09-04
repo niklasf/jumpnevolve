@@ -1,11 +1,17 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import java.awt.GraphicsDevice;
+
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -35,7 +41,7 @@ public class Soldier extends EnemyTemplate {
 	private static final long serialVersionUID = 5378834855856957746L;
 
 	public Soldier(World world, Vector position) {
-		super(world, shape, 5.0f, true);
+		super(world, new Rectangle(position, new Vector(28, 28)), 5.0f, true);
 		// TODO shape durch position erzeugen und super übergeben
 	}
 
@@ -71,5 +77,9 @@ public class Soldier extends EnemyTemplate {
 		}
 	}
 
-	// TODO: draw-Methode einfügen
+	@Override
+	public void draw(Graphics g) {
+		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
+				.getImage("simple-foot-soldier.png"));
+	}
 }

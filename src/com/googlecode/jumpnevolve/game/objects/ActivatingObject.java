@@ -15,7 +15,6 @@ public abstract class ActivatingObject extends ObjectTemplate {
 			boolean blockable, boolean pushable, boolean activable,
 			boolean killable) {
 		super(world, shape, mass, blockable, pushable, activable, killable);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

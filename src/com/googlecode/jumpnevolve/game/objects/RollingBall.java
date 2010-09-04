@@ -6,6 +6,7 @@ import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -21,7 +22,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * 
- * Beschreibung: Ein lebender Ball, der rollt
+ * Beschreibung: Ein lebender Ball (Radius: 65), der rollt
  * 
  * Spezifikationen: blockbar, nicht schiebbar
  * 
@@ -29,7 +30,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * Aggressivitäten: gegen alle Gegner (EnemyTemplate) beim Draufspringen
  * 
- * Immunitäten: keine
+ * Immunitäten: keine1
  * 
  * Aktivierung: keine
  * 
@@ -45,37 +46,34 @@ public class RollingBall extends FigureTemplate {
 	private static final long serialVersionUID = -6066789739733255353L;
 
 	public RollingBall(World world, Vector position) {
-		super(world, shape, mass, true, true, true);
-		// FIXME: Shape erstellen
-		// TODO: Masse festlegen
+		super(world, new Circle(position, 65), 5.0f, true, true, true);
+		// TODO: Masse in Ordunng?
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		// Tod überprüfen
 		if (this.isAlive() == false) {
-			this.replace(this.getLastSave()); // Zurücksetzen zum letzten
-			// Speicherort
-
-			// Bei PlayerTemplate replace() und getLastSave() sowie
-			// newSavePlace() erstellen
+			this.replace(this.getLastSave());
+			// Zurücksetzen zum letzten Speicherort
 
 			this.setAlive(true); // Wiederbeleben
 
 		}
 		// Bewegungen
-		if (input.RIGHT) {
-			this.setVelocity(new Vector(3, this.getVelocity().y)); // Nach
-			// rechts
-			// laufen
-		} else if (input.RIGHT) {
-			this.setVelocity(new Vector(-3, this.getVelocity().y)); // Nach
-			// links
-			// laufen
+		if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
+			this.setVelocity(new Vector(3, this.getVelocity().y));
+			// Nach rechts laufen
+		} else if (input.isKeyDown(Input.KEY_LEFT)
+				|| input.isKeyDown(Input.KEY_S)) {
+			this.setVelocity(new Vector(-3, this.getVelocity().y));
+			// Nach links laufen
 		}
 
-		if (input.UP && this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(new Vector(this.getVelocity().x, 0.5f * 9.81f));
+		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
+				&& this.isWayBlocked(Shape.UNTEN)) {
+			this.setVelocity(new Vector(this.getVelocity().x,
+					0.5f * 9.81f * this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
 		// Schwerkraft
@@ -96,4 +94,5 @@ public class RollingBall extends FigureTemplate {
 		}
 	}
 
+	// TODO: draw-Methode einfügen
 }

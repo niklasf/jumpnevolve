@@ -5,7 +5,7 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
-import com.googlecode.jumpnevolve.math.Rectangle;;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -14,7 +14,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * Spezifikationen: blockbar, nicht schiebbar
  * 
- * Bewegungen: Masse = 1; vertikal in einem bestimmten Bereich --> 50 Pixel pro Sekunde
+ * Bewegungen: Masse = 1; vertikal in einem bestimmten Bereich --> 50 Pixel pro
+ * Sekunde
  * 
  * Aggressivitäten: keine
  * 
@@ -30,9 +31,11 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class Elevator extends ObjectTemplate {
 
 	private final float upEnd, downEnd;
-	
-	public Elevator(World world, Vector position, Vector dimension, float downEnd, float upEnd) {
-		super(world, new Rectangle(position, dimension), 1.0f, true, false, false, false);
+
+	public Elevator(World world, Vector position, Vector dimension,
+			float downEnd, float upEnd) {
+		super(world, new Rectangle(position, dimension), 1.0f, true, false,
+				false, false);
 		this.upEnd = upEnd;
 		this.downEnd = downEnd;
 	}
@@ -47,4 +50,5 @@ public class Elevator extends ObjectTemplate {
 		}
 	}
 
+	// TODO: draw-Methode einfügen
 }
