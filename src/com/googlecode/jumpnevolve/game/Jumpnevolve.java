@@ -34,10 +34,10 @@ public class Jumpnevolve {
 	public static void main(String[] args) {
 		Engine engine = Engine.getInstance();
 		
-		// FIXME: Testwelt, Hauptmenü o.ä erzeugen
-		World world = null;
+		// TODO: Ressource laden, Menüs erzeugen
+		Level level = Levelloader.asyncLoadLevel("demolevel.txt");
 		
-		engine.switchState(world);
+		engine.switchState(level);
 	
 		engine.start();
 	}
