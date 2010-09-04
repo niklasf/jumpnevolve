@@ -233,60 +233,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					this.velocity = new Vector(0, this.velocity.y);
 				}
 			}
-			// FIXME: Richtige Variante der Positionsberechnung auswählen!!!!
-
-			// Alte Möglichkeit (Sehr wahrscheinlich falsch, weil die
-			// Beschleunigung insgesamt mit der Zeit zum Kubik multipliziert
-			// wird
+			
+			// Neue Geschwindigkeit bestimmen 
 			Vector acceleration = this.force.div(this.mass);
-			Vector deltaVelocity = acceleration.mul(this.oldStep * this.oldStep
-					* 0.5f);
+			Vector deltaVelocity = acceleration.mul(this.oldStep);
 			this.velocity = this.velocity.add(deltaVelocity);
+			 
+			// Entsprechend die neue Position berechnen
 			Vector newPos = this.shape.getCenter().add(
-					this.velocity.mul(this.oldStep));
-
-			/*
-			 * Neue Möglichkeit 1:
-			 * 
-			 * Wahrscheinlich auch falsch, da die Beschleunigung nicht mit 0.5
-			 * multipliziert wird. Der Ansatz ist folgender: Man ändert die
-			 * Geschwindigkeit gemäß v = a * t + v0 und vergisst die
-			 * Beschleunigung bei der Berechnung der Position...
-			 * 
-			 * 
-			 * Vector acceleration = this.force.div(this.mass);
-			 * 
-			 * Vector deltaVelocity = acceleration.mul(this.oldStep);
-			 * 
-			 * this.velocity = this.velocity.add(deltaVelocity);
-			 * 
-			 * Vector newPos = this.shape.getCenter().add(
-			 * this.velocity.mul(this.oldStep));
-			 */
-
-			/*
-			 * Neue Möglichkeit 2:
-			 * 
-			 * Ich glaube, zwar umständlich aber richtig. Die Formel s = 1/2 * a
-			 * * t^2 + v0*t + s0 wird direkt so ausgeführt. Die Geschwindigkeit
-			 * wird erst am Ende neu gesetzt.
-			 * 
-			 * Anmerkung: Das Vorgezogene Multiplizieren der Beschleunigung mit
-			 * der Zeit wird gemacht, um sich diesen Schritt einmal zu ersparen
-			 * (er wird bei v = a * t + v0 am Ende ausgeführt und in der Formel
-			 * s = 1/2 * a * t^2 + v0*t + s0 ist er auch enthalten
-			 * 
-			 * Vector acceleration = this.force.div(this.mass);
-			 * 
-			 * Vector deltaVelocity = acceleration.mul(this.oldStep);
-			 * 
-			 * Vector newPos = this.shape.getCenter().add(
-			 * this.velocity.mul(this.oldStep)).add(
-			 * deltaVelocity.mul(this.oldStep * 0.5f));
-			 * 
-			 * this.velocity = this.velocity.add(deltaVelocity);
-			 */
-
+			this.velocity.mul(this.oldStep));
+			
 			// Neue Form bestimmen
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
