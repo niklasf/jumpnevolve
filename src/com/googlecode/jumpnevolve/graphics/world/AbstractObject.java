@@ -110,10 +110,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param living
 	 *            Ob das Objekt lebt
 	 * @param activable
-	 *            Ob das Objekt ein anderes bestimmtes Objekt aktivieren kann,
-	 *            für diesen Fall muss
-	 *            {@link #setActivatingObject(AbstractObject object)} aufgerufen
-	 *            werden
+	 *            Ob das Objekt ein anderes bestimmtes Objekt aktivieren kann.
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean living,

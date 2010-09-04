@@ -17,6 +17,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public abstract class FigureTemplate extends AbstractObject {
 
+	private static final long serialVersionUID = 1396199934877069892L;
+
 	private Vector save;
 
 	public FigureTemplate(World world, Shape shape, float mass,

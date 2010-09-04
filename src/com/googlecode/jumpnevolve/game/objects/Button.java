@@ -3,14 +3,11 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.FigureTemplate;
-import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
-import com.sun.corba.se.impl.interceptors.PICurrent;
 
 /**
  * 
@@ -33,6 +30,8 @@ import com.sun.corba.se.impl.interceptors.PICurrent;
  * 
  */
 public class Button extends ActivatingObject {
+
+	private static final long serialVersionUID = 7682200558867723370L;
 
 	private Timer remainingTime = new Timer();
 	private final float activatingTime;

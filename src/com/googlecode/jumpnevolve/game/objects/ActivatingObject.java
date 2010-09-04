@@ -9,6 +9,8 @@ import com.googlecode.jumpnevolve.math.Shape;
 
 public abstract class ActivatingObject extends ObjectTemplate {
 
+	private static final long serialVersionUID = -1120481829739625560L;
+	
 	private ArrayList<AbstractObject> objectsToActivate = new ArrayList<AbstractObject>();
 
 	public ActivatingObject(World world, Shape shape, float mass,

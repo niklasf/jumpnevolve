@@ -1,7 +1,5 @@
 package com.googlecode.jumpnevolve.game.objects;
 
-import java.awt.GraphicsDevice;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 

@@ -2,19 +2,24 @@ package com.googlecode.jumpnevolve.game;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.newdawn.slick.util.Log;
 
-import com.googlecode.jumpnevolve.game.objects.*;
+import com.googlecode.jumpnevolve.game.objects.ActivatingObject;
+import com.googlecode.jumpnevolve.game.objects.Button;
+import com.googlecode.jumpnevolve.game.objects.Door;
+import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.Ground;
+import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
+import com.googlecode.jumpnevolve.game.objects.KillingMachine;
+import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.game.objects.Soldier;
+import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -55,8 +60,8 @@ public class Levelloader {
 						Integer.parseInt(firstLineSplit[2]), Integer
 								.parseInt(firstLineSplit[3]));
 				// Einstellungen vornehmen
-				String secondLine = levelFileReader.readLine();
-				String[] secondLineSplit = secondLine.split("_");
+				//String secondLine = levelFileReader.readLine();
+				//String[] secondLineSplit = secondLine.split("_");
 				if (firstLineSplit[0].equals("Leveleinstellungen") == false) {
 					// FIXME: Fehlermeldung ausgeben und abbrechen
 				}

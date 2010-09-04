@@ -19,6 +19,8 @@ import com.googlecode.jumpnevolve.math.Shape;
  */
 public abstract class EnemyTemplate extends AbstractObject {
 
+	private static final long serialVersionUID = 6877195164492992576L;
+
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
 		super(world, shape, mass, blockable, false, true, false, true);
 	}

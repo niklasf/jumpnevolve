@@ -6,7 +6,6 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -31,6 +30,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class Door extends ObjectTemplate {
+
+	private static final long serialVersionUID = -1980816280681808337L;
 
 	private boolean opneningState = false;
 

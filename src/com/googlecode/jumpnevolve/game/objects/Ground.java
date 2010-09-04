@@ -5,18 +5,8 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.GroundTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
-import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.math.Rectangle;
-
-;
-
-/**
- * Normaler Boden, der so benutzt werden oder modifizeirt werden kann.
- * 
- * @author Erik Wagner
- * 
- */
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * 

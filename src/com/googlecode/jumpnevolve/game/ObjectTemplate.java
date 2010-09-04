@@ -16,6 +16,8 @@ import com.googlecode.jumpnevolve.math.Shape;
  */
 public abstract class ObjectTemplate extends AbstractObject {
 
+	private static final long serialVersionUID = 2329577111424159238L;
+
 	public ObjectTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean activable,
 			boolean killable) {

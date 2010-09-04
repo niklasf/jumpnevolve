@@ -18,7 +18,6 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.Engine;
-import com.googlecode.jumpnevolve.graphics.world.World;
 
 /**
  * @author niklas
