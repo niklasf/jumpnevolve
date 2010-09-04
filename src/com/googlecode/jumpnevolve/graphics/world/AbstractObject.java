@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.objects.RollingBall;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -164,6 +165,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		for (LinkedList<AbstractObject> neighboursSub : this.world
 				.getNeighbours(this)) {
 			for (AbstractObject other : neighboursSub) {
+				// Nicht mit sich selbst testen
+				if(other == this) continue;
+				
 				// Doppelte Tests vermeiden
 				addDone(other);
 				other.addDone(this);
@@ -200,12 +204,17 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					this.velocity = new Vector(this.velocity.x, 0);
 				}
 			}
-			if (this.isWayBlocked(Shape.UNTEN)) {
+			if (this.isWayBlocked(Shape.UNTEN) || this.isWayBlocked(Shape.OBEN)) {
+				// FIXME: Offensichtlich ist entweder getTouchedSideOfThis,
+				// this.isWayBlocked oder this.blockWay nicht OK.
+				// Die Kollisionserkennung passt jedenfalls - um das zu zeigen
+				// habe ich this.isWayBlocked(Shape.OBEN) eingefügt,
+				// was hier nicht hingehört, aber komischerweise zutrifft.
 				if (this.getForce().y > 0) {
 					this.force = new Vector(this.force.x, 0);
 				}
 				if (this.getVelocity().y > 0) {
-					this.velocity = new Vector(this.velocity.x, 0);
+					this.velocity = this.velocity.modifyY(0);
 				}
 			}
 			if (this.isWayBlocked(Shape.RECHTS)) {
@@ -571,6 +580,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Der Kollisionspartner
 	 */
 	public void onCrash(AbstractObject other) {
+		if(this instanceof RollingBall) System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
 		if (this.blockable) {

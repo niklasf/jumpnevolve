@@ -189,7 +189,6 @@ public class Rectangle implements Shape {
 			// http://www.back-side.net/codingrects.html
 			Rectangle other = (Rectangle) shape;
 			Rectangle bounding = other.getBoundingRectangle(this);
-			System.out.println(bounding);
 			return bounding.width < this.width + other.width
 					&& bounding.height < this.height + other.height;
 		} else {

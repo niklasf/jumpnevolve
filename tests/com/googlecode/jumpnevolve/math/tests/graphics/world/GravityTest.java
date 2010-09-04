@@ -36,8 +36,4 @@ public class GravityTest {
 		engine.switchState(world);
 		engine.start();
 	}
-
-	// FIXME: Habe den Test laufen lassen, nachdem der RollingBall auf Radius
-	// 0.65 verkleinert wurde --> Ergebnis: Es scheint so, als wären noch Fehler
-	// in der Berechung von Kollision und Richtung der Kollision enthalten
 }
