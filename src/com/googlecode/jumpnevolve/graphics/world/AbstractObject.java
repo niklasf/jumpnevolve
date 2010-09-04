@@ -359,7 +359,17 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
-		// TODO: Mit Inhalt füllen
+		byte direction = this.getShape().getTouchedSideOfThis(
+				blocker.getShape());
+		if (direction == Shape.OBEN) {
+			this.blockedWays[0] = true;
+		} else if (direction == Shape.RECHTS) {
+			this.blockedWays[1] = true;
+		} else if (direction == Shape.LINKS) {
+			this.blockedWays[2] = true;
+		} else if (direction == Shape.UNTEN) {
+			this.blockedWays[3] = true;
+		}
 	}
 
 	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...

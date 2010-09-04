@@ -46,7 +46,7 @@ public class RollingBall extends FigureTemplate {
 	private static final long serialVersionUID = -6066789739733255353L;
 
 	public RollingBall(World world, Vector position) {
-		super(world, new Circle(position, 65), 5.0f, true, true, true);
+		super(world, new Circle(position, 0.65f), 5.0f, true, true, true);
 		// TODO: Masse in Ordunng?
 	}
 
