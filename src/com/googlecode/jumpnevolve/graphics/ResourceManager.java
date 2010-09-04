@@ -48,7 +48,7 @@ public class ResourceManager {
 
 	private String normalizeIdentifier(String identifier) {
 		if (!identifier.startsWith("resources/")) {
-			return identifier;
+			return "resources/" + identifier;
 		} else {
 			throw new ResourceError(
 					"Resource identifiers should not start with resources/");
