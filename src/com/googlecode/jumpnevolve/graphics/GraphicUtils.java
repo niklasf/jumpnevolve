@@ -18,6 +18,7 @@
 package com.googlecode.jumpnevolve.graphics;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -97,5 +98,12 @@ public class GraphicUtils {
 	public static void draw(Graphics g, Vector position, Vector vector) {
 		g.drawLine(position.x, position.y, position.x + vector.x, position.y
 				+ vector.y);
+	}
+	
+	/**
+	 * Zeichnet eine Textur
+	 */
+	public static void texture(Graphics g, Shape shape, Image image) {
+		g.texture(shape.toSlickShape(), image, 0.5f, 0.5f);
 	}
 }

@@ -101,6 +101,11 @@ public interface Shape extends Serializable {
 	 *         unterscheidet. Die Figur selbst wird nicht verändert.
 	 */
 	public Shape modifyCenter(Vector center);
+	
+	/**
+	 * @return Eine Slick Version dieser Form.
+	 */
+	public org.newdawn.slick.geom.Shape toSlickShape();
 
 	/*
 	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
