@@ -16,6 +16,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  * anderes Objekt treffen.
  * </p>
  * 
+ * FIXME: Von 100 Zusammenstößen zwischen den Soldaten wird mindestens einer
+ * so gelöst, dass sie aneinander vorbeilaufen anstatt abzuprallen.
+ * Möglichen Fehler in getTouchedSideOfThis korrigieren.s
+ * 
  * @author Niklas Fiekas
  */
 public class WalkingSoldierTest {
