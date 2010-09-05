@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.math.tests.graphics.world;
+package com.googlecode.jumpnevolve.tests.graphics.world;
 
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
