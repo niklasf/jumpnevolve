@@ -41,9 +41,6 @@ public class WalkingSoldier extends Soldier {
 	protected void specialSettingsPerRound(Input input) {
 		super.specialSettingsPerRound(input);
 		// TODO: Geschwindigkeiten anpassen
-		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(Vector.RIGHT.mul(1.0f));
-		}
 		if (this.isWayBlocked(Shape.RECHTS)) {
 			this.setVelocity(Vector.LEFT.mul(1.0f));
 			// Richtung von Rechts nach Links ändern
@@ -51,6 +48,9 @@ public class WalkingSoldier extends Soldier {
 		if (this.isWayBlocked(Shape.LINKS)) {
 			this.setVelocity(Vector.RIGHT.mul(1.0f));
 			// Richtung von Links nach Rechts ändern
+		}
+		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.UNTEN)) {
+			this.setVelocity(Vector.RIGHT.mul(1.0f));
 		}
 	}
 }

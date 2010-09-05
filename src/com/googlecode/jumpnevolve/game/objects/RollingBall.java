@@ -61,6 +61,7 @@ public class RollingBall extends FigureTemplate {
 
 		}
 		// Bewegungen
+		this.setVelocity(new Vector(0, this.getVelocity().y));
 		if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
 			this.setVelocity(new Vector(3, this.getVelocity().y));
 			// Nach rechts laufen
