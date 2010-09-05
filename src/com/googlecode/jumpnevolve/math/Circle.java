@@ -173,9 +173,9 @@ public class Circle implements Shape {
 				}
 			}
 		} else if (other instanceof Rectangle) {
-			if (other.getLowerEnd() > this.getCenter().y - this.radius * 0.7f) {
+			if (other.getLowerEnd() < this.getCenter().y - this.radius * 0.7f) {
 				return Shape.OBEN;
-			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
+			} else if (other.getUpperEnd() > this.getCenter().y + this.radius
 					* 0.7f) {
 				return Shape.UNTEN;
 			} else if (other.getLeftEnd() > this.getCenter().x + this.radius
@@ -215,6 +215,7 @@ public class Circle implements Shape {
 
 	@Override
 	public org.newdawn.slick.geom.Shape toSlickShape() {
-		return new org.newdawn.slick.geom.Circle(this.position.x, this.position.y, this.radius);
+		return new org.newdawn.slick.geom.Circle(this.position.x,
+				this.position.y, this.radius);
 	}
 }

@@ -166,8 +166,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				.getNeighbours(this)) {
 			for (AbstractObject other : neighboursSub) {
 				// Nicht mit sich selbst testen
-				if(other == this) continue;
-				
+				if (other == this)
+					continue;
+
 				// Doppelte Tests vermeiden
 				addDone(other);
 				other.addDone(this);
@@ -204,12 +205,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					this.velocity = new Vector(this.velocity.x, 0);
 				}
 			}
-			if (this.isWayBlocked(Shape.UNTEN) || this.isWayBlocked(Shape.OBEN)) {
-				// FIXME: Offensichtlich ist entweder getTouchedSideOfThis,
-				// this.isWayBlocked oder this.blockWay nicht OK.
-				// Die Kollisionserkennung passt jedenfalls - um das zu zeigen
-				// habe ich this.isWayBlocked(Shape.OBEN) eingefügt,
-				// was hier nicht hingehört, aber komischerweise zutrifft.
+			if (this.isWayBlocked(Shape.UNTEN)) {
 				if (this.getForce().y > 0) {
 					this.force = new Vector(this.force.x, 0);
 				}
@@ -233,16 +229,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					this.velocity = new Vector(0, this.velocity.y);
 				}
 			}
-			
-			// Neue Geschwindigkeit bestimmen 
+
+			// Neue Geschwindigkeit bestimmen
 			Vector acceleration = this.force.div(this.mass);
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
 			this.velocity = this.velocity.add(deltaVelocity);
-			 
+
 			// Entsprechend die neue Position berechnen
 			Vector newPos = this.shape.getCenter().add(
-			this.velocity.mul(this.oldStep));
-			
+					this.velocity.mul(this.oldStep));
+
 			// Neue Form bestimmen
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
@@ -330,9 +326,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			this.blockedWays[0] = true;
 		} else if (direction == Shape.RECHTS) {
 			this.blockedWays[1] = true;
-		} else if (direction == Shape.LINKS) {
-			this.blockedWays[2] = true;
 		} else if (direction == Shape.UNTEN) {
+			this.blockedWays[2] = true;
+		} else if (direction == Shape.LINKS) {
 			this.blockedWays[3] = true;
 		}
 	}
@@ -536,7 +532,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Der Kollisionspartner
 	 */
 	public void onCrash(AbstractObject other) {
-		if(this instanceof RollingBall) System.out.println("Crash!" + other.getShape());
+		if (this instanceof RollingBall)
+			System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
 		if (this.blockable) {
