@@ -307,6 +307,27 @@ public class Rectangle implements Shape {
 		} else if (this.isPointInThis(other.getHighRightCorner())) {
 			return Shape.UNTEN_LINKS;
 		} else {
+			// Rechtecke umgekehrt prüfen und den entgegengesetzten Wert
+			// zurückgeben
+			if (other.isPointInThis(this.getHighLeftCorner())) {
+				if (other.isPointInThis(this.getHighRightCorner())) {
+					return -Shape.UNTEN;
+				} else if (other.isPointInThis(this.getLowLeftCorner())) {
+					return -Shape.RECHTS;
+				}
+				return -Shape.UNTEN_RECHTS;
+			} else if (other.isPointInThis(this.getLowRightCorner())) {
+				if (other.isPointInThis(this.getHighRightCorner())) {
+					return -Shape.LINKS;
+				} else if (other.isPointInThis(this.getLowLeftCorner())) {
+					return -Shape.OBEN;
+				}
+				return -Shape.OBEN_LINKS;
+			} else if (other.isPointInThis(this.getLowLeftCorner())) {
+				return -Shape.OBEN_RECHTS;
+			} else if (other.isPointInThis(this.getHighRightCorner())) {
+				return -Shape.UNTEN_LINKS;
+			}
 			return Shape.KEIN_ERGEBNIS;
 		}
 	}
@@ -360,6 +381,7 @@ public class Rectangle implements Shape {
 
 	@Override
 	public org.newdawn.slick.geom.Shape toSlickShape() {
-		return new org.newdawn.slick.geom.Rectangle(this.x, this.y, this.width, this.height);
+		return new org.newdawn.slick.geom.Rectangle(this.x, this.y, this.width,
+				this.height);
 	}
 }
