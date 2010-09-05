@@ -208,7 +208,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			}
 			if (this.isWayBlocked(Shape.UNTEN)) {
 				if (this.getForce().y > 0) {
-					this.force = new Vector(this.force.x, 0);
+					this.force = new Vector(this.force.x, -0.1f);
 				}
 				if (this.getVelocity().y > 0) {
 					this.velocity = this.velocity.modifyY(0);
