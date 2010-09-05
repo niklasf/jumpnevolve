@@ -30,10 +30,11 @@ public class GravityTest {
 
 		World world = new World(10, 10, 1);
 
-		world.add(new Ground(world, new Vector(1.5f, 2.0f), new Vector(1.0f,
+		world.add(new Ground(world, new Vector(1.5f, 2.5f), new Vector(3.0f,
 				0.5f)));
-		world.add(new JumpingSoldier(world, new Vector(1.5f, 1.0f)));
-
+		world.add(new JumpingSoldier(world, new Vector(0.5f, 1.0f)));
+		world.add(new RollingBall(world, new Vector(2.5f, 1.0f)));
+		
 		engine.switchState(world);
 		engine.start();
 	}
