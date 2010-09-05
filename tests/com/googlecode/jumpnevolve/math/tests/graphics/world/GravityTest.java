@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.math.tests.graphics.world;
 
 import com.googlecode.jumpnevolve.game.objects.Ground;
+import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.RollingBall;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.world.World;
@@ -31,7 +32,7 @@ public class GravityTest {
 
 		world.add(new Ground(world, new Vector(1.5f, 2.0f), new Vector(1.0f,
 				0.5f)));
-		world.add(new RollingBall(world, new Vector(1.5f, 1.0f)));
+		world.add(new JumpingSoldier(world, new Vector(1.5f, 1.0f)));
 
 		engine.switchState(world);
 		engine.start();

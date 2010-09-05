@@ -39,7 +39,9 @@ public class JumpingSoldier extends Soldier {
 	protected void specialSettingsPerRound(Input input) {
 		super.specialSettingsPerRound(input);
 		if (this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(Vector.UP.mul(39.24f)); // Sprung nach oben
+			this.setVelocity(Vector.UP.mul(this.getMass() * 0.1f * 9.81f)); // Sprung
+																			// nach
+																			// oben
 		}
 	}
 }

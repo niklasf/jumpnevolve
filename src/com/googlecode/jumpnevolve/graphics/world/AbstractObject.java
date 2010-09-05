@@ -25,6 +25,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -322,6 +323,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void blockWay(AbstractObject blocker) {
 		byte direction = this.getShape().getTouchedSideOfThis(
 				blocker.getShape());
+		if (this instanceof Soldier)
+			System.out.println("Crash-Richtung: " + direction);
 		if (direction == Shape.OBEN) {
 			this.blockedWays[0] = true;
 		} else if (direction == Shape.RECHTS) {
@@ -532,7 +535,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Der Kollisionspartner
 	 */
 	public void onCrash(AbstractObject other) {
-		if (this instanceof RollingBall)
+		if (this instanceof Soldier)
 			System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
