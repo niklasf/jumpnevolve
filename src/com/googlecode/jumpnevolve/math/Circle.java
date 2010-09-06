@@ -160,37 +160,71 @@ public class Circle implements Shape {
 	public byte getTouchedSideOfThis(Shape other) {
 		if (other instanceof Circle) {
 			Vector direction = other.getCenter().sub(this.getCenter());
-			float absY = Math.abs(direction.y);
-			if (direction.x > absY) {
-				return Shape.RECHTS;
-			} else if (direction.x < -absY) {
-				return Shape.LINKS;
+			if (direction.x > 0) {
+				if (direction.y > 0) {
+					return Shape.UNTEN_RECHTS;
+				} else if (direction.y < 0) {
+					return Shape.OBEN_RECHTS;
+				} else {
+					return Shape.RECHTS;
+				}
+			} else if (direction.x < 0) {
+				if (direction.y > 0) {
+					return Shape.UNTEN_LINKS;
+				} else if (direction.y < 0) {
+					return Shape.OBEN_RECHTS;
+				} else {
+					return Shape.LINKS;
+				}
 			} else {
 				if (direction.y > 0) {
 					return Shape.UNTEN;
-				} else {
+				} else if (direction.y < 0) {
 					return Shape.OBEN;
+				} else {
+					return Shape.KEIN_ERGEBNIS;
 				}
 			}
 		} else if (other instanceof Rectangle) {
-			if (other.getLowerEnd() < this.getCenter().y - this.radius * 0.7f) {
-				return Shape.OBEN;
-			} else if (other.getUpperEnd() > this.getCenter().y + this.radius
-					* 0.7f) {
-				return Shape.UNTEN;
-			} else if (other.getLeftEnd() > this.getCenter().x + this.radius
-					* 0.7f) {
-				return Shape.RECHTS;
-			} else if (other.getRightEnd() < this.getCenter().x - this.radius
-					* 0.7f) {
-				return Shape.LINKS;
+			if (other.getLowerEnd() > this.getCenter().y - this.radius
+					&& other.getLowerEnd() < this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().y - this.radius
+						&& other.getRightEnd() < this.getCenter().y) {
+					return Shape.OBEN_LINKS;
+				} else if (other.getLeftEnd() < this.getCenter().y
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().y) {
+					return Shape.OBEN_RECHTS;
+				} else {
+					return Shape.OBEN;
+				}
+			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
+					&& other.getUpperEnd() > this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().y - this.radius
+						&& other.getRightEnd() < this.getCenter().y) {
+					return Shape.UNTEN_LINKS;
+				} else if (other.getLeftEnd() < this.getCenter().y
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().y) {
+					return Shape.UNTEN_RECHTS;
+				} else {
+					return Shape.UNTEN;
+				}
 			} else {
-				Rectangle x = new Rectangle(this.getCenter(),
-						this.radius * 0.35f, this.radius * 0.35f);
-				return x.getTouchedSideOfThis(other);
+				if (other.getRightEnd() > this.getCenter().y - this.radius
+						&& other.getRightEnd() < this.getCenter().y) {
+					return Shape.LINKS;
+				} else if (other.getLeftEnd() < this.getCenter().y
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().y) {
+					return Shape.RECHTS;
+				} else {
+					return Shape.KEIN_ERGEBNIS;
+				}
 			}
+		} else {
+			return this.getTouchedSideOfThis(other.getBestCircle());
 		}
-		return 0;
 	}
 
 	@Override

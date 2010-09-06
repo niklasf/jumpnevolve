@@ -192,6 +192,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Dabei wird darauf geachtet, nicht in geblockt Seiten zu laufen.
 	 */
 	public void endRound() {
+		if (this.getPosition().y > 100) {
+			System.out.println("Mist....");
+		}
 		if (this.mass != 0.0f) { // Beweglich
 			// Bewegungsgleichung lösen:
 			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
@@ -325,6 +328,39 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				blocker.getShape());
 		if (this instanceof Soldier)
 			System.out.println("Crash-Richtung: " + direction);
+		switch (direction) {
+		case Shape.OBEN:
+			this.blockedWays[0] = true;
+			break;
+		case Shape.OBEN_RECHTS:
+			this.blockedWays[0] = true;
+			this.blockedWays[1] = true;
+			break;
+		case Shape.RECHTS:
+			this.blockedWays[1] = true;
+			break;
+		case Shape.UNTEN_RECHTS:
+			this.blockedWays[1] = true;
+			this.blockedWays[2] = true;
+			break;
+		case Shape.UNTEN:
+			this.blockedWays[2] = true;
+			break;
+		case Shape.UNTEN_LINKS:
+			this.blockedWays[2] = true;
+			this.blockedWays[3] = true;
+			break;
+		case Shape.LINKS:
+			this.blockedWays[3] = true;
+			break;
+		case Shape.OBEN_LINKS:
+			this.blockedWays[3] = true;
+			this.blockedWays[0] = true;
+
+			break;
+		default:
+			break;
+		}
 		if (direction == Shape.OBEN) {
 			this.blockedWays[0] = true;
 		} else if (direction == Shape.RECHTS) {
