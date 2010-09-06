@@ -188,24 +188,24 @@ public class Circle implements Shape {
 		} else if (other instanceof Rectangle) {
 			if (other.getLowerEnd() > this.getCenter().y - this.radius
 					&& other.getLowerEnd() < this.getCenter().y) {
-				if (other.getRightEnd() > this.getCenter().y - this.radius
-						&& other.getRightEnd() < this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
 					return Shape.OBEN_LINKS;
-				} else if (other.getLeftEnd() < this.getCenter().y
+				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
-						&& other.getLeftEnd() > this.getCenter().y) {
+						&& other.getLeftEnd() > this.getCenter().x) {
 					return Shape.OBEN_RECHTS;
 				} else {
 					return Shape.OBEN;
 				}
 			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
 					&& other.getUpperEnd() > this.getCenter().y) {
-				if (other.getRightEnd() > this.getCenter().y - this.radius
-						&& other.getRightEnd() < this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
 					return Shape.UNTEN_LINKS;
-				} else if (other.getLeftEnd() < this.getCenter().y
+				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
-						&& other.getLeftEnd() > this.getCenter().y) {
+						&& other.getLeftEnd() > this.getCenter().x) {
 					return Shape.UNTEN_RECHTS;
 				} else {
 					return Shape.UNTEN;

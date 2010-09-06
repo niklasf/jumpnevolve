@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.game.objects.RollingBall;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.Drawable;
@@ -326,7 +327,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void blockWay(AbstractObject blocker) {
 		byte direction = this.getShape().getTouchedSideOfThis(
 				blocker.getShape());
-		if (this instanceof Soldier)
+		if (this instanceof FigureTemplate)
 			System.out.println("Crash-Richtung: " + direction);
 		switch (direction) {
 		case Shape.OBEN:

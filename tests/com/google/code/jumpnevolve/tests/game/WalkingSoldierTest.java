@@ -30,6 +30,7 @@ public class WalkingSoldierTest {
 	 */
 	public static void main(String[] args) {
 		Engine engine = Engine.getInstance();
+		Engine.getInstance().setTargetFrameRate(100);
 
 		World world = new World(10, 10, 1);
 

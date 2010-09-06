@@ -27,6 +27,7 @@ public class GravityTest {
 	 */
 	public static void main(String[] args) {
 		Engine engine = Engine.getInstance();
+		Engine.getInstance().setTargetFrameRate(100);
 
 		World world = new World(10, 10, 1);
 
@@ -34,7 +35,7 @@ public class GravityTest {
 				0.5f)));
 		world.add(new JumpingSoldier(world, new Vector(0.5f, 1.0f)));
 		world.add(new RollingBall(world, new Vector(2.5f, 1.0f)));
-		
+
 		engine.switchState(world);
 		engine.start();
 	}
