@@ -1,4 +1,4 @@
-Leveldimensionen_100_100_10
+Leveldimensionen_100_100_1
 Leveleinstellungen_10_500_RollingBall,Cross
 RollingBall_10|10_none_none_none
 Ground_10|20_none_none_9|2

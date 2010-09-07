@@ -7,12 +7,14 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 public class LevelTest {
 
 	public static void main(String[] args) {
-		
+
 		Engine engine = Engine.getInstance();
-		
-		Level level = Levelloader.asyncLoadLevel("resources/demo-levels/test.txt");
+		Engine.getInstance().setTargetFrameRate(100);
+
+		Level level = Levelloader
+				.asyncLoadLevel("resources/demo-levels/test.txt");
 		engine.switchState(level);
-		
+
 		engine.start();
 	}
 }

@@ -56,6 +56,8 @@ public class World extends AbstractState {
 
 	private Camera camera;
 
+	private float zoomX = ZOOM, zoomY = ZOOM;
+
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
 		this.width = width;
@@ -169,10 +171,19 @@ public class World extends AbstractState {
 		return returns;
 	}
 
+	public void setZoom(float zoomX, float zoomY) {
+		this.zoomX = zoomX;
+		this.zoomY = zoomY;
+	}
+
+	public void setZoom(float zoom) {
+		setZoom(zoom, zoom);
+	}
+
 	@Override
 	public void draw(Graphics g) {
 		// TODO: Zoom und Kameraeinstellungen prüfen
-		g.scale(ZOOM, ZOOM);
+		g.scale(zoomX, zoomY);
 
 		// Kameraeinstellung anwenden
 		if (this.camera != null) {

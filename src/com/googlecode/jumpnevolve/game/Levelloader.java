@@ -65,6 +65,16 @@ public class Levelloader {
 				if (secondLineSplit[0].equals("Leveleinstellungen") == false) {
 					// FIXME: Fehlermeldung ausgeben und abbrechen
 				}
+				// Zoomeinstellungen
+				String[] zoom = secondLineSplit[1].split(",");
+				if (zoom.length == 1) {
+					this.level.setZoom(this.toFloat(zoom[0]));
+				} else if (zoom.length == 2) {
+					this.level.setZoom(this.toFloat(zoom[0]), this
+							.toFloat(zoom[1]));
+				} else {
+					// FIXME: Fehlermeldung
+				}
 				// FIXME: Einstellungen für das Level vornehmen
 				// Beispiele: verfügbare Charaktere, Timer etc.
 

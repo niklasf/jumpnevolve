@@ -73,12 +73,12 @@ public class RollingBall extends FigureTemplate {
 
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
 				&& this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(new Vector(this.getVelocity().x,
-					0.5f * 9.81f * this.getMass()));
+			this.setVelocity(new Vector(this.getVelocity().x, -0.5f * 9.81f
+					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
 		// Schwerkraft
-		this.applyForce(Vector.DOWN.mul(9.81f));
+		this.applyForce(Vector.DOWN.mul(9.81f * this.getMass()));
 	}
 
 	@Override
