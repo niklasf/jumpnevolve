@@ -75,52 +75,48 @@ public class Levelloader {
 				ArrayList<AbstractObject> otherObjects = new ArrayList<AbstractObject>();
 
 				String current = levelFileReader.readLine();
-				// FIXME: Umstrukurierung vornehmen
 				// Neue Struktur:
 				// Klassenname_Koordinate_NameDesObjekts_NamenDerZuAktivierendenObjekte_Argumente
 				// "none" beachten, als Platzhalter, wenn bestimmte Dinge nicht
 				// von Nöten sind
+				// mehrere Argumente werden durch "," getrennt
 				while (current != null) { // Pseudo-Methode ersetzen
 					String[] currentSplit = current.split("_");
-					String[] currentArguments = currentSplit[2].split(",");
-					current = levelFileReader.readLine();
-					if (currentSplit[0].equals("WalkingSoldier")) {
-						otherObjects.add(new WalkingSoldier(this.level, this
-								.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("JumpingSoldier")) {
-						otherObjects.add(new JumpingSoldier(this.level, this
-								.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("Soldier")) {
-						otherObjects.add(new Soldier(this.level, this
-								.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("KillingMachine")) {
-						otherObjects.add(new KillingMachine(this.level, this
-								.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("Button")) {
-						activatingObjects.add(new Button(this.level, this
-								.toVector(currentSplit[1]), this
-								.toFloat(currentArguments[0])));
-						String[] argument = new String[currentArguments.length - 1];
-						for (int i = 1; i < currentArguments.length; i++) {
-							argument[i - 1] = currentArguments[i];
-						}
-						argumtensForActivating.add(argument);
-					} else if (currentSplit[0].equals("Door")) {
-						activableObjects.put(currentArguments[0], new Door(
-								this.level, this.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("Ground")) {
-						otherObjects.add(new Ground(this.level, this
-								.toVector(currentSplit[1]), this
-								.toVector(currentArguments[0])));
-					} else if (currentSplit[0].equals("RollingBall")) {
-						otherObjects.add(new RollingBall(this.level, this
-								.toVector(currentSplit[1])));
-					} else if (currentSplit[0].equals("Elevator")) {
-						otherObjects.add(new Elevator(this.level, this
-								.toVector(currentSplit[1]), this
-								.toVector(currentArguments[0]), this
-								.toFloat(currentArguments[1]), this
-								.toFloat(currentArguments[2])));
+					String className = currentSplit[0];
+					Vector position = this.toVector(currentSplit[1]);
+					String name = currentSplit[2];
+					String activates = currentSplit[3];
+					String arguments = currentSplit[4];
+
+					if (className.equals("WalkingSoldier")) {
+						otherObjects.add(new WalkingSoldier(this.level,
+								position));
+					} else if (className.equals("JumpingSoldier")) {
+						otherObjects.add(new JumpingSoldier(this.level,
+								position));
+					} else if (className.equals("Soldier")) {
+						otherObjects.add(new Soldier(this.level, position));
+					} else if (className.equals("KillingMachine")) {
+						otherObjects.add(new KillingMachine(this.level,
+								position));
+					} else if (className.equals("Button")) {
+						activatingObjects.add(new Button(this.level, position,
+								this.toFloat(arguments)));
+						argumtensForActivating.add(activates.split(","));
+					} else if (className.equals("Door")) {
+						activableObjects.put(name, new Door(this.level,
+								position));
+					} else if (className.equals("Ground")) {
+						otherObjects.add(new Ground(this.level, position, this
+								.toVector(arguments)));
+					} else if (className.equals("RollingBall")) {
+						otherObjects.add(new RollingBall(this.level, position));
+					} else if (className.equals("Elevator")) {
+						String[] curArgus = arguments.split(",");
+						otherObjects.add(new Elevator(this.level, position,
+								this.toVector(curArgus[0]), this
+										.toFloat(curArgus[1]), this
+										.toFloat(curArgus[2])));
 					}
 					// TODO: Weitere Klassen einfügen
 					// Aktivierenden Objekten, die zu aktivierenden Objekt
@@ -142,6 +138,7 @@ public class Levelloader {
 					for (AbstractObject object : activableObjects.values()) {
 						this.level.add(object);
 					}
+					current = levelFileReader.readLine();
 				}
 			} else if (this.source.toLowerCase().endsWith(".dat")) {
 
