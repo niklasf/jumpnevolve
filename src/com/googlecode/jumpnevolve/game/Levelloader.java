@@ -60,9 +60,9 @@ public class Levelloader {
 						Integer.parseInt(firstLineSplit[2]), Integer
 								.parseInt(firstLineSplit[3]));
 				// Einstellungen vornehmen
-				//String secondLine = levelFileReader.readLine();
-				//String[] secondLineSplit = secondLine.split("_");
-				if (firstLineSplit[0].equals("Leveleinstellungen") == false) {
+				String secondLine = levelFileReader.readLine();
+				String[] secondLineSplit = secondLine.split("_");
+				if (secondLineSplit[0].equals("Leveleinstellungen") == false) {
 					// FIXME: Fehlermeldung ausgeben und abbrechen
 				}
 				// FIXME: Einstellungen für das Level vornehmen
@@ -75,6 +75,11 @@ public class Levelloader {
 				ArrayList<AbstractObject> otherObjects = new ArrayList<AbstractObject>();
 
 				String current = levelFileReader.readLine();
+				// FIXME: Umstrukurierung vornehmen
+				// Neue Struktur:
+				// Klassenname_Koordinate_NameDesObjekts_NamenDerZuAktivierendenObjekte_Argumente
+				// "none" beachten, als Platzhalter, wenn bestimmte Dinge nicht
+				// von Nöten sind
 				while (current != null) { // Pseudo-Methode ersetzen
 					String[] currentSplit = current.split("_");
 					String[] currentArguments = currentSplit[2].split(",");
