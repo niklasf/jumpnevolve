@@ -1,4 +1,7 @@
 Leveldimensionen_100_100_1
-Leveleinstellungen_10_500_RollingBall,Cross
-RollingBall_10|10_none_none_none
-Ground_10|20_none_none_9|2
+Leveleinstellungen_30_500_RollingBall,Cross
+RollingBall_20|10_none_none_none
+Ground_15|20_none_none_10|2
+Ground_26|12_none_none_1|10
+Ground_4|12_none_none_1|10
+WalkingSoldier_10|15_none_none_none

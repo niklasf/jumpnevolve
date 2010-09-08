@@ -327,8 +327,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void blockWay(AbstractObject blocker) {
 		byte direction = this.getShape().getTouchedSideOfThis(
 				blocker.getShape());
-		if (this instanceof FigureTemplate)
-			System.out.println("Crash-Richtung: " + direction);
 		switch (direction) {
 		case Shape.OBEN:
 			this.blockedWays[0] = true;

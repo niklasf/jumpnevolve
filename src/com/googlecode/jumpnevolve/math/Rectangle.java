@@ -125,11 +125,11 @@ public class Rectangle implements Shape {
 	 * 
 	 * @param center
 	 *            Ortsvektor des Mittelpunkts
-	 * @param dimension
-	 *            Vektor, der Breite und Höhe beschreibt
+	 * @param corner
+	 *            Vektor, der vom Zentrum auf eine Ecke des Rechtecks zeigt
 	 */
-	public Rectangle(Vector center, Vector dimension) {
-		this(center, dimension.x, dimension.y);
+	public Rectangle(Vector center, Vector corner) {
+		this(center, corner.x * 2, corner.y * 2);
 	}
 
 	/**
