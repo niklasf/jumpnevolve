@@ -211,12 +211,12 @@ public class Circle implements Shape {
 					return Shape.UNTEN;
 				}
 			} else {
-				if (other.getRightEnd() > this.getCenter().y - this.radius
-						&& other.getRightEnd() < this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
 					return Shape.LINKS;
-				} else if (other.getLeftEnd() < this.getCenter().y
+				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
-						&& other.getLeftEnd() > this.getCenter().y) {
+						&& other.getLeftEnd() > this.getCenter().x) {
 					return Shape.RECHTS;
 				} else {
 					return Shape.KEIN_ERGEBNIS;

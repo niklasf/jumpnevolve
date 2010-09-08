@@ -90,8 +90,7 @@ public class RollingBall extends FigureTemplate {
 	@Override
 	public void onLivingCrash(AbstractObject other) {
 		byte direction = this.getShape().getTouchedSideOfThis(other.getShape());
-		if (other instanceof EnemyTemplate
-				&& (direction == Shape.UNTEN || direction == Shape.UNTEN_LINKS || direction == Shape.UNTEN_RECHTS)) {
+		if (other instanceof EnemyTemplate && direction == Shape.UNTEN) {
 			other.kill(this);
 		}
 	}
