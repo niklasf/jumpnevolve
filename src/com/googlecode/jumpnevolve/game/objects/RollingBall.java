@@ -73,7 +73,7 @@ public class RollingBall extends FigureTemplate {
 
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
 				&& this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(new Vector(this.getVelocity().x, -0.5f * 9.81f
+			this.setVelocity(new Vector(this.getVelocity().x, -0.3f * 9.81f
 					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
@@ -89,11 +89,11 @@ public class RollingBall extends FigureTemplate {
 
 	@Override
 	public void onLivingCrash(AbstractObject other) {
+		byte direction = this.getShape().getTouchedSideOfThis(other.getShape());
 		if (other instanceof EnemyTemplate
-				&& this.getShape().getTouchedSideOfThis(other.getShape()) == Shape.UNTEN) {
+				&& (direction == Shape.UNTEN || direction == Shape.UNTEN_LINKS || direction == Shape.UNTEN_RECHTS)) {
 			other.kill(this);
 		}
 	}
-
 	// TODO: draw-Methode einfügen
 }
