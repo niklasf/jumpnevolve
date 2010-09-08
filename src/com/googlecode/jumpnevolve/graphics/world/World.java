@@ -54,6 +54,8 @@ public class World extends AbstractState {
 
 	private ArrayList<AbstractObject> objects = new ArrayList<AbstractObject>();
 
+	private ArrayList<AbstractObject> deletedObjects = new ArrayList<AbstractObject>();
+
 	private Camera camera;
 
 	private float zoomX = ZOOM, zoomY = ZOOM;
@@ -74,8 +76,12 @@ public class World extends AbstractState {
 
 	@Override
 	public void poll(Input input, float secounds) {
+		this.deletedObjects.clear();
 		for (AbstractObject object : this.objects) {
 			object.startRound(input);
+		}
+		for (AbstractObject object : this.deletedObjects) {
+			this.removeObject(object);
 		}
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
@@ -150,6 +156,10 @@ public class World extends AbstractState {
 	}
 
 	public void removeFromAllLists(AbstractObject object) {
+		this.deletedObjects.add(object);
+	}
+
+	private void removeObject(AbstractObject object) {
 		this.pollables.remove(object);
 		this.drawables.remove(object);
 		this.objects.remove(object);
