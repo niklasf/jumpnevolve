@@ -30,6 +30,7 @@ import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -90,6 +91,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 
 	private boolean[] blockedWays = new boolean[4];
+
+	private Collision collision = new Collision();
 
 	// Methode für die spezifischen Einstellungen pro Runde
 

@@ -83,8 +83,18 @@ public interface Shape extends Serializable {
 	 * @return Die Seite dieses Objekts, die berührt wird als {@link Vector#UP},
 	 *         {@link Vector#DOWN}, {@link Vector#LEFT} oder
 	 *         {@link Vector#RIGHT}.
+	 * @Deprecated Es sollte getCollision verwendet werden
 	 */
+	@Deprecated
 	public byte getTouchedSideOfThis(Shape other);
+
+	/**
+	 * @param other
+	 *            Das andere Shape
+	 * @return Ein Kollisionsobjekt, das die Kollision von diesem Objekt zum
+	 *         anderen darstellt
+	 */
+	public Collision getCollision(Shape other);
 
 	/**
 	 * 
@@ -101,7 +111,7 @@ public interface Shape extends Serializable {
 	 *         unterscheidet. Die Figur selbst wird nicht verändert.
 	 */
 	public Shape modifyCenter(Vector center);
-	
+
 	/**
 	 * @return Eine Slick Version dieser Form.
 	 */

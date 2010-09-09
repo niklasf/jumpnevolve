@@ -7,6 +7,12 @@ public class Collision {
 	private float[] collidingPositions = new float[4];
 
 	/**
+	 * Eine leere Kollision
+	 */
+	public Collision() {
+	}
+
+	/**
 	 * Erzeugt eine Kollision nach der Blockungsrichtung, es können auch zwei
 	 * Seiten geblockt werden
 	 * 

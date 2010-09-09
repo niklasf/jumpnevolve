@@ -384,4 +384,82 @@ public class Rectangle implements Shape {
 		return new org.newdawn.slick.geom.Rectangle(this.x, this.y, this.width,
 				this.height);
 	}
+
+	@Override
+	public Collision getCollision(Shape other) {
+		if (other instanceof Rectangle) {
+			Vector directionToCorner;
+			switch (this.getTouchedCorner((Rectangle) other)) {
+			case Shape.OBEN_LINKS:
+				directionToCorner = ((Rectangle) other).getLowRightCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.isMoreUpwards(this.getHighLeftCorner()
+						.sub(this.getCenter()))) {
+					return new Collision(Shape.OBEN, other.getLowerEnd());
+				} else {
+					return new Collision(Shape.LINKS, other.getRightEnd());
+				}
+			case Shape.OBEN_RECHTS:
+				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
+						this.getCenter());
+				if (directionToCorner.isMoreUpwards(this.getHighRightCorner()
+						.sub(this.getCenter()))) {
+					return new Collision(Shape.OBEN, other.getLowerEnd());
+				} else {
+					return new Collision(Shape.RECHTS, other.getLeftEnd());
+				}
+			case Shape.UNTEN_LINKS:
+				directionToCorner = ((Rectangle) other).getHighRightCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.isMoreUpwards(this.getLowLeftCorner()
+						.sub(this.getCenter()))) {
+					return new Collision(Shape.LINKS, other.getRightEnd());
+				} else {
+					return new Collision(Shape.UNTEN, other.getUpperEnd());
+				}
+			case Shape.UNTEN_RECHTS:
+				directionToCorner = ((Rectangle) other).getHighLeftCorner()
+						.sub(this.getCenter());
+				if (directionToCorner.isMoreUpwards(this.getLowRightCorner()
+						.sub(this.getCenter()))) {
+					return new Collision(Shape.RECHTS, other.getLeftEnd());
+				} else {
+					return new Collision(Shape.UNTEN, other.getUpperEnd());
+				}
+			case Shape.OBEN:
+				return new Collision(Shape.OBEN, other.getLowerEnd());
+			case Shape.UNTEN:
+				return new Collision(Shape.UNTEN, other.getUpperEnd());
+			case Shape.RECHTS:
+				return new Collision(Shape.RECHTS, other.getLeftEnd());
+			case Shape.LINKS:
+				return new Collision(Shape.LINKS, other.getRightEnd());
+			default:
+				break;
+			}
+		} else if (other instanceof Circle) {
+			Collision col = other.getCollision(this);
+			Collision thisCol = new Collision();
+			if (col.isBlocked(Shape.OBEN)) {
+				thisCol.addCollision(new Collision(Shape.UNTEN, other
+						.getUpperEnd()));
+			}
+			if (col.isBlocked(Shape.RECHTS)) {
+				thisCol.addCollision(new Collision(Shape.LINKS, other
+						.getRightEnd()));
+			}
+			if (col.isBlocked(Shape.UNTEN)) {
+				thisCol.addCollision(new Collision(Shape.OBEN, other
+						.getLowerEnd()));
+			}
+			if (col.isBlocked(Shape.LINKS)) {
+				thisCol.addCollision(new Collision(Shape.RECHTS, other
+						.getLeftEnd()));
+			}
+			return thisCol;
+		} else {
+			return this.getCollision(other.getBestCircle());
+		}
+		return new Collision();
+	}
 }

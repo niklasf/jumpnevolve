@@ -252,4 +252,83 @@ public class Circle implements Shape {
 		return new org.newdawn.slick.geom.Circle(this.position.x,
 				this.position.y, this.radius);
 	}
+
+	@Override
+	public Collision getCollision(Shape other) {
+		if (other instanceof Circle) {
+			Vector direction = other.getCenter().sub(this.getCenter());
+			if (direction.x > 0) {
+				if (direction.y > 0) {
+					return new Collision(Shape.UNTEN_RECHTS, other
+							.getUpperEnd(), other.getLeftEnd());
+				} else if (direction.y < 0) {
+					return new Collision(Shape.OBEN_RECHTS,
+							other.getLowerEnd(), other.getLeftEnd());
+				} else {
+					return new Collision(Shape.RECHTS, other.getLeftEnd());
+				}
+			} else if (direction.x < 0) {
+				if (direction.y > 0) {
+					return new Collision(Shape.UNTEN_LINKS,
+							other.getUpperEnd(), other.getRightEnd());
+				} else if (direction.y < 0) {
+					return new Collision(Shape.OBEN_LINKS, other.getLowerEnd(),
+							other.getRightEnd());
+				} else {
+					return new Collision(Shape.LINKS, other.getRightEnd());
+				}
+			} else {
+				if (direction.y > 0) {
+					return new Collision(Shape.UNTEN, other.getUpperEnd());
+				} else if (direction.y < 0) {
+					return new Collision(Shape.OBEN, other.getLowerEnd());
+				} else {
+					return new Collision();
+				}
+			}
+		} else if (other instanceof Rectangle) {
+			if (other.getLowerEnd() > this.getCenter().y - this.radius
+					&& other.getLowerEnd() < this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
+					return new Collision(Shape.OBEN_LINKS, other.getLowerEnd(),
+							other.getRightEnd());
+				} else if (other.getLeftEnd() < this.getCenter().x
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().x) {
+					return new Collision(Shape.OBEN_RECHTS,
+							other.getLowerEnd(), other.getLeftEnd());
+				} else {
+					return new Collision(Shape.OBEN, other.getLowerEnd());
+				}
+			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
+					&& other.getUpperEnd() > this.getCenter().y) {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
+					return new Collision(Shape.UNTEN_LINKS,
+							other.getUpperEnd(), other.getRightEnd());
+				} else if (other.getLeftEnd() < this.getCenter().x
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().x) {
+					return new Collision(Shape.UNTEN_RECHTS, other
+							.getUpperEnd(), other.getLeftEnd());
+				} else {
+					return new Collision(Shape.UNTEN, other.getUpperEnd());
+				}
+			} else {
+				if (other.getRightEnd() > this.getCenter().x - this.radius
+						&& other.getRightEnd() < this.getCenter().x) {
+					return new Collision(Shape.LINKS, other.getRightEnd());
+				} else if (other.getLeftEnd() < this.getCenter().x
+						+ this.radius
+						&& other.getLeftEnd() > this.getCenter().x) {
+					return new Collision(Shape.RECHTS, other.getLeftEnd());
+				} else {
+					return new Collision();
+				}
+			}
+		} else {
+			return this.getCollision(other.getBestCircle());
+		}
+	}
 }
