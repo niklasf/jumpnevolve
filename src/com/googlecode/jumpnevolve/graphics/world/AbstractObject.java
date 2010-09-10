@@ -86,11 +86,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	private float oldStep;
 
 	/**
-	 * Array für die blockierten Wege; true entspricht geblockt; Richtungen im
-	 * Uhrzeigersinn, beginnend mit OBEN
+	 * Kollision, die die Kollisionen von diesem Objekt wiederspiegelt
 	 */
-
-	private boolean[] blockedWays = new boolean[4];
 
 	private Collision collision = new Collision();
 
@@ -162,7 +159,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.addDone(this);
 		this.force = Vector.ZERO;
 		this.specialSettingsPerRound(input);
-		this.blockedWays = new boolean[4];
+		this.collision.clear();
 	}
 
 	@Override
@@ -207,15 +204,15 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			// FIXME: Gegenkraft?
 			if (this.isWayBlocked(Shape.OBEN)) {
 				if (this.getForce().y < 0) {
-					this.force = new Vector(this.force.x, 0);
+					this.force = this.force.modifyY(0);
 				}
 				if (this.getVelocity().y < 0) {
-					this.velocity = new Vector(this.velocity.x, 0);
+					this.velocity = this.velocity.modifyY(0);
 				}
 			}
 			if (this.isWayBlocked(Shape.UNTEN)) {
 				if (this.getForce().y > 0) {
-					this.force = new Vector(this.force.x, -0.1f);
+					this.force = this.force.modifyY(0);
 				}
 				if (this.getVelocity().y > 0) {
 					this.velocity = this.velocity.modifyY(0);
@@ -223,18 +220,18 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			}
 			if (this.isWayBlocked(Shape.RECHTS)) {
 				if (this.getForce().x > 0) {
-					this.force = new Vector(0, this.force.y);
+					this.force = this.force.modifyX(0);
 				}
 				if (this.getVelocity().x > 0) {
-					this.velocity = new Vector(0, this.velocity.y);
+					this.velocity = this.velocity.modifyX(0);
 				}
 			}
 			if (this.isWayBlocked(Shape.LINKS)) {
 				if (this.getForce().x < 0) {
-					this.force = new Vector(0, this.force.y);
+					this.force = this.force.modifyX(0);
 				}
 				if (this.getVelocity().x < 0) {
-					this.velocity = new Vector(0, this.velocity.y);
+					this.velocity = this.velocity.modifyX(0);
 				}
 			}
 
@@ -328,41 +325,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
-		byte direction = this.getShape().getTouchedSideOfThis(
-				blocker.getShape());
-		switch (direction) {
-		case Shape.OBEN:
-			this.blockedWays[0] = true;
-			break;
-		case Shape.OBEN_RECHTS:
-			this.blockedWays[0] = true;
-			this.blockedWays[1] = true;
-			break;
-		case Shape.RECHTS:
-			this.blockedWays[1] = true;
-			break;
-		case Shape.UNTEN_RECHTS:
-			this.blockedWays[1] = true;
-			this.blockedWays[2] = true;
-			break;
-		case Shape.UNTEN:
-			this.blockedWays[2] = true;
-			break;
-		case Shape.UNTEN_LINKS:
-			this.blockedWays[2] = true;
-			this.blockedWays[3] = true;
-			break;
-		case Shape.LINKS:
-			this.blockedWays[3] = true;
-			break;
-		case Shape.OBEN_LINKS:
-			this.blockedWays[3] = true;
-			this.blockedWays[0] = true;
-
-			break;
-		default:
-			break;
-		}
+		this.collision.addCollision(this.getShape().getCollision(
+				blocker.getShape()));
 	}
 
 	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
@@ -515,18 +479,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *         ist
 	 */
 	public final boolean isWayBlocked(byte direction) {
-		switch (direction) {
-		case Shape.OBEN:
-			return this.blockedWays[0];
-		case Shape.RECHTS:
-			return this.blockedWays[1];
-		case Shape.UNTEN:
-			return this.blockedWays[2];
-		case Shape.LINKS:
-			return this.blockedWays[3];
-		default:
-			return false;
-		}
+		return this.collision.isBlocked(direction);
 	}
 
 	protected final void setAlive(boolean alive) {
