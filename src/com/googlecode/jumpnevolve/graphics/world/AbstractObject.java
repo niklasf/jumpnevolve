@@ -526,6 +526,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.alive = alive;
 	}
 
+	public final void setPosition(Vector newPosition) {
+		this.shape = this.shape.modifyCenter(newPosition);
+	}
+
 	public final boolean isAlive() {
 		return this.alive;
 	}

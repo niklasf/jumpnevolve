@@ -24,15 +24,19 @@ public abstract class FigureTemplate extends AbstractObject {
 	public FigureTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean living, boolean killable) {
 		super(world, shape, mass, blockable, false, living, false, killable);
-		this.save = shape.getCenter();
+		this.setNewSave(shape.getCenter());
 	}
 
 	public Vector getLastSave() {
 		return this.save;
 	}
 
+	public void setNewSave(Vector save) {
+		this.save = save;
+	}
+
 	protected void replace(Vector newPlace) {
-		// FIXME: Position auf newPlace setzen
+		this.setPosition(newPlace);
 	}
 
 }
