@@ -100,36 +100,56 @@ public class Collision {
 	 */
 	public void addCollision(Collision other) {
 		if (other.isBlocked(Shape.OBEN)) {
-			this.collidingSides[0] = true;
-			if (other.getBlockingPosition(Shape.OBEN) > this
-					.getBlockingPosition(Shape.OBEN)) {
+			if (this.isBlocked(Shape.OBEN)) {
+				if (other.getBlockingPosition(Shape.OBEN) > this
+						.getBlockingPosition(Shape.OBEN)) {
+					this.collidingPositions[0] = other
+							.getBlockingPosition(Shape.OBEN);
+				}
+			} else {
 				this.collidingPositions[0] = other
 						.getBlockingPosition(Shape.OBEN);
 			}
+			this.collidingSides[0] = true;
 		}
 		if (other.isBlocked(Shape.RECHTS)) {
-			this.collidingSides[1] = true;
-			if (other.getBlockingPosition(Shape.RECHTS) < this
-					.getBlockingPosition(Shape.RECHTS)) {
+			if (this.isBlocked(Shape.RECHTS)) {
+				if (other.getBlockingPosition(Shape.RECHTS) < this
+						.getBlockingPosition(Shape.RECHTS)) {
+					this.collidingPositions[1] = other
+							.getBlockingPosition(Shape.RECHTS);
+				}
+			} else {
 				this.collidingPositions[1] = other
 						.getBlockingPosition(Shape.RECHTS);
 			}
+			this.collidingSides[1] = true;
 		}
 		if (other.isBlocked(Shape.UNTEN)) {
-			this.collidingSides[2] = true;
-			if (other.getBlockingPosition(Shape.UNTEN) < this
-					.getBlockingPosition(Shape.UNTEN)) {
+			if (this.isBlocked(Shape.UNTEN)) {
+				if (other.getBlockingPosition(Shape.UNTEN) < this
+						.getBlockingPosition(Shape.UNTEN)) {
+					this.collidingPositions[2] = other
+							.getBlockingPosition(Shape.UNTEN);
+				}
+			} else {
 				this.collidingPositions[2] = other
 						.getBlockingPosition(Shape.UNTEN);
 			}
+			this.collidingSides[2] = true;
 		}
 		if (other.isBlocked(Shape.LINKS)) {
-			this.collidingSides[3] = true;
-			if (other.getBlockingPosition(Shape.LINKS) > this
-					.getBlockingPosition(Shape.LINKS)) {
+			if (this.isBlocked(Shape.LINKS)) {
+				if (other.getBlockingPosition(Shape.LINKS) > this
+						.getBlockingPosition(Shape.LINKS)) {
+					this.collidingPositions[3] = other
+							.getBlockingPosition(Shape.LINKS);
+				}
+			} else {
 				this.collidingPositions[3] = other
 						.getBlockingPosition(Shape.LINKS);
 			}
+			this.collidingSides[3] = true;
 		}
 	}
 

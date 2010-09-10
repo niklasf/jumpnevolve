@@ -462,4 +462,18 @@ public class Rectangle implements Shape {
 		}
 		return new Collision();
 	}
+
+	@Override
+	public float getDistanceToSide(byte direction) {
+		switch (direction) {
+		case Shape.OBEN:
+		case Shape.UNTEN:
+			return this.height / 2.0f;
+		case Shape.RECHTS:
+		case Shape.LINKS:
+			return this.width / 2.0f;
+		default:
+			return 0;
+		}
+	}
 }

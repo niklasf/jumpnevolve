@@ -331,4 +331,9 @@ public class Circle implements Shape {
 			return this.getCollision(other.getBestCircle());
 		}
 	}
+
+	@Override
+	public float getDistanceToSide(byte direction) {
+		return this.radius;
+	}
 }

@@ -77,6 +77,14 @@ public interface Shape extends Serializable {
 	public float getLowerEnd();
 
 	/**
+	 * @param direction
+	 *            Die Seite
+	 * @return Die Entfernung vom Zentrum des Objekts zu der entsprechenden
+	 *         Seite
+	 */
+	public float getDistanceToSide(byte direction);
+
+	/**
 	 * 
 	 * @param other
 	 *            Das andere geometricsche Objekt, das dieses Objekt trifft

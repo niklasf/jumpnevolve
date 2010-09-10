@@ -209,6 +209,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				if (this.getVelocity().y < 0) {
 					this.velocity = this.velocity.modifyY(0);
 				}
+				if (this.isWayBlocked(Shape.UNTEN) == false) {
+					this.shape = this.shape
+							.modifyCenter(this
+									.getPosition()
+									.modifyY(
+											this.collision
+													.getBlockingPosition(Shape.OBEN)
+													+ this.shape
+															.getDistanceToSide(Shape.OBEN)));
+				}
 			}
 			if (this.isWayBlocked(Shape.UNTEN)) {
 				if (this.getForce().y > 0) {
@@ -216,6 +226,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				}
 				if (this.getVelocity().y > 0) {
 					this.velocity = this.velocity.modifyY(0);
+				}
+				if (this.isWayBlocked(Shape.OBEN) == false) {
+					this.shape = this.shape
+							.modifyCenter(this.shape
+									.getCenter()
+									.modifyY(
+											this.collision
+													.getBlockingPosition(Shape.UNTEN)
+													- this.shape
+															.getDistanceToSide(Shape.UNTEN)));
 				}
 			}
 			if (this.isWayBlocked(Shape.RECHTS)) {
@@ -225,6 +245,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				if (this.getVelocity().x > 0) {
 					this.velocity = this.velocity.modifyX(0);
 				}
+				if (this.isWayBlocked(Shape.LINKS) == false) {
+					this.shape = this.shape
+							.modifyCenter(this
+									.getPosition()
+									.modifyX(
+											this.collision
+													.getBlockingPosition(Shape.RECHTS)
+													- this.shape
+															.getDistanceToSide(Shape.RECHTS)));
+				}
 			}
 			if (this.isWayBlocked(Shape.LINKS)) {
 				if (this.getForce().x < 0) {
@@ -232,6 +262,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				}
 				if (this.getVelocity().x < 0) {
 					this.velocity = this.velocity.modifyX(0);
+				}
+				if (this.isWayBlocked(Shape.RECHTS) == false) {
+					this.shape = this.shape
+							.modifyCenter(this
+									.getPosition()
+									.modifyX(
+											this.collision
+													.getBlockingPosition(Shape.LINKS)
+													+ this.shape
+															.getDistanceToSide(Shape.LINKS)));
 				}
 			}
 
