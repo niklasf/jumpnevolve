@@ -22,13 +22,18 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 public class Level extends World {
 
 	private int points;
-	private Timer timer;
+	private Timer timer = new Timer();
 	private AbstractObject currentFigure;
 	private Levelloader loader;
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
 		this.loader = loader;
+	}
+
+	public void setTime(float time) {
+		this.timer.setTime(time);
+		this.timer.start();
 	}
 
 	public void save(String path) {
