@@ -7,6 +7,7 @@ import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -89,8 +90,10 @@ public class RollingBall extends FigureTemplate {
 
 	@Override
 	public void onLivingCrash(AbstractObject other) {
-		byte direction = this.getShape().getTouchedSideOfThis(other.getShape());
-		if (other instanceof EnemyTemplate && direction == Shape.UNTEN) {
+		Collision col = this.getShape().getCollision(other.getShape());
+		if (other instanceof EnemyTemplate && col.isBlocked(Shape.UNTEN)
+				&& col.isBlocked(Shape.RECHTS) == false
+				&& col.isBlocked(Shape.LINKS) == false) {
 			other.kill(this);
 		}
 	}

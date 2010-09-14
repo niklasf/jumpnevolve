@@ -133,6 +133,39 @@ public class World extends AbstractState {
 		int end = (int) (object.getHorizontalEnd());
 		int oldStart = (int) (object.getOldHorizontalStart());
 		int oldEnd = (int) (object.getOldHorizontalEnd());
+		if (start < 0) {
+			System.out.println("Korrektur 0");
+			start = 0;
+		}
+		if (oldStart < 0) {
+			System.out.println("Korrektur 0");
+			oldStart = 0;
+		}
+		if (end < 0) {
+			System.out.println("Korrektur 0");
+			end = 0;
+		}
+		if (oldEnd < 0) {
+			System.out.println("Korrektur 0");
+			oldEnd = 0;
+		}
+
+		if (start > objectList.size()) {
+			System.out.println("Korrektur high");
+			start = objectList.size();
+		}
+		if (oldStart > objectList.size()) {
+			System.out.println("Korrektur high");
+			oldStart = objectList.size();
+		}
+		if (end > objectList.size()) {
+			System.out.println("Korrektur high");
+			end = objectList.size();
+		}
+		if (oldEnd > objectList.size()) {
+			System.out.println("Korrektur high");
+			oldEnd = objectList.size();
+		}
 		if (start < oldStart) {
 			for (int i = start; i < oldStart; i++) {
 				this.objectList.get(i).add(object);
@@ -165,6 +198,23 @@ public class World extends AbstractState {
 		this.objects.remove(object);
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
+		if (start < 0) {
+			System.out.println("Korrektur 0");
+			start = 0;
+		}
+		if (end < 0) {
+			System.out.println("Korrektur 0");
+			end = 0;
+		}
+
+		if (start > objectList.size()) {
+			System.out.println("Korrektur high");
+			start = objectList.size();
+		}
+		if (end > objectList.size()) {
+			System.out.println("Korrektur high");
+			end = objectList.size();
+		}
 		for (int i = start; i <= end; i++) {
 			this.objectList.get(i).remove(object);
 		}
@@ -174,6 +224,23 @@ public class World extends AbstractState {
 			AbstractObject object) {
 		int start = (int) (object.getHorizontalStart());
 		int end = (int) (object.getHorizontalEnd());
+		if (start < 0) {
+			System.out.println("Korrektur 0");
+			start = 0;
+		}
+		if (end < 0) {
+			System.out.println("Korrektur 0");
+			end = 0;
+		}
+
+		if (start > objectList.size()) {
+			System.out.println("Korrektur high");
+			start = objectList.size();
+		}
+		if (end > objectList.size()) {
+			System.out.println("Korrektur high");
+			end = objectList.size();
+		}
 		ArrayList<LinkedList<AbstractObject>> returns = new ArrayList<LinkedList<AbstractObject>>();
 		for (int i = start; i <= end; i++) {
 			returns.add(this.objectList.get(i));

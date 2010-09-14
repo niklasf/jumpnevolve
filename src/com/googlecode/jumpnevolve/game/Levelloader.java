@@ -56,9 +56,10 @@ public class Levelloader {
 				if (firstLineSplit[0].equals("Leveldimensionen") == false) {
 					// FIXME: Fehlermeldung ausgeben und abbrechen
 				}
-				this.level = new Level(Integer.parseInt(firstLineSplit[1]),
-						Integer.parseInt(firstLineSplit[2]), Integer
-								.parseInt(firstLineSplit[3]));
+				this.level = new Level(this, Integer
+						.parseInt(firstLineSplit[1]), Integer
+						.parseInt(firstLineSplit[2]), Integer
+						.parseInt(firstLineSplit[3]));
 				// Einstellungen vornehmen
 				String secondLine = levelFileReader.readLine();
 				String[] secondLineSplit = secondLine.split("_");
