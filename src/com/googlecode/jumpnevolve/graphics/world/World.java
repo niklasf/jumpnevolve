@@ -58,8 +58,6 @@ public class World extends AbstractState {
 
 	private Camera camera;
 
-	private float zoomX = ZOOM, zoomY = ZOOM;
-
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
 		this.width = width;
@@ -265,15 +263,6 @@ public class World extends AbstractState {
 		return returns;
 	}
 
-	public void setZoom(float zoomX, float zoomY) {
-		this.zoomX = zoomX;
-		this.zoomY = zoomY;
-	}
-
-	public void setZoom(float zoom) {
-		setZoom(zoom, zoom);
-	}
-
 	@Override
 	public void draw(Graphics g) {
 		// TODO: Zoom und Kameraeinstellungen prüfen
@@ -282,8 +271,8 @@ public class World extends AbstractState {
 		// Kameraeinstellung anwenden
 		if (this.camera != null) {
 			Vector cameraPosition = this.camera.getPosition();
-			g.translate(Engine.getInstance().getWidth() / ZOOM / 2.0f
-					- cameraPosition.x, Engine.getInstance().getHeight() / ZOOM
+			g.translate(Engine.getInstance().getWidth() / zoomX / 2.0f
+					- cameraPosition.x, Engine.getInstance().getHeight() / zoomY
 					/ 2.0f - cameraPosition.y);
 		}
 

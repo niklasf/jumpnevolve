@@ -17,7 +17,6 @@
 
 package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -43,10 +42,6 @@ public class ObjectFocusingCamera implements Camera {
 
 	@Override
 	public Vector getPosition() {
-		return this.object.getPosition().modifyX(
-				this.object.getPosition().x - Engine.getInstance().getWidth()
-						/ 2).modifyY(
-				this.object.getPosition().y - Engine.getInstance().getHeight()
-						/ 2);
+		return this.object.getPosition();
 	}
 }
