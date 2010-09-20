@@ -22,6 +22,7 @@ import java.awt.SplashScreen;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -103,7 +104,19 @@ public class Engine extends AppGameContainer {
 			this.states.enterState(state.getID());
 		}
 	}
-	
+
+	/**
+	 * @return Der aktuelle Zustand.
+	 */
+	public AbstractState getCurrentState() {
+		GameState state = this.states.getCurrentState();
+		if (!(state instanceof AbstractState)) {
+			throw new RuntimeException(
+					"The current state does not inherit AbstractState.");
+		}
+		return (AbstractState) state;
+	}
+
 	@Override
 	public void start() {
 		// Vollbildmodus starten
@@ -112,18 +125,18 @@ public class Engine extends AppGameContainer {
 		} catch (SlickException e) {
 			throw new GraphicsError(e);
 		}
-		
+
 		// SplashScreen schließen
 		// TODO: Erst nach dem Laden erledigen
 		SplashScreen splash = SplashScreen.getSplashScreen();
-		if(splash != null) {
+		if (splash != null) {
 			try {
 				splash.close();
-			} catch(IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Anwendung starten
 		try {
 			super.start();

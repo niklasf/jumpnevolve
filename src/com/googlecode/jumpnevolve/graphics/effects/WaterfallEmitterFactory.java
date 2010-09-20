@@ -21,7 +21,7 @@ import org.newdawn.slick.particles.Particle;
 import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
-import com.googlecode.jumpnevolve.graphics.AbstractState;
+import com.googlecode.jumpnevolve.graphics.Engine;
 
 /**
  * Erzeugt einen Wasserfalleffekt.
@@ -62,7 +62,8 @@ public class WaterfallEmitterFactory implements ParticleEmitterFactory {
 			}
 
 			public void updateParticle(Particle particle, int delta) {
-				if (particle.getY() / AbstractState.ZOOM > WaterfallEmitterFactory.this.verticalSize) {
+				if (particle.getY()
+						/ Engine.getInstance().getCurrentState().getZoomY() > WaterfallEmitterFactory.this.verticalSize) {
 					particle.kill();
 				}
 				particle.adjustVelocity(

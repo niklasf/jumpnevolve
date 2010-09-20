@@ -22,8 +22,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
 
-import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
+import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.ResourceError;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
@@ -79,7 +79,8 @@ public class ParticleEffect implements Drawable, Pollable {
 		createSystem();
 		g.pushTransform();
 		g.translate(this.position.x, this.position.y);
-		g.scale(1.0f / AbstractState.ZOOM, 1.0f / AbstractState.ZOOM);
+		g.scale(1.0f / Engine.getInstance().getCurrentState().getZoomX(),
+				1.0f / Engine.getInstance().getCurrentState().getZoomY());
 		this.system.render();
 		g.popTransform();
 	}
