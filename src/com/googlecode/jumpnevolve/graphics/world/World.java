@@ -121,18 +121,35 @@ public class World extends AbstractState {
 	}
 
 	private void addToObjectList(AbstractObject object) {
-		int start = (int) (object.getHorizontalStart());
-		int end = (int) (object.getHorizontalEnd());
+		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
+		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
+		if (start < 0) {
+			System.out.println("Korrektur 0" + object.getClass().getName());
+			start = 0;
+		}
+		if (end < 0) {
+			System.out.println("Korrektur 0" + object.getClass().getName());
+			end = 0;
+		}
+
+		if (start > objectList.size()) {
+			System.out.println("Korrektur high" + object.getClass().getName());
+			start = objectList.size();
+		}
+		if (end > objectList.size()) {
+			System.out.println("Korrektur high" + object.getClass().getName());
+			end = objectList.size();
+		}
 		for (int i = start; i <= end; i++) {
 			this.objectList.get(i).add(object);
 		}
 	}
 
 	public void changedPosition(AbstractObject object) {
-		int start = (int) (object.getHorizontalStart());
-		int end = (int) (object.getHorizontalEnd());
-		int oldStart = (int) (object.getOldHorizontalStart());
-		int oldEnd = (int) (object.getOldHorizontalEnd());
+		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
+		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
+		int oldStart = (int) (object.getOldHorizontalStart()) / this.subareaWidth;
+		int oldEnd = (int) (object.getOldHorizontalEnd()) / this.subareaWidth;
 		if (start < 0) {
 			System.out.println("Korrektur 0" + object.getClass().getName());
 			start = 0;
@@ -196,8 +213,8 @@ public class World extends AbstractState {
 		this.pollables.remove(object);
 		this.drawables.remove(object);
 		this.objects.remove(object);
-		int start = (int) (object.getHorizontalStart());
-		int end = (int) (object.getHorizontalEnd());
+		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
+		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
 		if (start < 0) {
 			System.out.println("Korrektur 0" + object.getClass().getName());
 			start = 0;
@@ -222,8 +239,8 @@ public class World extends AbstractState {
 
 	public ArrayList<LinkedList<AbstractObject>> getNeighbours(
 			AbstractObject object) {
-		int start = (int) (object.getHorizontalStart());
-		int end = (int) (object.getHorizontalEnd());
+		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
+		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
 		if (start < 0) {
 			System.out.println("Korrektur 0" + object.getClass().getName());
 			start = 0;

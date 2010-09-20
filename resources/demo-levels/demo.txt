@@ -1,0 +1,12 @@
+Leveldimensionen_3000_1000_100
+Leveleinstellungen_1_500_RollingBall
+Ground_250|400_none_none_250|20
+Ground_1000|400_none_none_100|20
+Ground_1500|350_none_none_200|10
+Ground_2000|500_none_none_150|10
+Ground_1800|500_none_none_50|50
+Ground_2200|500_none_none_50|50
+WalkingSoldier_2000|400_none_none_none
+RollingBall_100|300_none_none_none
+Elevator_2300|860_none_none_50|10,460,260
+Ground_2500|260_none_none_150|10

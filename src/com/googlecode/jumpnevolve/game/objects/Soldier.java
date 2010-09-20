@@ -39,7 +39,7 @@ public class Soldier extends EnemyTemplate {
 	private static final long serialVersionUID = 5378834855856957746L;
 
 	public Soldier(World world, Vector position) {
-		super(world, new Rectangle(position, new Vector(0.28f, 0.28f)), 5.0f,
+		super(world, new Rectangle(position, new Vector(28.0f, 28.0f)), 5.0f,
 				true);
 		// TODO shape durch position erzeugen und super übergeben
 	}

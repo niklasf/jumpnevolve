@@ -39,14 +39,15 @@ public class Elevator extends ObjectTemplate {
 				false, false);
 		this.upEnd = upEnd;
 		this.downEnd = downEnd;
+		this.setVelocity(Vector.UP.mul(50.0f));
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.getPosition().x >= this.upEnd) {
+		if (this.getPosition().x <= this.upEnd + 10 && this.getPosition().x >= this.upEnd - 10 ) {
 			this.setVelocity(Vector.DOWN.mul(50.0f));
 		}
-		if (this.getPosition().x <= this.downEnd) {
+		if (this.getPosition().x <= this.downEnd + 10 && this.getPosition().x >= this.downEnd - 10) {
 			this.setVelocity(Vector.UP.mul(50.0f));
 		}
 	}

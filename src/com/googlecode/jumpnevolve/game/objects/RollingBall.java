@@ -47,7 +47,7 @@ public class RollingBall extends FigureTemplate {
 	private static final long serialVersionUID = -6066789739733255353L;
 
 	public RollingBall(World world, Vector position) {
-		super(world, new Circle(position, 0.65f), 5.0f, true, true, true);
+		super(world, new Circle(position, 6.5f), 5.0f, true, true, true);
 		// TODO: Masse in Ordunng?
 	}
 
@@ -64,22 +64,22 @@ public class RollingBall extends FigureTemplate {
 		// Bewegungen
 		this.setVelocity(new Vector(0, this.getVelocity().y));
 		if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
-			this.setVelocity(new Vector(3, this.getVelocity().y));
+			this.setVelocity(new Vector(100, this.getVelocity().y));
 			// Nach rechts laufen
 		} else if (input.isKeyDown(Input.KEY_LEFT)
 				|| input.isKeyDown(Input.KEY_S)) {
-			this.setVelocity(new Vector(-3, this.getVelocity().y));
+			this.setVelocity(new Vector(-100, this.getVelocity().y));
 			// Nach links laufen
 		}
 
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
 				&& this.isWayBlocked(Shape.UNTEN)) {
-			this.setVelocity(new Vector(this.getVelocity().x, -0.3f * 9.81f
+			this.setVelocity(new Vector(this.getVelocity().x, -0.5f * 98.1f
 					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
 		// Schwerkraft
-		this.applyForce(Vector.DOWN.mul(9.81f * this.getMass()));
+		this.applyForce(Vector.DOWN.mul(98.1f * this.getMass()));
 	}
 
 	@Override

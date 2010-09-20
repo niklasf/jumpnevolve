@@ -122,6 +122,7 @@ public class Levelloader {
 								.toVector(arguments)));
 					} else if (className.equals("RollingBall")) {
 						otherObjects.add(new RollingBall(this.level, position));
+						this.level.setCamera(new ObjectFocusingCamera(otherObjects.get(otherObjects.size() - 1)));
 					} else if (className.equals("Elevator")) {
 						String[] curArgus = arguments.split(",");
 						otherObjects.add(new Elevator(this.level, position,
