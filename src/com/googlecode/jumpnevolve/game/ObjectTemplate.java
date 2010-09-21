@@ -21,7 +21,7 @@ public abstract class ObjectTemplate extends AbstractObject {
 	public ObjectTemplate(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean activable,
 			boolean killable) {
-		super(world, shape, 0.0f, blockable, pushable, false, activable,
+		super(world, shape, mass, blockable, pushable, false, activable,
 				killable);
 	}
 

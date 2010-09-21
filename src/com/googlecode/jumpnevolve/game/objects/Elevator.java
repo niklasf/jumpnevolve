@@ -35,22 +35,29 @@ public class Elevator extends ObjectTemplate {
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {
-		super(world, new Rectangle(position, dimension), 1.0f, true, false,
+		super(world, new Rectangle(position, dimension), 2.0f, true, false,
 				false, false);
-		this.upEnd = upEnd;
-		this.downEnd = downEnd;
+		if (upEnd > downEnd) {
+			this.upEnd = downEnd;
+			this.downEnd = upEnd;
+		} else {
+			this.upEnd = upEnd;
+			this.downEnd = downEnd;
+		}
 		this.setVelocity(Vector.UP.mul(50.0f));
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.getPosition().x <= this.upEnd + 10 && this.getPosition().x >= this.upEnd - 10 ) {
+		if (this.getPosition().y <= this.upEnd) {
 			this.setVelocity(Vector.DOWN.mul(50.0f));
 		}
-		if (this.getPosition().x <= this.downEnd + 10 && this.getPosition().x >= this.downEnd - 10) {
+		if (this.getPosition().y >= this.downEnd) {
+			this.setVelocity(Vector.UP.mul(50.0f));
+		}
+		if (this.getVelocity().y == 0) {
 			this.setVelocity(Vector.UP.mul(50.0f));
 		}
 	}
-
 	// TODO: draw-Methode einfügen
 }

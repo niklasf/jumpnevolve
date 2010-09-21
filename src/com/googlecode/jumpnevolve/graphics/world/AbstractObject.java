@@ -24,9 +24,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.FigureTemplate;
-import com.googlecode.jumpnevolve.game.objects.RollingBall;
-import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
