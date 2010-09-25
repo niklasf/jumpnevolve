@@ -204,7 +204,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
 			// konstant ist.
 
-			// FIXME: Gegenkraft?
 			if (this.isWayBlocked(Shape.OBEN)) {
 				if (this.getForce().y < 0) {
 					this.force = this.force.modifyY(0);
@@ -553,6 +552,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.draw(g, this.shape);
+		GraphicUtils.string(g, this.getPosition(), this.getName());
 	}
 
 	// Callbacks

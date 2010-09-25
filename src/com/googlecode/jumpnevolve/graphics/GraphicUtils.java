@@ -99,11 +99,21 @@ public class GraphicUtils {
 		g.drawLine(position.x, position.y, position.x + vector.x, position.y
 				+ vector.y);
 	}
-	
+
 	/**
 	 * Zeichnet eine Textur
 	 */
 	public static void texture(Graphics g, Shape shape, Image image) {
 		g.texture(shape.toSlickShape(), image, 0.5f, 0.5f);
+	}
+
+	/**
+	 * Zeichnet einen String
+	 * 
+	 * @param position
+	 *            Obere linke Ecke des Textes
+	 */
+	public static void string(Graphics g, Vector position, String text) {
+		g.drawString(text, position.x, position.y);
 	}
 }

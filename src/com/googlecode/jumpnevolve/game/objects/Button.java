@@ -78,11 +78,21 @@ public class Button extends ActivatingObject {
 			}
 		}
 	}
+
 	// TODO: draw-Methode einfügen
 
 	@Override
 	public String toDataLine() {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		String line = new String("Button_" + this.getPosition() + "_"
+				+ this.getName() + "_");
+		for (int i = 0; i < this.getObjectsToActivate().size(); i++) {
+			line += "" + this.getObjectsToActivate().get(i).getName();
+			if (i < this.getObjectsToActivate().size() - 1) {
+				line += ",";
+			}
+		}
+		line += "_" + this.activatingTime;
+		return line;
 	}
 }
