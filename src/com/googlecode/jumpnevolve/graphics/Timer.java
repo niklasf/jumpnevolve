@@ -42,6 +42,8 @@ public class Timer implements Pollable {
 
 	private float remainingTime = 0;
 
+	private float startingTime = 0;
+
 	private boolean running = false;
 
 	public void poll(Input input, float secounds) {
@@ -70,6 +72,7 @@ public class Timer implements Pollable {
 	 */
 	public Timer(float time) {
 		this.remainingTime = time;
+		this.startingTime = time;
 	}
 
 	/**
@@ -80,6 +83,7 @@ public class Timer implements Pollable {
 	 */
 	public void start(float time) {
 		this.remainingTime = time;
+		this.startingTime = time;
 		this.running = true;
 	}
 
@@ -133,5 +137,12 @@ public class Timer implements Pollable {
 	 * Wird aufgerufen, wenn die Zeit abgelaufen ist.
 	 */
 	protected void onFinish() {
+	}
+
+	/**
+	 * @return Die Zeit, mit der der Timer gestartet wurde
+	 */
+	public float getStartingTime() {
+		return this.startingTime;
 	}
 }

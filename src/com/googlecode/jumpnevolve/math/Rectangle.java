@@ -476,4 +476,9 @@ public class Rectangle implements Shape {
 			return 0;
 		}
 	}
+
+	@Override
+	public Vector getDimensions() {
+		return new Vector(this.width / 2.0f, this.height / 2.0f);
+	}
 }

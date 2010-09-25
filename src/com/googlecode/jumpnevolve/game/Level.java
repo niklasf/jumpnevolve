@@ -19,12 +19,13 @@ import com.googlecode.jumpnevolve.graphics.world.World;
  * @author Erik Wagner
  * 
  */
-public class Level extends World {
+public class Level extends World implements Dataable {
 
 	private int points;
 	private Timer timer = new Timer();
 	private AbstractObject currentFigure;
 	private Levelloader loader;
+	private String avaiableFigurs = new String("all");
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
@@ -91,5 +92,19 @@ public class Level extends World {
 		if (this.timer.didFinish()) {
 			this.reload();
 		}
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
+	public String toDataLine() {
+		String line = new String("Leveldimensionen_" + this.width + "_"
+				+ this.height + "_" + this.subareaWidth + "\n"
+				+ "Leveleinstellungen_" + this.zoomX + "," + this.zoomY + "_"
+				+ this.timer.getStartingTime() + "_" + this.avaiableFigurs + "\n");
+		return line;
 	}
 }

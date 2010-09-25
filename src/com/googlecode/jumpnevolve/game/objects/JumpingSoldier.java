@@ -40,8 +40,15 @@ public class JumpingSoldier extends Soldier {
 		super.specialSettingsPerRound(input);
 		if (this.isWayBlocked(Shape.UNTEN)) {
 			this.setVelocity(Vector.UP.mul(this.getMass() * 0.1f * 9.81f)); // Sprung
-																			// nach
-																			// oben
+			// nach
+			// oben
 		}
+	}
+
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("JumpingSoldier_" + this.getPosition() + "_"
+				+ this.getName() + "_none_none\n");
 	}
 }

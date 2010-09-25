@@ -59,5 +59,14 @@ public class Elevator extends ObjectTemplate {
 			this.setVelocity(Vector.UP.mul(50.0f));
 		}
 	}
+
 	// TODO: draw-Methode einfügen
+
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("Elevator_" + this.getPosition() + "_"
+				+ this.getName() + "_none_" + this.getShape().getDimensions()
+				+ "," + this.downEnd + "," + this.upEnd + "\n");
+	}
 }

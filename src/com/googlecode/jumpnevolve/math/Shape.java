@@ -125,6 +125,11 @@ public interface Shape extends Serializable {
 	 */
 	public org.newdawn.slick.geom.Shape toSlickShape();
 
+	/**
+	 * @return Die Dimensionen des Shapes
+	 */
+	public Vector getDimensions();
+	
 	/*
 	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
 	 * 

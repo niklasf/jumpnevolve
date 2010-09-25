@@ -38,7 +38,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner und Niklas Fiekas
  */
-public class World extends AbstractState {
+public class World extends AbstractState{
 
 	private ArrayList<LinkedList<AbstractObject>> objectList;
 

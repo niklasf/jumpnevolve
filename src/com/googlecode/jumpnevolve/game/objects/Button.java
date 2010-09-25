@@ -79,4 +79,10 @@ public class Button extends ActivatingObject {
 		}
 	}
 	// TODO: draw-Methode einfügen
+
+	@Override
+	public String toDataLine() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

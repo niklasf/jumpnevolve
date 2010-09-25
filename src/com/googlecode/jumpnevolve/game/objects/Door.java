@@ -35,9 +35,9 @@ public class Door extends ObjectTemplate {
 
 	private boolean opneningState = false;
 
-	public Door(World world, Vector position) {
-		super(world, new Rectangle(position, new Vector(25, 100)), 0.0f, true,
-				false, true, false);
+	public Door(World world, Vector position, Vector dimension) {
+		super(world, new Rectangle(position, dimension), 0.0f, true, false,
+				true, false);
 	}
 
 	@Override
@@ -73,6 +73,13 @@ public class Door extends ObjectTemplate {
 
 	private void close() {
 		this.opneningState = false;
+	}
+
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("Door_" + this.getPosition() + "_" + this.getName()
+				+ "_none_" + this.getShape().getDimensions() + "\n");
 	}
 
 	// TODO: draw-Methode einfügen

@@ -97,5 +97,13 @@ public class RollingBall extends FigureTemplate {
 			other.kill(this);
 		}
 	}
+
 	// TODO: draw-Methode einfügen
+
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("RollingBall_" + this.getPosition() + "_"
+				+ this.getName() + "_none_none\n");
+	}
 }

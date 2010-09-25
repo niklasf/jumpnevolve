@@ -336,4 +336,9 @@ public class Circle implements Shape {
 	public float getDistanceToSide(byte direction) {
 		return this.radius;
 	}
+
+	@Override
+	public Vector getDimensions() {
+		return new Vector(this.radius, 0);
+	}
 }

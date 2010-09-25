@@ -52,6 +52,13 @@ public class Ground extends GroundTemplate {
 		// Boden kann nichts schieben
 	}
 
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("Ground_" + this.getPosition() + "_" + this.getName()
+				+ "_none_" + this.getShape().getDimensions() + "\n");
+	}
+
 	// TODO: draw-Methode einfügen
 
 }

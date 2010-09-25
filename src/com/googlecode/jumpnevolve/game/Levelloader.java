@@ -116,13 +116,14 @@ public class Levelloader {
 						argumtensForActivating.add(activates.split(","));
 					} else if (className.equals("Door")) {
 						activableObjects.put(name, new Door(this.level,
-								position));
+								position, this.toVector(arguments)));
 					} else if (className.equals("Ground")) {
 						otherObjects.add(new Ground(this.level, position, this
 								.toVector(arguments)));
 					} else if (className.equals("RollingBall")) {
 						otherObjects.add(new RollingBall(this.level, position));
-						this.level.setCamera(new ObjectFocusingCamera(otherObjects.get(otherObjects.size() - 1)));
+						this.level.setCamera(new ObjectFocusingCamera(
+								otherObjects.get(otherObjects.size() - 1)));
 					} else if (className.equals("Elevator")) {
 						String[] curArgus = arguments.split(",");
 						otherObjects.add(new Elevator(this.level, position,

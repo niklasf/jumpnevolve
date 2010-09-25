@@ -52,7 +52,8 @@ public class KillingMachine extends EnemyTemplate {
 	public void onLivingCrash(AbstractObject other) {
 		// KillingMachine versucht alle lebenden Objekte zu töten, wenn diese
 		// nicht oberhalb von ihr sind
-		if (this.getShape().getTouchedSideOfThis(other.getShape()) != Shape.OBEN) {
+		if (this.getShape().getCollision(other.getShape())
+				.isBlocked(Shape.OBEN) == false) {
 			other.kill(this);
 		}
 	}
@@ -66,6 +67,13 @@ public class KillingMachine extends EnemyTemplate {
 		}
 		this.setAlive(false);
 		// Lebensstatus auf tot setzen, da der Gegner getötet wurde
+	}
+
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("KillingMachine_" + this.getPosition() + "_"
+				+ this.getName() + "_none_none\n");
 	}
 
 	// TODO: draw-Methode einfügen

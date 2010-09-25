@@ -76,9 +76,16 @@ public class Soldier extends EnemyTemplate {
 		}
 	}
 
-	/*@Override
-	public void draw(Graphics g) {
-		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
-				.getImage("simple-foot-soldier.png"));
-	}*/
+	@Override
+	public String toDataLine() {
+		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
+		return new String("Soldier_" + this.getPosition() + "_"
+				+ this.getName() + "_none_none\n");
+	}
+
+	/*
+	 * @Override public void draw(Graphics g) { GraphicUtils.texture(g,
+	 * this.getShape(), ResourceManager.getInstance()
+	 * .getImage("simple-foot-soldier.png")); }
+	 */
 }

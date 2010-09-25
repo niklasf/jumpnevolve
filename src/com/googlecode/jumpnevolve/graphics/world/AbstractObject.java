@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.Dataable;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -46,10 +47,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  */
 public abstract class AbstractObject implements Pollable, Drawable,
-		Serializable {
+		Serializable, Dataable {
 
 	private static final long serialVersionUID = -3990787994625166974L;
 
+	private static long ID = 0;
+
+	private final long id;
 	// Attribute
 
 	private Shape shape;
@@ -138,6 +142,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public AbstractObject(World world, Shape shape) {
 		this.world = world;
 		this.shape = this.oldShape = shape;
+		this.id = ID;
+		ID++;
 	}
 
 	// Simulationsablauf
@@ -639,4 +645,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void onGeneralCrash(AbstractObject other) {
 	}
 
+	@Override
+	public String getName() {
+		return new String("Object" + this.id);
+	}
 }
