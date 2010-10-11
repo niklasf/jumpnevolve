@@ -1,8 +1,11 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.GroundTemplate;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -55,10 +58,12 @@ public class Ground extends GroundTemplate {
 	@Override
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Ground_" + this.getPosition() + "_" + this.getName()
+		return new String("Ground_" + this.getPosition() + "_" + this.toString()
 				+ "_none_" + this.getShape().getDimensions() + "\n");
 	}
 
-	// TODO: draw-Methode einfügen
-
+	public void draw(Graphics g) {
+		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance().getImage("wood.png"));
+		// super.draw(g);
+	}
 }
