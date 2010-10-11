@@ -25,5 +25,5 @@ public interface Dataable {
 	/**
 	 * @return Der Name des Objekts für Zuordnungen
 	 */
-	public String getName();
+	public String toString();
 }
