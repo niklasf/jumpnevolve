@@ -85,9 +85,9 @@ public class Button extends ActivatingObject {
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
 		String line = new String("Button_" + this.getPosition() + "_"
-				+ this.getName() + "_");
+				+ this.toString() + "_");
 		for (int i = 0; i < this.getObjectsToActivate().size(); i++) {
-			line += "" + this.getObjectsToActivate().get(i).getName();
+			line += "" + this.getObjectsToActivate().get(i).toString();
 			if (i < this.getObjectsToActivate().size() - 1) {
 				line += ",";
 			}

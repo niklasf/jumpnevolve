@@ -58,6 +58,6 @@ public class WalkingSoldier extends Soldier {
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
 		return new String("WalkingSoldier_" + this.getPosition() + "_"
-				+ this.getName() + "_none_none\n");
+				+ this.toString() + "_none_none\n");
 	}
 }

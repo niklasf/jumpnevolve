@@ -78,7 +78,7 @@ public class Door extends ObjectTemplate {
 	@Override
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Door_" + this.getPosition() + "_" + this.getName()
+		return new String("Door_" + this.getPosition() + "_" + this.toString()
 				+ "_none_" + this.getShape().getDimensions() + "\n");
 	}
 

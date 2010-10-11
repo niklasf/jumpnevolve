@@ -95,7 +95,7 @@ public class Level extends World implements Dataable {
 	}
 
 	@Override
-	public String getName() {
+	public String toString() {
 		return null;
 	}
 
@@ -104,7 +104,8 @@ public class Level extends World implements Dataable {
 		String line = new String("Leveldimensionen_" + this.width + "_"
 				+ this.height + "_" + this.subareaWidth + "\n"
 				+ "Leveleinstellungen_" + this.zoomX + "," + this.zoomY + "_"
-				+ this.timer.getStartingTime() + "_" + this.avaiableFigurs + "\n");
+				+ this.timer.getStartingTime() + "_" + this.avaiableFigurs
+				+ "\n");
 		return line;
 	}
 }

@@ -73,7 +73,7 @@ public class KillingMachine extends EnemyTemplate {
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
 		return new String("KillingMachine_" + this.getPosition() + "_"
-				+ this.getName() + "_none_none\n");
+				+ this.toString() + "_none_none\n");
 	}
 
 	// TODO: draw-Methode einfügen
