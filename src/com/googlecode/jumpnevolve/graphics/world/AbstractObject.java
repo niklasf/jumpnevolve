@@ -51,11 +51,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private static final long serialVersionUID = -3990787994625166974L;
 
-	private static long ID = 0;
-
-	private final long id;
-	// Attribute
-
 	private Shape shape;
 
 	private Shape oldShape;
@@ -142,8 +137,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public AbstractObject(World world, Shape shape) {
 		this.world = world;
 		this.shape = this.oldShape = shape;
-		this.id = ID;
-		ID++;
 	}
 
 	// Simulationsablauf
@@ -552,7 +545,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.draw(g, this.shape);
-		GraphicUtils.string(g, this.getPosition(), this.getName());
+		GraphicUtils.string(g, this.getPosition(), this.toString());
 	}
 
 	// Callbacks
@@ -646,7 +639,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	@Override
-	public String getName() {
-		return new String("Object" + this.id);
+	public String toString() {
+		// Paketnamen abtrennen
+		String superString = super.toString();
+		return superString.substring(superString.lastIndexOf('.') + 1);
 	}
 }
