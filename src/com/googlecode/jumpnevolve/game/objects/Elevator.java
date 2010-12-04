@@ -62,7 +62,7 @@ public class Elevator extends ObjectTemplate {
 	}
 
 	public void blockWay(AbstractObject blocker) {
-		if (blocker.isLiving() == false) {
+		if (blocker.isMoveable() == false) {
 			super.blockWay(blocker);
 		}
 	}
