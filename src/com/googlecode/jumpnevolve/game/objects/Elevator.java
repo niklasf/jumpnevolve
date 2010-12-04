@@ -3,6 +3,7 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -57,6 +58,12 @@ public class Elevator extends ObjectTemplate {
 		}
 		if (this.getVelocity().y == 0) {
 			this.setVelocity(Vector.UP.mul(50.0f));
+		}
+	}
+
+	public void blockWay(AbstractObject blocker) {
+		if (blocker.isLiving() == false) {
+			super.blockWay(blocker);
 		}
 	}
 
