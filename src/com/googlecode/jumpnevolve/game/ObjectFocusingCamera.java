@@ -42,6 +42,15 @@ public class ObjectFocusingCamera implements Camera {
 
 	@Override
 	public Vector getPosition() {
-		return this.object.getPosition();
+		return this.roundPosition(this.object.getPosition(), 1);
+	}
+
+	private Vector roundPosition(Vector position, int factor) {
+		float x, y;
+		x = position.x / factor;
+		y = position.y / factor;
+		x = Math.round(x) * factor;
+		y = Math.round(y) * factor;
+		return new Vector(x, y);
 	}
 }

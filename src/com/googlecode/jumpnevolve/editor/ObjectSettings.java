@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.awt.GridLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -29,11 +30,22 @@ public class ObjectSettings extends JPanel {
 	private final World editorWorld;
 
 	public ObjectSettings(String className, String objectName, World editorWorld) {
-		super(new GridLayout(5, 2));
+		super(new GridLayout(6, 2));
 		this.className = className;
 		this.objectName = objectName;
 		this.editorWorld = editorWorld;
-		// TODO Oberfläche initialisieren
+		this.add(new JLabel("Klasse: "));
+		this.add(new JLabel("" + className));
+		this.add(new JLabel("Objekt_Name:"));
+		this.add(new JLabel("" + objectName));
+		this.add(new JLabel("Position X: "));
+		this.add(positionX);
+		this.add(new JLabel("Position Y: "));
+		this.add(positionY);
+		this.add(new JLabel("Zu aktivierende Objekte: "));
+		this.add(activatings);
+		this.add(new JLabel("Zusätzliche Attribute: "));
+		this.add(attributes);
 	}
 
 	public AbstractObject getObject() {
