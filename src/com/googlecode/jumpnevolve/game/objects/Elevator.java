@@ -1,8 +1,11 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -68,6 +71,10 @@ public class Elevator extends ObjectTemplate {
 	}
 
 	// TODO: draw-Methode einfügen
+	public void draw(Graphics g) {
+		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
+				.getImage("aluminium.png"), true);
+	}
 
 	@Override
 	public String toDataLine() {

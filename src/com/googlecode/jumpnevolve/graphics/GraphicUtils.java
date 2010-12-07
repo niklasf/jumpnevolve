@@ -103,8 +103,8 @@ public class GraphicUtils {
 	/**
 	 * Zeichnet eine Textur
 	 */
-	public static void texture(Graphics g, Shape shape, Image image) {
-		g.texture(shape.toSlickShape(), image);
+	public static void texture(Graphics g, Shape shape, Image image, boolean fit) {
+		g.texture(shape.toSlickShape(), image, fit);
 	}
 
 	/**

@@ -58,12 +58,14 @@ public class Ground extends GroundTemplate {
 	@Override
 	public String toDataLine() {
 		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Ground_" + this.getPosition() + "_" + this.toString()
-				+ "_none_" + this.getShape().getDimensions() + "\n");
+		return new String("Ground_" + this.getPosition() + "_"
+				+ this.toString() + "_none_" + this.getShape().getDimensions()
+				+ "\n");
 	}
 
 	public void draw(Graphics g) {
-		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance().getImage("wood.png"));
+		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
+				.getImage("wood.png"), false);
 		// super.draw(g);
 	}
 }
