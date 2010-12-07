@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,11 +27,12 @@ import javax.swing.JPanel;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.util.ContextWrapper;
 
-public class Editor extends JFrame implements ActionListener, ItemListener {
+public class Editor extends JFrame implements ActionListener, ItemListener,
+		MouseListener {
 
 	private HashMap<String, ObjectSettings> objects = new HashMap<String, ObjectSettings>();
 	private JPanel contentPanel, auswahl, objectAuswahl, currentSettings,
-			levelPreview, levelSettings;
+			levelPreview, levelSettings, generalThings;
 	private JComboBox groupList, groundList, playerList, enemyList, objectList;
 	private JComboBox objectsList;
 	private int nextObjectId = 1;
@@ -38,13 +41,18 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 							 * ObjectsSettingsAbstractObjects übergeben zu
 							 * werden; ansonsten hat es keine Funktion
 							 */
-	private TextField positionX, positionY;
+	private TextField positionX = new TextField("0"),
+			positionY = new TextField("0");
+	private TextField saveFile = new TextField("level.txt");
 	private int curPosX = 0, curPosY = 0, curZoomX = 1, curZoomY = 1,
 			curHeight = 100, curWidth = 100;
-	private TextField levelWidth = new TextField(),
-			levelHeight = new TextField(), levelSubareaWidth = new TextField(),
-			availableFigures = new TextField(), levelTime = new TextField(),
-			levelZoomX = new TextField(), levelZoomY = new TextField();
+	private TextField levelWidth = new TextField("1000"),
+			levelHeight = new TextField("100"),
+			levelSubareaWidth = new TextField("1"),
+			availableFigures = new TextField("RollingBall"),
+			levelTime = new TextField("1000"), levelZoomX = new TextField("1"),
+			levelZoomY = new TextField("1");
+	private int lastClickX, lastClickY;
 
 	public Editor() {
 		super("Editor");
@@ -127,9 +135,19 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		levelSettings.add(anwenden);
 		levelSettings.add(new JLabel(""));
 
+		generalThings = new JPanel(new GridLayout(2, 2));
+		JButton save = new JButton("Level Speichern");
+		save.setActionCommand("Speichern");
+		save.addActionListener(this);
+		generalThings.add(new JLabel("Speichern unter:"));
+		generalThings.add(saveFile);
+		generalThings.add(new JLabel());
+		generalThings.add(save);
+
 		currentSettings = new JPanel();
 
 		levelPreview = new JPanel();
+		levelPreview.addMouseListener(this);
 
 		buildConstraints(constraints, 0, 0, 1, 1);
 		layout.setConstraints(auswahl, constraints);
@@ -222,9 +240,58 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		gbc.ipadx = 5;
 	}
 
+	public void updatePreview() {
+		Graphics g = this.levelPreview.getGraphics();
+		g.translate(this.curWidth / this.curZoomX / 2 - this.curPosX,
+				this.curHeight / this.curZoomY / 2 - this.curPosY);
+		Collection<ObjectSettings> objekte = this.objects.values();
+		for (ObjectSettings object : objekte) {
+			g.setColor(Color.BLACK);
+			object.getObject().draw(ContextWrapper.wrap(g));
+			g.setColor(Color.WHITE);
+			g.drawString(object.getObjectName(), (int) (object
+					.getObjectPosition().x),
+					(int) (object.getObjectPosition().y));
+			String actiavtings[] = object.getObjectsActivatings().split(",");
+			for (String i : actiavtings) {
+				ObjectSettings object2 = this.objects.get(i);
+				g.setColor(Color.RED);
+				g.drawLine((int) (object.getObjectPosition().x), (int) (object
+						.getObjectPosition().y), (int) (object2
+						.getObjectPosition().x), (int) (object2
+						.getObjectPosition().y));
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent evt) {
+		if (evt.getSource().equals(levelPreview)) {
+			this.lastClickX = evt.getX();
+			this.lastClickY = evt.getY();
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if (evt.getActionCommand().equals("New_Object")) {
+		String command = evt.getActionCommand().toLowerCase();
+		if (command.equals("new_object")) {
 			ObjectSettings neu = null;
 			String gruppe = groupList.getSelectedItem().toString();
 			if (gruppe.equals("Landschaft")) {
@@ -252,7 +319,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 				this.objectsList.setSelectedItem(neu.getObjectName());
 				this.setCurrentSettings(neu);
 			}
-		} else if (evt.getActionCommand().equals("Leveleinstellungen")) {
+		} else if (command.equals("leveleinstellungen")) {
 			this.curPosX = Integer.parseInt(this.positionX.getText().trim());
 			this.curPosY = Integer.parseInt(this.positionY.getText().trim());
 			this.curZoomX = Integer.parseInt(this.levelZoomX.getText().trim());
@@ -260,6 +327,19 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
 			this.curHeight = Integer
 					.parseInt(this.levelHeight.getText().trim());
+		} else if (command.equals("speichern")) {
+			String path = saveFile.getText().trim();
+			if (path.endsWith(".txt") && path.equals("") == false) {
+				try {
+					this.saveLevel(path);
+				} catch (IOException e) {
+					// TODO Fehlermeldung ausgeben
+					e.printStackTrace();
+				}
+			} else {
+				// TODO: Fehlermeldung ausgeben --> Fehlerhafter Name zum
+				// speichern
+			}
 		}
 	}
 
@@ -273,30 +353,6 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			} else if (source == objectsList) {
 				Object picked = evt.getItem();
 				this.setCurrentSettings(objects.get(picked.toString()));
-			}
-		}
-	}
-
-	public void updatePreview() {
-		Graphics g = this.levelPreview.getGraphics();
-		g.translate(this.curWidth / this.curZoomX / 2 - this.curPosX,
-				this.curHeight / this.curZoomY / 2 - this.curPosY);
-		Collection<ObjectSettings> objekte = this.objects.values();
-		for (ObjectSettings object : objekte) {
-			g.setColor(Color.BLACK);
-			object.getObject().draw(ContextWrapper.wrap(g));
-			g.setColor(Color.WHITE);
-			g.drawString(object.getObjectName(), (int) (object
-					.getObjectPosition().x),
-					(int) (object.getObjectPosition().y));
-			String actiavtings[] = object.getObjectsActivatings().split(",");
-			for (String i : actiavtings) {
-				ObjectSettings object2 = this.objects.get(i);
-				g.setColor(Color.RED);
-				g.drawLine((int) (object.getObjectPosition().x), (int) (object
-						.getObjectPosition().y), (int) (object2
-						.getObjectPosition().x), (int) (object2
-						.getObjectPosition().y));
 			}
 		}
 	}
