@@ -116,4 +116,25 @@ public class GraphicUtils {
 	public static void string(Graphics g, Vector position, String text) {
 		g.drawString(text, position.x, position.y);
 	}
+
+	/**
+	 * Zeichnet ein Bild in ein Shape
+	 * 
+	 * ACHTUNG: Das Bild wird bei einem unpassenden Shape verzerrt (z.B.
+	 * quadratisches Bild in einem länglichen Rechteck) bzw. über die Grenzen
+	 * hinaus gezeichnet (z.B. rechteckiges Bild in einem Kreis)
+	 * 
+	 * @param shape
+	 *            Das Shape
+	 * @param image
+	 *            Das Bild
+	 */
+	public static void drawImage(Graphics g, Shape shape, Image image) {
+		g.drawImage(image, shape.getCenter().x - shape.getDimensions().x, shape
+				.getCenter().y
+				- shape.getDimensions().y, shape.getCenter().x
+				+ shape.getDimensions().x, shape.getCenter().y
+				+ shape.getDimensions().y, 0, 0, image.getWidth(), image
+				.getHeight());
+	}
 }

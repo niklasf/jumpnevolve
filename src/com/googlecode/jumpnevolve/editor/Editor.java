@@ -1,8 +1,11 @@
 package com.googlecode.jumpnevolve.editor;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -10,6 +13,7 @@ import java.awt.event.ItemListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -19,22 +23,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.util.ContextWrapper;
 
 public class Editor extends JFrame implements ActionListener, ItemListener {
 
 	private HashMap<String, ObjectSettings> objects = new HashMap<String, ObjectSettings>();
 	private JPanel contentPanel, auswahl, objectAuswahl, currentSettings,
-			levelVorschau;
+			levelPreview, levelSettings;
 	private JComboBox groupList, groundList, playerList, enemyList, objectList;
 	private JComboBox objectsList;
 	private int nextObjectId = 1;
-	private World editorWorld;
+	private World dummyWorld; /*
+							 * Ein World-Objekt, dass nur dazu dient, den
+							 * ObjectsSettingsAbstractObjects übergeben zu
+							 * werden; ansonsten hat es keine Funktion
+							 */
+	private TextField positionX, positionY;
+	private int curPosX = 0, curPosY = 0, curZoomX = 1, curZoomY = 1,
+			curHeight = 100, curWidth = 100;
+	private TextField levelWidth = new TextField(),
+			levelHeight = new TextField(), levelSubareaWidth = new TextField(),
+			availableFigures = new TextField(), levelTime = new TextField(),
+			levelZoomX = new TextField(), levelZoomY = new TextField();
 
 	public Editor() {
 		super("Editor");
 
-		editorWorld = new World(1000, 1000, 10); // FIXME: Größe muss variable
-		// sein
+		dummyWorld = new World(1, 1, 1);
 
 		contentPanel = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
@@ -85,9 +100,36 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		neuesObjekt.addActionListener(this);
 		auswahl.add(neuesObjekt);
 
+		levelSettings = new JPanel(new GridLayout(11, 2));
+		levelSettings.add(new JLabel("Leveleinstellungen"));
+		levelSettings.add(new JLabel(""));
+		levelSettings.add(new JLabel("Kamera Position X:"));
+		levelSettings.add(positionX);
+		levelSettings.add(new JLabel("Kamera Position Y:"));
+		levelSettings.add(positionY);
+		levelSettings.add(new JLabel("Breite Level"));
+		levelSettings.add(levelWidth);
+		levelSettings.add(new JLabel("Höhe Level"));
+		levelSettings.add(levelHeight);
+		levelSettings.add(new JLabel("ZoomX Level"));
+		levelSettings.add(levelZoomX);
+		levelSettings.add(new JLabel("ZoomY Level"));
+		levelSettings.add(levelZoomY);
+		levelSettings.add(new JLabel("Breite Level Subareas"));
+		levelSettings.add(levelSubareaWidth);
+		levelSettings.add(new JLabel("Zeit für das Level"));
+		levelSettings.add(levelTime);
+		levelSettings.add(new JLabel("Verfügbare Spielfiguren"));
+		levelSettings.add(availableFigures);
+		JButton anwenden = new JButton("Wende neue Einstellungen an");
+		anwenden.setActionCommand("Leveleinstellungen");
+		anwenden.addActionListener(this);
+		levelSettings.add(anwenden);
+		levelSettings.add(new JLabel(""));
+
 		currentSettings = new JPanel();
 
-		levelVorschau = new JPanel();
+		levelPreview = new JPanel();
 
 		buildConstraints(constraints, 0, 0, 1, 1);
 		layout.setConstraints(auswahl, constraints);
@@ -98,8 +140,12 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		contentPanel.add(currentSettings);
 
 		buildConstraints(constraints, 0, 1, 2, 1);
-		layout.setConstraints(levelVorschau, constraints);
-		contentPanel.add(levelVorschau);
+		layout.setConstraints(levelPreview, constraints);
+		contentPanel.add(levelPreview);
+
+		buildConstraints(constraints, 2, 1, 1, 1);
+		layout.setConstraints(levelSettings, constraints);
+		contentPanel.add(levelSettings);
 
 		this.setContentPane(contentPanel);
 		this.setVisible(true);
@@ -126,13 +172,16 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 	}
 
 	private String getSettingsLine() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Leveleinstellungen_" + this.levelZoomX.getText().trim() + ","
+				+ this.levelZoomY.getText().trim() + "_"
+				+ this.levelTime.getText().trim() + "_"
+				+ this.availableFigures.getText().trim();
 	}
 
 	private String getDimensionsLine() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Leveldimensionen_" + this.levelWidth.getText().trim() + "_"
+				+ this.levelHeight.getText().trim() + "_"
+				+ this.levelSubareaWidth.getText().trim();
 	}
 
 	private void setObjectAuswahl(String gruppe) {
@@ -181,20 +230,20 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			if (gruppe.equals("Landschaft")) {
 				neu = new ObjectSettings(groundList.getSelectedItem()
 						.toString(), groundList.getSelectedItem().toString()
-						+ nextObjectId, editorWorld);
+						+ nextObjectId, dummyWorld);
 			} else if (gruppe.equals("Spieler")) {
 				neu = new ObjectSettings(playerList.getSelectedItem()
 						.toString(), playerList.getSelectedItem().toString()
-						+ nextObjectId, editorWorld);
+						+ nextObjectId, dummyWorld);
 			} else if (gruppe.equals("Gegner")) {
 				neu = new ObjectSettings(
 						enemyList.getSelectedItem().toString(), enemyList
 								.getSelectedItem().toString()
-								+ nextObjectId, editorWorld);
+								+ nextObjectId, dummyWorld);
 			} else if (gruppe.equals("Objekte")) {
 				neu = new ObjectSettings(objectList.getSelectedItem()
 						.toString(), objectList.getSelectedItem().toString()
-						+ nextObjectId, editorWorld);
+						+ nextObjectId, dummyWorld);
 			}
 			if (neu != null) {
 				nextObjectId++;
@@ -203,6 +252,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 				this.objectsList.setSelectedItem(neu.getObjectName());
 				this.setCurrentSettings(neu);
 			}
+		} else if (evt.getActionCommand().equals("Leveleinstellungen")) {
+			this.curPosX = Integer.parseInt(this.positionX.getText().trim());
+			this.curPosY = Integer.parseInt(this.positionY.getText().trim());
+			this.curZoomX = Integer.parseInt(this.levelZoomX.getText().trim());
+			this.curZoomY = Integer.parseInt(this.levelZoomY.getText().trim());
+			this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
+			this.curHeight = Integer
+					.parseInt(this.levelHeight.getText().trim());
 		}
 	}
 
@@ -212,10 +269,34 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			Object source = evt.getSource();
 			if (source == groupList) {
 				Object picked = evt.getItem();
-				setObjectAuswahl(picked.toString());
+				this.setObjectAuswahl(picked.toString());
 			} else if (source == objectsList) {
 				Object picked = evt.getItem();
-				setCurrentSettings(objects.get(picked.toString()));
+				this.setCurrentSettings(objects.get(picked.toString()));
+			}
+		}
+	}
+
+	public void updatePreview() {
+		Graphics g = this.levelPreview.getGraphics();
+		g.translate(this.curWidth / this.curZoomX / 2 - this.curPosX,
+				this.curHeight / this.curZoomY / 2 - this.curPosY);
+		Collection<ObjectSettings> objekte = this.objects.values();
+		for (ObjectSettings object : objekte) {
+			g.setColor(Color.BLACK);
+			object.getObject().draw(ContextWrapper.wrap(g));
+			g.setColor(Color.WHITE);
+			g.drawString(object.getObjectName(), (int) (object
+					.getObjectPosition().x),
+					(int) (object.getObjectPosition().y));
+			String actiavtings[] = object.getObjectsActivatings().split(",");
+			for (String i : actiavtings) {
+				ObjectSettings object2 = this.objects.get(i);
+				g.setColor(Color.RED);
+				g.drawLine((int) (object.getObjectPosition().x), (int) (object
+						.getObjectPosition().y), (int) (object2
+						.getObjectPosition().x), (int) (object2
+						.getObjectPosition().y));
 			}
 		}
 	}
