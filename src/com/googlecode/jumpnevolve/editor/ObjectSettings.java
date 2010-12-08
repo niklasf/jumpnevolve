@@ -23,8 +23,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class ObjectSettings extends JPanel {
 
 	private JTextField attributes = new JTextField(),
-			activatings = new JTextField(), positionX = new JTextField(),
-			positionY = new JTextField();
+			activatings = new JTextField(), positionX = new JTextField("0"),
+			positionY = new JTextField("0");
 	private final String className, objectName;
 	private final World editorWorld;
 
@@ -45,34 +45,79 @@ public class ObjectSettings extends JPanel {
 		this.add(activatings);
 		this.add(new JLabel("Zusätzliche Attribute: "));
 		this.add(attributes);
+		this.initialize();
+	}
+
+	private void initialize() {
+		if (this.className.equals("WalkingSoldier")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
+		} else if (this.className.equals("JumpingSoldier")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
+		} else if (this.className.equals("Soldier")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
+		} else if (this.className.equals("KillingMachine")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
+		} else if (this.className.equals("Button")) {
+			this.activatings.setText("none");
+			this.attributes.setText("10.0");
+		} else if (this.className.equals("Door")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("2|10");
+		} else if (this.className.equals("Ground")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("2|10");
+		} else if (this.className.equals("RollingBall")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
+		} else if (this.className.equals("Elevator")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("10|2,0.0,20.0");
+		}
 	}
 
 	public AbstractObject getObject() {
 		// TODO: parseFloat und parseVector ändern
 		AbstractObject object = null;
-		if (className.equals("WalkingSoldier")) {
+		if (this.className.equals("WalkingSoldier")) {
 			object = new WalkingSoldier(this.editorWorld, this
 					.getObjectPosition());
-		} else if (className.equals("JumpingSoldier")) {
+		} else if (this.className.equals("JumpingSoldier")) {
 			object = new JumpingSoldier(this.editorWorld, this
 					.getObjectPosition());
-		} else if (className.equals("Soldier")) {
+		} else if (this.className.equals("Soldier")) {
 			object = new Soldier(this.editorWorld, this.getObjectPosition());
-		} else if (className.equals("KillingMachine")) {
+		} else if (this.className.equals("KillingMachine")) {
 			object = new KillingMachine(this.editorWorld, this
 					.getObjectPosition());
-		} else if (className.equals("Button")) {
+		} else if (this.className.equals("Button")) {
 			object = new Button(this.editorWorld, this.getObjectPosition(),
 					Float.parseFloat(this.getObjectAttributes()));
-		} else if (className.equals("Door")) {
+		} else if (this.className.equals("Door")) {
 			object = new Door(this.editorWorld, this.getObjectPosition(),
 					Vector.parseVector(this.getObjectAttributes()));
-		} else if (className.equals("Ground")) {
+		} else if (this.className.equals("Ground")) {
 			object = new Ground(this.editorWorld, this.getObjectPosition(),
 					Vector.parseVector(this.getObjectAttributes()));
-		} else if (className.equals("RollingBall")) {
+		} else if (this.className.equals("RollingBall")) {
 			object = new RollingBall(this.editorWorld, this.getObjectPosition());
-		} else if (className.equals("Elevator")) {
+		} else if (this.className.equals("Elevator")) {
 			String[] curArgus = this.getObjectAttributes().split(",");
 			object = new Elevator(this.editorWorld, this.getObjectPosition(),
 					Vector.parseVector(curArgus[0]), Float
