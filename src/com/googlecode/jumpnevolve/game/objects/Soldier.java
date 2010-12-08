@@ -77,13 +77,6 @@ public class Soldier extends EnemyTemplate {
 	}
 
 	@Override
-	public String toDataLine() {
-		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Soldier_" + this.getPosition() + "_"
-				+ this.toString() + "_none_none\n");
-	}
-
-	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
 				.getInstance().getImage("simple-foot-soldier.png"));

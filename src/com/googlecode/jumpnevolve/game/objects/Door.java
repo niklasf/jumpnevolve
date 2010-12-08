@@ -75,12 +75,5 @@ public class Door extends ObjectTemplate {
 		this.opneningState = false;
 	}
 
-	@Override
-	public String toDataLine() {
-		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Door_" + this.getPosition() + "_" + this.toString()
-				+ "_none_" + this.getShape().getDimensions() + "\n");
-	}
-
 	// TODO: draw-Methode einfügen
 }

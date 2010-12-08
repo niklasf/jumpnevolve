@@ -53,11 +53,4 @@ public class WalkingSoldier extends Soldier {
 			this.setVelocity(Vector.RIGHT.mul(10.0f));
 		}
 	}
-
-	@Override
-	public String toDataLine() {
-		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("WalkingSoldier_" + this.getPosition() + "_"
-				+ this.toString() + "_none_none\n");
-	}
 }

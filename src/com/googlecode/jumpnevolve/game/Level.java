@@ -19,7 +19,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
  * @author Erik Wagner
  * 
  */
-public class Level extends World implements Dataable {
+public class Level extends World {
 
 	private int points;
 	private Timer timer = new Timer();
@@ -97,15 +97,5 @@ public class Level extends World implements Dataable {
 	@Override
 	public String toString() {
 		return null;
-	}
-
-	@Override
-	public String toDataLine() {
-		String line = new String("Leveldimensionen_" + this.width + "_"
-				+ this.height + "_" + this.subareaWidth + "\n"
-				+ "Leveleinstellungen_" + this.zoomX + "," + this.zoomY + "_"
-				+ this.timer.getStartingTime() + "_" + this.avaiableFigurs
-				+ "\n");
-		return line;
 	}
 }

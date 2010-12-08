@@ -75,12 +75,4 @@ public class Elevator extends ObjectTemplate {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
 				.getImage("aluminium.png"), true);
 	}
-
-	@Override
-	public String toDataLine() {
-		// FIXME: Bitte überprüfee, geht das so mit den Vektoren
-		return new String("Elevator_" + this.getPosition() + "_"
-				+ this.toString() + "_none_" + this.getShape().getDimensions()
-				+ "," + this.downEnd + "," + this.upEnd + "\n");
-	}
 }

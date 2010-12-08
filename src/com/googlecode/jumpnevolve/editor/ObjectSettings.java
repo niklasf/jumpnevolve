@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.googlecode.jumpnevolve.game.ObjectFocusingCamera;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;

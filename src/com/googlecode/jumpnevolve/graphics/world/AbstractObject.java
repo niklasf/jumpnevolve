@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.Dataable;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -47,7 +46,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  */
 public abstract class AbstractObject implements Pollable, Drawable,
-		Serializable, Dataable {
+		Serializable {
 
 	private static final long serialVersionUID = -3990787994625166974L;
 
@@ -148,7 +147,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Auch werden Objekt spezifische Einstellungen vorgenommen.
 	 * 
 	 * @param input
-	 *            TODO
+	 *            Das Input-Objekt für die aktuelle Runde
 	 */
 	public final void startRound(Input input) {
 		this.allreadyDone.clear();
