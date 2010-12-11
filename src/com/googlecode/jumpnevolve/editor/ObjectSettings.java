@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -28,11 +29,15 @@ public class ObjectSettings extends JPanel {
 	private final String className, objectName;
 	private final World editorWorld;
 
-	public ObjectSettings(String className, String objectName, World editorWorld) {
-		super(new GridLayout(6, 2));
+	public ObjectSettings(Editor parent, String className, String objectName,
+			World editorWorld) {
+		super(new GridLayout(7, 2));
 		this.className = className;
 		this.objectName = objectName;
 		this.editorWorld = editorWorld;
+		JButton posButton = new JButton("Position auswählen");
+		posButton.setActionCommand("Position");
+		posButton.addActionListener(parent);
 		this.add(new JLabel("Klasse: "));
 		this.add(new JLabel("" + className));
 		this.add(new JLabel("Objekt_Name:"));
@@ -45,6 +50,8 @@ public class ObjectSettings extends JPanel {
 		this.add(activatings);
 		this.add(new JLabel("Zusätzliche Attribute: "));
 		this.add(attributes);
+		this.add(posButton);
+		this.add(new JLabel(""));
 		this.initialize();
 	}
 
@@ -157,5 +164,10 @@ public class ObjectSettings extends JPanel {
 
 	public String getObjectAttributes() {
 		return this.attributes.getText().trim();
+	}
+
+	public void setPosition(float x, float y) {
+		this.positionX.setText("" + x);
+		this.positionY.setText("" + y);
 	}
 }

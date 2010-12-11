@@ -20,10 +20,10 @@ public class Collision {
 	 *            Die Kollisionsrichtung, Konstanten aus Shape
 	 * @param blockedPosition1
 	 *            Die geblockte Position; werden zwei Seiten geblockt, so ist
-	 *            dies die Position der vertikalen Blockung
+	 *            dies die Position der vertikalen Blockung (OBEN bzw. UNTEN)
 	 * @param blockedPosition2
 	 *            Die geblockte Position, wenn zwei Seiten geblockt werden, dies
-	 *            ist die Position der horizontalen Blockung
+	 *            ist die Position der horizontalen Blockung (RECHTS bzw. LINKS)
 	 */
 	public Collision(byte direction, float blockedPosition1,
 			float blockedPosition2) {
@@ -204,5 +204,32 @@ public class Collision {
 					+ direction);
 			return 0.0f;
 		}
+	}
+
+	/**
+	 * Gibt eine invertierte Kollision zurück (RECHTS/LINKS bzw. OBEN/UNTEN
+	 * vertauscht)
+	 * 
+	 * @return Die invertierte Kollision
+	 */
+	public Collision getInvertedCollision() {
+		Collision inverted = new Collision();
+		if (this.isBlocked(Shape.OBEN)) {
+			inverted.addCollision(new Collision(Shape.UNTEN, this
+					.getBlockingPosition(Shape.OBEN)));
+		}
+		if (this.isBlocked(Shape.UNTEN)) {
+			inverted.addCollision(new Collision(Shape.OBEN, this
+					.getBlockingPosition(Shape.UNTEN)));
+		}
+		if (this.isBlocked(Shape.RECHTS)) {
+			inverted.addCollision(new Collision(Shape.LINKS, this
+					.getBlockingPosition(Shape.RECHTS)));
+		}
+		if (this.isBlocked(Shape.LINKS)) {
+			inverted.addCollision(new Collision(Shape.RECHTS, this
+					.getBlockingPosition(Shape.LINKS)));
+		}
+		return inverted;
 	}
 }

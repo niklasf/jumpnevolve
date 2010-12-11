@@ -189,8 +189,8 @@ public class Rectangle implements Shape {
 			// http://www.back-side.net/codingrects.html
 			Rectangle other = (Rectangle) shape;
 			Rectangle bounding = other.getBoundingRectangle(this);
-			return bounding.width < this.width + other.width
-					&& bounding.height < this.height + other.height;
+			return bounding.width <= this.width + other.width
+					&& bounding.height <= this.height + other.height;
 		} else {
 			return shape.getBestCircle().doesCollide(this);
 		}
@@ -385,58 +385,85 @@ public class Rectangle implements Shape {
 				this.height);
 	}
 
-	@Override
-	public Collision getCollision(Shape other) {
-		if (other instanceof Rectangle) {
-			Vector directionToCorner;
-			switch (this.getTouchedCorner((Rectangle) other)) {
-			case Shape.OBEN_LINKS:
-				directionToCorner = ((Rectangle) other).getLowRightCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getHighLeftCorner()
-						.sub(this.getCenter()))) {
-					return new Collision(Shape.OBEN, other.getLowerEnd());
-				} else {
-					return new Collision(Shape.LINKS, other.getRightEnd());
-				}
-			case Shape.OBEN_RECHTS:
-				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
-						this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getHighRightCorner()
-						.sub(this.getCenter()))) {
-					return new Collision(Shape.OBEN, other.getLowerEnd());
-				} else {
-					return new Collision(Shape.RECHTS, other.getLeftEnd());
-				}
-			case Shape.UNTEN_LINKS:
-				directionToCorner = ((Rectangle) other).getHighRightCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getLowLeftCorner()
-						.sub(this.getCenter()))) {
-					return new Collision(Shape.LINKS, other.getRightEnd());
-				} else {
-					return new Collision(Shape.UNTEN, other.getUpperEnd());
-				}
-			case Shape.UNTEN_RECHTS:
-				directionToCorner = ((Rectangle) other).getHighLeftCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getLowRightCorner()
-						.sub(this.getCenter()))) {
-					return new Collision(Shape.RECHTS, other.getLeftEnd());
-				} else {
-					return new Collision(Shape.UNTEN, other.getUpperEnd());
-				}
-			case Shape.OBEN:
-				return new Collision(Shape.OBEN, other.getLowerEnd());
-			case Shape.UNTEN:
-				return new Collision(Shape.UNTEN, other.getUpperEnd());
-			case Shape.RECHTS:
-				return new Collision(Shape.RECHTS, other.getLeftEnd());
-			case Shape.LINKS:
-				return new Collision(Shape.LINKS, other.getRightEnd());
-			default:
-				break;
+	private Collision getRectangleCollision(Rectangle other,
+			boolean otherMoveable, boolean thisMoveable, boolean firstRound) {
+		boolean cornersInside[] = new boolean[4]; // Ecke beginnend oben-links
+		// im Uhrzeigersinn
+		cornersInside[0] = this.isPointInThis(other.getHighLeftCorner());
+		cornersInside[1] = this.isPointInThis(other.getHighRightCorner());
+		cornersInside[2] = this.isPointInThis(other.getLowRightCorner());
+		cornersInside[3] = this.isPointInThis(other.getLowLeftCorner());
+		int numbersOfInsideCorners = 0;
+		for (boolean value : cornersInside) {
+			if (value) {
+				numbersOfInsideCorners++;
 			}
+		}
+		float low = 0.0f, up = 0.0f, right = 0.0f, left = 0.0f;
+		if (otherMoveable == thisMoveable) {
+			low = (this.getLowerEnd() + other.getUpperEnd()) / 2;
+			up = (this.getUpperEnd() + other.getLowerEnd()) / 2;
+			right = (this.getRightEnd() + other.getLeftEnd()) / 2;
+			left = (this.getLeftEnd() + other.getRightEnd()) / 2;
+		} else if (otherMoveable) {
+			low = this.getLowerEnd();
+			up = this.getUpperEnd();
+			right = this.getRightEnd();
+			left = this.getLeftEnd();
+		} else if (thisMoveable) {
+			low = other.getUpperEnd();
+			up = other.getLowerEnd();
+			right = other.getLeftEnd();
+			left = other.getRightEnd();
+		}
+		if (numbersOfInsideCorners == 1) {
+			if (cornersInside[0]) {
+				return new Collision(Shape.UNTEN_RECHTS, low, right);
+			} else if (cornersInside[1]) {
+				return new Collision(Shape.UNTEN_LINKS, low, left);
+			} else if (cornersInside[2]) {
+				return new Collision(Shape.OBEN_LINKS, up, left);
+			} else if (cornersInside[3]) {
+				return new Collision(Shape.OBEN_RECHTS, up, right);
+			}
+		} else if (numbersOfInsideCorners == 2) {
+			if (cornersInside[0]) {
+				if (cornersInside[1]) {
+					return new Collision(Shape.UNTEN, low);
+				} else if (cornersInside[3]) {
+					return new Collision(Shape.RECHTS, right);
+				}
+			} else if (cornersInside[1]) {
+				if (cornersInside[2]) {
+					return new Collision(Shape.LINKS, left);
+				}
+			} else if (cornersInside[2]) {
+				if (cornersInside[3]) {
+					return new Collision(Shape.OBEN, up);
+				}
+			}
+		} else if (numbersOfInsideCorners == 4) {
+			Collision col = new Collision(Shape.OBEN_RECHTS,
+					this.getUpperEnd(), this.getRightEnd());
+			col.addCollision(new Collision(Shape.UNTEN_LINKS, this
+					.getLowerEnd(), this.getLeftEnd()));
+			return col;
+		} else if (numbersOfInsideCorners == 0 && firstRound == true) {
+			return other.getRectangleCollision(this, thisMoveable,
+					otherMoveable, false).getInvertedCollision();
+		} else {
+			return new Collision(); // Leere Kollision zurückgeben
+			// FIXME: Fehler ausgeben
+		}
+		return new Collision();
+	}
+
+	@Override
+	public Collision getCollision(Shape other, boolean otherMoveable,
+			boolean thisMoveable) {
+		if (other instanceof Rectangle) {
+			return getRectangleCollision((Rectangle) other, otherMoveable,
+					thisMoveable, true);
 		} else if (other instanceof Circle) {
 			Collision col = other.getCollision(this);
 			Collision thisCol = new Collision();
@@ -457,10 +484,10 @@ public class Rectangle implements Shape {
 						.getLeftEnd()));
 			}
 			return thisCol;
+
 		} else {
-			return this.getCollision(other.getBestCircle());
+			return other.getBestCircle().getCollision(this);
 		}
-		return new Collision();
 	}
 
 	@Override
@@ -480,5 +507,10 @@ public class Rectangle implements Shape {
 	@Override
 	public Vector getDimensions() {
 		return new Vector(this.width / 2.0f, this.height / 2.0f);
+	}
+
+	@Override
+	public Collision getCollision(Shape other) {
+		return getCollision(other, true, true);
 	}
 }

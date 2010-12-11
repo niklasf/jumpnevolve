@@ -52,8 +52,8 @@ public class KillingMachine extends EnemyTemplate {
 	public void onLivingCrash(AbstractObject other) {
 		// KillingMachine versucht alle lebenden Objekte zu töten, wenn diese
 		// nicht oberhalb von ihr sind
-		if (this.getShape().getCollision(other.getShape())
-				.isBlocked(Shape.OBEN) == false) {
+		if (this.getShape().getCollision(other.getShape(), other.isMoveable(),
+				this.isMoveable()).isBlocked(Shape.OBEN) == false) {
 			other.kill(this);
 		}
 	}

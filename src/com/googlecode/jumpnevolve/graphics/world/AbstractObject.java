@@ -24,6 +24,10 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import sun.security.x509.AVA;
+
+import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -49,6 +53,11 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		Serializable {
 
 	private static final long serialVersionUID = -3990787994625166974L;
+
+	/**
+	 * Konstante für die maximale Geschwindigkeit in einer Richtung (x bzw. y)
+	 */
+	private static final float MAXIMUM_VELOCITY_ONE_WAY = 150;
 
 	private Shape shape;
 
@@ -159,21 +168,25 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	@Override
 	public void poll(Input input, float secounds) {
-		for (LinkedList<AbstractObject> neighboursSub : this.world
-				.getNeighbours(this)) {
-			for (AbstractObject other : neighboursSub) {
-				// Nicht mit sich selbst testen
-				if (other == this)
-					continue;
+		if (this.isMoveable()) {
+			// Nur durchführen, wenn sich das Objekt bewegen kann, da ansonst
+			// sowieso keine Änderung von statten geht
+			for (LinkedList<AbstractObject> neighboursSub : this.world
+					.getNeighbours(this)) {
+				for (AbstractObject other : neighboursSub) {
+					// Nicht mit sich selbst testen
+					if (other == this)
+						continue;
 
-				// Doppelte Tests vermeiden
-				addDone(other);
-				other.addDone(this);
+					// Doppelte Tests vermeiden
+					addDone(other);
+					other.addDone(this);
 
-				// Kollisionen mit jedem nachbarn prüfen
-				if (this.shape.doesCollide(other.getShape())) {
-					onCrash(other);
-					other.onCrash(this);
+					// Kollisionen mit jedem nachbarn prüfen
+					if (this.shape.doesCollide(other.getShape())) {
+						onCrash(other);
+						other.onCrash(this);
+					}
 				}
 			}
 		}
@@ -192,10 +205,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// System.out.println("Mist....");
 		// }
 		if (this.mass != 0.0f) { // Beweglich
-			// Bewegungsgleichung lösen:
-			// Nicht mit dem Verlet-Algorithmus, da this.oldStep nicht unbedingt
-			// konstant ist.
-
 			if (this.isWayBlocked(Shape.OBEN)) {
 				if (this.getForce().y < 0) {
 					this.force = this.force.modifyY(0);
@@ -273,6 +282,26 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			Vector acceleration = this.force.div(this.mass);
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
 			this.velocity = this.velocity.add(deltaVelocity);
+
+			// Begrenze Geschwindigkeit
+			if (this.velocity.x > AbstractObject.MAXIMUM_VELOCITY_ONE_WAY) {
+				this.velocity = this.velocity
+						.modifyX(AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
+			} else if (this.velocity.x < -AbstractObject.MAXIMUM_VELOCITY_ONE_WAY) {
+				this.velocity = this.velocity
+						.modifyX(-AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
+			}
+			if (this.velocity.y > AbstractObject.MAXIMUM_VELOCITY_ONE_WAY) {
+				this.velocity = this.velocity
+						.modifyY(AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
+			} else if (this.velocity.y < -AbstractObject.MAXIMUM_VELOCITY_ONE_WAY) {
+				this.velocity = this.velocity
+						.modifyY(-AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
+			}
+			if (this instanceof RollingBall) {
+				System.out.println("Name: " + this.toString()
+						+ " Geschwindigkeit: " + this.velocity);
+			}
 
 			// Entsprechend die neue Position berechnen
 			Vector newPos = this.shape.getCenter().add(
@@ -360,7 +389,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public void blockWay(AbstractObject blocker) {
 		this.collision.addCollision(this.getShape().getCollision(
-				blocker.getShape()));
+				blocker.getShape(), blocker.isMoveable(), this.isMoveable()));
 	}
 
 	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...

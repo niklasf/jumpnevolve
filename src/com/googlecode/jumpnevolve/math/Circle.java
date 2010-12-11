@@ -254,34 +254,48 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public Collision getCollision(Shape other) {
+	public Collision getCollision(Shape other, boolean otherMoveable,
+			boolean thisMoveable) {
+		float low = 0.0f, up = 0.0f, right = 0.0f, left = 0.0f;
+		if (otherMoveable == thisMoveable) {
+			low = (this.getLowerEnd() + other.getUpperEnd()) / 2;
+			up = (this.getUpperEnd() + other.getLowerEnd()) / 2;
+			right = (this.getRightEnd() + other.getLeftEnd()) / 2;
+			left = (this.getLeftEnd() + other.getRightEnd()) / 2;
+		} else if (otherMoveable) {
+			low = this.getLowerEnd();
+			up = this.getUpperEnd();
+			right = this.getRightEnd();
+			left = this.getLeftEnd();
+		} else if (thisMoveable) {
+			low = other.getUpperEnd();
+			up = other.getLowerEnd();
+			right = other.getLeftEnd();
+			left = other.getRightEnd();
+		}
 		if (other instanceof Circle) {
 			Vector direction = other.getCenter().sub(this.getCenter());
 			if (direction.x > 0) {
 				if (direction.y > 0) {
-					return new Collision(Shape.UNTEN_RECHTS, other
-							.getUpperEnd(), other.getLeftEnd());
+					return new Collision(Shape.UNTEN_RECHTS, low, right);
 				} else if (direction.y < 0) {
-					return new Collision(Shape.OBEN_RECHTS,
-							other.getLowerEnd(), other.getLeftEnd());
+					return new Collision(Shape.OBEN_RECHTS, up, right);
 				} else {
-					return new Collision(Shape.RECHTS, other.getLeftEnd());
+					return new Collision(Shape.RECHTS, right);
 				}
 			} else if (direction.x < 0) {
 				if (direction.y > 0) {
-					return new Collision(Shape.UNTEN_LINKS,
-							other.getUpperEnd(), other.getRightEnd());
+					return new Collision(Shape.UNTEN_LINKS, low, left);
 				} else if (direction.y < 0) {
-					return new Collision(Shape.OBEN_LINKS, other.getLowerEnd(),
-							other.getRightEnd());
+					return new Collision(Shape.OBEN_LINKS, up, left);
 				} else {
-					return new Collision(Shape.LINKS, other.getRightEnd());
+					return new Collision(Shape.LINKS, left);
 				}
 			} else {
 				if (direction.y > 0) {
-					return new Collision(Shape.UNTEN, other.getUpperEnd());
+					return new Collision(Shape.UNTEN, low);
 				} else if (direction.y < 0) {
-					return new Collision(Shape.OBEN, other.getLowerEnd());
+					return new Collision(Shape.OBEN, up);
 				} else {
 					return new Collision();
 				}
@@ -291,44 +305,41 @@ public class Circle implements Shape {
 					&& other.getLowerEnd() < this.getCenter().y) {
 				if (other.getRightEnd() > this.getCenter().x - this.radius
 						&& other.getRightEnd() < this.getCenter().x) {
-					return new Collision(Shape.OBEN_LINKS, other.getLowerEnd(),
-							other.getRightEnd());
+					return new Collision(Shape.OBEN_LINKS, up, left);
 				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
 						&& other.getLeftEnd() > this.getCenter().x) {
-					return new Collision(Shape.OBEN_RECHTS,
-							other.getLowerEnd(), other.getLeftEnd());
+					return new Collision(Shape.OBEN_RECHTS, up, right);
 				} else {
-					return new Collision(Shape.OBEN, other.getLowerEnd());
+					return new Collision(Shape.OBEN, up);
 				}
 			} else if (other.getUpperEnd() < this.getCenter().y + this.radius
 					&& other.getUpperEnd() > this.getCenter().y) {
 				if (other.getRightEnd() > this.getCenter().x - this.radius
 						&& other.getRightEnd() < this.getCenter().x) {
-					return new Collision(Shape.UNTEN_LINKS,
-							other.getUpperEnd(), other.getRightEnd());
+					return new Collision(Shape.UNTEN_LINKS, low, left);
 				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
 						&& other.getLeftEnd() > this.getCenter().x) {
-					return new Collision(Shape.UNTEN_RECHTS, other
-							.getUpperEnd(), other.getLeftEnd());
+					return new Collision(Shape.UNTEN_RECHTS, low, right);
 				} else {
-					return new Collision(Shape.UNTEN, other.getUpperEnd());
+					return new Collision(Shape.UNTEN, low);
 				}
 			} else {
 				if (other.getRightEnd() > this.getCenter().x - this.radius
 						&& other.getRightEnd() < this.getCenter().x) {
-					return new Collision(Shape.LINKS, other.getRightEnd());
+					return new Collision(Shape.LINKS, left);
 				} else if (other.getLeftEnd() < this.getCenter().x
 						+ this.radius
 						&& other.getLeftEnd() > this.getCenter().x) {
-					return new Collision(Shape.RECHTS, other.getLeftEnd());
+					return new Collision(Shape.RECHTS, right);
 				} else {
 					return new Collision();
 				}
 			}
 		} else {
-			return this.getCollision(other.getBestCircle());
+			return this.getCollision(other.getBestCircle(), otherMoveable,
+					thisMoveable);
 		}
 	}
 
@@ -340,5 +351,10 @@ public class Circle implements Shape {
 	@Override
 	public Vector getDimensions() {
 		return new Vector(this.radius, 0);
+	}
+
+	@Override
+	public Collision getCollision(Shape other) {
+		return getCollision(other, true, true);
 	}
 }

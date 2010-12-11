@@ -1,8 +1,11 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -75,5 +78,8 @@ public class Door extends ObjectTemplate {
 		this.opneningState = false;
 	}
 
-	// TODO: draw-Methode einfügen
+	public void draw(Graphics g) {
+		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
+				.getImage("wood.png"), false);
+	}
 }

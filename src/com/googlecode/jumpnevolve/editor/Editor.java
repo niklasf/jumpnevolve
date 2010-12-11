@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.editor;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -42,7 +43,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 							 */
 	private TextField positionX = new TextField("0"),
 			positionY = new TextField("0");
-	private TextField saveFile = new TextField("level.txt");
+	private TextField saveFileName = new TextField("level.txt");
 	private int curPosX = 0, curPosY = 0, curZoomX = 1, curZoomY = 1,
 			curHeight = 100, curWidth = 100;
 	private TextField levelWidth = new TextField("1000"),
@@ -52,6 +53,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			levelTime = new TextField("1000"), levelZoomX = new TextField("1"),
 			levelZoomY = new TextField("1");
 	private int lastClickX, lastClickY;
+	private String waitFor;
 
 	public Editor() {
 		super("Editor");
@@ -139,7 +141,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		save.setActionCommand("Speichern");
 		save.addActionListener(this);
 		generalThings.add(new JLabel("Speichern unter:"));
-		generalThings.add(saveFile);
+		generalThings.add(saveFileName);
 		generalThings.add(new JLabel());
 		generalThings.add(save);
 
@@ -239,10 +241,23 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		gbc.ipadx = 5;
 	}
 
+	private void newMouseClickPerformed() {
+		if (this.waitFor.equals("Position")) {
+			Component com = this.currentSettings.getComponent(0);
+			((ObjectSettings) com).setPosition(lastClickX, lastClickY);
+		}
+		this.waitFor = null;
+	}
+
+	private void waitForMouseClick(String forWhat) {
+		this.waitFor = forWhat;
+	}
+
 	public void updatePreview() {
 		Graphics g = this.levelPreview.getGraphics();
-		g.translate(this.curWidth / this.curZoomX / 2 - this.curPosX,
-				this.curHeight / this.curZoomY / 2 - this.curPosY);
+		g.translate(this.levelPreview.getWidth() / this.curZoomX / 2
+				- this.curPosX, this.levelPreview.getHeight() / this.curZoomY
+				/ 2 - this.curPosY);
 		Collection<ObjectSettings> objekte = this.objects.values();
 		for (ObjectSettings object : objekte) {
 			g.setColor(Color.BLACK);
@@ -266,8 +281,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	@Override
 	public void mouseClicked(MouseEvent evt) {
 		if (evt.getSource().equals(levelPreview)) {
+			evt.translatePoint(-(this.levelPreview.getWidth() / this.curZoomX
+					/ 2 - this.curPosX), -(this.levelPreview.getHeight()
+					/ this.curZoomY / 2 - this.curPosY));
+			// TODO: Anmerkung - Hier könnte der Fehler für falsche
+			// Mausereignisse liegen...
 			this.lastClickX = evt.getX();
 			this.lastClickY = evt.getY();
+			this.newMouseClickPerformed();
 		}
 	}
 
@@ -294,22 +315,21 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			ObjectSettings neu = null;
 			String gruppe = groupList.getSelectedItem().toString();
 			if (gruppe.equals("Landschaft")) {
-				neu = new ObjectSettings(groundList.getSelectedItem()
-						.toString(), groundList.getSelectedItem().toString()
-						+ nextObjectId, dummyWorld);
+				neu = new ObjectSettings(this, groundList.getSelectedItem()
+						.toString(), nextObjectId + "_"
+						+ groundList.getSelectedItem().toString(), dummyWorld);
 			} else if (gruppe.equals("Spieler")) {
-				neu = new ObjectSettings(playerList.getSelectedItem()
-						.toString(), playerList.getSelectedItem().toString()
-						+ nextObjectId, dummyWorld);
+				neu = new ObjectSettings(this, playerList.getSelectedItem()
+						.toString(), nextObjectId + "_"
+						+ playerList.getSelectedItem().toString(), dummyWorld);
 			} else if (gruppe.equals("Gegner")) {
-				neu = new ObjectSettings(
-						enemyList.getSelectedItem().toString(), enemyList
-								.getSelectedItem().toString()
-								+ nextObjectId, dummyWorld);
+				neu = new ObjectSettings(this, enemyList.getSelectedItem()
+						.toString(), nextObjectId + "_"
+						+ enemyList.getSelectedItem().toString(), dummyWorld);
 			} else if (gruppe.equals("Objekte")) {
-				neu = new ObjectSettings(objectList.getSelectedItem()
-						.toString(), objectList.getSelectedItem().toString()
-						+ nextObjectId, dummyWorld);
+				neu = new ObjectSettings(this, objectList.getSelectedItem()
+						.toString(), nextObjectId + "_"
+						+ objectList.getSelectedItem().toString(), dummyWorld);
 			}
 			if (neu != null) {
 				nextObjectId++;
@@ -318,6 +338,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 				this.objectsList.setSelectedItem(neu.getObjectName());
 				this.setCurrentSettings(neu);
 			}
+			this.waitForMouseClick("Position");
 		} else if (command.equals("leveleinstellungen")) {
 			this.curPosX = Integer.parseInt(this.positionX.getText().trim());
 			this.curPosY = Integer.parseInt(this.positionY.getText().trim());
@@ -327,10 +348,10 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			this.curHeight = Integer
 					.parseInt(this.levelHeight.getText().trim());
 		} else if (command.equals("speichern")) {
-			String path = saveFile.getText().trim();
-			if (path.endsWith(".txt") && path.equals("") == false) {
+			String fileName = saveFileName.getText().trim();
+			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
 				try {
-					this.saveLevel(path);
+					this.saveLevel(fileName);
 				} catch (IOException e) {
 					// TODO Fehlermeldung ausgeben
 					e.printStackTrace();
@@ -339,6 +360,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 				// TODO: Fehlermeldung ausgeben --> Fehlerhafter Name zum
 				// speichern
 			}
+		} else if (command.equals("position")) {
+			this.waitForMouseClick("Position");
 		}
 	}
 
@@ -352,6 +375,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			} else if (source == objectsList) {
 				Object picked = evt.getItem();
 				this.setCurrentSettings(objects.get(picked.toString()));
+				this.waitForMouseClick(null);
 			}
 		}
 	}

@@ -101,8 +101,22 @@ public interface Shape extends Serializable {
 	 *            Das andere Shape
 	 * @return Ein Kollisionsobjekt, das die Kollision von diesem Objekt zum
 	 *         anderen darstellt
+	 * @Deprecated Es sollte getCollision mit moveable-booleans verwendet werden
+	 *             verwendet werden
 	 */
+	@Deprecated
 	public Collision getCollision(Shape other);
+
+	/**
+	 * @param other
+	 *            Das andere Shape
+	 * @param moveable
+	 *            Ob das andere Objekt beweglich ist
+	 * @return Ein Kollisionsobjekt, das die Kollision von diesem Objekt zum
+	 *         anderen darstellt
+	 */
+	public Collision getCollision(Shape other, boolean otherMoveable,
+			boolean thisMoveable);
 
 	/**
 	 * 
@@ -129,7 +143,7 @@ public interface Shape extends Serializable {
 	 * @return Die Dimensionen des Shapes
 	 */
 	public Vector getDimensions();
-	
+
 	/*
 	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
 	 * 

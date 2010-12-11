@@ -90,7 +90,8 @@ public class RollingBall extends FigureTemplate {
 
 	@Override
 	public void onLivingCrash(AbstractObject other) {
-		Collision col = this.getShape().getCollision(other.getShape());
+		Collision col = this.getShape().getCollision(other.getShape(),
+				other.isMoveable(), true);
 		if (other instanceof EnemyTemplate && col.isBlocked(Shape.UNTEN)
 				&& col.isBlocked(Shape.RECHTS) == false
 				&& col.isBlocked(Shape.LINKS) == false) {
