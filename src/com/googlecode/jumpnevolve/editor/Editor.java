@@ -261,7 +261,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		Collection<ObjectSettings> objekte = this.objects.values();
 		for (ObjectSettings object : objekte) {
 			g.setColor(Color.BLACK);
-			object.getObject().draw(ContextWrapper.wrap(g));
+			object.getObject().draw(ContextWrapper.wrap(g, levelPreview));
 			g.setColor(Color.WHITE);
 			g.drawString(object.getObjectName(), (int) (object
 					.getObjectPosition().x),

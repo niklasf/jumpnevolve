@@ -298,10 +298,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				this.velocity = this.velocity
 						.modifyY(-AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
 			}
-			if (this instanceof RollingBall) {
-				System.out.println("Name: " + this.toString()
-						+ " Geschwindigkeit: " + this.velocity);
-			}
 
 			// Entsprechend die neue Position berechnen
 			Vector newPos = this.shape.getCenter().add(
