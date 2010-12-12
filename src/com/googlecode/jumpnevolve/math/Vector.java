@@ -56,6 +56,26 @@ public class Vector implements Cloneable, Serializable {
 	public static final Vector ZERO = new Vector(0, 0);
 
 	/**
+	 * Der Vektor (1, -1) zeigt nach oben-rechts
+	 */
+	public static final Vector UP_RIGHT = new Vector(1, -1);
+
+	/**
+	 * Der Vektor (-1, -1) zeigt nach oben-links
+	 */
+	public static final Vector UP_LEFT = new Vector(-1, -1);
+
+	/**
+	 * Der Vektor (1, 1) zeigt nach unten-rechts
+	 */
+	public static final Vector DOWN_RIGHT = new Vector(1, 1);
+
+	/**
+	 * Der Vektor (-1, 1) zeigt nach unten links
+	 */
+	public static final Vector DOWN_LEFT = new Vector(-1, 1);
+
+	/**
 	 * Die X-Koordinate
 	 */
 	public final float x;
@@ -363,18 +383,22 @@ public class Vector implements Cloneable, Serializable {
 	public String toString() {
 		return "(" + this.x + ", " + this.y + ")";
 	}
-	
-	private static Pattern vectorPattern = Pattern.compile("\\s*\\(?\\s*([0-9.eE+-]+)\\s*(\\||,)\\s*([0-9.eE+-]+)\\s*\\)?\\s*");
-	
+
+	private static Pattern vectorPattern = Pattern
+			.compile("\\s*\\(?\\s*([0-9.eE+-]+)\\s*(\\||,)\\s*([0-9.eE+-]+)\\s*\\)?\\s*");
+
 	/**
-	 * @param s Die Stringdarstellung eines Vektors.
+	 * @param s
+	 *            Die Stringdarstellung eines Vektors.
 	 * @return Einer neuer, passender Vektor.
-	 * @throws NumberFormatException Wenn der String kein Vektor ist.
+	 * @throws NumberFormatException
+	 *             Wenn der String kein Vektor ist.
 	 */
 	public static Vector parseVector(String s) {
 		Matcher matcher = vectorPattern.matcher(s);
-		if(matcher.matches()) {
-			return new Vector(Float.parseFloat(matcher.group(1)), Float.parseFloat(matcher.group(3)));
+		if (matcher.matches()) {
+			return new Vector(Float.parseFloat(matcher.group(1)), Float
+					.parseFloat(matcher.group(3)));
 		} else {
 			throw new NumberFormatException("Input is no vector: " + s);
 		}

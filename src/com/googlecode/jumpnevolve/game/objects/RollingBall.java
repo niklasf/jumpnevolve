@@ -73,7 +73,7 @@ public class RollingBall extends FigureTemplate {
 		}
 
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
-				&& this.isWayBlocked(Shape.UNTEN)) {
+				&& this.isWayBlocked(Shape.DOWN)) {
 			this.setVelocity(new Vector(this.getVelocity().x, -0.5f * 98.1f
 					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
@@ -92,9 +92,9 @@ public class RollingBall extends FigureTemplate {
 	public void onLivingCrash(AbstractObject other) {
 		Collision col = this.getShape().getCollision(other.getShape(),
 				other.isMoveable(), true);
-		if (other instanceof EnemyTemplate && col.isBlocked(Shape.UNTEN)
-				&& col.isBlocked(Shape.RECHTS) == false
-				&& col.isBlocked(Shape.LINKS) == false) {
+		if (other instanceof EnemyTemplate && col.isBlocked(Shape.DOWN)
+				&& col.isBlocked(Shape.RIGHT) == false
+				&& col.isBlocked(Shape.LEFT) == false) {
 			other.kill(this);
 		}
 	}

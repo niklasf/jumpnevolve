@@ -29,7 +29,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -38,7 +41,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner und Niklas Fiekas
  */
-public class World extends AbstractState{
+public class World extends AbstractState {
 
 	private ArrayList<LinkedList<AbstractObject>> objectList;
 
@@ -57,6 +60,8 @@ public class World extends AbstractState{
 	private ArrayList<AbstractObject> deletedObjects = new ArrayList<AbstractObject>();
 
 	private Camera camera;
+
+	private boolean screenAlreadyConfigured;
 
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
@@ -146,7 +151,8 @@ public class World extends AbstractState{
 	public void changedPosition(AbstractObject object) {
 		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
 		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
-		int oldStart = (int) (object.getOldHorizontalStart()) / this.subareaWidth;
+		int oldStart = (int) (object.getOldHorizontalStart())
+				/ this.subareaWidth;
 		int oldEnd = (int) (object.getOldHorizontalEnd()) / this.subareaWidth;
 		if (start < 0) {
 			System.out.println("Korrektur 0" + object.getClass().getName());
@@ -263,8 +269,7 @@ public class World extends AbstractState{
 		return returns;
 	}
 
-	@Override
-	public void draw(Graphics g) {
+	public void configScreen(Graphics g) {
 		// TODO: Zoom und Kameraeinstellungen prüfen
 		g.scale(zoomX, zoomY);
 
@@ -272,14 +277,23 @@ public class World extends AbstractState{
 		if (this.camera != null) {
 			Vector cameraPosition = this.camera.getPosition();
 			g.translate(Engine.getInstance().getWidth() / zoomX / 2.0f
-					- cameraPosition.x, Engine.getInstance().getHeight() / zoomY
-					/ 2.0f - cameraPosition.y);
+					- cameraPosition.x, Engine.getInstance().getHeight()
+					/ zoomY / 2.0f - cameraPosition.y);
+		}
+		screenAlreadyConfigured = true;
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		if (screenAlreadyConfigured == false) {
+			this.configScreen(g);
 		}
 
 		// Andere Objekte zeichnen
 		for (Drawable drawable : this.drawables) {
 			drawable.draw(g);
 		}
+		screenAlreadyConfigured = false;
 	}
 
 	@Override

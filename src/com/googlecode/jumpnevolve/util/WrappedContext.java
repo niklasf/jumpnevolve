@@ -1,8 +1,8 @@
 package com.googlecode.jumpnevolve.util;
 
+import java.awt.Image;
 import java.awt.Toolkit;
 
-import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Shape;
 
 public class WrappedContext extends org.newdawn.slick.Graphics {
@@ -37,15 +37,15 @@ public class WrappedContext extends org.newdawn.slick.Graphics {
 	}
 
 	@Override
-	public void drawImage(Image image, float x, float y, float x2, float y2,
-			float srcx, float srcy, float srcx2, float srcy2) {
+	public void drawImage(org.newdawn.slick.Image image, float x, float y,
+			float x2, float y2, float srcx, float srcy, float srcx2, float srcy2) {
 		this.realGraphics.drawImage(image, (int) x, (int) y, (int) x2,
 				(int) y2, (int) srcx, (int) srcy, (int) srcx2, (int) srcy2,
 				this.observer); // FIXME: fixen
 	}
 
 	@Override
-	public void texture(Shape shape, Image image, boolean fit) {
+	public void texture(Shape shape, org.newdawn.slick.Image image, boolean fit) {
 		// FIXME: Methodeninhalt einfügen
 	}
 }

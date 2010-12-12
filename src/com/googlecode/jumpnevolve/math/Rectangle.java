@@ -234,101 +234,101 @@ public class Rectangle implements Shape {
 		if (other instanceof Rectangle) {
 			Vector directionToCorner;
 			switch (this.getTouchedCorner((Rectangle) other)) {
-			case Shape.OBEN_LINKS:
+			case Shape.UP_LEFT:
 				directionToCorner = ((Rectangle) other).getLowRightCorner()
 						.sub(this.getCenter());
 				if (directionToCorner.isMoreUpwards(this.getHighLeftCorner()
 						.sub(this.getCenter()))) {
-					return Shape.OBEN;
+					return Shape.UP;
 				} else {
-					return Shape.LINKS;
+					return Shape.LEFT;
 				}
-			case Shape.OBEN_RECHTS:
+			case Shape.UP_RIGHT:
 				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
 						this.getCenter());
 				if (directionToCorner.isMoreUpwards(this.getHighRightCorner()
 						.sub(this.getCenter()))) {
-					return Shape.OBEN;
+					return Shape.UP;
 				} else {
-					return Shape.RECHTS;
+					return Shape.RIGHT;
 				}
-			case Shape.UNTEN_LINKS:
+			case Shape.DOWN_LEFT:
 				directionToCorner = ((Rectangle) other).getHighRightCorner()
 						.sub(this.getCenter());
 				if (directionToCorner.isMoreUpwards(this.getLowLeftCorner()
 						.sub(this.getCenter()))) {
-					return Shape.LINKS;
+					return Shape.LEFT;
 				} else {
-					return Shape.UNTEN;
+					return Shape.DOWN;
 				}
-			case Shape.UNTEN_RECHTS:
+			case Shape.DOWN_RIGHT:
 				directionToCorner = ((Rectangle) other).getHighLeftCorner()
 						.sub(this.getCenter());
 				if (directionToCorner.isMoreUpwards(this.getLowRightCorner()
 						.sub(this.getCenter()))) {
-					return Shape.RECHTS;
+					return Shape.RIGHT;
 				} else {
-					return Shape.UNTEN;
+					return Shape.DOWN;
 				}
-			case Shape.OBEN:
-				return Shape.OBEN;
-			case Shape.UNTEN:
-				return Shape.UNTEN;
-			case Shape.RECHTS:
-				return Shape.RECHTS;
-			case Shape.LINKS:
-				return Shape.LINKS;
+			case Shape.UP:
+				return Shape.UP;
+			case Shape.DOWN:
+				return Shape.DOWN;
+			case Shape.RIGHT:
+				return Shape.RIGHT;
+			case Shape.LEFT:
+				return Shape.LEFT;
 			default:
 				break;
 			}
 		} else if (other instanceof Circle) {
 			return (byte) -other.getTouchedSideOfThis(this);
 		}
-		return Shape.KEIN_ERGEBNIS;
+		return Shape.NULL;
 	}
 
 	private byte getTouchedCorner(Rectangle other) {
 		if (this.isPointInThis(other.getHighLeftCorner())) {
 			if (this.isPointInThis(other.getHighRightCorner())) {
-				return Shape.UNTEN;
+				return Shape.DOWN;
 			} else if (this.isPointInThis(other.getLowLeftCorner())) {
-				return Shape.RECHTS;
+				return Shape.RIGHT;
 			}
-			return Shape.UNTEN_RECHTS;
+			return Shape.DOWN_RIGHT;
 		} else if (this.isPointInThis(other.getLowRightCorner())) {
 			if (this.isPointInThis(other.getHighRightCorner())) {
-				return Shape.LINKS;
+				return Shape.LEFT;
 			} else if (this.isPointInThis(other.getLowLeftCorner())) {
-				return Shape.OBEN;
+				return Shape.UP;
 			}
-			return Shape.OBEN_LINKS;
+			return Shape.UP_LEFT;
 		} else if (this.isPointInThis(other.getLowLeftCorner())) {
-			return Shape.OBEN_RECHTS;
+			return Shape.UP_RIGHT;
 		} else if (this.isPointInThis(other.getHighRightCorner())) {
-			return Shape.UNTEN_LINKS;
+			return Shape.DOWN_LEFT;
 		} else {
 			// Rechtecke umgekehrt prüfen und den entgegengesetzten Wert
 			// zurückgeben
 			if (other.isPointInThis(this.getHighLeftCorner())) {
 				if (other.isPointInThis(this.getHighRightCorner())) {
-					return -Shape.UNTEN;
+					return -Shape.DOWN;
 				} else if (other.isPointInThis(this.getLowLeftCorner())) {
-					return -Shape.RECHTS;
+					return -Shape.RIGHT;
 				}
-				return -Shape.UNTEN_RECHTS;
+				return -Shape.DOWN_RIGHT;
 			} else if (other.isPointInThis(this.getLowRightCorner())) {
 				if (other.isPointInThis(this.getHighRightCorner())) {
-					return -Shape.LINKS;
+					return -Shape.LEFT;
 				} else if (other.isPointInThis(this.getLowLeftCorner())) {
-					return -Shape.OBEN;
+					return -Shape.UP;
 				}
-				return -Shape.OBEN_LINKS;
+				return -Shape.UP_LEFT;
 			} else if (other.isPointInThis(this.getLowLeftCorner())) {
-				return -Shape.OBEN_RECHTS;
+				return -Shape.UP_RIGHT;
 			} else if (other.isPointInThis(this.getHighRightCorner())) {
-				return -Shape.UNTEN_LINKS;
+				return -Shape.DOWN_LEFT;
 			}
-			return Shape.KEIN_ERGEBNIS;
+			return Shape.NULL;
 		}
 	}
 
@@ -418,39 +418,89 @@ public class Rectangle implements Shape {
 		}
 		if (numbersOfInsideCorners == 1) {
 			if (cornersInside[0]) {
-				return new Collision(Shape.UNTEN_RECHTS, low, right);
+				Vector vec = this.getLowRightCorner().sub(
+						other.getHighLeftCorner());
+				if (vec.ang(Vector.DOWN_RIGHT) < 0.7) {
+					return new Collision(Shape.DOWN_RIGHT, low, right);
+				} else {
+					if (vec.x * vec.x > vec.y * vec.y) {
+						return new Collision(Shape.DOWN, low);
+					} else {
+						return new Collision(Shape.RIGHT, right);
+					}
+				}
 			} else if (cornersInside[1]) {
-				return new Collision(Shape.UNTEN_LINKS, low, left);
+				Vector vec = this.getLowLeftCorner().sub(
+						other.getHighRightCorner());
+				if (vec.ang(Vector.DOWN_LEFT) < 0.7) {
+					return new Collision(Shape.DOWN_LEFT, low, left);
+				} else {
+					if (vec.x * vec.x > vec.y * vec.y) {
+						return new Collision(Shape.DOWN, low);
+					} else {
+						return new Collision(Shape.LEFT, left);
+					}
+				}
 			} else if (cornersInside[2]) {
-				return new Collision(Shape.OBEN_LINKS, up, left);
+				Vector vec = this.getHighLeftCorner().sub(
+						other.getLowRightCorner());
+				if (vec.ang(Vector.UP_LEFT) < 0.7) {
+					return new Collision(Shape.UP_LEFT, up, left);
+				} else {
+					if (vec.x * vec.x > vec.y * vec.y) {
+						return new Collision(Shape.UP, up);
+					} else {
+						return new Collision(Shape.LEFT, left);
+					}
+				}
 			} else if (cornersInside[3]) {
-				return new Collision(Shape.OBEN_RECHTS, up, right);
+				Vector vec = this.getHighRightCorner().sub(
+						other.getLowLeftCorner());
+				if (vec.ang(Vector.UP_RIGHT) < 0.7) {
+					return new Collision(Shape.UP_RIGHT, up, right);
+				} else {
+					if (vec.x * vec.x > vec.y * vec.y) {
+						return new Collision(Shape.UP, up);
+					} else {
+						return new Collision(Shape.RIGHT, right);
+					}
+				}
 			}
 		} else if (numbersOfInsideCorners == 2) {
 			if (cornersInside[0]) {
 				if (cornersInside[1]) {
-					return new Collision(Shape.UNTEN, low);
+					return new Collision(Shape.DOWN, low);
 				} else if (cornersInside[3]) {
-					return new Collision(Shape.RECHTS, right);
+					return new Collision(Shape.RIGHT, right);
 				}
 			} else if (cornersInside[1]) {
 				if (cornersInside[2]) {
-					return new Collision(Shape.LINKS, left);
+					return new Collision(Shape.LEFT, left);
 				}
 			} else if (cornersInside[2]) {
 				if (cornersInside[3]) {
-					return new Collision(Shape.OBEN, up);
+					return new Collision(Shape.UP, up);
 				}
 			}
-		} else if (numbersOfInsideCorners == 4) {
-			Collision col = new Collision(Shape.OBEN_RECHTS,
+		} else if (numbersOfInsideCorners == 4 && firstRound == false) {
+			Collision col = new Collision(Shape.UP_RIGHT,
 					this.getUpperEnd(), this.getRightEnd());
-			col.addCollision(new Collision(Shape.UNTEN_LINKS, this
+			col.addCollision(new Collision(Shape.DOWN_LEFT, this
 					.getLowerEnd(), this.getLeftEnd()));
 			return col;
+		} else if (numbersOfInsideCorners == 4 && firstRound == true) {
+			return new Collision();
 		} else if (numbersOfInsideCorners == 0 && firstRound == true) {
 			return other.getRectangleCollision(this, thisMoveable,
 					otherMoveable, false).getInvertedCollision();
+		} else if (numbersOfInsideCorners == 0 && firstRound == false) {
+			Collision col = new Collision(Shape.UP_RIGHT,
+					this.getUpperEnd(), this.getRightEnd());
+			col.addCollision(new Collision(Shape.DOWN_LEFT, this
+					.getLowerEnd(), this.getLeftEnd()));
+			return col;
+			// TODO: Diesen Fall vllt. noch verbessern (nicht alle Seiten
+			// blocken)
 		} else {
 			return new Collision(); // Leere Kollision zurückgeben
 			// FIXME: Fehler ausgeben
@@ -467,20 +517,20 @@ public class Rectangle implements Shape {
 		} else if (other instanceof Circle) {
 			Collision col = other.getCollision(this);
 			Collision thisCol = new Collision();
-			if (col.isBlocked(Shape.OBEN)) {
-				thisCol.addCollision(new Collision(Shape.UNTEN, other
+			if (col.isBlocked(Shape.UP)) {
+				thisCol.addCollision(new Collision(Shape.DOWN, other
 						.getUpperEnd()));
 			}
-			if (col.isBlocked(Shape.RECHTS)) {
-				thisCol.addCollision(new Collision(Shape.LINKS, other
+			if (col.isBlocked(Shape.RIGHT)) {
+				thisCol.addCollision(new Collision(Shape.LEFT, other
 						.getRightEnd()));
 			}
-			if (col.isBlocked(Shape.UNTEN)) {
-				thisCol.addCollision(new Collision(Shape.OBEN, other
+			if (col.isBlocked(Shape.DOWN)) {
+				thisCol.addCollision(new Collision(Shape.UP, other
 						.getLowerEnd()));
 			}
-			if (col.isBlocked(Shape.LINKS)) {
-				thisCol.addCollision(new Collision(Shape.RECHTS, other
+			if (col.isBlocked(Shape.LEFT)) {
+				thisCol.addCollision(new Collision(Shape.RIGHT, other
 						.getLeftEnd()));
 			}
 			return thisCol;
@@ -493,11 +543,11 @@ public class Rectangle implements Shape {
 	@Override
 	public float getDistanceToSide(byte direction) {
 		switch (direction) {
-		case Shape.OBEN:
-		case Shape.UNTEN:
+		case Shape.UP:
+		case Shape.DOWN:
 			return this.height / 2.0f;
-		case Shape.RECHTS:
-		case Shape.LINKS:
+		case Shape.RIGHT:
+		case Shape.LEFT:
 			return this.width / 2.0f;
 		default:
 			return 0;

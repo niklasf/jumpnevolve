@@ -58,7 +58,7 @@ public class Soldier extends EnemyTemplate {
 		// Soldier kann nur den Spieler töten, wenn dieser nicht oberhalb von
 		// ihm ist
 		if (other instanceof FigureTemplate) {
-			if (this.getShape().getTouchedSideOfThis(other.getShape()) != Shape.OBEN) {
+			if (this.getShape().getTouchedSideOfThis(other.getShape()) != Shape.UP) {
 				other.kill(this);
 			}
 		}

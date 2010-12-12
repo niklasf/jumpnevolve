@@ -5,12 +5,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Rectangle;
 
 /**
  * Ein Level, dass einer Welt entspricht, enthält zusätzlich Punktezähler und
@@ -26,6 +31,7 @@ public class Level extends World {
 	private AbstractObject currentFigure;
 	private Levelloader loader;
 	private String avaiableFigurs = new String("all");
+	private String background = "landscape.png";
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
@@ -81,6 +87,10 @@ public class Level extends World {
 		}
 	}
 
+	public void setBackground(String imageFile) {
+		this.background = background;
+	}
+
 	private void reload() {
 		// TODO: Level neu laden
 	}
@@ -97,5 +107,16 @@ public class Level extends World {
 	@Override
 	public String toString() {
 		return null;
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		super.configScreen(g);
+		GraphicUtils.drawImage(g, new Rectangle(this.getCamera().getPosition(),
+				Engine.getInstance().getWidth() / zoomX, Engine.getInstance()
+						.getHeight()
+						/ zoomY), ResourceManager.getInstance().getImage(
+				background));
+		super.draw(g);
 	}
 }

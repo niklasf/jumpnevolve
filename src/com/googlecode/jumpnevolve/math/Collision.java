@@ -29,41 +29,41 @@ public class Collision {
 			float blockedPosition2) {
 		// TODO Kollision initialisieren
 		switch (direction) {
-		case Shape.OBEN:
+		case Shape.UP:
 			this.collidingSides[0] = true;
 			this.collidingPositions[0] = blockedPosition1;
 			break;
-		case Shape.OBEN_RECHTS:
+		case Shape.UP_RIGHT:
 			this.collidingSides[0] = true;
 			this.collidingPositions[0] = blockedPosition1;
 			this.collidingSides[1] = true;
 			this.collidingPositions[1] = blockedPosition2;
 			break;
-		case Shape.RECHTS:
+		case Shape.RIGHT:
 			this.collidingSides[1] = true;
 			this.collidingPositions[1] = blockedPosition1;
 			break;
-		case Shape.UNTEN_RECHTS:
+		case Shape.DOWN_RIGHT:
 			this.collidingSides[1] = true;
 			this.collidingPositions[1] = blockedPosition2;
 			this.collidingSides[2] = true;
 			this.collidingPositions[2] = blockedPosition1;
 			break;
-		case Shape.UNTEN:
+		case Shape.DOWN:
 			this.collidingSides[2] = true;
 			this.collidingPositions[2] = blockedPosition1;
 			break;
-		case Shape.UNTEN_LINKS:
+		case Shape.DOWN_LEFT:
 			this.collidingSides[2] = true;
 			this.collidingPositions[2] = blockedPosition1;
 			this.collidingSides[3] = true;
 			this.collidingPositions[3] = blockedPosition2;
 			break;
-		case Shape.LINKS:
+		case Shape.LEFT:
 			this.collidingSides[3] = true;
 			this.collidingPositions[3] = blockedPosition1;
 			break;
-		case Shape.OBEN_LINKS:
+		case Shape.UP_LEFT:
 			this.collidingSides[3] = true;
 			this.collidingPositions[3] = blockedPosition2;
 			this.collidingSides[0] = true;
@@ -99,55 +99,55 @@ public class Collision {
 	 *            Die andere Kollision
 	 */
 	public void addCollision(Collision other) {
-		if (other.isBlocked(Shape.OBEN)) {
-			if (this.isBlocked(Shape.OBEN)) {
-				if (other.getBlockingPosition(Shape.OBEN) > this
-						.getBlockingPosition(Shape.OBEN)) {
+		if (other.isBlocked(Shape.UP)) {
+			if (this.isBlocked(Shape.UP)) {
+				if (other.getBlockingPosition(Shape.UP) > this
+						.getBlockingPosition(Shape.UP)) {
 					this.collidingPositions[0] = other
-							.getBlockingPosition(Shape.OBEN);
+							.getBlockingPosition(Shape.UP);
 				}
 			} else {
 				this.collidingPositions[0] = other
-						.getBlockingPosition(Shape.OBEN);
+						.getBlockingPosition(Shape.UP);
 			}
 			this.collidingSides[0] = true;
 		}
-		if (other.isBlocked(Shape.RECHTS)) {
-			if (this.isBlocked(Shape.RECHTS)) {
-				if (other.getBlockingPosition(Shape.RECHTS) < this
-						.getBlockingPosition(Shape.RECHTS)) {
+		if (other.isBlocked(Shape.RIGHT)) {
+			if (this.isBlocked(Shape.RIGHT)) {
+				if (other.getBlockingPosition(Shape.RIGHT) < this
+						.getBlockingPosition(Shape.RIGHT)) {
 					this.collidingPositions[1] = other
-							.getBlockingPosition(Shape.RECHTS);
+							.getBlockingPosition(Shape.RIGHT);
 				}
 			} else {
 				this.collidingPositions[1] = other
-						.getBlockingPosition(Shape.RECHTS);
+						.getBlockingPosition(Shape.RIGHT);
 			}
 			this.collidingSides[1] = true;
 		}
-		if (other.isBlocked(Shape.UNTEN)) {
-			if (this.isBlocked(Shape.UNTEN)) {
-				if (other.getBlockingPosition(Shape.UNTEN) < this
-						.getBlockingPosition(Shape.UNTEN)) {
+		if (other.isBlocked(Shape.DOWN)) {
+			if (this.isBlocked(Shape.DOWN)) {
+				if (other.getBlockingPosition(Shape.DOWN) < this
+						.getBlockingPosition(Shape.DOWN)) {
 					this.collidingPositions[2] = other
-							.getBlockingPosition(Shape.UNTEN);
+							.getBlockingPosition(Shape.DOWN);
 				}
 			} else {
 				this.collidingPositions[2] = other
-						.getBlockingPosition(Shape.UNTEN);
+						.getBlockingPosition(Shape.DOWN);
 			}
 			this.collidingSides[2] = true;
 		}
-		if (other.isBlocked(Shape.LINKS)) {
-			if (this.isBlocked(Shape.LINKS)) {
-				if (other.getBlockingPosition(Shape.LINKS) > this
-						.getBlockingPosition(Shape.LINKS)) {
+		if (other.isBlocked(Shape.LEFT)) {
+			if (this.isBlocked(Shape.LEFT)) {
+				if (other.getBlockingPosition(Shape.LEFT) > this
+						.getBlockingPosition(Shape.LEFT)) {
 					this.collidingPositions[3] = other
-							.getBlockingPosition(Shape.LINKS);
+							.getBlockingPosition(Shape.LEFT);
 				}
 			} else {
 				this.collidingPositions[3] = other
-						.getBlockingPosition(Shape.LINKS);
+						.getBlockingPosition(Shape.LEFT);
 			}
 			this.collidingSides[3] = true;
 		}
@@ -168,13 +168,13 @@ public class Collision {
 	 */
 	public boolean isBlocked(byte direction) {
 		switch (direction) {
-		case Shape.OBEN:
+		case Shape.UP:
 			return this.collidingSides[0];
-		case Shape.RECHTS:
+		case Shape.RIGHT:
 			return this.collidingSides[1];
-		case Shape.UNTEN:
+		case Shape.DOWN:
 			return this.collidingSides[2];
-		case Shape.LINKS:
+		case Shape.LEFT:
 			return this.collidingSides[3];
 		default:
 			System.out.println("Fehler bei Kollision, falsche Richtung: "
@@ -191,13 +191,13 @@ public class Collision {
 	 */
 	public float getBlockingPosition(byte direction) {
 		switch (direction) {
-		case Shape.OBEN:
+		case Shape.UP:
 			return this.collidingPositions[0];
-		case Shape.RECHTS:
+		case Shape.RIGHT:
 			return this.collidingPositions[1];
-		case Shape.UNTEN:
+		case Shape.DOWN:
 			return this.collidingPositions[2];
-		case Shape.LINKS:
+		case Shape.LEFT:
 			return this.collidingPositions[3];
 		default:
 			System.out.println("Fehler bei Kollision, falsche Richtung: "
@@ -214,21 +214,21 @@ public class Collision {
 	 */
 	public Collision getInvertedCollision() {
 		Collision inverted = new Collision();
-		if (this.isBlocked(Shape.OBEN)) {
-			inverted.addCollision(new Collision(Shape.UNTEN, this
-					.getBlockingPosition(Shape.OBEN)));
+		if (this.isBlocked(Shape.UP)) {
+			inverted.addCollision(new Collision(Shape.DOWN, this
+					.getBlockingPosition(Shape.UP)));
 		}
-		if (this.isBlocked(Shape.UNTEN)) {
-			inverted.addCollision(new Collision(Shape.OBEN, this
-					.getBlockingPosition(Shape.UNTEN)));
+		if (this.isBlocked(Shape.DOWN)) {
+			inverted.addCollision(new Collision(Shape.UP, this
+					.getBlockingPosition(Shape.DOWN)));
 		}
-		if (this.isBlocked(Shape.RECHTS)) {
-			inverted.addCollision(new Collision(Shape.LINKS, this
-					.getBlockingPosition(Shape.RECHTS)));
+		if (this.isBlocked(Shape.RIGHT)) {
+			inverted.addCollision(new Collision(Shape.LEFT, this
+					.getBlockingPosition(Shape.RIGHT)));
 		}
-		if (this.isBlocked(Shape.LINKS)) {
-			inverted.addCollision(new Collision(Shape.RECHTS, this
-					.getBlockingPosition(Shape.LINKS)));
+		if (this.isBlocked(Shape.LEFT)) {
+			inverted.addCollision(new Collision(Shape.RIGHT, this
+					.getBlockingPosition(Shape.LEFT)));
 		}
 		return inverted;
 	}

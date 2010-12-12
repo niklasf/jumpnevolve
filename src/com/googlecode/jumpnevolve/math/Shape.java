@@ -153,19 +153,19 @@ public interface Shape extends Serializable {
 	/**
 	 * Konstante, die die obere Seite des Objekts bezeichnet
 	 */
-	public final static byte OBEN = 1;
+	public final static byte UP = 1;
 	/**
 	 * Konstante, die die rechte Seite des Objekts bezeichnet
 	 */
-	public final static byte RECHTS = 2;
+	public final static byte RIGHT = 2;
 	/**
 	 * Konstante, die die links Seite des Objekts bezeichnet
 	 */
-	public final static byte LINKS = -RECHTS;
+	public final static byte LEFT = -RIGHT;
 	/**
 	 * Konstante, die die untere Seite des Objekts bezeichnet
 	 */
-	public final static byte UNTEN = -OBEN;
+	public final static byte DOWN = -UP;
 
 	/*
 	 * Konstanten, die die Ecken bezeichnen TODO: Enums oder Vektoren verwenden
@@ -176,23 +176,23 @@ public interface Shape extends Serializable {
 	/**
 	 * Konstante, die die obere, rechte Ecke des Objekts bezeichnet
 	 */
-	public final static byte OBEN_RECHTS = 3;
+	public final static byte UP_RIGHT = 3;
 	/**
 	 * Konstante, die die untere, rechte Ecke des Objekts bezeichnet
 	 */
-	public final static byte UNTEN_RECHTS = 4;
+	public final static byte DOWN_RIGHT = 4;
 	/**
 	 * Konstante, die die obere, linke Ecke des Objekts bezeichnet
 	 */
-	public final static byte OBEN_LINKS = -UNTEN_RECHTS;
+	public final static byte UP_LEFT = -DOWN_RIGHT;
 	/**
 	 * Konstante, die die untere, linke Ecke des Objekts bezeichnet
 	 */
-	public final static byte UNTEN_LINKS = -OBEN_RECHTS;
+	public final static byte DOWN_LEFT = -UP_RIGHT;
 
 	/*
 	 * Konstante, die bei einem Fehler ausgegeben wird (wenn die Berechnung
 	 * nicht greift) TODO: Enums, Vektoren oder Exceptions verwenden
 	 */
-	public final static byte KEIN_ERGEBNIS = 0;
+	public final static byte NULL = 0;
 }

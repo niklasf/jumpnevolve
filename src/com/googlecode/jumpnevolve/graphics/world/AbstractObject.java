@@ -205,76 +205,76 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// System.out.println("Mist....");
 		// }
 		if (this.mass != 0.0f) { // Beweglich
-			if (this.isWayBlocked(Shape.OBEN)) {
+			if (this.isWayBlocked(Shape.UP)) {
 				if (this.getForce().y < 0) {
 					this.force = this.force.modifyY(0);
 				}
 				if (this.getVelocity().y < 0) {
 					this.velocity = this.velocity.modifyY(0);
 				}
-				if (this.isWayBlocked(Shape.UNTEN) == false) {
+				if (this.isWayBlocked(Shape.DOWN) == false) {
 					this.shape = this.shape
 							.modifyCenter(this
 									.getPosition()
 									.modifyY(
 											this.collision
-													.getBlockingPosition(Shape.OBEN)
+													.getBlockingPosition(Shape.UP)
 													+ this.shape
-															.getDistanceToSide(Shape.OBEN)));
+															.getDistanceToSide(Shape.UP)));
 				}
 			}
-			if (this.isWayBlocked(Shape.UNTEN)) {
+			if (this.isWayBlocked(Shape.DOWN)) {
 				if (this.getForce().y > 0) {
 					this.force = this.force.modifyY(0);
 				}
 				if (this.getVelocity().y > 0) {
 					this.velocity = this.velocity.modifyY(0);
 				}
-				if (this.isWayBlocked(Shape.OBEN) == false) {
+				if (this.isWayBlocked(Shape.UP) == false) {
 					this.shape = this.shape
 							.modifyCenter(this.shape
 									.getCenter()
 									.modifyY(
 											this.collision
-													.getBlockingPosition(Shape.UNTEN)
+													.getBlockingPosition(Shape.DOWN)
 													- this.shape
-															.getDistanceToSide(Shape.UNTEN)));
+															.getDistanceToSide(Shape.DOWN)));
 				}
 			}
-			if (this.isWayBlocked(Shape.RECHTS)) {
+			if (this.isWayBlocked(Shape.RIGHT)) {
 				if (this.getForce().x > 0) {
 					this.force = this.force.modifyX(0);
 				}
 				if (this.getVelocity().x > 0) {
 					this.velocity = this.velocity.modifyX(0);
 				}
-				if (this.isWayBlocked(Shape.LINKS) == false) {
+				if (this.isWayBlocked(Shape.LEFT) == false) {
 					this.shape = this.shape
 							.modifyCenter(this
 									.getPosition()
 									.modifyX(
 											this.collision
-													.getBlockingPosition(Shape.RECHTS)
+													.getBlockingPosition(Shape.RIGHT)
 													- this.shape
-															.getDistanceToSide(Shape.RECHTS)));
+															.getDistanceToSide(Shape.RIGHT)));
 				}
 			}
-			if (this.isWayBlocked(Shape.LINKS)) {
+			if (this.isWayBlocked(Shape.LEFT)) {
 				if (this.getForce().x < 0) {
 					this.force = this.force.modifyX(0);
 				}
 				if (this.getVelocity().x < 0) {
 					this.velocity = this.velocity.modifyX(0);
 				}
-				if (this.isWayBlocked(Shape.RECHTS) == false) {
+				if (this.isWayBlocked(Shape.RIGHT) == false) {
 					this.shape = this.shape
 							.modifyCenter(this
 									.getPosition()
 									.modifyX(
 											this.collision
-													.getBlockingPosition(Shape.LINKS)
+													.getBlockingPosition(Shape.LEFT)
 													+ this.shape
-															.getDistanceToSide(Shape.LINKS)));
+															.getDistanceToSide(Shape.LEFT)));
 				}
 			}
 
