@@ -132,6 +132,11 @@ public class Rectangle implements Shape {
 		this(center, corner.x * 2, corner.y * 2);
 	}
 
+	public Rectangle(org.newdawn.slick.geom.Rectangle rect) {
+		this(rect.getCenterX(), rect.getCenterY(), rect.getWidth(), rect
+				.getHeight());
+	}
+
 	/**
 	 * @return Die Fläche des Rechtecks
 	 */

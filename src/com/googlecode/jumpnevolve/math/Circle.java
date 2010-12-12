@@ -125,6 +125,10 @@ public class Circle implements Shape {
 		this.radius = rad;
 	}
 
+	public Circle(org.newdawn.slick.geom.Circle circle) {
+		this(circle.getCenterX(), circle.getCenterY(), circle.getRadius());
+	}
+
 	@Override
 	public int hashCode() {
 		return (int) (this.radius * this.radius + this.position.hashCode());

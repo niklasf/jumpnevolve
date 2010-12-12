@@ -168,25 +168,21 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	@Override
 	public void poll(Input input, float secounds) {
-		if (this.isMoveable()) {
-			// Nur durchführen, wenn sich das Objekt bewegen kann, da ansonst
-			// sowieso keine Änderung von statten geht
-			for (LinkedList<AbstractObject> neighboursSub : this.world
-					.getNeighbours(this)) {
-				for (AbstractObject other : neighboursSub) {
-					// Nicht mit sich selbst testen
-					if (other == this)
-						continue;
+		for (LinkedList<AbstractObject> neighboursSub : this.world
+				.getNeighbours(this)) {
+			for (AbstractObject other : neighboursSub) {
+				// Nicht mit sich selbst testen
+				if (other == this)
+					continue;
 
-					// Doppelte Tests vermeiden
-					addDone(other);
-					other.addDone(this);
+				// Doppelte Tests vermeiden
+				addDone(other);
+				other.addDone(this);
 
-					// Kollisionen mit jedem nachbarn prüfen
-					if (this.shape.doesCollide(other.getShape())) {
-						onCrash(other);
-						other.onCrash(this);
-					}
+				// Kollisionen mit jedem nachbarn prüfen
+				if (this.shape.doesCollide(other.getShape())) {
+					onCrash(other);
+					other.onCrash(this);
 				}
 			}
 		}
