@@ -76,6 +76,9 @@ public class Levelloader {
 				} else {
 					// FIXME: Fehlermeldung
 				}
+				// Hintergrund setzen
+				this.level
+						.setBackground(secondLineSplit[secondLineSplit.length - 1]);
 				// FIXME: Einstellungen für das Level vornehmen
 				// Beispiele: verfügbare Charaktere, Timer etc.
 

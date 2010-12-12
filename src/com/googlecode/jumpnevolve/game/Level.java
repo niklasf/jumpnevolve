@@ -88,7 +88,10 @@ public class Level extends World {
 	}
 
 	public void setBackground(String imageFile) {
-		this.background = background;
+		if (imageFile.equals("default")) {
+			imageFile = "landscape.png";
+		}
+		this.background = imageFile;
 	}
 
 	private void reload() {

@@ -50,7 +50,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			levelHeight = new TextField("100"),
 			levelSubareaWidth = new TextField("1"),
 			availableFigures = new TextField("RollingBall"),
-			levelTime = new TextField("1000"), levelZoomX = new TextField("1"),
+			background = new TextField("default"), levelTime = new TextField(
+					"1000"), levelZoomX = new TextField("1"),
 			levelZoomY = new TextField("1");
 	private int lastClickX, lastClickY;
 	private String waitFor;
@@ -109,7 +110,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		neuesObjekt.addActionListener(this);
 		auswahl.add(neuesObjekt);
 
-		levelSettings = new JPanel(new GridLayout(11, 2));
+		levelSettings = new JPanel(new GridLayout(12, 2));
 		levelSettings.add(new JLabel("Leveleinstellungen"));
 		levelSettings.add(new JLabel(""));
 		levelSettings.add(new JLabel("Kamera Position X:"));
@@ -130,6 +131,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		levelSettings.add(levelTime);
 		levelSettings.add(new JLabel("Verfügbare Spielfiguren"));
 		levelSettings.add(availableFigures);
+		levelSettings.add(new JLabel("Hintergrund"));
+		levelSettings.add(background);
 		JButton anwenden = new JButton("Wende neue Einstellungen an");
 		anwenden.setActionCommand("Leveleinstellungen");
 		anwenden.addActionListener(this);
@@ -194,7 +197,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		return "Leveleinstellungen_" + this.levelZoomX.getText().trim() + ","
 				+ this.levelZoomY.getText().trim() + "_"
 				+ this.levelTime.getText().trim() + "_"
-				+ this.availableFigures.getText().trim();
+				+ this.availableFigures.getText().trim() + "_"
+				+ this.background.getText().trim();
 	}
 
 	private String getDimensionsLine() {

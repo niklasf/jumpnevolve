@@ -1,5 +1,5 @@
 Leveldimensionen_3000_1000_100
-Leveleinstellungen_1_500_RollingBall
+Leveleinstellungen_1_500_RollingBall_default
 Ground_250|400_none_none_250|20
 Ground_1000|400_none_none_100|20
 Ground_1500|350_none_none_200|10
