@@ -483,10 +483,10 @@ public class Rectangle implements Shape {
 				}
 			}
 		} else if (numbersOfInsideCorners == 4 && firstRound == false) {
-			Collision col = new Collision(Shape.UP_RIGHT,
-					this.getUpperEnd(), this.getRightEnd());
-			col.addCollision(new Collision(Shape.DOWN_LEFT, this
-					.getLowerEnd(), this.getLeftEnd()));
+			Collision col = new Collision(Shape.UP_RIGHT, this.getUpperEnd(),
+					this.getRightEnd());
+			col.addCollision(new Collision(Shape.DOWN_LEFT, this.getLowerEnd(),
+					this.getLeftEnd()));
 			return col;
 		} else if (numbersOfInsideCorners == 4 && firstRound == true) {
 			return new Collision();
@@ -494,13 +494,20 @@ public class Rectangle implements Shape {
 			return other.getRectangleCollision(this, thisMoveable,
 					otherMoveable, false).getInvertedCollision();
 		} else if (numbersOfInsideCorners == 0 && firstRound == false) {
-			Collision col = new Collision(Shape.UP_RIGHT,
-					this.getUpperEnd(), this.getRightEnd());
-			col.addCollision(new Collision(Shape.DOWN_LEFT, this
-					.getLowerEnd(), this.getLeftEnd()));
-			return col;
-			// TODO: Diesen Fall vllt. noch verbessern (nicht alle Seiten
-			// blocken)
+			if ((this.getUpperEnd() > other.getUpperEnd() && this.getLowerEnd() < other
+					.getLowerEnd())
+					|| (this.getRightEnd() < other.getRightEnd() && this
+							.getLeftEnd() > other.getLeftEnd())) {
+				Collision col = new Collision(Shape.UP_RIGHT, this
+						.getUpperEnd(), this.getRightEnd());
+				col.addCollision(new Collision(Shape.DOWN_LEFT, this
+						.getLowerEnd(), this.getLeftEnd()));
+				return col;
+				// TODO: Diesen Fall vllt. noch verbessern (nicht alle Seiten
+				// blocken)
+			} else {
+				return new Collision();
+			}
 		} else {
 			return new Collision(); // Leere Kollision zurückgeben
 			// FIXME: Fehler ausgeben
