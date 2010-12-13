@@ -4,6 +4,7 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
+import com.googlecode.jumpnevolve.game.Playable;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
@@ -31,7 +32,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * Aggressivitäten: gegen alle Gegner (EnemyTemplate) beim Draufspringen
  * 
- * Immunitäten: keine1
+ * Immunitäten: keine
  * 
  * Aktivierung: keine
  * 
@@ -97,6 +98,30 @@ public class RollingBall extends FigureTemplate {
 				&& col.isBlocked(Shape.LEFT) == false) {
 			other.kill(this);
 		}
+	}
+
+	@Override
+	public void doubleJump() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void jump() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void run(int direction) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void synchronize(Playable other) {
+		// TODO Auto-generated method stub
+
 	}
 
 	// TODO: draw-Methode einfügen

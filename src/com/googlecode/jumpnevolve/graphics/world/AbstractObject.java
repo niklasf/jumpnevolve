@@ -24,13 +24,9 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import sun.security.x509.AVA;
-
-import com.googlecode.jumpnevolve.game.objects.RollingBall;
-import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
+import com.googlecode.jumpnevolve.game.SpecialPollable;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
-import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -49,7 +45,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner
  */
-public abstract class AbstractObject implements Pollable, Drawable,
+public abstract class AbstractObject implements SpecialPollable, Drawable,
 		Serializable {
 
 	private static final long serialVersionUID = -3990787994625166974L;

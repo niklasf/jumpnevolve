@@ -8,12 +8,10 @@ import java.io.ObjectOutputStream;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.objects.RollingBall;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
 
@@ -28,9 +26,8 @@ public class Level extends World {
 
 	private int points;
 	private Timer timer = new Timer();
-	private AbstractObject currentFigure;
+	private Player player;
 	private Levelloader loader;
-	private String avaiableFigurs = new String("all");
 	private String background = "landscape.png";
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
@@ -74,24 +71,15 @@ public class Level extends World {
 		}
 	}
 
-	public void changeFigure(String newFigure) {
-		FigureTemplate figure = null;
-		if (newFigure.equals("RollingBall")) {
-			figure = new RollingBall(this, currentFigure.getPosition());
-		}
-		// TODO: Weitere Figuren hinzufügen
-		if (figure != null) {
-			this.removeFromAllLists(currentFigure);
-			this.add(figure);
-			this.currentFigure = figure;
-		}
-	}
-
 	public void setBackground(String imageFile) {
 		if (imageFile.equals("default")) {
 			imageFile = "landscape.png";
 		}
 		this.background = imageFile;
+	}
+
+	public void addPlayer(String avaiableFigures, String startFigure) {
+		this.player = new Player(avaiableFigures, startFigure);
 	}
 
 	private void reload() {

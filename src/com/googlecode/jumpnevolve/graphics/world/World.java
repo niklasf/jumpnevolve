@@ -26,6 +26,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.googlecode.jumpnevolve.game.SpecialPollable;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
@@ -55,7 +56,7 @@ public class World extends AbstractState {
 
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 
-	private ArrayList<AbstractObject> objects = new ArrayList<AbstractObject>();
+	private ArrayList<SpecialPollable> objects = new ArrayList<SpecialPollable>();
 
 	private ArrayList<AbstractObject> deletedObjects = new ArrayList<AbstractObject>();
 
@@ -80,7 +81,7 @@ public class World extends AbstractState {
 	@Override
 	public void poll(Input input, float secounds) {
 		this.deletedObjects.clear();
-		for (AbstractObject object : this.objects) {
+		for (SpecialPollable object : this.objects) {
 			object.startRound(input);
 		}
 		for (AbstractObject object : this.deletedObjects) {
@@ -89,7 +90,7 @@ public class World extends AbstractState {
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
 		}
-		for (AbstractObject object : this.objects) {
+		for (SpecialPollable object : this.objects) {
 			object.endRound();
 		}
 	}
@@ -114,7 +115,7 @@ public class World extends AbstractState {
 					this.drawables.add((Drawable) object);
 				}
 			}
-			if (object instanceof AbstractObject) {
+			if (object instanceof SpecialPollable) {
 				if (!this.objects.contains(object)) {
 					this.objects.add((AbstractObject) object);
 					addToObjectList((AbstractObject) object);

@@ -15,7 +15,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public abstract class FigureTemplate extends AbstractObject {
+public abstract class FigureTemplate extends AbstractObject implements Playable {
 
 	private static final long serialVersionUID = 1396199934877069892L;
 
