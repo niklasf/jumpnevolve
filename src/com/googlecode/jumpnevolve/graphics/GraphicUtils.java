@@ -130,11 +130,8 @@ public class GraphicUtils {
 	 *            Das Bild
 	 */
 	public static void drawImage(Graphics g, Shape shape, Image image) {
-		g.drawImage(image, shape.getCenter().x - shape.getDimensions().x, shape
-				.getCenter().y
-				- shape.getDimensions().y, shape.getCenter().x
-				+ shape.getDimensions().x, shape.getCenter().y
-				+ shape.getDimensions().y, 0, 0, image.getWidth(), image
-				.getHeight());
+		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(), shape
+				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
+				image.getHeight());
 	}
 }

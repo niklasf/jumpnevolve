@@ -1,14 +1,18 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.game.Playable;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -48,7 +52,7 @@ public class RollingBall extends FigureTemplate {
 	private static final long serialVersionUID = -6066789739733255353L;
 
 	public RollingBall(World world, Vector position) {
-		super(world, new Circle(position, 6.5f), 5.0f, true, true, true);
+		super(world, new Circle(position, 30.0f), 5.0f, true, true, true);
 		// TODO: Masse in Ordunng?
 	}
 
@@ -75,7 +79,7 @@ public class RollingBall extends FigureTemplate {
 
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
 				&& this.isWayBlocked(Shape.DOWN)) {
-			this.setVelocity(new Vector(this.getVelocity().x, -0.5f * 98.1f
+			this.setVelocity(new Vector(this.getVelocity().x, -0.25f * 98.1f
 					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
@@ -124,5 +128,9 @@ public class RollingBall extends FigureTemplate {
 
 	}
 
-	// TODO: draw-Methode einfügen
+	@Override
+	public void draw(Graphics g) {
+		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
+				.getInstance().getImage("figure-rolling-ball.png"));
+	}
 }
