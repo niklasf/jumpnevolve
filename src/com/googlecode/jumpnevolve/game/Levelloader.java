@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.game.objects.ActivatingObject;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
@@ -133,6 +134,9 @@ public class Levelloader {
 								this.toVector(curArgus[0]), this
 										.toFloat(curArgus[1]), this
 										.toFloat(curArgus[2])));
+					} else if (className.equals("GreenSlimeWorm")) {
+						otherObjects.add(new GreenSlimeWorm(this.level,
+								position, true));
 					}
 					// TODO: Weitere Klassen einfügen
 					// Aktivierenden Objekten, die zu aktivierenden Objekt

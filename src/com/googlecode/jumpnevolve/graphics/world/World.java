@@ -26,6 +26,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.googlecode.jumpnevolve.game.Player;
 import com.googlecode.jumpnevolve.game.SpecialPollable;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
@@ -64,6 +65,10 @@ public class World extends AbstractState {
 
 	private boolean screenAlreadyConfigured;
 
+	private boolean polling;
+
+	private ArrayList<Object> addings = new ArrayList<Object>();
+
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
 		this.width = width;
@@ -80,6 +85,11 @@ public class World extends AbstractState {
 
 	@Override
 	public void poll(Input input, float secounds) {
+		for (Object obj : this.addings) {
+			this.add(obj);
+		}
+		this.addings.clear();
+		this.polling = true;
 		this.deletedObjects.clear();
 		for (SpecialPollable object : this.objects) {
 			object.startRound(input);
@@ -93,6 +103,7 @@ public class World extends AbstractState {
 		for (SpecialPollable object : this.objects) {
 			object.endRound();
 		}
+		this.polling = false;
 	}
 
 	public void setCamera(Camera camera) {
@@ -104,23 +115,33 @@ public class World extends AbstractState {
 	}
 
 	public void add(Object object) {
-		if (object != null) {
-			if (object instanceof Pollable) {
-				if (!this.pollables.contains(object)) {
-					this.pollables.add((Pollable) object);
+		if (polling == false) {
+			if (object != null) {
+				if (object instanceof Pollable) {
+					if (!this.pollables.contains(object)) {
+						this.pollables.add((Pollable) object);
+					}
+				}
+				if (object instanceof Drawable) {
+					if (!this.drawables.contains(object)) {
+						this.drawables.add((Drawable) object);
+					}
+				}
+				if (object instanceof SpecialPollable) {
+					if (!this.objects.contains(object)) {
+						this.objects.add((SpecialPollable) object);
+						if (object instanceof AbstractObject) {
+							addToObjectList((AbstractObject) object);
+						}
+						if (object instanceof Player) {
+							addToObjectList(((Player) object)
+									.getCurrentFigure());
+						}
+					}
 				}
 			}
-			if (object instanceof Drawable) {
-				if (!this.drawables.contains(object)) {
-					this.drawables.add((Drawable) object);
-				}
-			}
-			if (object instanceof SpecialPollable) {
-				if (!this.objects.contains(object)) {
-					this.objects.add((AbstractObject) object);
-					addToObjectList((AbstractObject) object);
-				}
-			}
+		} else {
+			this.addings.add(object);
 		}
 	}
 
