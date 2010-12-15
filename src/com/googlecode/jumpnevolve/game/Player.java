@@ -15,8 +15,9 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
  */
 public class Player implements SpecialPollable, Drawable {
 
-	private static final int ROLLING_BALL = 0;
-	private static final int JUMPING_CROOS = 1;
+	public static final int ROLLING_BALL = 0;
+	public static final int JUMPING_CROSS = 1;
+	public static final int HIGH_JUMP = 100;
 
 	private FigureTemplate cur;
 	private HashMap<Integer, FigureTemplate> figureList;
@@ -53,13 +54,21 @@ public class Player implements SpecialPollable, Drawable {
 		cur.draw(g);
 	}
 
+	public FigureTemplate getCurrentFigure() {
+		return cur;
+	}
+
 	private void setFigures(String avaiableFigures, String startFigure) {
 		// TODO: Methode füllen
 	}
 
-	private void changeFigure(int newFigure) {
+	public void changeFigure(int newFigure) {
 		FigureTemplate next = figureList.get(newFigure);
 		next.synchronize(cur);
 		cur = next;
+	}
+
+	public void activateSkill(int skill) {
+		// TODO: Methode füllen
 	}
 }

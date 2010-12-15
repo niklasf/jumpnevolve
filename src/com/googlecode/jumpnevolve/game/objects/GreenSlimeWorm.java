@@ -18,6 +18,25 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * 
+ * Beschreibung: Ein Schleim der nach rechts und links läuft
+ * 
+ * Spezifikationen: blockbar, nicht schiebbar
+ * 
+ * Bewegungen: Schwerkraft wirkt; bewegt sich nach rechts und links und prallt
+ * von Wänden ab; Geschwindigkeit: 10 Pixel pro Sekunde
+ * 
+ * Aggressivitäten: nur gegen den Spieler, der von rechts/links/unten kommt
+ * 
+ * Immunitäten: kann nur getötet werden, nachdem er beim ersten Mal gespalten
+ * wurde
+ * 
+ * Aktivierung: keine
+ * 
+ * Deaktivierung: keine
+ * 
+ * Besonderheiten: teilt sich beim ersten Mal daraufspringen
+ * 
  * @author Erik Wagner
  * 
  */
@@ -25,13 +44,13 @@ public class GreenSlimeWorm extends EnemyTemplate {
 
 	private boolean divisble;
 
-	public GreenSlimeWorm(World world, Vector position, boolean divisible) {
-		super(world, new Rectangle(position, 50.0f, 21.0f), 5.0f, true);
-		this.divisble = divisible;
+	public GreenSlimeWorm(World world, Vector position) {
+		super(world, new Rectangle(position, 80.0f, 21.0f), 5.0f, true);
+		this.divisble = true;
 	}
 
-	private GreenSlimeWorm(World world, Vector position) {
-		super(world, new Rectangle(position, 30.0f, 13.0f), 5.0f, true);
+	private GreenSlimeWorm(World world, Vector position, boolean next) {
+		super(world, new Rectangle(position, 50.0f, 13.0f), 5.0f, true);
 		this.divisble = false;
 	}
 
@@ -72,13 +91,15 @@ public class GreenSlimeWorm extends EnemyTemplate {
 
 	@Override
 	public void kill(AbstractObject killer) {
-		if (killer instanceof FigureTemplate && divisble) {
-			this.getWorld().add(
-					new GreenSlimeWorm(this.getWorld(), this.getPosition()
-							.modifyX(this.getPosition().x + 25.0f)));
-			this.getWorld().add(
-					new GreenSlimeWorm(this.getWorld(), this.getPosition()
-							.modifyX(this.getPosition().x - 25.0f)));
+		if (killer instanceof FigureTemplate) {
+			if (divisble) {
+				this.getWorld().add(
+						new GreenSlimeWorm(this.getWorld(), this.getPosition()
+								.modifyX(this.getPosition().x + 25.0f), true));
+				this.getWorld().add(
+						new GreenSlimeWorm(this.getWorld(), this.getPosition()
+								.modifyX(this.getPosition().x - 25.0f), true));
+			}
 			this.setAlive(false);
 		}
 	}

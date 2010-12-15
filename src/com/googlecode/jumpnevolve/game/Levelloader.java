@@ -136,7 +136,7 @@ public class Levelloader {
 										.toFloat(curArgus[2])));
 					} else if (className.equals("GreenSlimeWorm")) {
 						otherObjects.add(new GreenSlimeWorm(this.level,
-								position, true));
+								position));
 					}
 					// TODO: Weitere Klassen einfügen
 					// Aktivierenden Objekten, die zu aktivierenden Objekt

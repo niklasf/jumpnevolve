@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Level, dass einer Welt entspricht, enthält zusätzlich Punktezähler und
@@ -27,12 +28,14 @@ public class Level extends World {
 	private int points;
 	private Timer timer = new Timer();
 	private Player player;
+	private Interface gui;
 	private Levelloader loader;
-	private String background = "landscape.png";
+	private String background = "landscape-photo.png";
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
 		this.loader = loader;
+		this.gui = new Interface(this);
 	}
 
 	public void setTime(float time) {
@@ -82,6 +85,10 @@ public class Level extends World {
 		this.player = new Player(avaiableFigures, startFigure);
 	}
 
+	public Player getPlayer() {
+		return this.player;
+	}
+
 	private void reload() {
 		// TODO: Level neu laden
 	}
@@ -103,11 +110,12 @@ public class Level extends World {
 	@Override
 	public void draw(Graphics g) {
 		super.configScreen(g);
-		GraphicUtils.drawImage(g, new Rectangle(this.getCamera().getPosition(),
-				Engine.getInstance().getWidth() / zoomX, Engine.getInstance()
-						.getHeight()
-						/ zoomY), ResourceManager.getInstance().getImage(
-				background));
+		GraphicUtils.drawImage(g, new Rectangle(new Vector(0, 0), this.width,
+				this.height), ResourceManager.getInstance()
+				.getImage(background));
+		GraphicUtils.draw(g, new Rectangle(new Vector(0, 0), this.width,
+				this.height));
+		System.out.println(width + " " + height + " " + zoomX);
 		super.draw(g);
 	}
 }
