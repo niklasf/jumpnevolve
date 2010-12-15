@@ -3,7 +3,9 @@ package com.googlecode.jumpnevolve.tests.graphics.world;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.SlickEngine;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -26,8 +28,8 @@ public class GravityTest {
 	 *            Kommandozeilenargumente werden ignoriert.
 	 */
 	public static void main(String[] args) {
-		Engine engine = Engine.getInstance();
-		Engine.getInstance().setTargetFrameRate(100);
+		SlickEngine engine = (SlickEngine) Engine.getInstance();
+		engine.setTargetFrameRate(100);
 
 		World world = new World(10, 10, 1);
 

@@ -17,6 +17,7 @@
 
 package com.googlecode.jumpnevolve.game;
 
+import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
 
 /**
@@ -31,7 +32,7 @@ public class Jumpnevolve {
 	 * @param args Kommandozeilenargumente
 	 */
 	public static void main(String[] args) {
-		Engine engine = Engine.getInstance();
+		AbstractEngine engine = Engine.getInstance();
 		
 		// TODO: Ressource laden, Menüs erzeugen
 		Level level = Levelloader.asyncLoadLevel("demolevel.txt");
