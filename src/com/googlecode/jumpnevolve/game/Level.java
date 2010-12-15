@@ -112,12 +112,9 @@ public class Level extends World {
 	@Override
 	public void draw(Graphics g) {
 		super.configScreen(g);
-		GraphicUtils.drawImage(g, new Rectangle(this.getCamera().getPosition(),
-				Engine.getInstance().getWidth() / zoomX, Engine.getInstance()
-						.getHeight()
-						/ zoomY), ResourceManager.getInstance().getImage(
-				background));
-
+		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
+				this.height / 2.0f), this.width, this.height), ResourceManager
+				.getInstance().getImage(background));
 		super.draw(g);
 	}
 }
