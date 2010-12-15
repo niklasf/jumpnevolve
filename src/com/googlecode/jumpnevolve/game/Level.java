@@ -82,7 +82,9 @@ public class Level extends World {
 	}
 
 	public void addPlayer(String avaiableFigures, String startFigure) {
-		this.player = new Player(this, avaiableFigures, startFigure);
+		this.player = new Player(this, new Vector(0.0f, 0.0f), avaiableFigures,
+				startFigure);// FIXME: Startposition vorgeben (in der
+								// Leveldatei)
 	}
 
 	public Player getPlayer() {
