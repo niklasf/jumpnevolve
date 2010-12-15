@@ -84,7 +84,7 @@ public class Level extends World {
 	public void addPlayer(String avaiableFigures, String startFigure) {
 		this.player = new Player(this, new Vector(0.0f, 0.0f), avaiableFigures,
 				startFigure);// FIXME: Startposition vorgeben (in der
-								// Leveldatei)
+		// Leveldatei)
 	}
 
 	public Player getPlayer() {
@@ -112,12 +112,12 @@ public class Level extends World {
 	@Override
 	public void draw(Graphics g) {
 		super.configScreen(g);
-		GraphicUtils.drawImage(g, new Rectangle(new Vector(0, 0), this.width,
-				this.height), ResourceManager.getInstance()
-				.getImage(background));
-		GraphicUtils.draw(g, new Rectangle(new Vector(0, 0), this.width,
-				this.height));
-		System.out.println(width + " " + height + " " + zoomX);
+		GraphicUtils.drawImage(g, new Rectangle(this.getCamera().getPosition(),
+				Engine.getInstance().getWidth() / zoomX, Engine.getInstance()
+						.getHeight()
+						/ zoomY), ResourceManager.getInstance().getImage(
+				background));
+
 		super.draw(g);
 	}
 }
