@@ -82,7 +82,7 @@ public class Level extends World {
 	}
 
 	public void addPlayer(String avaiableFigures, String startFigure) {
-		this.player = new Player(avaiableFigures, startFigure);
+		this.player = new Player(this, avaiableFigures, startFigure);
 	}
 
 	public Player getPlayer() {

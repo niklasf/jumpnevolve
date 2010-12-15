@@ -27,14 +27,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.googlecode.jumpnevolve.game.Player;
-import com.googlecode.jumpnevolve.game.SpecialPollable;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
-import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -57,7 +53,7 @@ public class World extends AbstractState {
 
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 
-	private ArrayList<SpecialPollable> objects = new ArrayList<SpecialPollable>();
+	private ArrayList<AbstractObject> objects = new ArrayList<AbstractObject>();
 
 	private ArrayList<AbstractObject> deletedObjects = new ArrayList<AbstractObject>();
 
@@ -91,7 +87,7 @@ public class World extends AbstractState {
 		this.addings.clear();
 		this.polling = true;
 		this.deletedObjects.clear();
-		for (SpecialPollable object : this.objects) {
+		for (AbstractObject object : this.objects) {
 			object.startRound(input);
 		}
 		for (AbstractObject object : this.deletedObjects) {
@@ -100,7 +96,7 @@ public class World extends AbstractState {
 		for (Pollable pollable : this.pollables) {
 			pollable.poll(input, secounds);
 		}
-		for (SpecialPollable object : this.objects) {
+		for (AbstractObject object : this.objects) {
 			object.endRound();
 		}
 		this.polling = false;
@@ -127,16 +123,10 @@ public class World extends AbstractState {
 						this.drawables.add((Drawable) object);
 					}
 				}
-				if (object instanceof SpecialPollable) {
+				if (object instanceof AbstractObject) {
 					if (!this.objects.contains(object)) {
-						this.objects.add((SpecialPollable) object);
-						if (object instanceof AbstractObject) {
-							addToObjectList((AbstractObject) object);
-						}
-						if (object instanceof Player) {
-							addToObjectList(((Player) object)
-									.getCurrentFigure());
-						}
+						this.objects.add((AbstractObject) object);
+						addToObjectList((AbstractObject) object);
 					}
 				}
 			}
