@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -90,6 +91,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 
 	private Collision collision = new Collision();
+
+	private Collision oldCollision = new Collision();
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -299,6 +302,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
 			this.shape = newShape;
+			this.oldCollision = this.collision.getInvertedCollision()
+					.getInvertedCollision();
 
 			// Welt informieren
 			// TODO: Automatisch alle n Runden machen
@@ -480,6 +485,20 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
+	 * @return Die aktuelle Kollision
+	 */
+	public final Collision getCollision() {
+		return this.collision;
+	}
+
+	/**
+	 * @return Die Kollision der letzten Berechnungsrunde
+	 */
+	public final Collision getOldCollision() {
+		return this.oldCollision;
+	}
+
+	/**
 	 * @return {@code true}, wenn das Objekt beweglich ist.
 	 */
 	public final boolean isMoveable() {
@@ -533,12 +552,35 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		return this.collision.isBlocked(direction);
 	}
 
+	/**
+	 * @param direction
+	 *            Richtung, welche abgefragt wird; bezieht sich auf die
+	 *            Richtungs-Konstanten von {@link Shape}
+	 * @return {@code true}, wenn der Weg in Richtung von Direction den letzten
+	 *         Berechnungsdurchgang blockiert war
+	 */
+	public final boolean wasWayBlocked(byte direction) {
+		return this.oldCollision.isBlocked(direction);
+	}
+
 	protected final void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 
 	public final void setPosition(Vector newPosition) {
 		this.shape = this.shape.modifyCenter(newPosition);
+	}
+
+	public final void setForce(Vector newForce) {
+		this.force = newForce;
+	}
+
+	public final void setCollision(Collision newCollision) {
+		this.collision = newCollision;
+	}
+
+	public final void setOldCollision(Collision newOldCollision) {
+		this.oldCollision = newOldCollision;
 	}
 
 	public final boolean isAlive() {
@@ -552,7 +594,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Die neue Geschwindigkeit
 	 */
 	public void setVelocity(Vector velocity) {
-		this.force = Vector.ZERO;
 		this.velocity = velocity;
 	}
 
@@ -577,16 +618,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
-		if (this.blockable) {
+		if (other.blockable) {
 			onBlockableCrash(other);
 		}
-		if (this.pushable) {
+		if (other.pushable) {
 			onPushableCrash(other);
 		}
-		if (this.living) {
+		if (other.living) {
 			onLivingCrash(other);
 		}
-		if (this.activable) {
+		if (other.activable) {
 			onActivableCrash(other);
 		}
 		onGeneralCrash(other);

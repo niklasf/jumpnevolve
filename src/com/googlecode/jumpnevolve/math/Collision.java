@@ -232,4 +232,21 @@ public class Collision {
 		}
 		return inverted;
 	}
+
+	/**
+	 * Gibt die Werte der Kollision in der Konsole aus
+	 */
+	public void print() {
+		System.out.println("Name der Kollision: "
+				+ this.toString().substring(
+						this.toString().lastIndexOf(".") + 1));
+		System.out.println("Oben: " + this.collidingSides[0]
+				+ " an der Stelle " + this.collidingPositions[0]);
+		System.out.println("Rechts: " + this.collidingSides[1]
+				+ " an der Stelle " + this.collidingPositions[1]);
+		System.out.println("Unten: " + this.collidingSides[2]
+				+ " an der Stelle " + this.collidingPositions[2]);
+		System.out.println("Links: " + this.collidingSides[3]
+				+ " an der Stelle " + this.collidingPositions[3]);
+	}
 }

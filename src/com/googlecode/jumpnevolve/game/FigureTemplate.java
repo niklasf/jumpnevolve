@@ -39,4 +39,18 @@ public abstract class FigureTemplate extends AbstractObject implements Playable 
 		this.setPosition(newPlace);
 	}
 
+	/**
+	 * Synchronisiert die Werte dieses Objekts mit denen einer anderen Figur
+	 * 
+	 * @param other
+	 *            Die andere Figur, deren Werte übernommen werden
+	 */
+	public final void synchronize(FigureTemplate other) {
+		this.setPosition(other.getPosition());
+		this.setVelocity(other.getVelocity());
+		this.setForce(other.getForce());
+		this.setCollision(other.getCollision());
+		this.setOldCollision(other.getOldCollision());
+	}
+
 }

@@ -66,8 +66,12 @@ public class RollingBall extends FigureTemplate {
 			this.setAlive(true); // Wiederbeleben
 
 		}
-		// Bewegungen
+		// Bewegung in x-Richtung auf 0 setzen
 		this.setVelocity(new Vector(0, this.getVelocity().y));
+		// Schwerkraft
+		this.applyForce(Vector.DOWN.mul(98.1f * this.getMass()));
+
+		// Bewegungen TODO: Entfernen
 		if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
 			this.setVelocity(new Vector(100, this.getVelocity().y));
 			// Nach rechts laufen
@@ -76,15 +80,13 @@ public class RollingBall extends FigureTemplate {
 			this.setVelocity(new Vector(-100, this.getVelocity().y));
 			// Nach links laufen
 		}
-
+		// Springen TODO: Entfernen
 		if ((input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
 				&& this.isWayBlocked(Shape.DOWN)) {
 			this.setVelocity(new Vector(this.getVelocity().x, -0.25f * 98.1f
 					* this.getMass()));
 			// Springen für 0.5 Sekunden bis Stillstand
 		}
-		// Schwerkraft
-		this.applyForce(Vector.DOWN.mul(98.1f * this.getMass()));
 	}
 
 	@Override
@@ -112,20 +114,26 @@ public class RollingBall extends FigureTemplate {
 
 	@Override
 	public void jump() {
-		// TODO Auto-generated method stub
-
+		if (this.wasWayBlocked(Shape.DOWN)) {
+			this.setVelocity(new Vector(this.getVelocity().x, -0.25f * 98.1f
+					* this.getMass()));
+		}
 	}
 
 	@Override
 	public void run(int direction) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void synchronize(Playable other) {
-		// TODO Auto-generated method stub
-
+		switch (direction) {
+		case Playable.DIRECTION_LEFT:
+			this.setVelocity(new Vector(-100, this.getVelocity().y));
+			// Nach links laufen
+			break;
+		case Playable.DIRECTION_RIGHT:
+			this.setVelocity(new Vector(100, this.getVelocity().y));
+			// Nach rechts laufen
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

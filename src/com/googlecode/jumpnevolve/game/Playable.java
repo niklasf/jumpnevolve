@@ -16,14 +16,6 @@ public interface Playable extends Drawable, Pollable {
 	final int DIRECTION_LEFT = 1;
 
 	/**
-	 * Synchronisiert die Werte dieses Playables mit denen eines anderen
-	 * 
-	 * @param other
-	 *            Das andere Playable
-	 */
-	public void synchronize(Playable other);
-
-	/**
 	 * Lässt das Objekt springen, soll nur möglich sein, wenn sich das Objekt am
 	 * Boden befindet
 	 */
