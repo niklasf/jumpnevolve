@@ -28,14 +28,12 @@ public class Level extends World {
 	private int points;
 	private Timer timer = new Timer();
 	private Player player;
-	private Interface gui;
 	private Levelloader loader;
 	private String background = "landscape-photo.png";
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
 		this.loader = loader;
-		this.gui = new Interface(this);
 	}
 
 	public void setTime(float time) {
@@ -116,5 +114,8 @@ public class Level extends World {
 				this.height / 2.0f), this.width, this.height), ResourceManager
 				.getInstance().getImage(background));
 		super.draw(g);
+		if (this.player != null) {
+			this.player.getInterface().draw(g);
+		}
 	}
 }

@@ -31,13 +31,16 @@ public class Player implements Pollable {
 	private HashMap<Integer, FigureTemplate> figureList;
 	private final Level parent;
 	private final Vector startPostion;
+	private final Interface gui;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
 			String startFigure) {
 		// TODO Auto-generated constructor stub
 		this.parent = parent;
 		this.startPostion = startPosition;
+		this.gui = new Interface(this);
 		setFigures(avaiableFigures, startFigure);
+		// TODO: GUI initialisieren (addFunction())
 	}
 
 	@Override
@@ -55,6 +58,10 @@ public class Player implements Pollable {
 
 	public FigureTemplate getCurrentFigure() {
 		return cur;
+	}
+
+	public Interface getInterface() {
+		return this.gui;
 	}
 
 	private void setFigures(String avaiableFigures, String startFigure) {
