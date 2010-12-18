@@ -66,7 +66,7 @@ public class ParticleEffect implements Drawable, Pollable {
 		if (this.system == null) {
 			try {
 				this.system = new ParticleSystem(ResourceManager.getInstance()
-						.getImage("particle.png"), 200);
+						.getImage("texture/particle.png"), 200);
 				this.system.addEmitter(this.factory.createParticleEmitter());
 				this.factory = null;
 			} catch (ResourceError e) {

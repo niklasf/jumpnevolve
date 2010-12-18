@@ -80,6 +80,6 @@ public class Door extends ObjectTemplate {
 
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
-				.getImage("wood.png"), false);
+				.getImage("textures/wood.png"), false);
 	}
 }

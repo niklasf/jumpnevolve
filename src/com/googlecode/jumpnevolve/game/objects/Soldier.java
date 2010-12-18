@@ -80,6 +80,7 @@ public class Soldier extends EnemyTemplate {
 	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
-				.getInstance().getImage("simple-foot-soldier.png"));
+				.getInstance().getImage(
+						"object-pictures/simple-foot-soldier.png"));
 	}
 }

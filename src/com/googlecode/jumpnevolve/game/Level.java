@@ -112,7 +112,7 @@ public class Level extends World {
 		super.configScreen(g);
 		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
 				this.height / 2.0f), this.width, this.height), ResourceManager
-				.getInstance().getImage(background));
+				.getInstance().getImage("backgrounds/" + background));
 		super.draw(g);
 		if (this.player != null) {
 			this.player.getInterface().draw(g);

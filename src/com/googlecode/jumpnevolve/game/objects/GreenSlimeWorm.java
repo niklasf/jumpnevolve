@@ -106,7 +106,8 @@ public class GreenSlimeWorm extends EnemyTemplate {
 
 	@Override
 	public void draw(Graphics g) {
-		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
-				.getInstance().getImage("green-slime-worm.png"));
+		GraphicUtils
+				.drawImage(g, this.getShape(), ResourceManager.getInstance()
+						.getImage("object-pictures/green-slime-worm.png"));
 	}
 }

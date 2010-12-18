@@ -73,6 +73,6 @@ public class Elevator extends ObjectTemplate {
 	// TODO: draw-Methode einfügen
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
-				.getImage("aluminium.png"), true);
+				.getImage("textures/aluminium.png"), true);
 	}
 }

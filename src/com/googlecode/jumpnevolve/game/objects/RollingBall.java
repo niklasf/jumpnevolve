@@ -139,6 +139,7 @@ public class RollingBall extends FigureTemplate {
 	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
-				.getInstance().getImage("figure-rolling-ball.png"));
+				.getInstance().getImage(
+						"object-pictures/figure-rolling-ball.png"));
 	}
 }

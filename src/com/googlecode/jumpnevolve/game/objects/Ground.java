@@ -57,7 +57,7 @@ public class Ground extends GroundTemplate {
 
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
-				.getImage("stone.png"), false);
+				.getImage("textures/stone.png"), false);
 		// super.draw(g);
 	}
 }

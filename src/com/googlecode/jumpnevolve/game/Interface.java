@@ -39,12 +39,13 @@ public class Interface implements Pollable, Drawable {
 		switch (function) {
 		case Player.ROLLING_BALL:
 			return ResourceManager.getInstance().getImage(
-					"Rolling-Ball-Icon.png");
+					"interface-icons/Rolling-Ball-Icon.png");
 		case Player.JUMPING_CROSS:
 			return ResourceManager.getInstance().getImage(
-					"Jumping-Cross-Icon.png");
+					"interface-icons/Jumping-Cross-Icon.png");
 		case Player.HIGH_JUMP:
-			return ResourceManager.getInstance().getImage("High-Jump-Icon.png");
+			return ResourceManager.getInstance().getImage(
+					"interface-icons/High-Jump-Icon.png");
 		default:
 			return null; // FIXME: Fehlermeldung ausgeben
 		}
