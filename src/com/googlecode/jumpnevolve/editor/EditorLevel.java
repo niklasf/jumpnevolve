@@ -48,7 +48,6 @@ public class EditorLevel extends Level {
 	@Override
 	public void poll(Input input, float secounds) {
 		// Nichts tun
-		System.out.println("Polled");
 	}
 
 	@Override
@@ -60,6 +59,5 @@ public class EditorLevel extends Level {
 		for (ObjectSettings obj : abbild) {
 			obj.getObject().draw(g);
 		}
-		System.out.println("Drawed");
 	}
 }

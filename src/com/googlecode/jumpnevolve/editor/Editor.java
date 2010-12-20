@@ -1,9 +1,7 @@
 package com.googlecode.jumpnevolve.editor;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -16,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -25,12 +22,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.graphics.SwingEngine;
-import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
-import com.googlecode.jumpnevolve.util.ContextWrapper;
 
 public class Editor extends JFrame implements ActionListener, ItemListener,
 		MouseListener {
@@ -105,14 +99,16 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		objectAuswahl = new JPanel();
 		setObjectAuswahl("Landschaft");
 
-		auswahl = new JPanel(new GridLayout(5, 1));
+		auswahl = new JPanel(new GridLayout(3, 2));
 		auswahl.add(new JLabel("Gruppe"));
 		groupList.addItemListener(this);
+		auswahl.add(groupList);
 		auswahl.add(new JLabel("Object"));
 		auswahl.add(objectAuswahl);
 		JButton neuesObjekt = new JButton("Erstelle neues Objekt");
 		neuesObjekt.setActionCommand("New_Object");
 		neuesObjekt.addActionListener(this);
+		auswahl.add(new JLabel());
 		auswahl.add(neuesObjekt);
 
 		levelSettings = new JPanel(new GridLayout(12, 2));
@@ -156,7 +152,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		currentSettings = new JPanel();
 
 		engine.setPreferredSize(new Dimension(600, 400));
-		
+
 		levelPreview = new JPanel();
 		levelPreview.add(engine);
 		levelPreview.addMouseListener(this);
@@ -180,7 +176,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		layout.setConstraints(levelPreview, constraints);
 		contentPanel.add(levelPreview);
 
-		buildConstraints(constraints, 2, 1, 1, 1);
+		buildConstraints(constraints, 2, 0, 1, 1);
 		layout.setConstraints(levelSettings, constraints);
 		contentPanel.add(levelSettings);
 
@@ -188,7 +184,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		this.setVisible(true);
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		engine.start();
 	}
 
