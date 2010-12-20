@@ -74,6 +74,12 @@ public class SwingEngine extends CanvasGameContainer implements AbstractEngine {
 			this.states.enterState(state.getID());
 		}
 	}
+	
+	@Override
+	public void setTargetFrameRate(int fps) {
+		super.getContainer().setTargetFrameRate(fps);
+	}
+
 
 	@Override
 	public void start() {

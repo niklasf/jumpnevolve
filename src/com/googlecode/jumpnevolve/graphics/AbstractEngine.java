@@ -44,5 +44,6 @@ public interface AbstractEngine {
 	public abstract int getHeight();
 
 	public abstract int getScreenWidth();
-
+	
+	public abstract void setTargetFrameRate(int fps);
 }

@@ -185,6 +185,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		engine.setTargetFrameRate(60);
 		engine.start();
 	}
 
