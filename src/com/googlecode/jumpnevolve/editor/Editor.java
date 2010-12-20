@@ -31,7 +31,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 
 	private HashMap<String, ObjectSettings> objects = new HashMap<String, ObjectSettings>();
 	private JPanel contentPanel, auswahl, objectAuswahl, currentSettings,
-			levelPreview, levelSettings, generalThings;
+			levelPreview, levelSettings, generalThings, settingsAuswahl;
 	private JComboBox groupList, groundList, playerList, enemyList, objectList;
 	private JComboBox objectsList;
 	private int nextObjectId = 1;
@@ -60,9 +60,9 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 
 		previewLevel = new EditorLevel(this);
 
-		contentPanel = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints constraints = new GridBagConstraints();
+		contentPanel = new JPanel(layout);
 
 		groupList = new JComboBox();
 		groundList = new JComboBox();
@@ -149,6 +149,10 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		generalThings.add(new JLabel());
 		generalThings.add(save);
 
+		settingsAuswahl = new JPanel(new GridLayout(2, 1));
+		settingsAuswahl.add(new JLabel("Vorhandene Objekte"));
+		settingsAuswahl.add(objectsList);
+
 		currentSettings = new JPanel();
 
 		engine.setPreferredSize(new Dimension(600, 400));
@@ -157,28 +161,36 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		levelPreview.add(engine);
 		levelPreview.addMouseListener(this);
 
-		engine.switchState(this.previewLevel);
-		engine.requestFocus();
-
-		previewLevel.add(new EditorCamera(this));
+		previewLevel.setCamera(new EditorCamera(this));
 		previewLevel.add(new Ground(previewLevel, new Vector(20.0f, 20.0f),
 				new Vector(20.0f, 5.0f)));
+
+		engine.switchState(this.previewLevel);
+		engine.requestFocus();
 
 		buildConstraints(constraints, 0, 0, 1, 1);
 		layout.setConstraints(auswahl, constraints);
 		contentPanel.add(auswahl);
 
+		buildConstraints(constraints, 2, 0, 1, 1);
+		layout.setConstraints(settingsAuswahl, constraints);
+		contentPanel.add(settingsAuswahl);
+
 		buildConstraints(constraints, 1, 0, 1, 1);
 		layout.setConstraints(currentSettings, constraints);
 		contentPanel.add(currentSettings);
 
-		buildConstraints(constraints, 0, 1, 2, 1);
+		buildConstraints(constraints, 0, 1, 2, 2);
 		layout.setConstraints(levelPreview, constraints);
 		contentPanel.add(levelPreview);
 
-		buildConstraints(constraints, 2, 0, 1, 1);
+		buildConstraints(constraints, 2, 1, 1, 1);
 		layout.setConstraints(levelSettings, constraints);
 		contentPanel.add(levelSettings);
+
+		buildConstraints(constraints, 2, 2, 1, 1);
+		layout.setConstraints(generalThings, constraints);
+		contentPanel.add(generalThings);
 
 		this.setContentPane(contentPanel);
 		this.setVisible(true);
@@ -192,7 +204,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	public void saveLevel(String path) throws IOException {
 		FileOutputStream stream = new FileOutputStream(path);
 		String firstLine = this.getDimensionsLine();
-		String secondLine = this.getSettingsLine();
+		String secondLine = "\n" + this.getSettingsLine();
 		for (int i = 0; i < firstLine.length(); i++) {
 			stream.write((byte) firstLine.charAt(i));
 		}
@@ -200,7 +212,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			stream.write((byte) secondLine.charAt(i));
 		}
 		for (ObjectSettings object : objects.values()) {
-			String line = object.getDataLine() + "\n";
+			String line = "\n" + object.getDataLine();
 			for (int i = 0; i < line.length(); i++) {
 				stream.write((byte) line.charAt(i));
 			}
@@ -251,7 +263,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	}
 
 	private void updateSettingsList() {
-		objectsList.removeAll();
+		objectsList.removeAllItems();
 		for (String name : objects.keySet()) {
 			objectsList.addItem(name);
 		}
