@@ -107,12 +107,16 @@ public class Level extends World {
 		return null;
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		super.configScreen(g);
+	public void drawBackground(Graphics g) {
 		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
 				this.height / 2.0f), this.width, this.height), ResourceManager
 				.getInstance().getImage("backgrounds/" + background));
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		super.configScreen(g);
+		this.drawBackground(g);
 		super.draw(g);
 		if (this.player != null) {
 			this.player.getInterface().draw(g);
