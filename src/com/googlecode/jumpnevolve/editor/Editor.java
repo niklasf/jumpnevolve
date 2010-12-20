@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -154,6 +155,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 
 		currentSettings = new JPanel();
 
+		engine.setPreferredSize(new Dimension(600, 400));
+		
 		levelPreview = new JPanel();
 		levelPreview.add(engine);
 		levelPreview.addMouseListener(this);
@@ -184,6 +187,9 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		this.setContentPane(contentPanel);
 		this.setVisible(true);
 		this.pack();
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		engine.start();
 	}
 
 	public void saveLevel(String path) throws IOException {

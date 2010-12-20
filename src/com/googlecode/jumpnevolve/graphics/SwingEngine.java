@@ -34,6 +34,8 @@ public class SwingEngine extends CanvasGameContainer implements AbstractEngine {
 		super(states);
 		
 		this.states = states;
+		
+		this.getContainer().setAlwaysRender(true);
 	}
 
 	@Override
