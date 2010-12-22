@@ -5,11 +5,16 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
+import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Level, dass jedoch keine poll-Methoden ausführt, speziell für den Editor
@@ -58,6 +63,9 @@ public class EditorLevel extends Level {
 		ArrayList<ObjectSettings> abbild = settingsList;
 		for (ObjectSettings obj : abbild) {
 			obj.getObject().draw(g);
+			System.out.println("Drawed: " + obj.getObjectName());
 		}
+		GraphicUtils.draw(g,
+				new Rectangle(new Vector(10, 10), new Vector(5, 5)));
 	}
 }

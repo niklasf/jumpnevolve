@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
-import com.googlecode.jumpnevolve.game.FigureTemplate;
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
@@ -57,7 +57,7 @@ public class Soldier extends EnemyTemplate {
 	public void onLivingCrash(AbstractObject other) {
 		// Soldier kann nur den Spieler töten, wenn dieser nicht oberhalb von
 		// ihm ist
-		if (other instanceof FigureTemplate) {
+		if (other instanceof PlayerFigure) {
 			if (this.getShape().getCollision(other.getShape(),
 					other.isMoveable(), this.isMoveable()).isBlocked(Shape.UP) == false) {
 				other.kill(this);
@@ -69,7 +69,7 @@ public class Soldier extends EnemyTemplate {
 	public void kill(AbstractObject killer) {
 		// Soldier kann nicht durch andere Soldaten getötet werden
 		if (killer instanceof Soldier == false) {
-			if (killer instanceof FigureTemplate) {
+			if (killer instanceof PlayerFigure) {
 				// TODO: Punkte oder ähnliches für den Spieler zählen
 			}
 			this.setAlive(false);

@@ -3,7 +3,7 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
-import com.googlecode.jumpnevolve.game.FigureTemplate;
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -62,7 +62,7 @@ public class KillingMachine extends EnemyTemplate {
 	public void kill(AbstractObject killer) {
 		// KillingMachine kann von allen Seiten und allen Objekten getötet
 		// werden
-		if (killer instanceof FigureTemplate) {
+		if (killer instanceof PlayerFigure) {
 			// TODO: Punkte oder ähnliches für den Spieler zählen
 		}
 		this.setAlive(false);

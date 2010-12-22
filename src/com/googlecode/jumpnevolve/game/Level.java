@@ -79,9 +79,13 @@ public class Level extends World {
 		this.background = imageFile;
 	}
 
-	public void addPlayer(String avaiableFigures, String startFigure) {
-		this.player = new Player(this, new Vector(0.0f, 0.0f), avaiableFigures,
-				startFigure);// FIXME: Startposition vorgeben (in der
+	public void addPlayer(Vector position, String avaiableFigures,
+			String startFigure) {
+		this.player = new Player(this, position, avaiableFigures, startFigure);// FIXME:
+		// Startposition
+		// vorgeben
+		// (in
+		// der
 		// Leveldatei)
 	}
 
@@ -96,6 +100,9 @@ public class Level extends World {
 	@Override
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
+		if (this.player != null) {
+			this.player.poll(input, secounds);
+		}
 		this.timer.poll(input, secounds);
 		if (this.timer.didFinish()) {
 			this.reload();

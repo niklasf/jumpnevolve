@@ -18,7 +18,7 @@ import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
-import com.googlecode.jumpnevolve.game.objects.RollingBall;
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
@@ -125,9 +125,10 @@ public class Levelloader {
 						otherObjects.add(new Ground(this.level, position, this
 								.toVector(arguments)));
 					} else if (className.equals("RollingBall")) {
-						otherObjects.add(new RollingBall(this.level, position));
+						this.level.addPlayer(position, "RollingBall",
+								"RollingBall");
 						this.level.setCamera(new ObjectFocusingCamera(
-								otherObjects.get(otherObjects.size() - 1)));
+								this.level.getPlayer().getFigure()));
 					} else if (className.equals("Elevator")) {
 						String[] curArgus = arguments.split(",");
 						otherObjects.add(new Elevator(this.level, position,

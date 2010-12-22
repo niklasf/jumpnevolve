@@ -5,32 +5,35 @@ package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.math.Shape;
 
 /**
  * @author Erik Wagner
  * 
  */
-public interface Playable extends Drawable, Pollable {
+public interface Playable extends Drawable {
 
-	final int DIRECTION_RIGHT = 0;
-	final int DIRECTION_LEFT = 1;
-
-	/**
-	 * Lässt das Objekt springen, soll nur möglich sein, wenn sich das Objekt am
-	 * Boden befindet
-	 */
-	public void jump();
+	final int STAY = 0;
+	final int DIRECTION_RIGHT = 1;
+	final int DIRECTION_LEFT = 2;
 
 	/**
-	 * Lässt das Objekt in eine Richtung laufen
-	 * 
-	 * @param direction
-	 *            Die Richtung (eine der DIRECTION-Konstanten aus Playable)
+	 * @return Die Geschwindigkeit mit der sich das Objekt bewegt
 	 */
-	public void run(int direction);
+	public float getRunningSpeed();
 
 	/**
-	 * Springt in der Luft zum zweiten Mal
+	 * @return Die Höhe in Pixeln (bei Zoom = 1), die das Objekt hochspringt
 	 */
-	public void doubleJump();
+	public float getJumpingHeight();
+
+	public boolean isBlockable();
+
+	public boolean isPushable();
+
+	public boolean isLiving();
+
+	public boolean isKillable();
+
+	public Shape getShape();
 }

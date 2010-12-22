@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.FigureTemplate;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -117,6 +116,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Ob das Objekt lebt
 	 * @param activable
 	 *            Ob das Objekt ein anderes bestimmtes Objekt aktivieren kann.
+	 * @param killable
+	 *            Ob das Objekt, ein anderes (lebendes) Objekt töten kann
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
 			boolean blockable, boolean pushable, boolean living,
@@ -508,21 +509,21 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return {@code true}, wenn das Objekt blockbar ist.
 	 */
-	public final boolean isBlockable() {
+	public boolean isBlockable() {
 		return this.blockable;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt schiebbar ist.
 	 */
-	public final boolean isPushable() {
+	public boolean isPushable() {
 		return this.pushable;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt lebendig ist.
 	 */
-	public final boolean isLiving() {
+	public boolean isLiving() {
 		return this.living;
 	}
 
@@ -530,14 +531,14 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @return {@code true}, wenn das Objekt aktivierbar ist. Achtung: Nicht
 	 *         unbedingt alle Objekte können das Objekt aktivieren
 	 */
-	public final boolean isActivable() {
+	public boolean isActivable() {
 		return this.activable;
 	}
 
 	/**
 	 * @return {@code true}, wenn das Objekt töten kann.
 	 */
-	public final boolean isKillable() {
+	public boolean isKillable() {
 		return this.killable;
 	}
 
@@ -573,6 +574,17 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	public final void setForce(Vector newForce) {
 		this.force = newForce;
+	}
+
+	/**
+	 * Ändert die Gestalt des Objekts, nicht aber seine Position
+	 * 
+	 * @param newShape
+	 *            Das Shape, dessen Form übernommen wird
+	 */
+	public final void setShape(Shape newShape) {
+		this.shape = newShape.modifyCenter(this.shape.getCenter());
+		System.out.println("Shape gesetzt" + this.shape);
 	}
 
 	public final void setCollision(Collision newCollision) {
