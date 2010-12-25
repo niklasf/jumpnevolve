@@ -80,8 +80,9 @@ public class Level extends World {
 	}
 
 	public void addPlayer(Vector position, String avaiableFigures,
-			String startFigure) {
-		this.player = new Player(this, position, avaiableFigures, startFigure);// FIXME:
+			String startFigure, String[] savePositions) {
+		this.player = new Player(this, position, avaiableFigures, startFigure,
+				savePositions);// FIXME:
 		// Startposition
 		// vorgeben
 		// (in

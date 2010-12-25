@@ -82,6 +82,14 @@ public class Levelloader {
 						.setBackground(secondLineSplit[secondLineSplit.length - 1]);
 				// FIXME: Einstellungen für das Level vornehmen
 				// Beispiele: verfügbare Charaktere, Timer etc.
+				String thirdLine = levelFileReader.readLine();
+				String[] thirdLineSplit = thirdLine.split("_");
+				if (thirdLineSplit[0].equals("Player") == false) {
+					// FIXME: Fehlermeldung ausgeben und abbrechen
+				}
+				this.level.addPlayer(this.toVector(thirdLineSplit[3]),
+						thirdLineSplit[2], thirdLineSplit[1], thirdLineSplit[4]
+								.split(","));
 
 				// HashMaps für Objekte zum Zwischenspeichern erstellen
 				HashMap<String, AbstractObject> activableObjects = new HashMap<String, AbstractObject>();
@@ -124,11 +132,6 @@ public class Levelloader {
 					} else if (className.equals("Ground")) {
 						otherObjects.add(new Ground(this.level, position, this
 								.toVector(arguments)));
-					} else if (className.equals("RollingBall")) {
-						this.level.addPlayer(position, "RollingBall",
-								"RollingBall");
-						this.level.setCamera(new ObjectFocusingCamera(
-								this.level.getPlayer().getFigure()));
 					} else if (className.equals("Elevator")) {
 						String[] curArgus = arguments.split(",");
 						otherObjects.add(new Elevator(this.level, position,

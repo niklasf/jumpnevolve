@@ -36,7 +36,7 @@ public class Player implements Pollable {
 	private final Interface gui;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
-			String startFigure) {
+			String startFigure, String[] savePositions) {
 		// TODO Auto-generated constructor stub
 		this.parent = parent;
 		this.gui = new Interface(this);
@@ -44,6 +44,7 @@ public class Player implements Pollable {
 		setFigures(avaiableFigures, startFigure);
 		this.parent.add(this.figure);
 		// TODO: GUI initialisieren (addFunction())
+		// TODO: savePositions verarbeiten
 	}
 
 	@Override

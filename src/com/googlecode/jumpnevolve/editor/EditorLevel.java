@@ -13,6 +13,7 @@ import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -60,12 +61,13 @@ public class EditorLevel extends Level {
 		super.configScreen(g);
 		this.setBackground(parent.getBackgroundFile());
 		super.drawBackground(g);
+		// Objekte darstellen, es wird abbild benutzt, damit in der for-Schleife
+		// keine Probleme auftreten
 		ArrayList<ObjectSettings> abbild = settingsList;
 		for (ObjectSettings obj : abbild) {
 			obj.getObject().draw(g);
-			System.out.println("Drawed: " + obj.getObjectName());
 		}
-		GraphicUtils.draw(g,
-				new Rectangle(new Vector(10, 10), new Vector(5, 5)));
+		// Spieler zeichnen
+		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
 	}
 }

@@ -7,13 +7,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.googlecode.jumpnevolve.game.Player;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
-import com.googlecode.jumpnevolve.game.objects.RollingBall;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
@@ -87,11 +87,6 @@ public class ObjectSettings extends JPanel {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
 			this.attributes.setText("2|10");
-		} else if (this.className.equals("RollingBall")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-			this.attributes.setText("none");
-			this.attributes.setEditable(false);
 		} else if (this.className.equals("Elevator")) {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
@@ -122,8 +117,6 @@ public class ObjectSettings extends JPanel {
 		} else if (this.className.equals("Ground")) {
 			object = new Ground(this.editorWorld, this.getObjectPosition(),
 					Vector.parseVector(this.getObjectAttributes()));
-		} else if (this.className.equals("RollingBall")) {
-			object = new RollingBall(this.editorWorld, this.getObjectPosition());
 		} else if (this.className.equals("Elevator")) {
 			String[] curArgus = this.getObjectAttributes().split(",");
 			object = new Elevator(this.editorWorld, this.getObjectPosition(),
@@ -140,9 +133,11 @@ public class ObjectSettings extends JPanel {
 	 *         -- ohne "\n" am Ende
 	 */
 	public String getDataLine() {
-		return this.getObjectClassName() + "_" + this.getObjectPosition() + "_"
-				+ this.getObjectName() + "_" + this.getObjectsActivatings()
-				+ "_" + this.getObjectAttributes();
+		return this.getObjectClassName() + "_"
+				+ this.positionX.getText().trim() + "|"
+				+ this.positionY.getText().trim() + "_" + this.getObjectName()
+				+ "_" + this.getObjectsActivatings() + "_"
+				+ this.getObjectAttributes();
 	}
 
 	public String getObjectClassName() {

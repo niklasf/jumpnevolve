@@ -1,5 +1,6 @@
 Leveldimensionen_1000_100_1
-Leveleinstellungen_1,1_1000_RollingBall_default
-Ground_(100.0, 1000.0)_3_Ground_none_2|100
-Ground_(0.0, 0.0)_1_Ground_none_2|10
-Ground_(100.0, 100.0)_2_Ground_none_2|10
+Leveleinstellungen_1,1_1000_default
+Player_RolllingBall_RollingBall,JumpingCross_100|0_0,100
+Soldier_0|0_1_Soldier_none_none
+Button_0|0_3_Button_none_10.0
+Ground_0|0_2_Ground_none_2|10
