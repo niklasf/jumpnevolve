@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
@@ -82,7 +81,7 @@ public class Level extends World {
 	public void addPlayer(Vector position, String avaiableFigures,
 			String startFigure, String[] savePositions) {
 		this.player = new Player(this, position, avaiableFigures, startFigure,
-				savePositions);// FIXME:
+				savePositions, true);// FIXME:
 		// Startposition
 		// vorgeben
 		// (in
@@ -119,6 +118,7 @@ public class Level extends World {
 		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
 				this.height / 2.0f), this.width, this.height), ResourceManager
 				.getInstance().getImage("backgrounds/" + background));
+
 	}
 
 	@Override

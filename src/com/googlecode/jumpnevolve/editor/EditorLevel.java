@@ -5,17 +5,13 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
-import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Level, dass jedoch keine poll-Methoden ausführt, speziell für den Editor
@@ -36,7 +32,7 @@ public class EditorLevel extends Level {
 	 * @param subareaWidth
 	 */
 	public EditorLevel(Editor parent) {
-		super(new Levelloader(null), 10000000, 10000000, 1000000);
+		super(new Levelloader(null), 10000, 3000, 100);
 		this.parent = parent;
 		// TODO Auto-generated constructor stub
 	}
@@ -58,6 +54,7 @@ public class EditorLevel extends Level {
 
 	@Override
 	public void draw(Graphics g) {
+		this.setZoom(parent.getZoomX(), parent.getZoomY());
 		super.configScreen(g);
 		this.setBackground(parent.getBackgroundFile());
 		super.drawBackground(g);

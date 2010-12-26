@@ -44,8 +44,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	private JTextField positionX = new JTextField("0"),
 			positionY = new JTextField("0");
 	private JTextField saveFileName = new JTextField("level.txt");
-	private int curPosX = 0, curPosY = 0, curZoomX = 1, curZoomY = 1,
-			curHeight = 100, curWidth = 100;
+	private int curPosX = 0, curPosY = 0, curHeight = 100, curWidth = 100;
+	private float curZoomX = 1, curZoomY = 1;
 	private JTextField levelWidth = new JTextField("1000"),
 			levelHeight = new JTextField("100"),
 			levelSubareaWidth = new JTextField("1"),
@@ -256,6 +256,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 				+ this.playerPositionY.getText().trim());
 	}
 
+	public float getZoomX() {
+		return (float) curZoomX;
+	}
+
+	public float getZoomY() {
+		return (float) curZoomY;
+	}
+
 	private String getSettingsLine() {
 		return "Leveleinstellungen_" + this.levelZoomX.getText().trim() + ","
 				+ this.levelZoomY.getText().trim() + "_"
@@ -329,9 +337,11 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	@Override
 	public void mouseClicked(MouseEvent evt) {
 		if (evt.getSource().equals(levelPreview)) {
-			evt.translatePoint(-(this.levelPreview.getWidth() / this.curZoomX
-					/ 2 - this.curPosX), -(this.levelPreview.getHeight()
-					/ this.curZoomY / 2 - this.curPosY));
+			evt
+					.translatePoint(-(this.levelPreview.getWidth()
+							/ (int) this.curZoomX / 2 - this.curPosX),
+							-(this.levelPreview.getHeight()
+									/ (int) this.curZoomY / 2 - this.curPosY));
 			// TODO: Anmerkung - Hier könnte der Fehler für falsche
 			// Mausereignisse liegen...
 			this.lastClickX = evt.getX();
@@ -387,8 +397,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		} else if (command.equals("leveleinstellungen")) {
 			this.curPosX = Integer.parseInt(this.positionX.getText().trim());
 			this.curPosY = Integer.parseInt(this.positionY.getText().trim());
-			this.curZoomX = Integer.parseInt(this.levelZoomX.getText().trim());
-			this.curZoomY = Integer.parseInt(this.levelZoomY.getText().trim());
+			this.curZoomX = Float.parseFloat(this.levelZoomX.getText().trim());
+			this.curZoomY = Float.parseFloat(this.levelZoomY.getText().trim());
 			this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
 			this.curHeight = Integer
 					.parseInt(this.levelHeight.getText().trim());

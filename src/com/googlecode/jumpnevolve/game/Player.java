@@ -36,13 +36,16 @@ public class Player implements Pollable {
 	private final Interface gui;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
-			String startFigure, String[] savePositions) {
+			String startFigure, String[] savePositions, boolean cameraOnPlayer) {
 		// TODO Auto-generated constructor stub
 		this.parent = parent;
 		this.gui = new Interface(this);
 		this.figure = new PlayerFigure(parent, startPosition, this);
 		setFigures(avaiableFigures, startFigure);
 		this.parent.add(this.figure);
+		if (cameraOnPlayer) {
+			this.parent.setCamera(new ObjectFocusingCamera(this.figure));
+		}
 		// TODO: GUI initialisieren (addFunction())
 		// TODO: savePositions verarbeiten
 	}
