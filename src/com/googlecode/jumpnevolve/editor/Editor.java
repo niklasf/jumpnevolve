@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -58,7 +59,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			"RollingBall"), playerPositionX = new JTextField("100"),
 			playerPositionY = new JTextField("0"),
 			savePositions = new JTextField("0,100");
-	private int lastClickX, lastClickY;
+	private float lastClickX, lastClickY;
 	private String waitFor;
 	private SwingEngine engine = SwingEngine.getInstance();
 
@@ -340,27 +341,43 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			Component com = this.currentSettings.getComponent(0);
 			((ObjectSettings) com).setPosition(lastClickX, lastClickY);
 		}
-		this.waitFor = null;
+		this.waitFor = "nothing";
 	}
 
 	private void waitForMouseClick(String forWhat) {
+		if (forWhat == null) {
+			forWhat = "nothing";
+		}
 		this.waitFor = forWhat;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent evt) {
 		if (evt.getSource().equals(engine)) {
-			evt
-					.translatePoint(-(this.levelPreview.getWidth()
-							/ (int) this.curZoomX / 2 - this.curPosX),
-							-(this.levelPreview.getHeight()
-									/ (int) this.curZoomY / 2 - this.curPosY));
+			evt.translatePoint(-(int) ((this.levelPreview.getWidth()
+					/ this.curZoomX / 2 - this.curPosX)),
+					-(int) ((this.levelPreview.getHeight()
+							/ (int) this.curZoomY / 2 - this.curPosY)));
 			// TODO: Anmerkung - Hier könnte der Fehler für falsche
 			// Mausereignisse liegen...
 			this.lastClickX = evt.getX();
 			this.lastClickY = evt.getY();
 			this.newMouseClickPerformed();
 		}
+	}
+
+	public void mouseClicked(float x, float y) {
+		System.out.println("Mausklick: " + x + "," + y);
+		x = x - this.levelPreview.getWidth() / 2;
+		y = y - this.levelPreview.getHeight() / 2;
+		x = x / this.curZoomX;
+		y = y / this.curZoomY;
+		x = x + this.curPosX;
+		y = y + this.curPosY;
+		System.out.println("Mausklick-translated: " + x + "," + y);
+		this.lastClickX = x;
+		this.lastClickY = y;
+		this.newMouseClickPerformed();
 	}
 
 	@Override
@@ -453,7 +470,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 							.setCurrentSettings(this.objects.get(picked
 									.toString()));
 				}
-				this.waitForMouseClick(null);
+				this.waitForMouseClick("nothing");
 			}
 		}
 	}

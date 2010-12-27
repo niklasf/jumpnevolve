@@ -53,6 +53,9 @@ public class EditorLevel extends Level {
 	@Override
 	public void poll(Input input, float secounds) {
 		// Nichts tun
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			this.parent.mouseClicked(input.getMouseX(), input.getMouseY());
+		}
 	}
 
 	@Override
@@ -70,7 +73,6 @@ public class EditorLevel extends Level {
 		// keine Probleme auftreten
 		ArrayList<ObjectSettings> abbild = settingsList;
 		for (ObjectSettings obj : abbild) {
-			System.out.println("Drawed: " + obj.getObjectName());
 			obj.getObject().draw(g);
 		}
 		// Spieler zeichnen
