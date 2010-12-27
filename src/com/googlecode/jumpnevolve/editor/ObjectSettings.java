@@ -11,6 +11,7 @@ import com.googlecode.jumpnevolve.game.Player;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
@@ -91,6 +92,11 @@ public class ObjectSettings extends JPanel {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
 			this.attributes.setText("10|2,0.0,20.0");
+		} else if (this.className.equals("GreenSlimeWorm")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			this.attributes.setText("none");
+			this.attributes.setEditable(false);
 		}
 	}
 
@@ -123,6 +129,9 @@ public class ObjectSettings extends JPanel {
 					Vector.parseVector(curArgus[0]), Float
 							.parseFloat(curArgus[1]), Float
 							.parseFloat(curArgus[2]));
+		} else if (this.className.equals("GreenSlimeWorm")) {
+			object = new GreenSlimeWorm(this.editorWorld, this
+					.getObjectPosition());
 		}
 
 		return object;
