@@ -21,7 +21,7 @@ public class RollingBall implements Playable {
 	@Override
 	public float getJumpingHeight() {
 		// TODO Auto-generated method stub
-		return 0.25f;
+		return 0.30f;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class RollingBall implements Playable {
 
 	@Override
 	public Shape getShape() {
-		return new Circle(Vector.ZERO, 30.0f);
+		return new Circle(Vector.ZERO, 20.0f);
 	}
 
 }

@@ -93,6 +93,13 @@ public class Level extends World {
 		return this.player;
 	}
 
+	/**
+	 * @return Der gesamte Dateipfad aus dem das Hintergrundbild geladen wird
+	 */
+	public String getBackgroundFile() {
+		return "backgrounds/" + background;
+	}
+
 	private void reload() {
 		// TODO: Level neu laden
 	}
@@ -117,7 +124,7 @@ public class Level extends World {
 	public void drawBackground(Graphics g) {
 		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
 				this.height / 2.0f), this.width, this.height), ResourceManager
-				.getInstance().getImage("backgrounds/" + background));
+				.getInstance().getImage(this.getBackgroundFile()));
 
 	}
 

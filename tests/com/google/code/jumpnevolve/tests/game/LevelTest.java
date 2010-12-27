@@ -12,7 +12,7 @@ public class LevelTest {
 		engine.setTargetFrameRate(100);
 
 		Level level = Levelloader
-				.asyncLoadLevel("resources/demo-levels/demo.txt");
+				.asyncLoadLevel("editor/levels/beispiel.txt");
 		engine.switchState(level);
 
 		engine.start();

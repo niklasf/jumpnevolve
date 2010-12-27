@@ -44,7 +44,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	private JTextField positionX = new JTextField("0"),
 			positionY = new JTextField("0");
 	private JTextField saveFileName = new JTextField("level.txt");
-	private int curPosX = 0, curPosY = 0, curHeight = 100, curWidth = 100;
+	private int curPosX = 0, curPosY = 0, curHeight = 100, curWidth = 100,
+			subareaWidth = 100;
 	private float curZoomX = 1, curZoomY = 1;
 	private JTextField levelWidth = new JTextField("1000"),
 			levelHeight = new JTextField("100"),
@@ -54,7 +55,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			levelZoomY = new JTextField("1");
 	private JTextField availableFigures = new JTextField(
 			"RollingBall,JumpingCross"), startFigure = new JTextField(
-			"RolllingBall"), playerPositionX = new JTextField("100"),
+			"RollingBall"), playerPositionX = new JTextField("100"),
 			playerPositionY = new JTextField("0"),
 			savePositions = new JTextField("0,100");
 	private int lastClickX, lastClickY;
@@ -177,12 +178,11 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 
 		levelPreview = new JPanel();
 		levelPreview.add(engine);
-		levelPreview.addMouseListener(this);
+		// levelPreview.addMouseListener(this);
 
 		previewLevel.setCamera(new EditorCamera(this));
-		previewLevel.add(new Ground(previewLevel, new Vector(20.0f, 20.0f),
-				new Vector(20.0f, 5.0f)));
 
+		engine.addMouseListener(this);
 		engine.switchState(this.previewLevel);
 		engine.requestFocus();
 
@@ -264,6 +264,18 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 		return (float) curZoomY;
 	}
 
+	public int getCurWidth() {
+		return curWidth;
+	}
+
+	public int getCurHeight() {
+		return curHeight;
+	}
+
+	public int getSubareaWidth() {
+		return subareaWidth;
+	}
+
 	private String getSettingsLine() {
 		return "Leveleinstellungen_" + this.levelZoomX.getText().trim() + ","
 				+ this.levelZoomY.getText().trim() + "_"
@@ -298,14 +310,15 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 	}
 
 	private void setCurrentSettings(ObjectSettings settings) {
-		currentSettings.removeAll();
-		currentSettings.add(settings);
+		this.currentSettings.removeAll();
+		this.pack();
+		this.currentSettings.add(settings);
 		this.pack();
 	}
 
 	private void updateSettingsList() {
 		objectsList.removeAllItems();
-		objectsList.addItem("0_Player");
+		objectsList.addItem("0-Player");
 		for (String name : objects.keySet()) {
 			objectsList.addItem(name);
 		}
@@ -336,7 +349,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 
 	@Override
 	public void mouseClicked(MouseEvent evt) {
-		if (evt.getSource().equals(levelPreview)) {
+		if (evt.getSource().equals(engine)) {
 			evt
 					.translatePoint(-(this.levelPreview.getWidth()
 							/ (int) this.curZoomX / 2 - this.curPosX),
@@ -374,21 +387,21 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			String gruppe = groupList.getSelectedItem().toString();
 			if (gruppe.equals("Landschaft")) {
 				neu = new ObjectSettings(this, groundList.getSelectedItem()
-						.toString(), nextObjectId + "_"
+						.toString(), nextObjectId + "-"
 						+ groundList.getSelectedItem().toString(), previewLevel);
 			} else if (gruppe.equals("Gegner")) {
 				neu = new ObjectSettings(this, enemyList.getSelectedItem()
-						.toString(), nextObjectId + "_"
+						.toString(), nextObjectId + "-"
 						+ enemyList.getSelectedItem().toString(), previewLevel);
 			} else if (gruppe.equals("Objekte")) {
 				neu = new ObjectSettings(this, objectList.getSelectedItem()
-						.toString(), nextObjectId + "_"
+						.toString(), nextObjectId + "-"
 						+ objectList.getSelectedItem().toString(), previewLevel);
 			}
 			if (neu != null) {
 				nextObjectId++;
 				objects.put(neu.getObjectName(), neu);
-				previewLevel.add(neu);
+				previewLevel.addSettings(neu);
 				this.updateSettingsList();
 				this.objectsList.setSelectedItem(neu.getObjectName());
 				this.setCurrentSettings(neu);
@@ -402,11 +415,13 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 			this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
 			this.curHeight = Integer
 					.parseInt(this.levelHeight.getText().trim());
+			this.subareaWidth = Integer.parseInt(this.levelSubareaWidth
+					.getText().trim());
 		} else if (command.equals("speichern")) {
 			String fileName = saveFileName.getText().trim();
 			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
 				try {
-					this.saveLevel(fileName);
+					this.saveLevel("editor/levels/" + fileName);
 				} catch (IOException e) {
 					// TODO Fehlermeldung ausgeben
 					e.printStackTrace();
@@ -429,7 +444,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener,
 				this.setObjectAuswahl(picked.toString());
 			} else if (source == objectsList) {
 				Object picked = evt.getItem();
-				if (picked.toString().equals("0_Player")) {
+				if (picked.toString().equals("0-Player")) {
 					this.currentSettings.removeAll();
 					this.currentSettings.add(this.playerSettings);
 					this.pack();
