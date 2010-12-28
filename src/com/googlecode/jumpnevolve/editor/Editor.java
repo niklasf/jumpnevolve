@@ -13,6 +13,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,6 +66,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 
 	public Editor() {
 		super("Editor");
+
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+				// FIXME: Beenden des Programms hier durchführe (Engine beenden
+				// etc.)
+			}
+		});
 
 		previewLevel = new EditorLevel(this);
 
