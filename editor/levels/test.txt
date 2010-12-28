@@ -1,0 +1,6 @@
+Leveldimensionen_1000_100_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_100|0_0,100
+Elevator_0|0_2-Elevator_none_2|10,20.0,0.0
+Soldier_0|0_1-Soldier_none_none
+Ground_0|0_3-Ground_none_2|10
