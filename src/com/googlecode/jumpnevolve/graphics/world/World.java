@@ -147,13 +147,13 @@ public class World extends AbstractState {
 			end = 0;
 		}
 
-		if (start > objectList.size()) {
+		if (start >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			start = objectList.size();
+			start = objectList.size() - 1;
 		}
-		if (end > objectList.size()) {
+		if (end >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			end = objectList.size();
+			end = objectList.size() - 1;
 		}
 		for (int i = start; i <= end; i++) {
 			this.objectList.get(i).add(object);
@@ -183,21 +183,21 @@ public class World extends AbstractState {
 			oldEnd = 0;
 		}
 
-		if (start > objectList.size()) {
+		if (start >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			start = objectList.size();
+			start = objectList.size() - 1;
 		}
-		if (oldStart > objectList.size()) {
+		if (oldStart >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			oldStart = objectList.size();
+			oldStart = objectList.size() - 1;
 		}
-		if (end > objectList.size()) {
+		if (end >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			end = objectList.size();
+			end = objectList.size() - 1;
 		}
-		if (oldEnd > objectList.size()) {
+		if (oldEnd >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			oldEnd = objectList.size();
+			oldEnd = objectList.size() - 1;
 		}
 		if (start < oldStart) {
 			for (int i = start; i < oldStart; i++) {
@@ -229,27 +229,24 @@ public class World extends AbstractState {
 		this.pollables.remove(object);
 		this.drawables.remove(object);
 		this.objects.remove(object);
-		int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
-		int end = (int) (object.getHorizontalEnd()) / this.subareaWidth;
-		if (start < 0) {
-			System.out.println("Korrektur 0" + object.getClass().getName());
-			start = 0;
-		}
-		if (end < 0) {
-			System.out.println("Korrektur 0" + object.getClass().getName());
-			end = 0;
-		}
-
-		if (start > objectList.size()) {
-			System.out.println("Korrektur high" + object.getClass().getName());
-			start = objectList.size();
-		}
-		if (end > objectList.size()) {
-			System.out.println("Korrektur high" + object.getClass().getName());
-			end = objectList.size();
-		}
-		for (int i = start; i <= end; i++) {
-			this.objectList.get(i).remove(object);
+		/*
+		 * int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
+		 * int end = (int) (object.getHorizontalEnd()) / this.subareaWidth; if
+		 * (start < 0) { System.out.println("Korrektur 0" +
+		 * object.getClass().getName()); start = 0; } if (end < 0) {
+		 * System.out.println("Korrektur 0" + object.getClass().getName()); end
+		 * = 0; }
+		 * 
+		 * if (start > objectList.size()) { System.out.println("Korrektur high"
+		 * + object.getClass().getName()); start = objectList.size(); } if (end
+		 * > objectList.size()) { System.out.println("Korrektur high" +
+		 * object.getClass().getName()); end = objectList.size(); } for (int i =
+		 * start; i <= end; i++) { this.objectList.get(i).remove(object); }
+		 */
+		for (int i = 0; i < this.objectList.size(); i++) {
+			while (this.objectList.get(i).contains(object)) {
+				this.objectList.get(i).remove(object);
+			}
 		}
 	}
 
@@ -266,13 +263,13 @@ public class World extends AbstractState {
 			end = 0;
 		}
 
-		if (start > objectList.size()) {
+		if (start >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			start = objectList.size();
+			start = objectList.size() - 1;
 		}
-		if (end > objectList.size()) {
+		if (end >= objectList.size()) {
 			System.out.println("Korrektur high" + object.getClass().getName());
-			end = objectList.size();
+			end = objectList.size() - 1;
 		}
 		ArrayList<LinkedList<AbstractObject>> returns = new ArrayList<LinkedList<AbstractObject>>();
 		for (int i = start; i <= end; i++) {

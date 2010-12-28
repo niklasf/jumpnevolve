@@ -175,7 +175,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 
 		currentSettings = new JPanel();
 
-		engine.setPreferredSize(new Dimension(600, 400));
+		engine.setPreferredSize(new Dimension(1200, 800));
 
 		levelPreview = new JPanel();
 		levelPreview.add(engine);
@@ -215,6 +215,11 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.pack();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.updateSettingsList();
+
+		this.positionX.setText("" + engine.getPreferredSize().width / 2);
+		this.positionY.setText("" + engine.getPreferredSize().height / 2);
+		this.curPosX = engine.getPreferredSize().width / 2;
+		this.curPosY = engine.getPreferredSize().height / 2;
 
 		engine.setTargetFrameRate(60);
 		engine.start();

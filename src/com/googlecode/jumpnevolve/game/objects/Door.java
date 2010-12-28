@@ -79,7 +79,9 @@ public class Door extends ObjectTemplate {
 	}
 
 	public void draw(Graphics g) {
-		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
-				.getImage("textures/wood.png"), false);
+		if (opneningState == false) {
+			GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
+					.getImage("textures/wood.png"), false);
+		}
 	}
 }

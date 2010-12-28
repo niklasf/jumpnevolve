@@ -1,8 +1,11 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.player.PlayerFigure;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
@@ -79,5 +82,8 @@ public class Button extends ActivatingObject {
 		}
 	}
 
-	// TODO: draw-Methode einfügen
+	public void draw(Graphics g) {
+		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
+				.getImage("textures/aluminium.png"), true);
+	}
 }
