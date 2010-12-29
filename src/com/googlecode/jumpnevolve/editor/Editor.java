@@ -474,15 +474,20 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.waitFor = forWhat;
 	}
 
-	public void mouseClicked(float x, float y) {
+	public Vector translateMouseClick(float x, float y) {
 		x = x - (float) this.engine.getWidth() / 2;
 		y = y - (float) this.engine.getHeight() / 2;
 		x = x / this.curZoomX;
 		y = y / this.curZoomY;
 		x = x + this.curPosX;
 		y = y + this.curPosY;
-		this.lastClickX = x;
-		this.lastClickY = y;
+		return new Vector(x, y);
+	}
+
+	public void mouseClicked(float x, float y) {
+		Vector vec = this.translateMouseClick(x, y);
+		this.lastClickX = vec.x;
+		this.lastClickY = vec.y;
 		this.newMouseClickPerformed();
 	}
 

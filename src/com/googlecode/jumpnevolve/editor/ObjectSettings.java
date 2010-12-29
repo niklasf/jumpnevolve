@@ -33,6 +33,7 @@ public class ObjectSettings extends JPanel {
 	private GridBagLayout layout = new GridBagLayout();
 	private Arguments argumentPanel;
 	private static int NextID;
+	private final Editor parent;
 
 	/**
 	 * Erstellt ein ObjectSettings-Objekt aus entsprechend einer Datenzeile
@@ -81,6 +82,7 @@ public class ObjectSettings extends JPanel {
 			World editorWorld) {
 		super();
 		this.setLayout(layout);
+		this.parent = parent;
 		GridBagConstraints constraints = new GridBagConstraints();
 
 		if (objectName.equals("none") == false) {
@@ -286,5 +288,68 @@ public class ObjectSettings extends JPanel {
 	public void setPosition(float x, float y) {
 		this.positionX.setText("" + x);
 		this.positionY.setText("" + y);
+	}
+
+	public void setDimension(float x, float y) {
+		if (this.isPullUpAble()) {
+			String act = this.argumentPanel.getArguments();
+			int index = act.indexOf(",");
+			if (index != -1) {
+				act = act.substring(index);
+			} else {
+				act = "";
+			}
+			act = x + "|" + y + act;
+			this.argumentPanel.setArguments(act);
+		}
+	}
+
+	public boolean isMoveSelectedWithMouse(int x, int y, boolean translated) {
+		Vector vec;
+		if (translated) {
+			vec = new Vector(x, y);
+		} else {
+			vec = this.parent.translateMouseClick(x, y);
+		}
+		Vector pos = this.getObjectPosition();
+		return isPointNearPosition(vec, pos, 10.0f);
+	}
+
+	public boolean isPullUpSelectedWithMouse(int x, int y, boolean translated) {
+		if (this.isPullUpAble()) {
+			Vector vec;
+			if (translated) {
+				vec = new Vector(x, y);
+			} else {
+				vec = this.parent.translateMouseClick(x, y);
+			}
+			Vector pos = this.getObjectPosition();
+			Vector dim = Vector.parseVector(this.getObjectAttributes().split(
+					",")[0]);
+			// Zurückgeben, ob eine der Ecken angewählt wurde
+			/*
+			 * return isPointNearPosition(vec, pos.modifyX(pos.x +
+			 * dim.x).modifyY( pos.y + dim.y), 10.0f) ||
+			 * isPointNearPosition(vec, pos.modifyX(pos.x + dim.x)
+			 * .modifyY(pos.y - dim.y), 10.0f) || isPointNearPosition(vec,
+			 * pos.modifyX(pos.x - dim.x) .modifyY(pos.y + dim.y), 10.0f) ||
+			 * isPointNearPosition(vec, pos.modifyX(pos.x - dim.x)
+			 * .modifyY(pos.y - dim.y), 10.0f);
+			 */
+			return isPointNearPosition(vec, pos.add(dim), 10.0f);
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isPullUpAble() {
+		return this.className.equals("Ground")
+				|| this.className.equals("Elevator")
+				|| this.className.equals("Door");
+	}
+
+	private boolean isPointNearPosition(Vector point, Vector other,
+			float distance) {
+		return point.sub(other).abs() <= distance;
 	}
 }

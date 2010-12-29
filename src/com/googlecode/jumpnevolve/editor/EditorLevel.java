@@ -24,7 +24,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class EditorLevel extends Level {
 
+	private static final int MOVE = 1;
+	private static final int PULL_UP = 2;
+	private static final int NOT_IDENTIFIED = 0;
+
 	private ArrayList<ObjectSettings> settingsList = new ArrayList<ObjectSettings>();
+	private ObjectSettings selected;
+	private int selectMode;
 
 	private final Editor parent;
 
@@ -53,6 +59,66 @@ public class EditorLevel extends Level {
 	@Override
 	public void poll(Input input, float secounds) {
 		// Nichts tun
+		if (this.selected != null && this.selectMode != NOT_IDENTIFIED) {
+			if (this.selectMode == MOVE) {
+				Vector mousePos = this.parent.translateMouseClick(input
+						.getMouseX(), input.getMouseY());
+				this.selected.setPosition(mousePos.x, mousePos.y);
+			} else if (this.selectMode == PULL_UP) {
+				Vector mousePos = this.parent.translateMouseClick(input
+						.getMouseX(), input.getMouseY());
+				Vector pos = this.selected.getObjectPosition();
+				Vector vec = mousePos.sub(pos);
+				System.out.println("Pull-Up W:" + vec.x + " H: " + vec.y);
+				this.selected.setDimension(vec.x, vec.y);
+			}
+		}
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			ArrayList<ObjectSettings> abbild = settingsList;
+			if (this.selected != null && this.selectMode != NOT_IDENTIFIED) {
+				if (this.selectMode == MOVE) {
+					if (this.selected.isMoveSelectedWithMouse(
+							input.getMouseX(), input.getMouseY(), false) == false) {
+						this.selected = null;
+						this.selectMode = NOT_IDENTIFIED;
+					}
+				} else if (this.selectMode == PULL_UP) {
+					if (this.selected.isPullUpSelectedWithMouse(input
+							.getMouseX(), input.getMouseY(), false) == false) {
+						this.selected = null;
+						this.selectMode = NOT_IDENTIFIED;
+					}
+				}
+			} else {
+				this.selected = null;
+				this.selectMode = NOT_IDENTIFIED;
+			}
+			if (this.selected == null) {
+				for (ObjectSettings obj : abbild) {
+					if (obj.isMoveSelectedWithMouse(input.getMouseX(), input
+							.getMouseY(), false)) {
+						if (this.selected == null) {
+							this.selected = obj;
+							this.selectMode = MOVE;
+						} else {
+							this.selectMode = NOT_IDENTIFIED;
+						}
+					}
+					if (obj.isPullUpSelectedWithMouse(input.getMouseX(), input
+							.getMouseY(), false)) {
+						if (this.selected == null) {
+							this.selected = obj;
+							this.selectMode = PULL_UP;
+						} else {
+							this.selectMode = NOT_IDENTIFIED;
+						}
+					}
+				}
+			}
+		} else {
+			this.selected = null;
+			this.selectMode = NOT_IDENTIFIED;
+		}
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			this.parent.mouseClicked(input.getMouseX(), input.getMouseY());
 		}
@@ -74,6 +140,8 @@ public class EditorLevel extends Level {
 		ArrayList<ObjectSettings> abbild = settingsList;
 		for (ObjectSettings obj : abbild) {
 			obj.getObject().draw(g);
+		}
+		for (ObjectSettings obj : abbild) {
 			GraphicUtils.markPosition(g, obj.getObjectPosition(), 5);
 			GraphicUtils
 					.string(g, obj.getObjectPosition(), obj.getObjectName());
