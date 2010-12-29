@@ -32,15 +32,63 @@ public class ObjectSettings extends JPanel {
 	private final World editorWorld;
 	private GridBagLayout layout = new GridBagLayout();
 	private Arguments argumentPanel;
+	private static int NextID;
 
+	/**
+	 * Erstellt ein ObjectSettings-Objekt aus entsprechend einer Datenzeile
+	 * einer Leveldatei
+	 * 
+	 * @param parent
+	 *            Der Editor, dem dieses Objekt zugeordnet ist
+	 * @param editorWorld
+	 *            Die Welt, der das AbstractObject, welches durch dieses Objekt
+	 *            erzeugt werden kann zugeordnet wird
+	 * @param dataLine
+	 *            Die Datenzeile aus einer Leveldatei, aus der die Daten
+	 *            entnommen werden sollen
+	 */
+	public ObjectSettings(Editor parent, World editorWorld, String dataLine) {
+		this(parent, dataLine.split("_")[0], dataLine.split("_")[2],
+				editorWorld);
+		this.positionX.setText(Vector.parseVector(dataLine.split("_")[1]).x
+				+ "");
+		this.positionY.setText(Vector.parseVector(dataLine.split("_")[1]).y
+				+ "");
+		this.activatings.setText(dataLine.split("_")[3]);
+		if (dataLine.split("_")[4].equals("none") == false) {
+			this.argumentPanel.setArguments(dataLine.split("_")[4]);
+		}
+	}
+
+	/**
+	 * Erzeugt ein neues ObjectSettings-Objekt
+	 * 
+	 * @param parent
+	 *            Der Editor, dem dieses Objekt zugeordnet ist
+	 * @param className
+	 *            Der Name der Klasse des Objekt, welches durch dieses
+	 *            ObjectSettings repräsentiert wird
+	 * @param objectName
+	 *            Der Name des Objekts für den Editor, die Leveldatei und andere
+	 *            Objekte, die dieses Objekt aktivieren sollen --> wird dieser
+	 *            mit "none" übergeben so wird objectName className plus eine ID
+	 *            (Ergebnis: "className-ID") zugeordnet
+	 * @param editorWorld
+	 *            Die Welt, der das AbstractObject, welches durch dieses Objekt
+	 *            erzeugt werden kann zugeordnet wird
+	 */
 	public ObjectSettings(Editor parent, String className, String objectName,
 			World editorWorld) {
 		super();
 		this.setLayout(layout);
 		GridBagConstraints constraints = new GridBagConstraints();
 
+		if (objectName.equals("none") == false) {
+			this.objectName = objectName;
+		} else {
+			this.objectName = className + "-" + this.getNextWrongID();
+		}
 		this.className = className;
-		this.objectName = objectName;
 		this.editorWorld = editorWorld;
 		JButton posButton = new JButton("Position auswählen");
 		posButton.setActionCommand("Position");
@@ -70,6 +118,11 @@ public class ObjectSettings extends JPanel {
 		this.initialize();
 	}
 
+	private int getNextWrongID() {
+		NextID++;
+		return NextID - 1;
+	}
+
 	private void initialize() {
 		this.argumentPanel = new Arguments();
 		if (this.className.equals("WalkingSoldier")) {
@@ -86,7 +139,6 @@ public class ObjectSettings extends JPanel {
 			this.activatings.setEditable(false);
 		} else if (this.className.equals("Button")) {
 			this.activatings.setText("none");
-			this.activatings.setEditable(false);
 			String[] arg1 = { "Active Time" };
 			char[] arg2 = new char[0];
 			String[] arg3 = { "10.0" };
@@ -123,6 +175,21 @@ public class ObjectSettings extends JPanel {
 
 	}
 
+	private void buildConstraints(GridBagConstraints gbc, int gx, int gy,
+			int gw, int gh) {
+		gbc.gridx = gx;
+		gbc.gridy = gy;
+		gbc.gridwidth = gw;
+		gbc.gridheight = gh;
+		gbc.weightx = 0;
+		gbc.weighty = 0;
+		gbc.ipadx = 5;
+	}
+
+	/**
+	 * @return Ein AbstractObject mit den Eigenschaften, die in diesem
+	 *         ObjectSettings festgelegt wurden
+	 */
 	public AbstractObject getObject() {
 		// TODO: parseFloat und parseVector ändern
 		AbstractObject object = null;
@@ -172,40 +239,52 @@ public class ObjectSettings extends JPanel {
 				+ this.getObjectAttributes();
 	}
 
+	/**
+	 * @return Der Name der Klasse des Objekts
+	 */
 	public String getObjectClassName() {
 		return this.className;
 	}
 
+	/**
+	 * @return Der Name des Objekts
+	 */
 	public String getObjectName() {
 		return this.objectName;
 	}
 
+	/**
+	 * @return Die Namen der Objekte, die durch dieses Objekt aktiviert werden
+	 */
 	public String getObjectsActivatings() {
 		return this.activatings.getText().trim();
 	}
 
+	/**
+	 * @return Die Position des Objekts
+	 */
 	public Vector getObjectPosition() {
 		return Vector.parseVector(this.positionX.getText().trim() + "|"
 				+ this.positionY.getText().trim());
 	}
 
+	/**
+	 * @return Die zusätzlichen Attribute des Objekts
+	 */
 	public String getObjectAttributes() {
 		return this.argumentPanel.getArguments();
 	}
 
+	/**
+	 * Ändert die Position des Objekts
+	 * 
+	 * @param x
+	 *            Die X-Koordinate
+	 * @param y
+	 *            Die Y-Koordinate
+	 */
 	public void setPosition(float x, float y) {
 		this.positionX.setText("" + x);
 		this.positionY.setText("" + y);
-	}
-
-	private void buildConstraints(GridBagConstraints gbc, int gx, int gy,
-			int gw, int gh) {
-		gbc.gridx = gx;
-		gbc.gridy = gy;
-		gbc.gridwidth = gw;
-		gbc.gridheight = gh;
-		gbc.weightx = 0;
-		gbc.weighty = 0;
-		gbc.ipadx = 5;
 	}
 }

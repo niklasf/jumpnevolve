@@ -74,8 +74,17 @@ public class EditorLevel extends Level {
 		ArrayList<ObjectSettings> abbild = settingsList;
 		for (ObjectSettings obj : abbild) {
 			obj.getObject().draw(g);
+			GraphicUtils.markPosition(g, obj.getObjectPosition(), 5);
+			GraphicUtils
+					.string(g, obj.getObjectPosition(), obj.getObjectName());
 		}
 		// Spieler zeichnen
 		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
+		GraphicUtils.markPosition(g, parent.getPlayerPosition(), 5);
+		GraphicUtils.string(g, parent.getPlayerPosition(), "0000-Player");
+	}
+
+	public void clearSettings() {
+		this.settingsList.clear();
 	}
 }

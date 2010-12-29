@@ -15,7 +15,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -45,7 +47,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 									 */
 	private JTextField positionX = new JTextField("0"),
 			positionY = new JTextField("0");
-	private JTextField saveFileName = new JTextField("level.txt");
+	private JTextField saveFileName = new JTextField("level.txt"),
+			loadFileName = new JTextField("level.txt");
 	private int curPosX = 0, curPosY = 0, curHeight = 100, curWidth = 100,
 			subareaWidth = 100;
 	private float curZoomX = 1, curZoomY = 1;
@@ -170,14 +173,22 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		levelSettings.add(anwenden);
 		levelSettings.add(new JLabel(""));
 
-		generalThings = new JPanel(new GridLayout(2, 2));
-		JButton save = new JButton("Level Speichern");
+		generalThings = new JPanel(new GridLayout(4, 2));
+		JButton save = new JButton("Level speichern");
 		save.setActionCommand("Speichern");
 		save.addActionListener(this);
 		generalThings.add(new JLabel("Speichern unter:"));
 		generalThings.add(saveFileName);
-		generalThings.add(new JLabel());
+		generalThings.add(new JLabel(""));
 		generalThings.add(save);
+
+		JButton load = new JButton("Level laden");
+		load.setActionCommand("Laden");
+		load.addActionListener(this);
+		generalThings.add(new JLabel("Level laden aus:"));
+		generalThings.add(loadFileName);
+		generalThings.add(new JLabel(""));
+		generalThings.add(load);
 
 		settingsAuswahl = new JPanel(new GridLayout(2, 1));
 		settingsAuswahl.add(new JLabel("Vorhandene Objekte"));
@@ -233,6 +244,83 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 
 		engine.setTargetFrameRate(60);
 		engine.start();
+	}
+
+	public void loadLevel(String path) throws IOException {
+		BufferedReader levelFile = new BufferedReader(new FileReader(path));
+		// Die ersten drei Zeilen laden
+		String dimensionsLine = levelFile.readLine();
+		String settingsLine = levelFile.readLine();
+		String playerLine = levelFile.readLine();
+		String[] dimensionsLineSplit = dimensionsLine.split("_");
+		String[] settingsLineSplit = settingsLine.split("_");
+		String[] playerLineSplit = playerLine.split("_");
+		// Grundeinstellungen vornehmen
+		if (dimensionsLineSplit[0].equals("Leveldimensionen")
+				&& settingsLineSplit[0].equals("Leveleinstellungen")
+				&& playerLineSplit[0].equals("Player")
+				&& dimensionsLineSplit.length == 4
+				&& settingsLineSplit.length == 4 && playerLineSplit.length == 5) {
+			// Dimensionsline verarbeiten
+			this.levelWidth.setText(dimensionsLineSplit[1]);
+			this.levelHeight.setText(dimensionsLineSplit[2]);
+			this.levelSubareaWidth.setText(dimensionsLineSplit[3]);
+			// Settingsline verarbeiten
+			String[] zoom = settingsLineSplit[1].split(",");
+			if (zoom.length == 1) {
+				this.levelZoomX.setText(zoom[0]);
+				this.levelZoomY.setText(zoom[0]);
+			} else if (zoom.length == 2) {
+				this.levelZoomX.setText(zoom[0]);
+				this.levelZoomY.setText(zoom[1]);
+			} else {
+				throw new IOException(
+						"Fehler im Aufbau der Leveldatei (Fehler bei Zoom)");
+			}
+			this.levelTime.setText(settingsLineSplit[2]);
+			this.background.setText(settingsLineSplit[3]);
+			// Playerline verarbeiten
+			this.startFigure.setText(playerLineSplit[1]);
+			this.availableFigures.setText(playerLineSplit[2]);
+			this.playerPositionX.setText(""
+					+ Vector.parseVector(playerLineSplit[3]).x);
+			this.playerPositionY.setText(""
+					+ Vector.parseVector(playerLineSplit[3]).y);
+			this.savePositions.setText(playerLineSplit[4]);
+		} else {
+			throw new IOException(
+					"Fehler im Aufbau der Leveldatei (In den ersten drei Zeilen)");
+		}
+		// Alle Objekte löschen
+		this.objects.clear();
+		this.previewLevel.clearSettings();
+		// Objekte laden
+		int highestID = 0;
+		String current = levelFile.readLine();
+		while (current != null) {
+			System.out.println("Lade Objekt: " + current);
+			if (current.split("_").length != 5) {
+				throw new IOException(
+						"Fehler im Aufbau der Leveldatei (Objektzeile: "
+								+ current + " )");
+			} else {
+				ObjectSettings cur = new ObjectSettings(this,
+						this.previewLevel, current);
+				try {
+					int id = Integer
+							.parseInt(cur.getObjectName().split("-")[0]);
+					if (id > highestID) {
+						highestID = id;
+					}
+				} catch (NumberFormatException e) {
+				}
+				this.addObject(cur);
+
+			}
+			current = levelFile.readLine();
+		}
+		this.nextObjectId = highestID++;
+		this.updateLevelSettings();
 	}
 
 	public void saveLevel(String path) throws IOException {
@@ -291,6 +379,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		return subareaWidth;
 	}
 
+	private void addObject(ObjectSettings settings) {
+		objects.put(settings.getObjectName(), settings);
+		previewLevel.addSettings(settings);
+		this.updateSettingsList();
+		this.objectsList.setSelectedItem(settings.getObjectName());
+		this.setCurrentSettings(settings);
+	}
+
 	private String getSettingsLine() {
 		return "Leveleinstellungen_" + this.levelZoomX.getText().trim() + ","
 				+ this.levelZoomY.getText().trim() + "_"
@@ -333,10 +429,23 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 
 	private void updateSettingsList() {
 		objectsList.removeAllItems();
-		objectsList.addItem("0-Player");
-		for (String name : objects.keySet()) {
-			objectsList.addItem(name);
+		objectsList.addItem("0000-Player");
+		Object[] set = objects.keySet().toArray();
+		java.util.Arrays.sort(set);
+		for (Object name : set) {
+			objectsList.addItem(name.toString());
 		}
+	}
+
+	private void updateLevelSettings() {
+		this.curPosX = Integer.parseInt(this.positionX.getText().trim());
+		this.curPosY = Integer.parseInt(this.positionY.getText().trim());
+		this.curZoomX = Float.parseFloat(this.levelZoomX.getText().trim());
+		this.curZoomY = Float.parseFloat(this.levelZoomY.getText().trim());
+		this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
+		this.curHeight = Integer.parseInt(this.levelHeight.getText().trim());
+		this.subareaWidth = Integer.parseInt(this.levelSubareaWidth.getText()
+				.trim());
 	}
 
 	private void buildConstraints(GridBagConstraints gbc, int gx, int gy,
@@ -383,38 +492,36 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		if (command.equals("new_object")) {
 			ObjectSettings neu = null;
 			String gruppe = groupList.getSelectedItem().toString();
+			String id = "";
+			if (nextObjectId < 10) {
+				id = id + "000" + nextObjectId;
+			} else if (nextObjectId < 100) {
+				id = id + "00" + nextObjectId;
+			} else if (nextObjectId < 1000) {
+				id = id + "0" + nextObjectId;
+			} else {
+				id = id + nextObjectId;
+			}
 			if (gruppe.equals("Landschaft")) {
 				neu = new ObjectSettings(this, groundList.getSelectedItem()
-						.toString(), nextObjectId + "-"
+						.toString(), id + "-"
 						+ groundList.getSelectedItem().toString(), previewLevel);
 			} else if (gruppe.equals("Gegner")) {
 				neu = new ObjectSettings(this, enemyList.getSelectedItem()
-						.toString(), nextObjectId + "-"
+						.toString(), id + "-"
 						+ enemyList.getSelectedItem().toString(), previewLevel);
 			} else if (gruppe.equals("Objekte")) {
 				neu = new ObjectSettings(this, objectList.getSelectedItem()
-						.toString(), nextObjectId + "-"
+						.toString(), id + "-"
 						+ objectList.getSelectedItem().toString(), previewLevel);
 			}
 			if (neu != null) {
 				nextObjectId++;
-				objects.put(neu.getObjectName(), neu);
-				previewLevel.addSettings(neu);
-				this.updateSettingsList();
-				this.objectsList.setSelectedItem(neu.getObjectName());
-				this.setCurrentSettings(neu);
+				this.addObject(neu);
 			}
 			this.waitForMouseClick("Position");
 		} else if (command.equals("leveleinstellungen")) {
-			this.curPosX = Integer.parseInt(this.positionX.getText().trim());
-			this.curPosY = Integer.parseInt(this.positionY.getText().trim());
-			this.curZoomX = Float.parseFloat(this.levelZoomX.getText().trim());
-			this.curZoomY = Float.parseFloat(this.levelZoomY.getText().trim());
-			this.curWidth = Integer.parseInt(this.levelWidth.getText().trim());
-			this.curHeight = Integer
-					.parseInt(this.levelHeight.getText().trim());
-			this.subareaWidth = Integer.parseInt(this.levelSubareaWidth
-					.getText().trim());
+			this.updateLevelSettings();
 		} else if (command.equals("speichern")) {
 			String fileName = saveFileName.getText().trim();
 			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
@@ -425,11 +532,22 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 					e.printStackTrace();
 				}
 			} else {
-				// TODO: Fehlermeldung ausgeben --> Fehlerhafter Name zum
-				// speichern
+				System.out
+						.println("Falscher Dateiname zum Speichern des Levels");
 			}
 		} else if (command.equals("position")) {
 			this.waitForMouseClick("Position");
+		} else if (command.equals("laden")) {
+			String fileName = loadFileName.getText().trim();
+			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
+				try {
+					this.loadLevel("editor/levels/" + fileName);
+				} catch (IOException e) {
+					System.out.println("Fehler beim Laden des Levels:\n" + e);
+				}
+			} else {
+				System.out.println("Falscher Dateiname zum Laden des Levels");
+			}
 		}
 	}
 
@@ -442,7 +560,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 				this.setObjectAuswahl(picked.toString());
 			} else if (source == objectsList) {
 				Object picked = evt.getItem();
-				if (picked.toString().equals("0-Player")) {
+				if (picked.toString().equals("0000-Player")) {
 					this.currentSettings.removeAll();
 					this.currentSettings.add(this.playerSettings);
 					this.pack();

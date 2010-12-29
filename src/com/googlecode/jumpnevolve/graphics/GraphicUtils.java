@@ -134,4 +134,22 @@ public class GraphicUtils {
 				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
 				image.getHeight());
 	}
+
+	/**
+	 * Markiert eine Position durch ein Kreuz
+	 * 
+	 * @param g
+	 *            Der Grafikkontext
+	 * @param position
+	 *            Die Position, die markiert werden soll
+	 * @param distance
+	 *            Die Größe des Kreuzes, mit dem die Position markiert wird
+	 *            (Länge des Kreuzes vom Zentrum in alle Richtungen)
+	 */
+	public static void markPosition(Graphics g, Vector position, float distance) {
+		g.drawLine(position.x - distance, position.y, position.x + distance,
+				position.y);
+		g.drawLine(position.x, position.y - distance, position.x, position.y
+				+ distance);
+	}
 }
