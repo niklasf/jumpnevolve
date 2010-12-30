@@ -44,7 +44,7 @@ public class Player implements Pollable {
 		setFigures(avaiableFigures, startFigure);
 		this.parent.add(this.figure);
 		if (cameraOnPlayer) {
-			this.parent.setCamera(new ObjectFocusingCamera(this.figure));
+			this.parent.setCamera(new LimitedObjectFocusingCamera(this.figure));
 		}
 		// TODO: GUI initialisieren (addFunction())
 		// TODO: savePositions verarbeiten
