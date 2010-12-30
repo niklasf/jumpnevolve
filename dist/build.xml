@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="Build" name="Build the project for distribution" basedir="../">
-    
+<project default="Build" name="Build the project for distribution"
+	basedir="../">
+
 	<property name="distfile" value="jumpnevolve-pre-alpha-1.jar" />
-	
+
 	<target name="Build">
-    	
+
 		<!-- Alte Build-Dateien löschen -->
 		<delete>
-    		<fileset dir="bin" />
-    	</delete>
-    	
+			<fileset dir="bin" />
+		</delete>
+
 		<!-- Den Ordner src kompilieren -->
-    	<javac srcdir="src" destdir="bin">
-    		<classpath>
-    			<pathelement path="lib/slick/slick.jar" />
-    			<pathelement path="lib/lwjgl/lwjgl.jar" />
-    			<pathelement path="lib/phys2d/phys2d-060408.jar" />
-    		</classpath>
-    	</javac>
+		<javac srcdir="src" destdir="bin">
+			<classpath>
+				<pathelement path="lib/slick/slick.jar" />
+				<pathelement path="lib/lwjgl/lwjgl.jar" />
+				<pathelement path="lib/phys2d/phys2d-060408.jar" />
+			</classpath>
+		</javac>
 
 		<!-- Archiv packen -->
-    	<jar destfile="dist/${distfile}" filesetmanifest="mergewithoutmain" compress="true">
-            
-    		<!-- Manifest mit SplashScreen -->
-    		<manifest>
-                <attribute name="Main-Class" value="com.googlecode.jumpnevolve.game.JumpnevolveLauncher"/>
-                <attribute name="Class-Path" value="."/>
-            	<attribute name="SplashScreen-Image" value="cover.png" />	
-            </manifest>
-    		
-    		<!-- Lizenzen -->
-    		<metainf dir=".">
-    			<include name="license.txt" />
-    		</metainf>
-    		<metainf dir="lib/slick">
-    			<include name="slick-license.txt" />
-    		</metainf>
-    		<metainf dir="lib/phys2d">
-    			<include name="phys2d-license.txt" />
-    		</metainf>
-    		<metainf dir="lib/lwjgl">
-    			<include name="lwjgl-license.txt" />
-    		</metainf>
-        	
-    		<!-- Programm -->
-        	<fileset dir="bin" />
-    		<fileset dir="resources" />
-            
-    		<!-- Native Bibliotheken -->
-    		<fileset dir="lib/lwjgl/bin" />
-    		
+		<jar destfile="dist/${distfile}" filesetmanifest="mergewithoutmain"
+			compress="true">
 
-    		
-    		<!-- Java Bibliotheken -->
-        	<zipfileset excludes="META-INF/*.SF" src="lib/slick/slick.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/lwjgl/lwjgl.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="lib/phys2d/phys2d-060408.jar"/>
-        </jar>
-    </target>
+			<!-- Manifest mit SplashScreen -->
+			<manifest>
+				<attribute name="Main-Class"
+					value="com.googlecode.jumpnevolve.game.JumpnevolveLauncher" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="SplashScreen-Image" value="cover.png" />
+			</manifest>
+
+			<!-- Lizenzen -->
+			<metainf dir=".">
+				<include name="license.txt" />
+			</metainf>
+			<metainf dir="lib/slick">
+				<include name="slick-license.txt" />
+			</metainf>
+			<metainf dir="lib/phys2d">
+				<include name="phys2d-license.txt" />
+			</metainf>
+			<metainf dir="lib/lwjgl">
+				<include name="lwjgl-license.txt" />
+			</metainf>
+
+			<!-- Programm -->
+			<fileset dir="bin" />
+			<fileset dir="resources" />
+
+			<!-- Native Bibliotheken -->
+			<fileset dir="lib/lwjgl/bin" />
+
+
+
+			<!-- Java Bibliotheken -->
+			<zipfileset excludes="META-INF/*.SF" src="lib/slick/slick.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/lwjgl/lwjgl.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/phys2d/phys2d-060408.jar" />
+		</jar>
+	</target>
 </project>

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
@@ -27,11 +28,13 @@ public class EditorLevel extends Level {
 
 	private static final int MOVE = 1;
 	private static final int PULL_UP = 2;
+	private static final int CAMERA = 3;
 	private static final int NOT_IDENTIFIED = 0;
 
 	private ArrayList<ObjectSettings> settingsList = new ArrayList<ObjectSettings>();
 	private ObjectSettings selected;
-	private int selectMode;
+	private int selectMode = NOT_IDENTIFIED;
+	private Vector oldCameraPos, oldClick;
 
 	private final Editor parent;
 
@@ -51,6 +54,11 @@ public class EditorLevel extends Level {
 		if (settingsList.contains(obj) == false) {
 			settingsList.add(obj);
 		}
+	}
+
+	public void addSettingsButton(String className, Image icon) {
+		// Buttons erstellen, die es dem Benutzer ermöglichen, direkt in der
+		// Engine Objekte zu erstellen
 	}
 
 	public void remove(ObjectSettings obj) {
@@ -123,12 +131,61 @@ public class EditorLevel extends Level {
 					}
 				}
 			}
+			if (this.selected == null) {
+				for (ObjectSettings obj : abbild) {
+					if (obj.getObject().getShape().isPointInThis(
+							this.parent.translateMouseClick(input.getMouseX(),
+									input.getMouseY()))) {
+						if (this.selected == null) {
+							this.selected = obj;
+							this.selectMode = NOT_IDENTIFIED;
+						} else {
+							this.selectMode = NOT_IDENTIFIED;
+						}
+					}
+				}
+			}
+			if (this.selected == null) {
+				Vector MousePos = new Vector(input.getMouseX(), input
+						.getMouseY());
+				if (this.oldClick == null) {
+					this.oldClick = MousePos;
+				}
+				this.selectMode = CAMERA;
+				Vector dif = MousePos.sub(oldClick);
+				dif = dif.modifyX(dif.x / this.parent.getZoomX());
+				dif = dif.modifyY(dif.y / this.parent.getZoomY());
+				this.parent.setCameraPosition(this.oldCameraPos.sub(dif));
+			}
 		} else {
 			this.selected = null;
 			this.selectMode = NOT_IDENTIFIED;
+			this.oldCameraPos = this.getCamera().getPosition();
+			this.oldClick = null;
 		}
+		// TODO: selectMode = CAMERA einbauen
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			this.parent.mouseClicked(input.getMouseX(), input.getMouseY());
+		}
+		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+			Vector pos = this.parent.translateMouseClick(input.getMouseX(),
+					input.getMouseY());
+			ArrayList<ObjectSettings> abbild = settingsList;
+			ObjectSettings select = null;
+			boolean onlyOne = false;
+			for (ObjectSettings obj : abbild) {
+				if (obj.getObject().getShape().isPointInThis(pos)) {
+					if (select == null) {
+						select = obj;
+						onlyOne = true;
+					} else {
+						onlyOne = false;
+					}
+				}
+			}
+			if (select != null && onlyOne == true) {
+				this.parent.setCurrentSettings(select);
+			}
 		}
 	}
 

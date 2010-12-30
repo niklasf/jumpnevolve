@@ -145,25 +145,26 @@ public class Levelloader {
 					// TODO: Weitere Klassen einfügen
 					// Aktivierenden Objekten, die zu aktivierenden Objekt
 					// übergeben
-					for (int i = 0; i < activatingObjects.size(); i++) {
-						for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
-							activatingObjects.get(i).addObjectsToActivate(
-									activableObjects.get(argumtensForActivating
-											.get(i)[j]));
-						}
-					}
-					// Einfügen der Objekte in das Level
-					for (AbstractObject object : activatingObjects) {
-						this.level.add(object);
-					}
-					for (AbstractObject object : otherObjects) {
-						this.level.add(object);
-					}
-					for (AbstractObject object : activableObjects.values()) {
-						this.level.add(object);
-					}
 					current = levelFileReader.readLine();
 				}
+				for (int i = 0; i < activatingObjects.size(); i++) {
+					for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
+						activatingObjects.get(i).addObjectsToActivate(
+								activableObjects.get(argumtensForActivating
+										.get(i)[j]));
+					}
+				}
+				// Einfügen der Objekte in das Level
+				for (AbstractObject object : activatingObjects) {
+					this.level.add(object);
+				}
+				for (AbstractObject object : otherObjects) {
+					this.level.add(object);
+				}
+				for (AbstractObject object : activableObjects.values()) {
+					this.level.add(object);
+				}
+
 			} else if (this.source.toLowerCase().endsWith(".dat")) {
 
 				// Speicherung laden --> Level-Objekt

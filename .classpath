@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src" />
+	<classpathentry kind="src" path="tests" />
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
 	<classpathentry kind="lib" path="lib/slick/slick.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jumpnevolve/lib/lwjgl/bin"/>
+			<attribute
+				name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY"
+				value="jumpnevolve/lib/lwjgl/bin" />
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar"/>
-	<classpathentry kind="lib" path="lib/junit/hamcrest-all-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/junit/junit-4.8.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar" />
+	<classpathentry kind="lib" path="lib/junit/hamcrest-all-1.2.jar" />
+	<classpathentry kind="lib" path="lib/junit/junit-4.8.1.jar" />
+	<classpathentry kind="output" path="bin" />
 </classpath>

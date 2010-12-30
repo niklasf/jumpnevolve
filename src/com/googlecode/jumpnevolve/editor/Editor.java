@@ -319,7 +319,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			}
 			current = levelFile.readLine();
 		}
-		this.nextObjectId = highestID++;
+		this.nextObjectId = highestID + 1;
 		this.updateLevelSettings();
 	}
 
@@ -420,11 +420,18 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.pack();
 	}
 
-	private void setCurrentSettings(ObjectSettings settings) {
+	public void setCurrentSettings(ObjectSettings settings) {
 		this.currentSettings.removeAll();
 		this.pack();
 		this.currentSettings.add(settings);
 		this.pack();
+	}
+
+	public void setCameraPosition(Vector pos) {
+		this.positionX.setText("" + (int) pos.x);
+		this.positionY.setText("" + (int) pos.y);
+		this.curPosX = (int) pos.x;
+		this.curPosY = (int) pos.y;
 	}
 
 	private void updateSettingsList() {
