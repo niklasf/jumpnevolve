@@ -342,6 +342,9 @@ public class Vector implements Cloneable, Serializable {
 		return new Vector(this.x - vx, this.y - vy);
 	}
 
+	/**
+	 * @return Dieser Vektor, aber negiert
+	 */
 	public Vector neg() {
 		return Vector.ZERO.sub(this);
 	}

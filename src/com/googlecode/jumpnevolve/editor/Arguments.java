@@ -89,10 +89,8 @@ public class Arguments extends JPanel {
 	public void setArguments(String argumentSubString) {
 		String next = argumentSubString;
 		for (int i = 0; i < hyphen.length; i++) {
-			String cur = next.substring(0, argumentSubString
-					.indexOf(this.hyphen[i]));
-			next = next
-					.substring(argumentSubString.indexOf(this.hyphen[i]) + 1);
+			String cur = next.substring(0, next.indexOf(this.hyphen[i]));
+			next = next.substring(next.indexOf(this.hyphen[i]) + 1);
 			this.contents[i].setText(cur);
 		}
 		this.contents[this.hyphen.length].setText(next);

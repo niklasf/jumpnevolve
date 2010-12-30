@@ -540,8 +540,6 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 				System.out
 						.println("Falscher Dateiname zum Speichern des Levels");
 			}
-		} else if (command.equals("position")) {
-			this.waitForMouseClick("Position");
 		} else if (command.equals("laden")) {
 			String fileName = loadFileName.getText().trim();
 			if (fileName.endsWith(".txt") && fileName.equals("") == false) {

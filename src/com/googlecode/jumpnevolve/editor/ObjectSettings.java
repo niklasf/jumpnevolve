@@ -26,6 +26,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 //FIXME: Mit dieser Klasse wird Dataable und alle abhängigen Methoden überflüssig
 public class ObjectSettings extends JPanel {
 
+	public static final float SELECT_DISTANCE = 5.0f;
 	private JTextField activatings = new JTextField(),
 			positionX = new JTextField("0"), positionY = new JTextField("0");
 	private final String className, objectName;
@@ -92,9 +93,6 @@ public class ObjectSettings extends JPanel {
 		}
 		this.className = className;
 		this.editorWorld = editorWorld;
-		JButton posButton = new JButton("Position auswählen");
-		posButton.setActionCommand("Position");
-		posButton.addActionListener(parent);
 
 		JPanel pan1 = new JPanel(new GridLayout(5, 2));
 
@@ -112,10 +110,6 @@ public class ObjectSettings extends JPanel {
 		buildConstraints(constraints, 0, 0, 1, 1);
 		layout.setConstraints(pan1, constraints);
 		this.add(pan1);
-
-		buildConstraints(constraints, 0, 2, 1, 1);
-		layout.setConstraints(posButton, constraints);
-		this.add(posButton);
 
 		this.initialize();
 	}
@@ -277,6 +271,23 @@ public class ObjectSettings extends JPanel {
 		return this.argumentPanel.getArguments();
 	}
 
+	public Vector[] getPullUpPositions() {
+		if (this.isPullUpAble()) {
+			Vector pos = this.getObjectPosition();
+			Vector dim = Vector.parseVector(this.getObjectAttributes().split(
+					",")[0]);
+			// Ecken zurückgeben
+			Vector[] vecs = new Vector[4];
+			vecs[0] = pos.add(dim);
+			vecs[1] = pos.add(dim.neg());
+			vecs[2] = pos.add(dim.neg().modifyX(dim.x));
+			vecs[3] = pos.add(dim.neg().modifyY(dim.y));
+			return vecs;
+		} else {
+			return new Vector[0];
+		}
+	}
+
 	/**
 	 * Ändert die Position des Objekts
 	 * 
@@ -312,7 +323,7 @@ public class ObjectSettings extends JPanel {
 			vec = this.parent.translateMouseClick(x, y);
 		}
 		Vector pos = this.getObjectPosition();
-		return isPointNearPosition(vec, pos, 10.0f);
+		return isPointNearPosition(vec, pos, ObjectSettings.SELECT_DISTANCE);
 	}
 
 	public boolean isPullUpSelectedWithMouse(int x, int y, boolean translated) {
@@ -323,20 +334,15 @@ public class ObjectSettings extends JPanel {
 			} else {
 				vec = this.parent.translateMouseClick(x, y);
 			}
-			Vector pos = this.getObjectPosition();
-			Vector dim = Vector.parseVector(this.getObjectAttributes().split(
-					",")[0]);
 			// Zurückgeben, ob eine der Ecken angewählt wurde
-			/*
-			 * return isPointNearPosition(vec, pos.modifyX(pos.x +
-			 * dim.x).modifyY( pos.y + dim.y), 10.0f) ||
-			 * isPointNearPosition(vec, pos.modifyX(pos.x + dim.x)
-			 * .modifyY(pos.y - dim.y), 10.0f) || isPointNearPosition(vec,
-			 * pos.modifyX(pos.x - dim.x) .modifyY(pos.y + dim.y), 10.0f) ||
-			 * isPointNearPosition(vec, pos.modifyX(pos.x - dim.x)
-			 * .modifyY(pos.y - dim.y), 10.0f);
-			 */
-			return isPointNearPosition(vec, pos.add(dim), 10.0f);
+			Vector[] corners = this.getPullUpPositions();
+			for (int i = 0; i < corners.length; i++) {
+				if (isPointNearPosition(vec, corners[i],
+						ObjectSettings.SELECT_DISTANCE)) {
+					return true;
+				}
+			}
+			return false;
 		} else {
 			return false;
 		}

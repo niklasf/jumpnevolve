@@ -5,6 +5,7 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -58,7 +59,7 @@ public class EditorLevel extends Level {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		// Nichts tun
+		// Mausereignis-Verarbeitung
 		if (this.selected != null && this.selectMode != NOT_IDENTIFIED) {
 			if (this.selectMode == MOVE) {
 				Vector mousePos = this.parent.translateMouseClick(input
@@ -69,7 +70,14 @@ public class EditorLevel extends Level {
 						.getMouseX(), input.getMouseY());
 				Vector pos = this.selected.getObjectPosition();
 				Vector vec = mousePos.sub(pos);
-				System.out.println("Pull-Up W:" + vec.x + " H: " + vec.y);
+				if (vec.x == 0) {
+					vec = vec.modifyX(1);
+				}
+				if (vec.y == 0) {
+					vec = vec.modifyY(1);
+				}
+				vec = vec.modifyX(Math.abs(vec.x));
+				vec = vec.modifyY(Math.abs(vec.y));
 				this.selected.setDimension(vec.x, vec.y);
 			}
 		}
@@ -142,7 +150,17 @@ public class EditorLevel extends Level {
 			obj.getObject().draw(g);
 		}
 		for (ObjectSettings obj : abbild) {
-			GraphicUtils.markPosition(g, obj.getObjectPosition(), 5);
+			// GraphicUtils.markPosition(g, obj.getObjectPosition(), 5);
+			Color c = g.getColor();
+			g.setColor(Color.red);
+			GraphicUtils.draw(g, new Circle(obj.getObjectPosition(),
+					ObjectSettings.SELECT_DISTANCE));
+			g.setColor(Color.green);
+			for (Vector vec : obj.getPullUpPositions()) {
+				GraphicUtils.draw(g, new Circle(vec,
+						ObjectSettings.SELECT_DISTANCE));
+			}
+			g.setColor(c);
 			GraphicUtils
 					.string(g, obj.getObjectPosition(), obj.getObjectName());
 		}
