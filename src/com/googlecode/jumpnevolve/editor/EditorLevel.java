@@ -12,19 +12,28 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
+import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.gui.Button;
+import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
+import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Ein Level, dass jedoch keine poll-Methoden ausführt, speziell für den Editor
+ * Ein Level, das in seiner poll-Methode die Ereignisverarbeitung übernimmt,
+ * speziell für den Editor
  * 
  * @author Erik Wagner
  * 
  */
-public class EditorLevel extends Level {
+public class EditorLevel extends Level implements Interfaceable {
 
 	private static final int MOVE = 1;
 	private static final int PULL_UP = 2;
@@ -38,6 +47,8 @@ public class EditorLevel extends Level {
 
 	private final Editor parent;
 
+	private final MainGUI gui;
+
 	/**
 	 * @param loader
 	 * @param width
@@ -47,7 +58,21 @@ public class EditorLevel extends Level {
 	public EditorLevel(Editor parent) {
 		super(new Levelloader(null), 1, 1, 1);
 		this.parent = parent;
-		// TODO Auto-generated constructor stub
+		this.gui = new MainGUI(this);
+		GridContainer grid = new GridContainer(this.gui, 3, 3,
+				GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
+		ButtonList selectList = new ButtonList(grid, 3, 10);
+		grid.add(selectList, 2, 0);
+		selectList.addButton(new Button(selectList,
+				InterfaceConstants.EDITOR_GROUND, "textures/stone.png"));
+		selectList.addButton(new Button(selectList,
+				InterfaceConstants.EDITOR_SOLDIER,
+				"object-pictures/simple-foot-soldier.png"));
+		selectList.addButton(new Button(selectList,
+				InterfaceConstants.EDITOR_BUTTON, "textures/aluminium.png"));
+		selectList.addButton(new Button(selectList,
+				InterfaceConstants.EDITOR_DOOR, "textures/wood.png"));
+		gui.setMainContainer(grid);
 	}
 
 	public void addSettings(ObjectSettings obj) {
@@ -187,6 +212,7 @@ public class EditorLevel extends Level {
 				this.parent.setCurrentSettings(select);
 			}
 		}
+		this.gui.poll(input, secounds);
 	}
 
 	@Override
@@ -225,9 +251,26 @@ public class EditorLevel extends Level {
 		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
 		GraphicUtils.markPosition(g, parent.getPlayerPosition(), 5);
 		GraphicUtils.string(g, parent.getPlayerPosition(), "0000-Player");
+		this.gui.draw(g);
 	}
 
 	public void clearSettings() {
 		this.settingsList.clear();
+	}
+
+	@Override
+	public int getHeight() {
+		return Engine.getInstance().getHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return Engine.getInstance().getWidth();
+	}
+
+	@Override
+	public void interfaceAction(int function, InterfaceObject object) {
+		// TODO Auto-generated method stub
+		System.out.println("Action: " + function);
 	}
 }

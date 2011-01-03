@@ -73,6 +73,25 @@ public class GraphicUtils {
 		}
 	}
 
+	public static void drawScaled(Graphics g, Shape shape, Vector zoom) {
+		if (shape instanceof Circle) {
+			drawScaled(g, (Circle) shape, zoom);
+		} else if (shape instanceof Rectangle) {
+			drawScaled(g, (Rectangle) shape, zoom);
+		}
+	}
+
+	public static void drawScaled(Graphics g, Rectangle rect, Vector zoom) {
+		Vector dim = rect.getDimensions();
+		Rectangle rect2 = new Rectangle(rect.getCenter(), new Vector(dim.x
+				* zoom.x, dim.y * zoom.y));
+		draw(g, rect2);
+	}
+
+	public static void drawScaled(Graphics g, Circle circlee, Vector zoom) {
+		draw(g, new Circle(circlee.getCenter(), circlee.radius * zoom.x));
+	}
+
 	/**
 	 * Zeichnet einen Vektor ausgehend vom Ursprung.
 	 * 
