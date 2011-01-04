@@ -15,7 +15,7 @@ import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.graphics.gui.Button;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
@@ -35,15 +35,21 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class EditorLevel extends Level implements Interfaceable {
 
-	private static final int MOVE = 1;
-	private static final int PULL_UP = 2;
-	private static final int CAMERA = 3;
-	private static final int NOT_IDENTIFIED = 0;
+	private static final int ACTION_MOVE = 1;
+	private static final int ACTION_PULL_UP = 2;
+	private static final int ACTION_CAMERA = 3;
+	private static final int ACTION_INTERFACE_MOUSE_CLICKED = 4;
+	private static final int ACTION_INTERFACE_MOUSE_OVER = 5;
+	private static final int ACTION_NOT_IDENTIFIED = 0;
 
 	private ArrayList<ObjectSettings> settingsList = new ArrayList<ObjectSettings>();
 	private ObjectSettings selected;
-	private int selectMode = NOT_IDENTIFIED;
+	private int selectedActionMode = ACTION_NOT_IDENTIFIED,
+			oldSelectedActionMode = ACTION_NOT_IDENTIFIED;
 	private Vector oldCameraPos, oldClick;
+	private int lastInterfaceFunction = InterfaceConstants.ERROR;
+	private boolean interfaceActionThisRound = false,
+			modeAlreadyChanged = false;
 
 	private final Editor parent;
 
@@ -59,20 +65,66 @@ public class EditorLevel extends Level implements Interfaceable {
 		super(new Levelloader(null), 1, 1, 1);
 		this.parent = parent;
 		this.gui = new MainGUI(this);
-		GridContainer grid = new GridContainer(this.gui, 3, 3,
-				GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
-		ButtonList selectList = new ButtonList(grid, 3, 10);
+		GridContainer grid = new GridContainer(3, 3,
+				GridContainer.MODUS_X_LEFT, GridContainer.MODUS_Y_DOWN);
+		ButtonList selectList = new ButtonList(6, 10);
 		grid.add(selectList, 2, 0);
-		selectList.addButton(new Button(selectList,
+		selectList.addButton(new InterfaceButton(
 				InterfaceConstants.EDITOR_GROUND, "textures/stone.png"));
-		selectList.addButton(new Button(selectList,
-				InterfaceConstants.EDITOR_SOLDIER,
-				"object-pictures/simple-foot-soldier.png"));
-		selectList.addButton(new Button(selectList,
-				InterfaceConstants.EDITOR_BUTTON, "textures/aluminium.png"));
-		selectList.addButton(new Button(selectList,
+		selectList.addButton(new InterfaceButton(
 				InterfaceConstants.EDITOR_DOOR, "textures/wood.png"));
+		selectList
+				.addButton(new InterfaceButton(
+						InterfaceConstants.EDITOR_BUTTON,
+						"textures/aluminium.png", 'B'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.EDITOR_ELEVATOR, "textures/aluminium.png",
+				'E'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.EDITOR_SOLDIER,
+				"object-pictures/simple-foot-soldier.png", 'S'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.EDITOR_WALKING_SOLDIER,
+				"object-pictures/simple-foot-soldier.png", 'W'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.EDITOR_JUMPING_SOLDIER,
+				"object-pictures/simple-foot-soldier.png", 'J'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.EDITOR_GREEN_SLIME_WORM,
+				"object-pictures/green-slime-worm.png"));
 		gui.setMainContainer(grid);
+	}
+
+	private void setSelectedActionMode(int newMode) {
+		if (modeAlreadyChanged == false) {
+			this.oldSelectedActionMode = this.selectedActionMode;
+			this.modeAlreadyChanged = true;
+		}
+		this.selectedActionMode = newMode;
+	}
+
+	private String getClassName(int functionConstant) {
+		if (functionConstant == InterfaceConstants.EDITOR_BUTTON) {
+			return "Button";
+		} else if (functionConstant == InterfaceConstants.EDITOR_DOOR) {
+			return "Door";
+		} else if (functionConstant == InterfaceConstants.EDITOR_ELEVATOR) {
+			return "Elevator";
+		} else if (functionConstant == InterfaceConstants.EDITOR_GREEN_SLIME_WORM) {
+			return "GreenSlimeWorm";
+		} else if (functionConstant == InterfaceConstants.EDITOR_GROUND) {
+			return "Ground";
+		} else if (functionConstant == InterfaceConstants.EDITOR_JUMPING_SOLDIER) {
+			return "JumpingSoldier";
+		} else if (functionConstant == InterfaceConstants.EDITOR_KILLINGMACHINE) {
+			return "KillingMachine";
+		} else if (functionConstant == InterfaceConstants.EDITOR_SOLDIER) {
+			return "Soldier";
+		} else if (functionConstant == InterfaceConstants.EDITOR_WALKING_SOLDIER) {
+			return "WalkingSoldier";
+		} else {
+			return null;
+		}
 	}
 
 	public void addSettings(ObjectSettings obj) {
@@ -92,13 +144,19 @@ public class EditorLevel extends Level implements Interfaceable {
 
 	@Override
 	public void poll(Input input, float secounds) {
+		this.modeAlreadyChanged = false;
+		this.interfaceActionThisRound = false;
+		this.gui.poll(input, secounds);
 		// Mausereignis-Verarbeitung
-		if (this.selected != null && this.selectMode != NOT_IDENTIFIED) {
-			if (this.selectMode == MOVE) {
+
+		// Anwendung des letzten gewählten Modus
+		if (this.selected != null
+				&& this.selectedActionMode != ACTION_NOT_IDENTIFIED) {
+			if (this.selectedActionMode == ACTION_MOVE) {
 				Vector mousePos = this.parent.translateMouseClick(input
 						.getMouseX(), input.getMouseY());
 				this.selected.setPosition(mousePos.x, mousePos.y);
-			} else if (this.selectMode == PULL_UP) {
+			} else if (this.selectedActionMode == ACTION_PULL_UP) {
 				Vector mousePos = this.parent.translateMouseClick(input
 						.getMouseX(), input.getMouseY());
 				Vector pos = this.selected.getObjectPosition();
@@ -114,84 +172,117 @@ public class EditorLevel extends Level implements Interfaceable {
 				this.selected.setDimension(vec.x, vec.y);
 			}
 		}
+		if (this.selectedActionMode == ACTION_CAMERA) {
+			Vector MousePos = new Vector(input.getMouseX(), input.getMouseY());
+			if (this.oldClick == null) {
+				this.oldClick = MousePos;
+			}
+			Vector dif = MousePos.sub(oldClick);
+			dif = dif.modifyX(dif.x / this.parent.getZoomX());
+			dif = dif.modifyY(dif.y / this.parent.getZoomY());
+			this.parent.setCameraPosition(this.oldCameraPos.sub(dif));
+		}
+
+		// Prüfen einer neuen Interaktion
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			ArrayList<ObjectSettings> abbild = settingsList;
-			if (this.selected != null && this.selectMode != NOT_IDENTIFIED) {
-				if (this.selectMode == MOVE) {
-					if (this.selected.isMoveSelectedWithMouse(
-							input.getMouseX(), input.getMouseY(), false) == false) {
-						this.selected = null;
-						this.selectMode = NOT_IDENTIFIED;
-					}
-				} else if (this.selectMode == PULL_UP) {
-					if (this.selected.isPullUpSelectedWithMouse(input
-							.getMouseX(), input.getMouseY(), false) == false) {
-						this.selected = null;
-						this.selectMode = NOT_IDENTIFIED;
-					}
-				}
-			} else {
-				this.selected = null;
-				this.selectMode = NOT_IDENTIFIED;
-			}
-			if (this.selected == null) {
-				for (ObjectSettings obj : abbild) {
-					if (obj.isMoveSelectedWithMouse(input.getMouseX(), input
-							.getMouseY(), false)) {
-						if (this.selected == null) {
-							this.selected = obj;
-							this.selectMode = MOVE;
+			if (this.interfaceActionThisRound == false) {
+				ArrayList<ObjectSettings> abbild = settingsList;
+				if (this.selected != null
+						&& this.selectedActionMode != ACTION_NOT_IDENTIFIED) {
+					if (this.selectedActionMode == ACTION_MOVE) {
+						if (this.selected.isMoveSelectedWithMouse(input
+								.getMouseX(), input.getMouseY(), false) == false) {
+							this.selected = null;
+							this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 						} else {
-							this.selectMode = NOT_IDENTIFIED;
+							this.setSelectedActionMode(ACTION_MOVE);
+						}
+					} else if (this.selectedActionMode == ACTION_PULL_UP) {
+						if (this.selected.isPullUpSelectedWithMouse(input
+								.getMouseX(), input.getMouseY(), false) == false) {
+							this.selected = null;
+							this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+						} else {
+							this.setSelectedActionMode(ACTION_PULL_UP);
 						}
 					}
-					if (obj.isPullUpSelectedWithMouse(input.getMouseX(), input
-							.getMouseY(), false)) {
-						if (this.selected == null) {
-							this.selected = obj;
-							this.selectMode = PULL_UP;
-						} else {
-							this.selectMode = NOT_IDENTIFIED;
-						}
-					}
+				} else {
+					this.selected = null;
+					this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 				}
-			}
-			if (this.selected == null) {
-				for (ObjectSettings obj : abbild) {
-					if (obj.getObject().getShape().isPointInThis(
-							this.parent.translateMouseClick(input.getMouseX(),
-									input.getMouseY()))) {
-						if (this.selected == null) {
-							this.selected = obj;
-							this.selectMode = NOT_IDENTIFIED;
-						} else {
-							this.selectMode = NOT_IDENTIFIED;
+				if (this.selected == null) {
+					for (ObjectSettings obj : abbild) {
+						if (obj.isMoveSelectedWithMouse(input.getMouseX(),
+								input.getMouseY(), false)) {
+							if (this.selected == null) {
+								this.selected = obj;
+								this.setSelectedActionMode(ACTION_MOVE);
+							} else {
+								this
+										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+							}
+						}
+						if (obj.isPullUpSelectedWithMouse(input.getMouseX(),
+								input.getMouseY(), false)) {
+							if (this.selected == null) {
+								this.selected = obj;
+								this.setSelectedActionMode(ACTION_PULL_UP);
+							} else {
+								this
+										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+							}
 						}
 					}
 				}
-			}
-			if (this.selected == null) {
-				Vector MousePos = new Vector(input.getMouseX(), input
-						.getMouseY());
-				if (this.oldClick == null) {
-					this.oldClick = MousePos;
+				if (this.selected == null) {
+					for (ObjectSettings obj : abbild) {
+						if (obj.getObject().getShape().isPointInThis(
+								this.parent.translateMouseClick(input
+										.getMouseX(), input.getMouseY()))) {
+							if (this.selected == null) {
+								this.selected = obj;
+								this
+										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+							} else {
+								this
+										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+							}
+						}
+					}
 				}
-				this.selectMode = CAMERA;
-				Vector dif = MousePos.sub(oldClick);
-				dif = dif.modifyX(dif.x / this.parent.getZoomX());
-				dif = dif.modifyY(dif.y / this.parent.getZoomY());
-				this.parent.setCameraPosition(this.oldCameraPos.sub(dif));
+				if (this.selected == null) {
+					this.setSelectedActionMode(ACTION_CAMERA);
+				}
 			}
 		} else {
 			this.selected = null;
-			this.selectMode = NOT_IDENTIFIED;
+			this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 			this.oldCameraPos = this.getCamera().getPosition();
 			this.oldClick = null;
 		}
-		// TODO: selectMode = CAMERA einbauen
+
+		// Objekt erstellen, wenn letzte Runde das Interface angeklickt wurde
+		// und diese sich der Mauszeiger nicht mehr auf dem Interface befindet
+		// und die linke Maustaste weiterhin gedrückt ist
+		if (this.oldSelectedActionMode == ACTION_INTERFACE_MOUSE_CLICKED
+				&& this.interfaceActionThisRound == false
+				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			String className = this.getClassName(this.lastInterfaceFunction);
+			if (className != null) {
+				this.parent.addNewObject(className, this.parent
+						.translateMouseClick(new Vector(input.getMouseX(),
+								input.getMouseY())));
+			}
+			// Aktion ist gleich MOVE
+			this.setSelectedActionMode(ACTION_MOVE);
+			this.selected = this.parent.getCurrentSettings();
+		}
+
+		// Linker Mausklick an den Editor weitergeben
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			this.parent.mouseClicked(input.getMouseX(), input.getMouseY());
 		}
+		// Mit rechtem Mausklick ein Objekt auswählen
 		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			Vector pos = this.parent.translateMouseClick(input.getMouseX(),
 					input.getMouseY());
@@ -212,7 +303,6 @@ public class EditorLevel extends Level implements Interfaceable {
 				this.parent.setCurrentSettings(select);
 			}
 		}
-		this.gui.poll(input, secounds);
 	}
 
 	@Override
@@ -269,8 +359,16 @@ public class EditorLevel extends Level implements Interfaceable {
 	}
 
 	@Override
-	public void interfaceAction(int function, InterfaceObject object) {
+	public void mouseClickedAction(InterfaceObject object) {
 		// TODO Auto-generated method stub
-		System.out.println("Action: " + function);
+		this.setSelectedActionMode(ACTION_INTERFACE_MOUSE_CLICKED);
+		this.lastInterfaceFunction = object.getFunction();
+		this.interfaceActionThisRound = true;
+	}
+
+	@Override
+	public void mouseOverAction(InterfaceObject object) {
+		this.interfaceActionThisRound = true;
+		this.setSelectedActionMode(ACTION_INTERFACE_MOUSE_OVER);
 	}
 }

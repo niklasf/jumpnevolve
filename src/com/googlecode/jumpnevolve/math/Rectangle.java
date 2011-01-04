@@ -575,4 +575,14 @@ public class Rectangle implements Shape {
 	public Collision getCollision(Shape other) {
 		return getCollision(other, true, true);
 	}
+
+	@Override
+	public float getXRange() {
+		return width;
+	}
+
+	@Override
+	public float getYRange() {
+		return height;
+	}
 }

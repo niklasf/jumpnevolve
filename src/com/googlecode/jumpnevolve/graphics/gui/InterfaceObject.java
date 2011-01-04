@@ -88,7 +88,6 @@ public abstract class InterfaceObject implements InterfacePart {
 		if (this.shape.modifyCenter(this.getCenterVector()).isPointInThis(
 				new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				System.out.println("Action " + function);
 				Object[] infos = this.informed.toArray();
 				for (Object informable : infos) {
 					((Informable) informable).mouseClickedAction(this);
@@ -105,6 +104,7 @@ public abstract class InterfaceObject implements InterfacePart {
 					((Informable) informable).mouseOverAction(this);
 				}
 				this.status = STATUS_MOUSE_OVER;
+				this.wasClicked = false;
 			}
 		} else {
 			this.status = STATUS_NOTHING;

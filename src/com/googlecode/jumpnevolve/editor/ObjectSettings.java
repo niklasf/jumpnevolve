@@ -144,21 +144,21 @@ public class ObjectSettings extends JPanel {
 			this.activatings.setEditable(false);
 			String[] arg1 = { "Width", "Height" };
 			char[] arg2 = { '|' };
-			String[] arg3 = { "2", "10" };
+			String[] arg3 = { "30", "10" };
 			this.argumentPanel.initArguments(arg1, arg2, arg3);
 		} else if (this.className.equals("Ground")) {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
 			String[] arg1 = { "Width", "Height" };
 			char[] arg2 = { '|' };
-			String[] arg3 = { "2", "10" };
+			String[] arg3 = { "30", "10" };
 			this.argumentPanel.initArguments(arg1, arg2, arg3);
 		} else if (this.className.equals("Elevator")) {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
 			String[] arg1 = { "Width", "Height", "DownEnd", "UpEnd" };
 			char[] arg2 = { '|', ',', ',' };
-			String[] arg3 = { "2", "10", "20.0", "0.0" };
+			String[] arg3 = { "30", "10", "20.0", "0.0" };
 			this.argumentPanel.initArguments(arg1, arg2, arg3);
 		} else if (this.className.equals("GreenSlimeWorm")) {
 			this.activatings.setText("none");

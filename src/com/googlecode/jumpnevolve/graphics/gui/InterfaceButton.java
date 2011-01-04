@@ -15,18 +15,16 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Button extends InterfaceObject {
+public class InterfaceButton extends InterfaceObject {
 
 	public static final float BUTTON_DIMENSION = 50.0f;
 
 	private final String icon;
+	private char name = ' ';
 
 	/**
 	 * Erzeigt einen neuen Button für das Interface
 	 * 
-	 * @param parent
-	 *            Der InterfaceContainer, in dem dieser Button angezeigt werden
-	 *            soll
 	 * @param function
 	 *            Die Funktion des Buttons (Eine der Konstanten aus
 	 *            {@link InterfaceConstants});
@@ -34,11 +32,16 @@ public class Button extends InterfaceObject {
 	 *            Der Datei-Pfad des Icons, welches auf diesem Button
 	 *            dargestellt werden soll
 	 */
-	public Button(int function, String iconPath) {
+	public InterfaceButton(int function, String iconPath) {
 		super(new Rectangle(Vector.ZERO, BUTTON_DIMENSION, BUTTON_DIMENSION),
 				function);
 		this.icon = iconPath;
 		System.out.println("Button erzeugt mit Funktion: " + function);
+	}
+
+	public InterfaceButton(int function, String iconPath, char name) {
+		this(function, iconPath);
+		this.name = name;
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class Button extends InterfaceObject {
 		GraphicUtils.drawScaled(g, actShape, new Vector(this.parent
 				.getInterfaceable().getZoomX(), this.parent.getInterfaceable()
 				.getZoomY()));
+		GraphicUtils.string(g, pos, "" + this.name);
 		// TODO: Beenden
 	}
 

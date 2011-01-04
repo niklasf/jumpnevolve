@@ -35,6 +35,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class Editor extends JFrame implements ActionListener, ItemListener {
 
 	private HashMap<String, ObjectSettings> objects = new HashMap<String, ObjectSettings>();
+	private ObjectSettings actSettings;
 	private JPanel contentPanel, auswahl, objectAuswahl, currentSettings,
 			levelPreview, levelSettings, generalThings, settingsAuswahl,
 			playerSettings;
@@ -379,6 +380,10 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		return subareaWidth;
 	}
 
+	public ObjectSettings getCurrentSettings() {
+		return this.actSettings;
+	}
+
 	private void addObject(ObjectSettings settings) {
 		objects.put(settings.getObjectName(), settings);
 		previewLevel.addSettings(settings);
@@ -425,6 +430,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.pack();
 		this.currentSettings.add(settings);
 		this.pack();
+		this.actSettings = settings;
 	}
 
 	public void setCameraPosition(Vector pos) {
@@ -432,6 +438,34 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.positionY.setText("" + (int) pos.y);
 		this.curPosX = (int) pos.x;
 		this.curPosY = (int) pos.y;
+	}
+
+	public void addNewObject(String className) {
+		this.addObject(new ObjectSettings(this, className, className
+				+ this.getTransformedId(this.nextObjectId), this.previewLevel));
+		this.nextObjectId++;
+	}
+
+	public void addNewObject(String className, Vector position) {
+		this.addObject(new ObjectSettings(this, className, this
+				.getTransformedId(this.nextObjectId)
+				+ "-" + className, this.previewLevel));
+		this.nextObjectId++;
+		actSettings.setPosition(position.x, position.y);
+	}
+
+	private String getTransformedId(int value) {
+		String id = "";
+		if (value < 10) {
+			id = id + "000" + value;
+		} else if (value < 100) {
+			id = id + "00" + value;
+		} else if (value < 1000) {
+			id = id + "0" + value;
+		} else {
+			id = id + value;
+		}
+		return id;
 	}
 
 	private void updateSettingsList() {
@@ -491,6 +525,10 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		return new Vector(x, y);
 	}
 
+	public Vector translateMouseClick(Vector pos) {
+		return this.translateMouseClick(pos.x, pos.y);
+	}
+
 	public void mouseClicked(float x, float y) {
 		Vector vec = this.translateMouseClick(x, y);
 		this.lastClickX = vec.x;
@@ -502,34 +540,13 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 	public void actionPerformed(ActionEvent evt) {
 		String command = evt.getActionCommand().toLowerCase();
 		if (command.equals("new_object")) {
-			ObjectSettings neu = null;
 			String gruppe = groupList.getSelectedItem().toString();
-			String id = "";
-			if (nextObjectId < 10) {
-				id = id + "000" + nextObjectId;
-			} else if (nextObjectId < 100) {
-				id = id + "00" + nextObjectId;
-			} else if (nextObjectId < 1000) {
-				id = id + "0" + nextObjectId;
-			} else {
-				id = id + nextObjectId;
-			}
 			if (gruppe.equals("Landschaft")) {
-				neu = new ObjectSettings(this, groundList.getSelectedItem()
-						.toString(), id + "-"
-						+ groundList.getSelectedItem().toString(), previewLevel);
+				this.addNewObject(groundList.getSelectedItem().toString());
 			} else if (gruppe.equals("Gegner")) {
-				neu = new ObjectSettings(this, enemyList.getSelectedItem()
-						.toString(), id + "-"
-						+ enemyList.getSelectedItem().toString(), previewLevel);
+				this.addNewObject(enemyList.getSelectedItem().toString());
 			} else if (gruppe.equals("Objekte")) {
-				neu = new ObjectSettings(this, objectList.getSelectedItem()
-						.toString(), id + "-"
-						+ objectList.getSelectedItem().toString(), previewLevel);
-			}
-			if (neu != null) {
-				nextObjectId++;
-				this.addObject(neu);
+				this.addNewObject(objectList.getSelectedItem().toString());
 			}
 			this.waitForMouseClick("Position");
 		} else if (command.equals("leveleinstellungen")) {

@@ -129,7 +129,7 @@ public class Level extends World {
 		this.drawBackground(g);
 		super.draw(g);
 		if (this.player != null) {
-			this.player.getInterface().draw(g);
+			this.player.draw(g);
 		}
 	}
 }

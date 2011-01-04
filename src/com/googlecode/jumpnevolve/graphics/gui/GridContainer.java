@@ -18,10 +18,34 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class GridContainer extends InterfaceContainer {
 
+	/**
+	 * Die Objekte werden so platziert, dass die Mitte (in x-Richtung oder
+	 * y-Richtung) der Mitte der entprechenden Zelle entspricht
+	 */
 	public static final int MODUS_DEFAULT = 0;
+
+	/**
+	 * Die Objekte werden so platziert, dass sie an der rechten Zellenseite
+	 * anliegen
+	 */
 	public static final int MODUS_X_RIGHT = 1;
+
+	/**
+	 * Die Objekte werden so platziert, dass sie an der linken Zellenseite
+	 * anliegen
+	 */
 	public static final int MODUS_X_LEFT = 2;
+
+	/**
+	 * Die Objekte werden so platziert, dass sie an der unteren Zellenseite
+	 * anliegen
+	 */
 	public static final int MODUS_Y_DOWN = 3;
+
+	/**
+	 * Die Objekte werden so platziert, dass sie an der oberen Zellenseite
+	 * anliegen
+	 */
 	public static final int MODUS_Y_UP = 4;
 
 	private final int modusX;
@@ -30,12 +54,19 @@ public class GridContainer extends InterfaceContainer {
 	private final int cols;
 
 	/**
+	 * Erzeugt einen neuen GridContainer, der seine Fläche in gleich große
+	 * Zellen unterteilt, in denen die Objekte gemäß der Modi angeordnet werden
 	 * 
-	 * @param parent
 	 * @param rows
+	 *            Die Anzahl der Reihen Gitters
 	 * @param cols
+	 *            Die Anzahl der Spalten des Gittes
 	 * @param modusX
+	 *            Der Modus für die X-Anordnung ({@link #MODUS_DEFAULT},
+	 *            {@link #MODUS_X_LEFT} oder {@link #MODUS_X_RIGHT})
 	 * @param modusY
+	 *            Der Modus für die Y-Anordnung ({@link #MODUS_DEFAULT},
+	 *            {@link #MODUS_Y_DOWN} oder {@link #MODUS_Y_UP})
 	 */
 	public GridContainer(int rows, int cols, int modusX, int modusY) {
 		super();
@@ -45,6 +76,12 @@ public class GridContainer extends InterfaceContainer {
 		this.modusY = modusY;
 	}
 
+	/**
+	 * Erzeugt einen neuen GridContainer mit den {@code modusX} =
+	 * {@link #MODUS_DEFAULT} und {@code modusY} = {@link #MODUS_DEFAULT}
+	 * 
+	 * @see #GridContainer(int, int, int, int)
+	 */
 	public GridContainer(int rows, int cols) {
 		this(rows, cols, MODUS_DEFAULT, MODUS_DEFAULT);
 	}
@@ -86,10 +123,11 @@ public class GridContainer extends InterfaceContainer {
 		Rectangle place = this.parentContainer.getPlaceFor(this);
 		if (this.objects.containsKey(object)) {
 			Vector cell = this.objects.get(object);
-			int x = (int) ((place.width / (cols * 2)) * this.getXModifier() + place.width
-					/ cols * cell.x);
-			int y = (int) ((place.height / (rows * 2)) * this.getYModifier() + place.height
-					/ rows * cell.y);
+			Shape shape = object.getPrefferedSize();
+			int x = (int) (this.getXPosInCell(place.width / cols, shape
+					.getXRange()) + place.width / cols * cell.x);
+			int y = (int) (this.getYPosInCell(place.height / rows, shape
+					.getYRange()) + place.height / rows * cell.y);
 			return new Vector(x, y).add(this.parentContainer
 					.getPositionFor(this));
 		} else {
@@ -97,32 +135,40 @@ public class GridContainer extends InterfaceContainer {
 		}
 	}
 
-	private float getXModifier() {
+	private float getXPosInCell(float cellWidth, float objectWidth) {
 		switch (this.modusX) {
 		case MODUS_X_LEFT:
-			return 0.5f;
+			return 0;
 		case MODUS_X_RIGHT:
-			return 1.5f;
+			return cellWidth - objectWidth;
 		case MODUS_DEFAULT:
 		default:
-			return 1.0f;
+			return cellWidth / 2 - objectWidth / 2;
 		}
 	}
 
-	private float getYModifier() {
+	private float getYPosInCell(float cellHeight, float objectHeight) {
 		switch (this.modusY) {
 		case MODUS_Y_UP:
-			return 0.5f;
+			return 0;
 		case MODUS_Y_DOWN:
-			return 1.5f;
+			return cellHeight - objectHeight;
 		case MODUS_DEFAULT:
 		default:
-			return 1.0f;
+			return cellHeight / 2 - objectHeight / 2;
 		}
 	}
 
 	@Override
 	public Shape getPrefferedSize() {
 		return this.parentContainer.getPlaceFor(this);
+	}
+
+	@Override
+	public Rectangle getPlaceFor(InterfacePart object) {
+		// Die Größe einer Zelle
+		Rectangle place = this.parentContainer.getPlaceFor(this);
+		return new Rectangle(Vector.ZERO, place.width / cols, place.height
+				/ rows);
 	}
 }

@@ -361,4 +361,14 @@ public class Circle implements Shape {
 	public Collision getCollision(Shape other) {
 		return getCollision(other, true, true);
 	}
+
+	@Override
+	public float getXRange() {
+		return radius * 2;
+	}
+
+	@Override
+	public float getYRange() {
+		return radius * 2;
+	}
 }

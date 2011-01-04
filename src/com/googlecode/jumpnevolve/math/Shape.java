@@ -144,6 +144,18 @@ public interface Shape extends Serializable {
 	 */
 	public Vector getDimensions();
 
+	/**
+	 * @return Die Distanz, die das Objekt in x-Richtung einschließt (vom linken
+	 *         Ende bis zum rechten Ende)
+	 */
+	public float getXRange();
+
+	/**
+	 * @return Die Distanz, die das Objekt in y-Richtung einschließt (vom oberen
+	 *         Ende bis zum unteren Ende)
+	 */
+	public float getYRange();
+
 	/*
 	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
 	 * 

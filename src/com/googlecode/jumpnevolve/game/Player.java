@@ -9,7 +9,16 @@ import com.googlecode.jumpnevolve.game.player.Basic;
 import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.game.player.RollingBall;
 import com.googlecode.jumpnevolve.graphics.Drawable;
+import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
+import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
+import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -22,24 +31,35 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Player implements Pollable {
+public class Player implements Pollable, Interfaceable {
 
 	public static final int ERROR = -1;
-	public static final int ROLLING_BALL = 0;
-	public static final int JUMPING_CROSS = 1;
 	public static final int HIGH_JUMP = 100;
 
 	private PlayerFigure figure;
 	private Playable cur;
 	private HashMap<Integer, Playable> figureList = new HashMap<Integer, Playable>();
 	private final Level parent;
-	private final Interface gui;
+	private final MainGUI gui;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
 			String startFigure, String[] savePositions, boolean cameraOnPlayer) {
 		// TODO Auto-generated constructor stub
 		this.parent = parent;
-		this.gui = new Interface(this);
+		this.gui = new MainGUI(this);
+
+		GridContainer grid = new GridContainer(3, 3,
+				GridContainer.MODUS_X_RIGHT, GridContainer.MODUS_Y_UP);
+		ButtonList selectList = new ButtonList(2, 10);
+		grid.add(selectList, 0, 2);
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.FIGURE_ROLLING_BALL,
+				"object-pictures/figure-rolling-ball.png"));
+		selectList.addButton(new InterfaceButton(
+				InterfaceConstants.FIGURE_JUMPING_CROSS,
+				"object-pictures/figure-cross.png"));
+		gui.setMainContainer(grid);
+
 		this.figure = new PlayerFigure(parent, startPosition, this);
 		setFigures(avaiableFigures, startFigure);
 		this.parent.add(this.figure);
@@ -74,41 +94,37 @@ public class Player implements Pollable {
 		return this.cur;
 	}
 
-	public Interface getInterface() {
-		return this.gui;
-	}
-
 	private void setFigures(String avaiableFigures, String startFigure) {
 		String figures[] = avaiableFigures.split(",");
 		for (String figure : figures) {
-			int curNum = ERROR;
+			int curNum = InterfaceConstants.ERROR;
 			if (figure.equals("RollingBall")) {
-				curNum = ROLLING_BALL;
+				curNum = InterfaceConstants.FIGURE_ROLLING_BALL;
 			} else if (figure.equals("JumpingCross")) {
-				curNum = JUMPING_CROSS;
+				curNum = InterfaceConstants.FIGURE_JUMPING_CROSS;
 			}
 			this.figureList.put(curNum, this.getNewFigure(curNum));
 		}
 		int curNum = ERROR;
 		if (startFigure.equals("RollingBall")) {
-			curNum = ROLLING_BALL;
+			curNum = InterfaceConstants.FIGURE_ROLLING_BALL;
 		} else if (startFigure.equals("JumpingCross")) {
-			curNum = JUMPING_CROSS;
+			curNum = InterfaceConstants.FIGURE_JUMPING_CROSS;
 		}
 		this.cur = this.figureList.get(curNum);
 		this.figure.setShape(this.cur.getShape());
 	}
 
 	private Playable getNewFigure(int number) {
-		switch (number) {
-		case ROLLING_BALL:
+		if (number == InterfaceConstants.FIGURE_ROLLING_BALL) {
 			return new RollingBall(this.figure);
-		case JUMPING_CROSS:
-			return new Basic(); // TODO: JumpingCross erstellen und hier
+		} else if (number == InterfaceConstants.FIGURE_JUMPING_CROSS) {
+			return new Basic(this.figure); // TODO: JumpingCross erstellen und
 			// zurückgeben
-		case ERROR:
-		default:
-			return new Basic(); // TODO: Fehler ausgeben
+		} else if (number == InterfaceConstants.ERROR) {
+			return new Basic(this.figure); // TODO: Fehlermeldung ausgeben
+		} else {
+			return new Basic(this.figure); // TODO: Fehlermeldung ausgeben
 		}
 	}
 
@@ -119,5 +135,50 @@ public class Player implements Pollable {
 
 	public void activateSkill(int skill) {
 		// TODO: Methode füllen
+	}
+
+	@Override
+	public Camera getCamera() {
+		return this.parent.getCamera();
+	}
+
+	@Override
+	public int getHeight() {
+		return Engine.getInstance().getHeight();
+	}
+
+	@Override
+	public int getWidth() {
+		return Engine.getInstance().getWidth();
+	}
+
+	@Override
+	public float getZoomX() {
+		return this.parent.getZoomX();
+	}
+
+	@Override
+	public float getZoomY() {
+		return this.parent.getZoomY();
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		gui.draw(g);
+	}
+
+	@Override
+	public void mouseClickedAction(InterfaceObject object) {
+		int function = object.getFunction();
+		if (function == InterfaceConstants.FIGURE_ROLLING_BALL
+				|| function == InterfaceConstants.FIGURE_JUMPING_CROSS) {
+			this.cur = this.getNewFigure(function);
+		}
+	}
+
+	@Override
+	public void mouseOverAction(InterfaceObject object) {
+		// TODO Auto-generated method stub
+
 	}
 }

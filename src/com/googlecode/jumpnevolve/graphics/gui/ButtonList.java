@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -19,14 +20,14 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class ButtonList extends InterfaceContainer implements Informable {
 
 	private final int distanceBetweenButtons;
-	private HashMap<Integer, Button> list = new HashMap<Integer, Button>();
-	private HashMap<Button, Integer> invertList = new HashMap<Button, Integer>();
+	private HashMap<Integer, InterfaceButton> list = new HashMap<Integer, InterfaceButton>();
+	private HashMap<InterfaceButton, Integer> invertList = new HashMap<InterfaceButton, Integer>();
 	private int next = 0;
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
-	private Button back = new Button(
+	private InterfaceButton back = new InterfaceButton(
 			InterfaceConstants.INTERFACE_BUTTONLIST_BACK,
-			"interface-icons/back-arrow.png"), forth = new Button(
+			"interface-icons/back-arrow.png"), forth = new InterfaceButton(
 			InterfaceConstants.INTERFACE_BUTTONLIST_FORTH,
 			"interface-icons/forth-arrow.png");
 	private static final int BACK_POS = -2;
@@ -52,7 +53,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		forth.addInformable(this);
 	}
 
-	public void addButton(Button object) {
+	public void addButton(InterfaceButton object) {
 		this.list.put(this.next, object);
 		this.invertList.put(object, this.next);
 		this.next = next + 1;
@@ -63,7 +64,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	public void poll(Input input, float secounds) {
 		Object[] abbild = this.list.values().toArray();
 		for (Object button : abbild) {
-			((Button) button).poll(input, secounds);
+			((InterfaceButton) button).poll(input, secounds);
 		}
 	}
 
@@ -76,8 +77,12 @@ public class ButtonList extends InterfaceContainer implements Informable {
 				&& i < abbild.length; i++) {
 			this.list.get(abbild[i]).draw(g);
 		}
-		this.list.get(abbild[0]).draw(g);
-		this.list.get(abbild[1]).draw(g);
+		if (this.isBackMoveable()) {
+			this.list.get(abbild[0]).draw(g);
+		}
+		if (this.isForthMoveable()) {
+			this.list.get(abbild[1]).draw(g);
+		}
 	}
 
 	/**
@@ -87,9 +92,18 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	 * @return
 	 */
 	public Vector getPositionFor(InterfacePart object) {
-		if (object instanceof Button) {
-			return getPositionForListPos(
-					this.invertList.get(object) - this.curPos).add(
+		if (object instanceof InterfaceButton) {
+			int listPos = this.invertList.get(object);
+			if (listPos != BACK_POS && listPos != FORTH_POS) {
+				if (listPos < this.curPos) {
+					return new Vector(-InterfaceButton.BUTTON_DIMENSION * 10, 0);
+				}
+				if (listPos >= this.curPos + this.numberOfButtonsDisplayed) {
+					return new Vector(-InterfaceButton.BUTTON_DIMENSION * 10, 0);
+				}
+			}
+			listPos = listPos - this.curPos;
+			return getPositionForListPos(listPos).add(
 					this.parentContainer.getPositionFor(this));
 		} else {
 			return super.getPositionFor(object);
@@ -103,7 +117,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 			listPos = this.numberOfButtonsDisplayed;
 		}
 		return new Vector(
-				(Button.BUTTON_DIMENSION + this.distanceBetweenButtons)
+				(InterfaceButton.BUTTON_DIMENSION + this.distanceBetweenButtons)
 						* (listPos + 1), 0.0f);
 
 	}
@@ -137,9 +151,28 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		}
 	}
 
+	private boolean isForthMoveable() {
+		return this.list.keySet().toArray().length - 2 > numberOfButtonsDisplayed
+				+ curPos;
+	}
+
+	private boolean isBackMoveable() {
+		return this.curPos > 0;
+	}
+
 	@Override
 	public Shape getPrefferedSize() {
-		return new Rectangle(Vector.ZERO, Button.BUTTON_DIMENSION
-				* (this.numberOfButtonsDisplayed + 2), Button.BUTTON_DIMENSION);
+		int z = 1;
+		if (this.isForthMoveable()) {
+			z++;
+		}
+		if (this.isBackMoveable()) {
+			z++;
+		}
+		float width = (InterfaceButton.BUTTON_DIMENSION + this.distanceBetweenButtons)
+				* (this.numberOfButtonsDisplayed + z)
+				- this.distanceBetweenButtons;
+		return new Rectangle(Vector.ZERO, width,
+				InterfaceButton.BUTTON_DIMENSION);
 	}
 }
