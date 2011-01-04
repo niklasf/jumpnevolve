@@ -10,14 +10,19 @@ package com.googlecode.jumpnevolve.graphics.gui;
 public interface Informable {
 
 	/**
-	 * Wird aufgerufen, wenn ein Interface-Objekt eine Aktion auslöst
+	 * Wird aufgerufen, wenn auf ein InterfaceObject geklickt wurde
 	 * 
-	 * @param function
-	 *            Ein Integerwert, der dem Wert entspricht, mit dem der Button
-	 *            initialisiert wurde (eine Konstante aus
-	 *            {@link InterfaceConstants})
 	 * @param object
 	 *            Das Objekt durch welches die Aktion ausgelöst wurden
 	 */
-	public void interfaceAction(int function, InterfaceObject object);
+	public void mouseClickedAction(InterfaceObject object);
+
+	/**
+	 * Wird aufgerufen, wenn sich die Maus über einem InterfaceObject befindet,
+	 * ohne dass geklickt wurde
+	 * 
+	 * @param object
+	 *            Das Objekt durch welches die Aktion ausgelöst wurden
+	 */
+	public void mouseOverAction(InterfaceObject object);
 }

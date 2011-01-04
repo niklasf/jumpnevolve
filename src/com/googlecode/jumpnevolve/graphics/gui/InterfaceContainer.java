@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -19,25 +20,42 @@ import com.googlecode.jumpnevolve.math.Vector;
 public abstract class InterfaceContainer implements InterfacePart {
 
 	protected HashMap<InterfacePart, Vector> objects = new HashMap<InterfacePart, Vector>();
-	protected final Interfaceable parentInterfaceable;
-	protected final InterfaceContainer parentContainer;
+	protected Interfaceable parentInterfaceable;
+	protected InterfaceContainer parentContainer;
+
+	public InterfaceContainer() {
+	}
+
+	public void setParentContainer(InterfaceContainer parent) {
+		if (parent.contains(this)) {
+			this.parentContainer = parent;
+		} else {
+			System.out.println("Parent enthält dieses Objekt nicht");
+		}
+	}
+
+	public void setParentInterfaceable(Interfaceable parent) {
+		this.parentInterfaceable = parent;
+	}
+
+	public boolean contains(InterfacePart object) {
+		return this.objects.containsKey(object);
+	}
 
 	/**
-	 * 
+	 * @return Das Interfaceable, dem dieser Container zugeordnet ist; {@code
+	 *         null}, wenn es kein solches Interfaceable gibt, weil dieser
+	 *         InterfaceContainer weder dirket einem Interfaceable zugeordnet
+	 *         ist und auch keinem InterfaceContainer zugeordent ist, der einem
+	 *         Interfaceable zugeordnet wurde
 	 */
-	public InterfaceContainer(Interfaceable parent) {
-		this.parentInterfaceable = parent;
-		this.parentContainer = null;
-	}
-
-	public InterfaceContainer(InterfaceContainer parent) {
-		this.parentContainer = parent;
-		this.parentInterfaceable = null;
-	}
-
 	public Interfaceable getInterfaceable() {
 		if (this.parentInterfaceable == null) {
-			return this.parentContainer.getInterfaceable();
+			if (this.parentContainer == null) {
+				return null;
+			} else {
+				return this.parentContainer.getInterfaceable();
+			}
 		} else {
 			return this.parentInterfaceable;
 		}
@@ -53,6 +71,8 @@ public abstract class InterfaceContainer implements InterfacePart {
 	 */
 	protected void add(InterfacePart adding, Vector relativePositionOnScreen) {
 		this.objects.put(adding, relativePositionOnScreen);
+		System.out.println("Geaddet" + adding.toString());
+		adding.setParentContainer(this);
 	}
 
 	protected void remove(InterfacePart removing) {
@@ -96,5 +116,19 @@ public abstract class InterfaceContainer implements InterfacePart {
 				return null;
 			}
 		}
+	}
+
+	/**
+	 * @param object
+	 *            Das Objekt, nach dessen Platz gefragt wird
+	 * @return Der Platz, der für das Objekt zur Verfügung steht
+	 */
+	public Rectangle getPlaceFor(InterfacePart object) {
+		Vector pos = Vector.ZERO;
+		if (this.parentContainer != null) {
+			pos = this.parentContainer.getPositionFor(this);
+		}
+		return new Rectangle(Vector.ZERO, this.getInterfaceable().getWidth()
+				- pos.x, this.getInterfaceable().getHeight() - pos.y);
 	}
 }

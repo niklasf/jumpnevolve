@@ -116,11 +116,6 @@ public class Level extends World {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return null;
-	}
-
 	public void drawBackground(Graphics g) {
 		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
 				this.height / 2.0f), this.width, this.height), ResourceManager

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -35,17 +37,16 @@ public class GridContainer extends InterfaceContainer {
 	 * @param modusX
 	 * @param modusY
 	 */
-	public GridContainer(InterfaceContainer parent, int rows, int cols,
-			int modusX, int modusY) {
-		super(parent);
+	public GridContainer(int rows, int cols, int modusX, int modusY) {
+		super();
 		this.rows = rows;
 		this.cols = cols;
 		this.modusX = modusX;
 		this.modusY = modusY;
 	}
 
-	public GridContainer(InterfaceContainer parent, int rows, int cols) {
-		this(parent, rows, cols, MODUS_DEFAULT, MODUS_DEFAULT);
+	public GridContainer(int rows, int cols) {
+		this(rows, cols, MODUS_DEFAULT, MODUS_DEFAULT);
 	}
 
 	/**
@@ -62,16 +63,6 @@ public class GridContainer extends InterfaceContainer {
 	 */
 	public void add(InterfacePart adding, int row, int col) {
 		super.add(adding, new Vector(col, row));
-		/*
-		 * int y = (int) ((this.getInterfaceable().getHeight() / (rows * 2))
-		 * this.getYModifier() + this.getInterfaceable().getHeight() / rows *
-		 * row); int x = (int) ((this.getInterfaceable().getWidth() / (cols *
-		 * 2)) this.getXModifier() + this.getInterfaceable().getWidth() / cols *
-		 * col); System.out.println("X: " + x + " Y: " + y + " H: " +
-		 * this.getInterfaceable().getHeight() + " W: " +
-		 * this.getInterfaceable().getWidth()); super.add(adding, new Vector(x,
-		 * y));
-		 */
 	}
 
 	@Override
@@ -92,13 +83,12 @@ public class GridContainer extends InterfaceContainer {
 
 	@Override
 	public Vector getPositionFor(InterfacePart object) {
+		Rectangle place = this.parentContainer.getPlaceFor(this);
 		if (this.objects.containsKey(object)) {
 			Vector cell = this.objects.get(object);
-			int x = (int) ((this.getInterfaceable().getWidth() / (cols * 2))
-					* this.getXModifier() + this.getInterfaceable().getWidth()
+			int x = (int) ((place.width / (cols * 2)) * this.getXModifier() + place.width
 					/ cols * cell.x);
-			int y = (int) ((this.getInterfaceable().getHeight() / (rows * 2))
-					* this.getYModifier() + this.getInterfaceable().getHeight()
+			int y = (int) ((place.height / (rows * 2)) * this.getYModifier() + place.height
 					/ rows * cell.y);
 			return new Vector(x, y).add(this.parentContainer
 					.getPositionFor(this));
@@ -129,5 +119,10 @@ public class GridContainer extends InterfaceContainer {
 		default:
 			return 1.0f;
 		}
+	}
+
+	@Override
+	public Shape getPrefferedSize() {
+		return this.parentContainer.getPlaceFor(this);
 	}
 }

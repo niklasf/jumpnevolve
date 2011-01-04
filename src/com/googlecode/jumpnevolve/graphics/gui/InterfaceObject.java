@@ -41,9 +41,9 @@ public abstract class InterfaceObject implements InterfacePart {
 
 	public final int function;
 	public final Shape shape;
-	public final InterfaceContainer parent;
+	public InterfaceContainer parent;
 	private int status;
-	private boolean wasClicked = false;
+	private boolean wasClicked = false, interfaceableAdded = false;
 
 	private ArrayList<Informable> informed = new ArrayList<Informable>();
 
@@ -56,22 +56,42 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            Die Funktion dieses Objekts (eine Konstante aus
 	 *            {@link InterfaceConstants})
 	 */
-	public InterfaceObject(InterfaceContainer parent, Shape shape, int function) {
+	public InterfaceObject(Shape shape, int function) {
 		this.function = function;
 		this.shape = shape;
-		this.parent = parent;
-		this.addInformable(parent.getInterfaceable());
+	}
+
+	public void setParentContainer(InterfaceContainer parent) {
+		if (parent.contains(this)) {
+			System.out.println("Parent geändert");
+			if (this.parent != null && this.parent.getInterfaceable() != null) {
+				this.informed.remove(this.parent.getInterfaceable());
+			}
+			this.parent = parent;
+			if (this.parent.getInterfaceable() != null) {
+				this.addInformable(this.parent.getInterfaceable());
+				this.interfaceableAdded = true;
+			}
+		} else {
+			System.out.println("Parent enthält dieses Objekt nicht");
+		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
+		if (this.interfaceableAdded == false) {
+			if (this.parent.getInterfaceable() != null) {
+				this.addInformable(this.parent.getInterfaceable());
+				this.interfaceableAdded = true;
+			}
+		}
 		if (this.shape.modifyCenter(this.getCenterVector()).isPointInThis(
 				new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				System.out.println("Action " + function);
 				Object[] infos = this.informed.toArray();
 				for (Object informable : infos) {
-					((Informable) informable).interfaceAction(this.function,
-							this);
+					((Informable) informable).mouseClickedAction(this);
 				}
 				if (wasClicked) {
 					this.status = STATUS_DOWN;
@@ -80,6 +100,10 @@ public abstract class InterfaceObject implements InterfacePart {
 				}
 				this.wasClicked = true;
 			} else {
+				Object[] infos = this.informed.toArray();
+				for (Object informable : infos) {
+					((Informable) informable).mouseOverAction(this);
+				}
 				this.status = STATUS_MOUSE_OVER;
 			}
 		} else {
@@ -96,7 +120,10 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            Das Informable-Objekt
 	 */
 	public void addInformable(Informable object) {
-		this.informed.add(object);
+		if (this.informed.contains(object) == false && object != null) {
+			System.out.println("Added Informable: " + object.toString());
+			this.informed.add(object);
+		}
 	}
 
 	/**
@@ -106,7 +133,11 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *         {@link STATUS_DOWN}
 	 */
 	public int getStatus() {
-		return status;
+		return this.status;
+	}
+
+	public int getFunction() {
+		return this.function;
 	}
 
 	/**

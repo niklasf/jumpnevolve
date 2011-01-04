@@ -8,7 +8,8 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -23,9 +24,9 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	private int next = 0;
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
-	private Button back = new Button(this,
+	private Button back = new Button(
 			InterfaceConstants.INTERFACE_BUTTONLIST_BACK,
-			"interface-icons/back-arrow.png"), forth = new Button(this,
+			"interface-icons/back-arrow.png"), forth = new Button(
 			InterfaceConstants.INTERFACE_BUTTONLIST_FORTH,
 			"interface-icons/forth-arrow.png");
 	private static final int BACK_POS = -2;
@@ -37,15 +38,16 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	 * @param numberOfButtonDisplayed
 	 *            Anzahl der Buttons, die angezeigt werden sollen
 	 */
-	public ButtonList(InterfaceContainer parent, int numberOfButtonDisplayed,
-			int distanceBetweenButtons) {
-		super(parent);
+	public ButtonList(int numberOfButtonDisplayed, int distanceBetweenButtons) {
+		super();
 		this.numberOfButtonsDisplayed = numberOfButtonDisplayed;
 		this.distanceBetweenButtons = distanceBetweenButtons;
 		this.list.put(BACK_POS, back);
 		this.invertList.put(back, BACK_POS);
+		this.add(back, Vector.ZERO);
 		this.list.put(FORTH_POS, forth);
 		this.invertList.put(forth, FORTH_POS);
+		this.add(forth, Vector.ZERO);
 		back.addInformable(this);
 		forth.addInformable(this);
 	}
@@ -54,6 +56,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		this.list.put(this.next, object);
 		this.invertList.put(object, this.next);
 		this.next = next + 1;
+		this.add(object, Vector.ZERO);
 	}
 
 	@Override
@@ -106,15 +109,19 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public void interfaceAction(int function, InterfaceObject object) {
+	public void mouseClickedAction(InterfaceObject object) {
 		if (object.getStatus() == InterfaceObject.STATUS_PRESSED) {
-			if (function == InterfaceConstants.INTERFACE_BUTTONLIST_FORTH) {
+			if (object.getFunction() == InterfaceConstants.INTERFACE_BUTTONLIST_FORTH) {
 				this.moveForth();
-			} else if (function == InterfaceConstants.INTERFACE_BUTTONLIST_BACK) {
+			} else if (object.getFunction() == InterfaceConstants.INTERFACE_BUTTONLIST_BACK) {
 				this.moveBack();
 			}
 		}
-		System.out.println("Action");
+	}
+
+	@Override
+	public void mouseOverAction(InterfaceObject object) {
+		// Nichts tun
 	}
 
 	private void moveBack() {
@@ -128,5 +135,11 @@ public class ButtonList extends InterfaceContainer implements Informable {
 				- numberOfButtonsDisplayed) {
 			this.curPos++;
 		}
+	}
+
+	@Override
+	public Shape getPrefferedSize() {
+		return new Rectangle(Vector.ZERO, Button.BUTTON_DIMENSION
+				* (this.numberOfButtonsDisplayed + 2), Button.BUTTON_DIMENSION);
 	}
 }

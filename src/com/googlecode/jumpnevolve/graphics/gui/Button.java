@@ -34,9 +34,9 @@ public class Button extends InterfaceObject {
 	 *            Der Datei-Pfad des Icons, welches auf diesem Button
 	 *            dargestellt werden soll
 	 */
-	public Button(InterfaceContainer parent, int function, String iconPath) {
-		super(parent, new Rectangle(Vector.ZERO, BUTTON_DIMENSION,
-				BUTTON_DIMENSION), function);
+	public Button(int function, String iconPath) {
+		super(new Rectangle(Vector.ZERO, BUTTON_DIMENSION, BUTTON_DIMENSION),
+				function);
 		this.icon = iconPath;
 		System.out.println("Button erzeugt mit Funktion: " + function);
 	}
@@ -57,5 +57,10 @@ public class Button extends InterfaceObject {
 				.getInterfaceable().getZoomX(), this.parent.getInterfaceable()
 				.getZoomY()));
 		// TODO: Beenden
+	}
+
+	@Override
+	public Shape getPrefferedSize() {
+		return new Rectangle(Vector.ZERO, BUTTON_DIMENSION, BUTTON_DIMENSION);
 	}
 }
