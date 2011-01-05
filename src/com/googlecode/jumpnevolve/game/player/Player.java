@@ -1,13 +1,12 @@
-package com.googlecode.jumpnevolve.game;
+package com.googlecode.jumpnevolve.game.player;
 
 import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.player.Basic;
-import com.googlecode.jumpnevolve.game.player.PlayerFigure;
-import com.googlecode.jumpnevolve.game.player.RollingBall;
+import com.googlecode.jumpnevolve.game.Level;
+import com.googlecode.jumpnevolve.game.LimitedObjectFocusingCamera;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -48,10 +47,10 @@ public class Player implements Pollable, Interfaceable {
 		this.parent = parent;
 		this.gui = new MainGUI(this);
 
-		GridContainer grid = new GridContainer(3, 3,
-				GridContainer.MODUS_X_RIGHT, GridContainer.MODUS_Y_UP);
+		GridContainer grid = new GridContainer(3, 3);
 		ButtonList selectList = new ButtonList(2, 10);
-		grid.add(selectList, 0, 2);
+		grid.add(selectList, 0, 2, GridContainer.MODUS_X_RIGHT,
+				GridContainer.MODUS_Y_UP);
 		selectList.addButton(new InterfaceButton(
 				InterfaceConstants.FIGURE_ROLLING_BALL,
 				"object-pictures/figure-rolling-ball.png"));

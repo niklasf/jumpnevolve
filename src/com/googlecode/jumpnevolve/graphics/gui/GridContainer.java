@@ -48,10 +48,12 @@ public class GridContainer extends InterfaceContainer {
 	 */
 	public static final int MODUS_Y_UP = 4;
 
-	private final int modusX;
-	private final int modusY;
+	private final int defaultModusX;
+	private final int defaultModusY;
 	private final int rows;
 	private final int cols;
+	private int[][] modiX;
+	private int[][] modiY;
 
 	/**
 	 * Erzeugt einen neuen GridContainer, der seine Fläche in gleich große
@@ -62,22 +64,34 @@ public class GridContainer extends InterfaceContainer {
 	 * @param cols
 	 *            Die Anzahl der Spalten des Gittes
 	 * @param modusX
-	 *            Der Modus für die X-Anordnung ({@link #MODUS_DEFAULT},
+	 *            Der Default-Modus für die X-Anordnung ({@link #MODUS_DEFAULT},
 	 *            {@link #MODUS_X_LEFT} oder {@link #MODUS_X_RIGHT})
 	 * @param modusY
-	 *            Der Modus für die Y-Anordnung ({@link #MODUS_DEFAULT},
+	 *            Der Default-Modus für die Y-Anordnung ({@link #MODUS_DEFAULT},
 	 *            {@link #MODUS_Y_DOWN} oder {@link #MODUS_Y_UP})
 	 */
 	public GridContainer(int rows, int cols, int modusX, int modusY) {
 		super();
 		this.rows = rows;
 		this.cols = cols;
-		this.modusX = modusX;
-		this.modusY = modusY;
+		this.defaultModusX = modusX;
+		this.defaultModusY = modusY;
+		this.modiX = new int[cols][rows];
+		this.modiY = new int[cols][rows];
+		for (int i = 0; i < this.modiX.length; i++) {
+			for (int j = 0; j < this.modiX[i].length; j++) {
+				this.modiX[i][j] = modusX;
+			}
+		}
+		for (int i = 0; i < this.modiY.length; i++) {
+			for (int j = 0; j < this.modiY[i].length; j++) {
+				this.modiY[i][j] = modusY;
+			}
+		}
 	}
 
 	/**
-	 * Erzeugt einen neuen GridContainer mit den {@code modusX} =
+	 * Erzeugt einen neuen GridContainer mit {@code modusX} =
 	 * {@link #MODUS_DEFAULT} und {@code modusY} = {@link #MODUS_DEFAULT}
 	 * 
 	 * @see #GridContainer(int, int, int, int)
@@ -87,7 +101,10 @@ public class GridContainer extends InterfaceContainer {
 	}
 
 	/**
-	 * Fügt dem GridManager ein InterfacePart in einer bestimmten Zelle hinzu
+	 * Fügt dem GridManager ein InterfacePart in einer bestimmten Zelle mit den
+	 * Default-Modi hinzu
+	 * 
+	 * @see #add(InterfacePart, int, int, int, int)
 	 * 
 	 * @param adding
 	 *            Der hinzuzufügen Objekt
@@ -99,6 +116,32 @@ public class GridContainer extends InterfaceContainer {
 	 *            soll (beginnend mit 0)
 	 */
 	public void add(InterfacePart adding, int row, int col) {
+		this.add(adding, row, col, this.defaultModusX, this.defaultModusY);
+	}
+
+	/**
+	 * Fügt dem GridManager ein InterfacePart in einer bestimmten Zelle mit
+	 * neuen Modi hinzu
+	 * 
+	 * @param adding
+	 *            Der hinzuzufügen Objekt
+	 * @param row
+	 *            Die Reihe der Zelle, die dieses Objekt als Grundlage nehmen
+	 *            soll (beginnend mit 0)
+	 * @param col
+	 *            Die Spalte der Zelle, die dieses Objekt als Grundlage nehmen
+	 *            soll (beginnend mit 0)
+	 * @param modusX
+	 *            Der Modus in x-Richtung für die Zelle, in die das Objekt
+	 *            geaddet wird
+	 * @param modusY
+	 *            Der Modus in y-Richtung für die Zelle, in die das Objekt
+	 *            geaddet wird
+	 */
+	public void add(InterfacePart adding, int row, int col, int modusX,
+			int modusY) {
+		this.modiX[col][row] = modusX;
+		this.modiY[col][row] = modusY;
 		super.add(adding, new Vector(col, row));
 	}
 
@@ -124,10 +167,12 @@ public class GridContainer extends InterfaceContainer {
 		if (this.objects.containsKey(object)) {
 			Vector cell = this.objects.get(object);
 			Shape shape = object.getPrefferedSize();
-			int x = (int) (this.getXPosInCell(place.width / cols, shape
-					.getXRange()) + place.width / cols * cell.x);
-			int y = (int) (this.getYPosInCell(place.height / rows, shape
-					.getYRange()) + place.height / rows * cell.y);
+			int x = (int) (this.getXPosInCell((int) cell.x, (int) cell.y,
+					place.width / cols, shape.getXRange()) + place.width / cols
+					* cell.x);
+			int y = (int) (this.getYPosInCell((int) cell.x, (int) cell.y,
+					place.height / rows, shape.getYRange()) + place.height
+					/ rows * cell.y);
 			return new Vector(x, y).add(this.parentContainer
 					.getPositionFor(this));
 		} else {
@@ -135,8 +180,13 @@ public class GridContainer extends InterfaceContainer {
 		}
 	}
 
-	private float getXPosInCell(float cellWidth, float objectWidth) {
-		switch (this.modusX) {
+	/**
+	 * Liefert die x-Koordinate für das Objekt in der Zelle gemäß dem
+	 * eingestellen x-Modus
+	 */
+	private float getXPosInCell(int col, int row, float cellWidth,
+			float objectWidth) {
+		switch (this.modiX[col][row]) {
 		case MODUS_X_LEFT:
 			return 0;
 		case MODUS_X_RIGHT:
@@ -147,8 +197,13 @@ public class GridContainer extends InterfaceContainer {
 		}
 	}
 
-	private float getYPosInCell(float cellHeight, float objectHeight) {
-		switch (this.modusY) {
+	/**
+	 * Liefert die y-Koordinate für das Objekt in der Zelle gemäß dem
+	 * eingestellen y-Modus
+	 */
+	private float getYPosInCell(int col, int row, float cellHeight,
+			float objectHeight) {
+		switch (this.modiY[col][row]) {
 		case MODUS_Y_UP:
 			return 0;
 		case MODUS_Y_DOWN:

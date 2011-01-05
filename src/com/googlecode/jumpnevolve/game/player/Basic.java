@@ -2,7 +2,6 @@ package com.googlecode.jumpnevolve.game.player;
 
 import org.newdawn.slick.Graphics;
 
-import com.googlecode.jumpnevolve.game.Playable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.math.Circle;

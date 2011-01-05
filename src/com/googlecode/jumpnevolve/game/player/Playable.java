@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.googlecode.jumpnevolve.game;
+package com.googlecode.jumpnevolve.game.player;
 
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
