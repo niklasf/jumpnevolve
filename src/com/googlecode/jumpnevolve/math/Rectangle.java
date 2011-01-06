@@ -361,8 +361,8 @@ public class Rectangle implements Shape {
 
 	@Override
 	public boolean isPointInThis(Vector p) {
-		if (p.x <= this.x || p.y <= this.y || p.x >= this.x + this.width
-				|| p.y >= this.y + this.height) {
+		if (p.x < this.x || p.y < this.y || p.x > this.x + this.width
+				|| p.y > this.y + this.height) {
 			return false;
 		} else {
 			return true;
@@ -511,7 +511,8 @@ public class Rectangle implements Shape {
 				// TODO: Diesen Fall vllt. noch verbessern (nicht alle Seiten
 				// blocken)
 			} else {
-				return new Collision();
+				return new Collision(); // Leere Kollision zurückgeben
+				// FIXME: Fehler ausgeben
 			}
 		} else {
 			return new Collision(); // Leere Kollision zurückgeben
