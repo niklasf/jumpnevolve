@@ -420,6 +420,96 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
+	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt <b>beginnt</b>
+	 * 
+	 * @param subareaWidth
+	 *            Die Breite einer Subarea
+	 * @param maxSubarea
+	 *            Die Nummer der letzten Subarea
+	 * @return Der zurückgegebene Wert {@code return} genügt immer folgenden
+	 *         Bedingungen:</p> {@code return} >= 0 und {@code return} <=
+	 *         {@code maxSubarea}
+	 */
+	public final int getStartSubarea(int subareaWidth, int maxSubarea) {
+		int subarea = (int) (this.getHorizontalStart() / subareaWidth);
+		if (subarea < 0) {
+			subarea = 0;
+		}
+		if (subarea > maxSubarea) {
+			subarea = maxSubarea;
+		}
+		return subarea;
+	}
+
+	/**
+	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt <b>endet</b>
+	 * 
+	 * @param subareaWidth
+	 *            Die Breite einer Subarea
+	 * @param maxSubarea
+	 *            Die Nummer der letzten Subarea
+	 * @return Der zurückgegebene Wert {@code return} genügt immer folgenden
+	 *         Bedingungen:</p> {@code return} >= 0 und {@code return} <=
+	 *         {@code maxSubarea}
+	 */
+	public final int getEndSubarea(int subareaWidth, int maxSubarea) {
+		int subarea = (int) (this.getHorizontalEnd() / subareaWidth);
+		if (subarea < 0) {
+			subarea = 0;
+		}
+		if (subarea > maxSubarea) {
+			subarea = maxSubarea;
+		}
+		return subarea;
+	}
+
+	/**
+	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt letzte Runde
+	 * <b>begann</b>
+	 * 
+	 * @param subareaWidth
+	 *            Die Breite einer Subarea
+	 * @param maxSubarea
+	 *            Die Nummer der letzten Subarea
+	 * @return Der zurückgegebene Wert {@code return} genügt immer folgenden
+	 *         Bedingungen:</p> {@code return} >= 0 und {@code return} <=
+	 *         {@code maxSubarea}
+	 */
+	public final int getOldStartSubarea(int subareaWidth, int maxSubarea) {
+		int subarea = (int) (this.getOldHorizontalStart() / subareaWidth);
+		if (subarea < 0) {
+			subarea = 0;
+		}
+		if (subarea > maxSubarea) {
+			subarea = maxSubarea;
+		}
+		return subarea;
+	}
+
+	/**
+	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt letzte Runde
+	 * <b>endete</b>
+	 * 
+	 * @param subareaWidth
+	 *            Die Breite einer Subarea
+	 * @param maxSubarea
+	 *            Die Nummer der letzten Subarea
+	 * @return Der zurückgegebene Wert {@code return} genügt immer folgenden
+	 *         Bedingungen:</p> {@code return} >= 0 und {@code return} <=
+	 *         {@code maxSubarea}
+	 */
+	public final int getOldEndSubarea(int subareaWidth, int maxSubarea) {
+		int subarea = (int) (this.getOldHorizontalEnd() / subareaWidth);
+		if (subarea < 0) {
+			subarea = 0;
+		}
+		if (subarea > maxSubarea) {
+			subarea = maxSubarea;
+		}
+		return subarea;
+	}
+
+	/**
 	 * @return Die x-Koordinate des linken Endes des Objekts
 	 */
 	public final float getHorizontalStart() {
