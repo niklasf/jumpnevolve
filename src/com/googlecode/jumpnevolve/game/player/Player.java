@@ -32,9 +32,6 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class Player implements Pollable, Interfaceable {
 
-	public static final int ERROR = -1;
-	public static final int HIGH_JUMP = 100;
-
 	private PlayerFigure figure;
 	private Playable cur;
 	private HashMap<Integer, Playable> figureList = new HashMap<Integer, Playable>();
@@ -72,6 +69,10 @@ public class Player implements Pollable, Interfaceable {
 	@Override
 	public void poll(Input input, float secounds) {
 		gui.poll(input, secounds);
+		if (this.figure.getShape().getUpperEnd() > this.parent.height) {
+			this.figure.setPosition(this.figure.getLastSave());
+			this.figure.setVelocity(Vector.ZERO);
+		}
 		if (input.isKeyDown(Input.KEY_UP)) {
 			figure.jump();
 		}
@@ -104,7 +105,7 @@ public class Player implements Pollable, Interfaceable {
 			}
 			this.figureList.put(curNum, this.getNewFigure(curNum));
 		}
-		int curNum = ERROR;
+		int curNum = InterfaceConstants.ERROR;
 		if (startFigure.equals("RollingBall")) {
 			curNum = InterfaceConstants.FIGURE_ROLLING_BALL;
 		} else if (startFigure.equals("JumpingCross")) {

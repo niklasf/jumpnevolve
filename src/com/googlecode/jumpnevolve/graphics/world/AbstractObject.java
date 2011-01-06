@@ -53,7 +53,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Konstante für die maximale Geschwindigkeit in einer Richtung (x bzw. y)
 	 */
-	private static final float MAXIMUM_VELOCITY_ONE_WAY = 150;
+	private static final float MAXIMUM_VELOCITY_ONE_WAY = 250;
 
 	private Shape shape;
 
