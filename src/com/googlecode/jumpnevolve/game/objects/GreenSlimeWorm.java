@@ -11,6 +11,8 @@ import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -76,38 +78,58 @@ public class GreenSlimeWorm extends EnemyTemplate {
 	}
 
 	@Override
-	public void onLivingCrash(AbstractObject other) {
-		// Soldier kann nur den Spieler töten, wenn dieser nicht oberhalb von
-		// ihm ist
-		if (other instanceof PlayerFigure) {
-			Collision col = this.getShape().getCollision(other.getShape(),
-					other.isMoveable(), this.isMoveable());
-			if (col.isBlocked(Shape.RIGHT) == true || col.isBlocked(Shape.LEFT)
-					|| col.isBlocked(Shape.DOWN)) {
-				other.kill(this);
-			}
-		}
-	}
-
-	@Override
-	public void kill(AbstractObject killer) {
-		if (killer instanceof PlayerFigure) {
-			if (divisble) {
-				this.getWorld().add(
-						new GreenSlimeWorm(this.getWorld(), this.getPosition()
-								.modifyX(this.getPosition().x + 25.0f), true));
-				this.getWorld().add(
-						new GreenSlimeWorm(this.getWorld(), this.getPosition()
-								.modifyX(this.getPosition().x - 25.0f), true));
-			}
-			this.setAlive(false);
-		}
-	}
-
-	@Override
 	public void draw(Graphics g) {
 		GraphicUtils
 				.drawImage(g, this.getShape(), ResourceManager.getInstance()
 						.getImage("object-pictures/green-slime-worm.png"));
+	}
+
+	@Override
+	public int getDamage() {
+		return 1;
+	}
+
+	@Override
+	public int getKindOfDamage() {
+		return DAMAGE_NORMAL;
+	}
+
+	@Override
+	public boolean wantDamaging(Living object) {
+		return object.getCompany() == COMPANY_PLAYER;
+	}
+
+	@Override
+	public void damage(Damageable damager) {
+		this.killed();
+	}
+
+	@Override
+	public int getDeff(int kindOfDamage) {
+		return 0;
+	}
+
+	@Override
+	public int getHP() {
+		return 1;
+	}
+
+	@Override
+	public void killed() {
+		if (divisble) {
+			this.getWorld().add(
+					new GreenSlimeWorm(this.getWorld(), this.getPosition()
+							.modifyX(this.getPosition().x + 25.0f), true));
+			this.getWorld().add(
+					new GreenSlimeWorm(this.getWorld(), this.getPosition()
+							.modifyX(this.getPosition().x - 25.0f), true));
+		}
+		this.setAlive(false);
+	}
+
+	@Override
+	public boolean canDamage(Collision col) {
+		return col.isBlocked(Shape.RIGHT) || col.isBlocked(Shape.LEFT)
+				|| col.isBlocked(Shape.DOWN);
 	}
 }

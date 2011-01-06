@@ -7,6 +7,8 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Activable;
+import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -32,15 +34,14 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Door extends ObjectTemplate {
+public class Door extends ObjectTemplate implements Activable {
 
 	private static final long serialVersionUID = -1980816280681808337L;
 
-	private boolean opneningState = false;
+	private boolean openingState = false;
 
 	public Door(World world, Vector position, Vector dimension) {
-		super(world, new Rectangle(position, dimension), 0.0f, true, false,
-				true, false);
+		super(world, new Rectangle(position, dimension), 0.0f, true, false);
 	}
 
 	@Override
@@ -50,38 +51,58 @@ public class Door extends ObjectTemplate {
 	}
 
 	@Override
-	public void activate(AbstractObject activator) {
-		if (activator instanceof ActivatingObject) {
+	public void activate(Activating activator) {
+		if (activator.getCompany() == COMPANY_OBJECT) {
 			this.open();
 		}
 	}
 
 	@Override
-	public void deactivate(AbstractObject deactivator) {
-		if (deactivator instanceof ActivatingObject) {
+	public void deactivate(Activating deactivator) {
+		if (deactivator.getCompany() == COMPANY_OBJECT) {
 			this.close();
 		}
 	}
 
 	@Override
 	public void onBlockableCrash(AbstractObject other) {
-		if (opneningState == false) {
+		if (openingState == false) {
 			other.blockWay(this);
 		}
 	}
 
 	private void open() {
-		this.opneningState = true;
+		this.openingState = true;
 	}
 
 	private void close() {
-		this.opneningState = false;
+		this.openingState = false;
 	}
 
 	public void draw(Graphics g) {
-		if (opneningState == false) {
+		if (openingState == false) {
 			GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
 					.getImage("textures/wood.png"), false);
 		}
+	}
+
+	@Override
+	public boolean isActivableBy(Activating activator) {
+		return activator.getCompany() == COMPANY_OBJECT;
+	}
+
+	@Override
+	public boolean isActivated() {
+		return openingState;
+	}
+
+	@Override
+	public boolean isDeactivableBy(Activating deactivator) {
+		return deactivator.getCompany() == COMPANY_OBJECT;
+	}
+
+	@Override
+	public int getCompany() {
+		return COMPANY_OBJECT;
 	}
 }

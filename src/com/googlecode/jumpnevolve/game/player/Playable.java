@@ -33,7 +33,7 @@ public interface Playable extends Drawable {
 
 	public boolean isLiving();
 
-	public boolean isKillable();
+	public boolean isDamageable();
 
 	public Shape getShape();
 }

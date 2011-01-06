@@ -39,8 +39,7 @@ public class Elevator extends ObjectTemplate {
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {
-		super(world, new Rectangle(position, dimension), 2.0f, true, false,
-				false, false);
+		super(world, new Rectangle(position, dimension), 2.0f, true, false);
 		if (upEnd > downEnd) {
 			this.upEnd = downEnd;
 			this.downEnd = upEnd;

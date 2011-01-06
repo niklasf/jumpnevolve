@@ -36,7 +36,7 @@ public class RollingBall implements Playable {
 	}
 
 	@Override
-	public boolean isKillable() {
+	public boolean isDamageable() {
 		// TODO Auto-generated method stub
 		return true;
 	}

@@ -69,13 +69,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private boolean pushable;
 
-	private boolean living;
-
-	private boolean activable;
-
-	private boolean alive;
-
-	private boolean killable;
+	private boolean alive = true;
 
 	// Attribute pro Runde
 
@@ -120,18 +114,11 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Ob das Objekt, ein anderes (lebendes) Objekt töten kann
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
-			boolean blockable, boolean pushable, boolean living,
-			boolean activable, boolean killable) {
+			boolean blockable, boolean pushable) {
 		this(world, shape);
 		this.mass = mass;
 		this.blockable = blockable;
 		this.pushable = pushable;
-		this.living = living;
-		this.activable = activable;
-		this.killable = killable;
-		if (this.living) {
-			this.alive = true;
-		}
 	}
 
 	/**
@@ -205,7 +192,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Schließt eine Simulationsrunde ab, indem die Kraft auf das Objekt
 	 * angewendet wird und es bewegt wird.
 	 * 
-	 * Dabei wird darauf geachtet, nicht in geblockt Seiten zu laufen.
+	 * Dabei wird darauf geachtet, nicht in geblockte Seiten zu laufen.
 	 */
 	public void endRound() {
 		// if (this.getPosition().y > 100) {
@@ -290,7 +277,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
 			this.velocity = this.velocity.add(deltaVelocity);
 
-			// Begrenze Geschwindigkeit
+			// Begrenze die Geschwindigkeit
 			if (this.velocity.x > AbstractObject.MAXIMUM_VELOCITY_ONE_WAY) {
 				this.velocity = this.velocity
 						.modifyX(AbstractObject.MAXIMUM_VELOCITY_ONE_WAY);
@@ -310,7 +297,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			Vector newPos = this.shape.getCenter().add(
 					this.velocity.mul(this.oldStep));
 
-			// Neue Form bestimmen
+			// Neues Shape bestimmen
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
 			this.shape = newShape;
@@ -350,39 +337,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public final void applyForce(Vector force) {
 		this.force = this.force.add(force);
-	}
-
-	/**
-	 * Aktiviert das Objekt
-	 * 
-	 * @param activator
-	 *            Das Objekt, durch welches dieses aktiviert wurde
-	 */
-	public void activate(AbstractObject activator) {
-	}
-
-	/**
-	 * Deaktiviert das Objekt
-	 * 
-	 * @param deactivator
-	 *            Das Objekt, durch welches dieses deaktiviert wurde
-	 */
-	public void deactivate(AbstractObject deactivator) {
-	}
-
-	/**
-	 * Tötet dieses Objekt, wenn der killer töten kann.
-	 * 
-	 * In diese Methode gehören Immunitäten des Objekts gegenüber bestimmten
-	 * Killern.
-	 * 
-	 * @param killer
-	 *            Das Objekt, das dieses tötet
-	 */
-	public void kill(AbstractObject killer) {
-		if (killer.isKillable()) {
-			this.setAlive(false);
-		}
 	}
 
 	/**
@@ -622,28 +576,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
-	 * @return {@code true}, wenn das Objekt lebendig ist.
-	 */
-	public boolean isLiving() {
-		return this.living;
-	}
-
-	/**
-	 * @return {@code true}, wenn das Objekt aktivierbar ist. Achtung: Nicht
-	 *         unbedingt alle Objekte können das Objekt aktivieren
-	 */
-	public boolean isActivable() {
-		return this.activable;
-	}
-
-	/**
-	 * @return {@code true}, wenn das Objekt töten kann.
-	 */
-	public boolean isKillable() {
-		return this.killable;
-	}
-
-	/**
 	 * @param direction
 	 *            Richtung, welche abgefragt wird; bezieht sich auf die
 	 *            Richtungs-Konstanten von {@link Shape}
@@ -727,6 +659,36 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Der Kollisionspartner
 	 */
 	public void onCrash(AbstractObject other) {
+		// Treffen auf ein Living-Object, wenn dieses ein Damageable ist
+		if (this instanceof Damageable && other instanceof Living) {
+			// Schaden zufügen, wenn das Damageable dem Living Schaden zufügen
+			// will
+			if (((Damageable) this).wantDamaging((Living) other)
+					&& ((Damageable) this).canDamage(this.getShape()
+							.getCollision(other.getShape(), true, true))) {
+				((Living) other).damage((Damageable) this);
+			}
+		}
+		// Treffen auf ein Activable, wenn dieses ein Activating ist
+		if (this instanceof Activating && other instanceof Activable) {
+			if (((Activable) other).isActivated()) {
+				// Wenn das Activable aktiviert ist, prüfen, ob es deaktivert
+				// werden kann und soll
+				if (((Activable) other).isDeactivableBy((Activating) this)
+						&& ((Activating) this)
+								.wantDeactivate((Activable) other)) {
+					((Activable) other).deactivate((Activating) this);
+				}
+			} else {
+				// Wenn das Activable deaktiviert ist, prüfen, ob es aktivert
+				// werden kann und soll
+				if (((Activable) other).isActivableBy((Activating) this)
+						&& ((Activating) this).wantActivate((Activable) other)) {
+					((Activable) other).activate((Activating) this);
+				}
+			}
+		}
+
 		// if (this instanceof Soldier)
 		// System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
@@ -736,12 +698,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		}
 		if (other.pushable) {
 			onPushableCrash(other);
-		}
-		if (other.living) {
-			onLivingCrash(other);
-		}
-		if (other.activable) {
-			onActivableCrash(other);
 		}
 		onGeneralCrash(other);
 	}
@@ -773,36 +729,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		other.giveEnergy(this.getVelocity().getDirection().mul(
 				this.getVelocity().abs() * this.getVelocity().abs()
 						* (0.5f * this.getMass())));
-	}
-
-	/**
-	 * Wird aufgerufen, wenn das Objekt auf ein lebendes Objekt trifft.
-	 * 
-	 * Das andere Objekt wird getötet, wenn dieses Objekt tötungsfähig ist
-	 * (Immunitäten beachten).
-	 * 
-	 * Hierein gehören Eigenschaft des Objekts, die bewirken, dass ein
-	 * tötungsfähiges Objekt (this) ein anderes Objekt tötet (other).
-	 * 
-	 * @param other
-	 *            Das andere (lebende) Objekt
-	 */
-	public void onLivingCrash(AbstractObject other) {
-		if (this.isKillable()) {
-			other.kill(this);
-		}
-	}
-
-	/**
-	 * Wird aufgerufen wenn dieses Objekt auf ein aktivierbares Objekt trifft.
-	 * 
-	 * Das andere Objekt wird aktiviert.
-	 * 
-	 * @param other
-	 *            Das andere (aktivierbare) Objekt
-	 */
-	public void onActivableCrash(AbstractObject other) {
-		other.activate(this);
 	}
 
 	public void onGeneralCrash(AbstractObject other) {

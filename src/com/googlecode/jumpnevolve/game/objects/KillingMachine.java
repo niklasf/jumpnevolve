@@ -5,7 +5,10 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -49,24 +52,43 @@ public class KillingMachine extends EnemyTemplate {
 	}
 
 	@Override
-	public void onLivingCrash(AbstractObject other) {
-		// KillingMachine versucht alle lebenden Objekte zu töten, wenn diese
-		// nicht oberhalb von ihr sind
-		if (this.getShape().getCollision(other.getShape(), other.isMoveable(),
-				this.isMoveable()).isBlocked(Shape.UP) == false) {
-			other.kill(this);
-		}
+	public boolean canDamage(Collision col) {
+		return !col.isBlocked(Shape.UP);
 	}
 
 	@Override
-	public void kill(AbstractObject killer) {
-		// KillingMachine kann von allen Seiten und allen Objekten getötet
-		// werden
-		if (killer instanceof PlayerFigure) {
-			// TODO: Punkte oder ähnliches für den Spieler zählen
-		}
+	public int getDamage() {
+		return 10;
+	}
+
+	@Override
+	public int getKindOfDamage() {
+		return DAMAGE_NORMAL;
+	}
+
+	@Override
+	public boolean wantDamaging(Living object) {
+		return true;
+	}
+
+	@Override
+	public void damage(Damageable damager) {
+		this.killed();
+	}
+
+	@Override
+	public int getDeff(int kindOfDamage) {
+		return 0;
+	}
+
+	@Override
+	public int getHP() {
+		return 1;
+	}
+
+	@Override
+	public void killed() {
 		this.setAlive(false);
-		// Lebensstatus auf tot setzen, da der Gegner getötet wurde
 	}
 
 	// TODO: draw-Methode einfügen

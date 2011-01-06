@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Fighting;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 
@@ -17,18 +18,16 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class EnemyTemplate extends AbstractObject {
+public abstract class EnemyTemplate extends AbstractObject implements Fighting {
 
 	private static final long serialVersionUID = 6877195164492992576L;
 
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
-		super(world, shape, mass, blockable, false, true, false, true);
+		super(world, shape, mass, blockable, false);
 	}
 
-	public void onLivingCrash(AbstractObject other) {
-		// Anderes Objekt töten, wenn es kein Enemay ist
-		if (other instanceof EnemyTemplate == false) {
-			other.kill(this);
-		}
+	@Override
+	public int getCompany() {
+		return COMPANY_ENEMY;
 	}
 }

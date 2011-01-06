@@ -22,6 +22,7 @@ import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -92,7 +93,7 @@ public class Levelloader {
 								.split(","));
 
 				// HashMaps für Objekte zum Zwischenspeichern erstellen
-				HashMap<String, AbstractObject> activableObjects = new HashMap<String, AbstractObject>();
+				HashMap<String, Activable> activableObjects = new HashMap<String, Activable>();
 				ArrayList<ActivatingObject> activatingObjects = new ArrayList<ActivatingObject>();
 				ArrayList<String[]> argumtensForActivating = new ArrayList<String[]>();
 				ArrayList<AbstractObject> otherObjects = new ArrayList<AbstractObject>();
@@ -149,7 +150,7 @@ public class Levelloader {
 				}
 				for (int i = 0; i < activatingObjects.size(); i++) {
 					for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
-						activatingObjects.get(i).addObjectsToActivate(
+						activatingObjects.get(i).addActivable(
 								activableObjects.get(argumtensForActivating
 										.get(i)[j]));
 					}
@@ -161,7 +162,7 @@ public class Levelloader {
 				for (AbstractObject object : otherObjects) {
 					this.level.add(object);
 				}
-				for (AbstractObject object : activableObjects.values()) {
+				for (Object object : activableObjects.values()) {
 					this.level.add(object);
 				}
 

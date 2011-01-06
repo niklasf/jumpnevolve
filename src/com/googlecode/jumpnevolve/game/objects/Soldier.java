@@ -8,7 +8,10 @@ import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -41,7 +44,6 @@ public class Soldier extends EnemyTemplate {
 	public Soldier(World world, Vector position) {
 		super(world, new Rectangle(position, new Vector(20.0f, 20.0f)), 5.0f,
 				true);
-		// TODO shape durch position erzeugen und super übergeben
 	}
 
 	@Override
@@ -54,33 +56,49 @@ public class Soldier extends EnemyTemplate {
 	}
 
 	@Override
-	public void onLivingCrash(AbstractObject other) {
-		// Soldier kann nur den Spieler töten, wenn dieser nicht oberhalb von
-		// ihm ist
-		if (other instanceof PlayerFigure) {
-			if (this.getShape().getCollision(other.getShape(),
-					other.isMoveable(), this.isMoveable()).isBlocked(Shape.UP) == false) {
-				other.kill(this);
-			}
-		}
-	}
-
-	@Override
-	public void kill(AbstractObject killer) {
-		// Soldier kann nicht durch andere Soldaten getötet werden
-		if (killer instanceof Soldier == false) {
-			if (killer instanceof PlayerFigure) {
-				// TODO: Punkte oder ähnliches für den Spieler zählen
-			}
-			this.setAlive(false);
-			// Lebensstatus auf tot setzen, da der Gegner getötet wurde
-		}
-	}
-
-	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
 				.getInstance().getImage(
 						"object-pictures/simple-foot-soldier.png"));
+	}
+
+	@Override
+	public boolean canDamage(Collision col) {
+		return !col.isBlocked(Shape.UP);
+	}
+
+	@Override
+	public int getDamage() {
+		return 1;
+	}
+
+	@Override
+	public int getKindOfDamage() {
+		return DAMAGE_NORMAL;
+	}
+
+	@Override
+	public boolean wantDamaging(Living object) {
+		return object.getCompany() == COMPANY_PLAYER;
+	}
+
+	@Override
+	public void damage(Damageable damager) {
+		this.killed();
+	}
+
+	@Override
+	public int getDeff(int kindOfDamage) {
+		return 0;
+	}
+
+	@Override
+	public int getHP() {
+		return 1;
+	}
+
+	@Override
+	public void killed() {
+		this.setAlive(false);
 	}
 }
