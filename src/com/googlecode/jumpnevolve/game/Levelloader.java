@@ -111,37 +111,48 @@ public class Levelloader {
 					String name = currentSplit[2];
 					String activates = currentSplit[3];
 					String arguments = currentSplit[4];
+					AbstractObject newObject = null;
 
 					if (className.equals("WalkingSoldier")) {
-						otherObjects.add(new WalkingSoldier(this.level,
-								position));
+						newObject = new WalkingSoldier(this.level, position);
 					} else if (className.equals("JumpingSoldier")) {
-						otherObjects.add(new JumpingSoldier(this.level,
-								position));
+						newObject = new JumpingSoldier(this.level, position);
 					} else if (className.equals("Soldier")) {
-						otherObjects.add(new Soldier(this.level, position));
+						newObject = new Soldier(this.level, position);
 					} else if (className.equals("KillingMachine")) {
-						otherObjects.add(new KillingMachine(this.level,
-								position));
+						newObject = new KillingMachine(this.level, position);
 					} else if (className.equals("Button")) {
-						activatingObjects.add(new Button(this.level, position,
-								this.toFloat(arguments)));
+						newObject = new Button(this.level, position, this
+								.toFloat(arguments));
 						argumtensForActivating.add(activates.split(","));
 					} else if (className.equals("Door")) {
-						activableObjects.put(name, new Door(this.level,
-								position, this.toVector(arguments)));
+						newObject = new Door(this.level, position, this
+								.toVector(arguments));
 					} else if (className.equals("Ground")) {
-						otherObjects.add(new Ground(this.level, position, this
-								.toVector(arguments)));
+						newObject = new Ground(this.level, position, this
+								.toVector(arguments));
 					} else if (className.equals("Elevator")) {
 						String[] curArgus = arguments.split(",");
-						otherObjects.add(new Elevator(this.level, position,
-								this.toVector(curArgus[0]), this
-										.toFloat(curArgus[1]), this
-										.toFloat(curArgus[2])));
+						newObject = new Elevator(this.level, position, this
+								.toVector(curArgus[0]), this
+								.toFloat(curArgus[1]), this
+								.toFloat(curArgus[2]));
 					} else if (className.equals("GreenSlimeWorm")) {
-						otherObjects.add(new GreenSlimeWorm(this.level,
-								position));
+						newObject = new GreenSlimeWorm(this.level, position);
+					}
+					if (newObject != null) {
+						boolean alreadyPutted = false;
+						if (newObject instanceof ActivatingObject) {
+							activatingObjects.add((ActivatingObject) newObject);
+							alreadyPutted = true;
+						}
+						if (newObject instanceof Activable) {
+							activableObjects.put(name, (Activable) newObject);
+							alreadyPutted = true;
+						}
+						if (alreadyPutted == false) {
+							otherObjects.add(newObject);
+						}
 					}
 					// TODO: Weitere Klassen einfügen
 					// Aktivierenden Objekten, die zu aktivierenden Objekt
