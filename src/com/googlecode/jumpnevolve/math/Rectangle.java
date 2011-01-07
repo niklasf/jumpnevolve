@@ -337,23 +337,23 @@ public class Rectangle implements Shape {
 		}
 	}
 
-	private Vector getHighLeftCorner() {
+	public Vector getHighLeftCorner() {
 		return this.getCenter().add(
 				new Vector(-this.width / 2.0f, -this.height / 2.0f));
 	}
 
-	private Vector getHighRightCorner() {
+	public Vector getHighRightCorner() {
 		return this.getCenter().add(
 				new Vector(this.width / 2.0f, -this.height / 2.0f));
 	}
 
-	private Vector getLowLeftCorner() {
+	public Vector getLowLeftCorner() {
 		return this.getCenter().add(
 				new Vector(-this.width / 2.0f, this.height / 2.0f));
 
 	}
 
-	private Vector getLowRightCorner() {
+	public Vector getLowRightCorner() {
 		return this.getCenter().add(
 				new Vector(this.width / 2.0f, this.height / 2.0f));
 

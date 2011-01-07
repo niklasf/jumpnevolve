@@ -13,6 +13,11 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Ein GridContainer unterteilt die ihm zugeteilte Fläche in gleich große
+ * Rechtecke. Objekte können in verschiedenen Modi angeordnet werden (
+ * {@link #MODUS_DEFAULT}, {@link #MODUS_X_LEFT} oder {@link #MODUS_X_RIGHT},
+ * {@link #MODUS_Y_DOWN} oder {@link #MODUS_Y_UP}).
+ * 
  * @author Erik Wagner
  * 
  */
@@ -148,16 +153,16 @@ public class GridContainer extends InterfaceContainer {
 	@Override
 	public void draw(Graphics g) {
 		Object[] containerCopy = objects.keySet().toArray();
-		for (Object interfaceContainer : containerCopy) {
-			((InterfaceContainer) interfaceContainer).draw(g);
+		for (Object interfacePart : containerCopy) {
+			((InterfacePart) interfacePart).draw(g);
 		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
 		Object[] containerCopy = objects.keySet().toArray();
-		for (Object interfaceContainer : containerCopy) {
-			((InterfaceContainer) interfaceContainer).poll(input, secounds);
+		for (Object interfacePart : containerCopy) {
+			((InterfacePart) interfacePart).poll(input, secounds);
 		}
 	}
 
@@ -166,7 +171,7 @@ public class GridContainer extends InterfaceContainer {
 		Rectangle place = this.parentContainer.getPlaceFor(this);
 		if (this.objects.containsKey(object)) {
 			Vector cell = this.objects.get(object);
-			Shape shape = object.getPrefferedSize();
+			Shape shape = object.getPreferedSize();
 			int x = (int) (this.getXPosInCell((int) cell.x, (int) cell.y,
 					place.width / cols, shape.getXRange()) + place.width / cols
 					* cell.x);
@@ -215,7 +220,7 @@ public class GridContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getPrefferedSize() {
+	public Shape getPreferedSize() {
 		return this.parentContainer.getPlaceFor(this);
 	}
 

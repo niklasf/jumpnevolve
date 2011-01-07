@@ -28,7 +28,7 @@ public class MainGUI extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getPrefferedSize() {
+	public Shape getPreferedSize() {
 		return new Rectangle(Vector.ZERO, this.parentInterfaceable.getWidth(),
 				this.parentInterfaceable.getHeight());
 	}

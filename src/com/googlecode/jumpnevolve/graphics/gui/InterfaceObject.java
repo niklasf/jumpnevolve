@@ -40,7 +40,6 @@ public abstract class InterfaceObject implements InterfacePart {
 	public static final int STATUS_DOWN = 3;
 
 	public final int function;
-	public final Shape shape;
 	public InterfaceContainer parent;
 	private int status;
 	private boolean wasClicked = false, interfaceableAdded = false;
@@ -56,14 +55,12 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            Die Funktion dieses Objekts (eine Konstante aus
 	 *            {@link InterfaceConstants})
 	 */
-	public InterfaceObject(Shape shape, int function) {
+	public InterfaceObject(int function) {
 		this.function = function;
-		this.shape = shape;
 	}
 
 	public void setParentContainer(InterfaceContainer parent) {
 		if (parent.contains(this)) {
-			System.out.println("Parent geändert");
 			if (this.parent != null && this.parent.getInterfaceable() != null) {
 				this.informed.remove(this.parent.getInterfaceable());
 			}
@@ -85,8 +82,10 @@ public abstract class InterfaceObject implements InterfacePart {
 				this.interfaceableAdded = true;
 			}
 		}
-		if (this.shape.modifyCenter(this.getCenterVector()).isPointInThis(
-				new Vector(input.getMouseX(), input.getMouseY()))) {
+		if (this
+				.getPreferedSize()
+				.modifyCenter(this.getCenterVector())
+				.isPointInThis(new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 				Object[] infos = this.informed.toArray();
 				for (Object informable : infos) {
@@ -121,7 +120,6 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public void addInformable(Informable object) {
 		if (this.informed.contains(object) == false && object != null) {
-			System.out.println("Added Informable: " + object.toString());
 			this.informed.add(object);
 		}
 	}
@@ -146,7 +144,8 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public Vector getCenterVector() {
 		return this.parent.getPositionFor(this).add(
-				new Vector(this.shape.getDistanceToSide(Shape.LEFT), this.shape
+				new Vector(this.getPreferedSize()
+						.getDistanceToSide(Shape.LEFT), this.getPreferedSize()
 						.getDistanceToSide(Shape.UP)));
 	}
 }

@@ -15,9 +15,9 @@ import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
-import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
@@ -65,10 +65,9 @@ public class EditorLevel extends Level implements Interfaceable {
 		super(new Levelloader(null), 1, 1, 1);
 		this.parent = parent;
 		this.gui = new MainGUI(this);
-		GridContainer grid = new GridContainer(3, 3,
-				GridContainer.MODUS_X_LEFT, GridContainer.MODUS_Y_DOWN);
 		ButtonList selectList = new ButtonList(6, 10);
-		grid.add(selectList, 2, 0);
+		BorderContainer border = new BorderContainer();
+		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
 		selectList.addButton(new InterfaceButton(
 				InterfaceConstants.EDITOR_GROUND, "textures/stone.png"));
 		selectList.addButton(new InterfaceButton(
@@ -92,7 +91,7 @@ public class EditorLevel extends Level implements Interfaceable {
 		selectList.addButton(new InterfaceButton(
 				InterfaceConstants.EDITOR_GREEN_SLIME_WORM,
 				"object-pictures/green-slime-worm.png"));
-		gui.setMainContainer(grid);
+		gui.setMainContainer(border);
 	}
 
 	private void setSelectedActionMode(int newMode) {
@@ -334,13 +333,13 @@ public class EditorLevel extends Level implements Interfaceable {
 						ObjectSettings.SELECT_DISTANCE));
 			}
 			g.setColor(c);
-			GraphicUtils
-					.string(g, obj.getObjectPosition(), obj.getObjectName());
+			GraphicUtils.drawString(g, obj.getObjectPosition(), obj
+					.getObjectName());
 		}
 		// Spieler zeichnen
 		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
 		GraphicUtils.markPosition(g, parent.getPlayerPosition(), 5);
-		GraphicUtils.string(g, parent.getPlayerPosition(), "0000-Player");
+		GraphicUtils.drawString(g, parent.getPlayerPosition(), "0000-Player");
 		this.gui.draw(g);
 	}
 
@@ -360,7 +359,6 @@ public class EditorLevel extends Level implements Interfaceable {
 
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
-		// TODO Auto-generated method stub
 		this.setSelectedActionMode(ACTION_INTERFACE_MOUSE_CLICKED);
 		this.lastInterfaceFunction = object.getFunction();
 		this.interfaceActionThisRound = true;

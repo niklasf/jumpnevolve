@@ -647,7 +647,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.draw(g, this.shape);
-		GraphicUtils.string(g, this.getPosition(), this.toString());
+		GraphicUtils.drawString(g, this.getPosition(), this.toString());
 	}
 
 	// Callbacks

@@ -71,7 +71,6 @@ public abstract class InterfaceContainer implements InterfacePart {
 	 */
 	protected void add(InterfacePart adding, Vector relativePositionOnScreen) {
 		this.objects.put(adding, relativePositionOnScreen);
-		System.out.println("Geaddet" + adding.toString());
 		adding.setParentContainer(this);
 	}
 

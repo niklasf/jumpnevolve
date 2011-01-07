@@ -132,7 +132,7 @@ public class GraphicUtils {
 	 * @param position
 	 *            Obere linke Ecke des Textes
 	 */
-	public static void string(Graphics g, Vector position, String text) {
+	public static void drawString(Graphics g, Vector position, String text) {
 		g.drawString(text, position.x, position.y);
 	}
 

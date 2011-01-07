@@ -3,6 +3,7 @@
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
@@ -21,6 +22,7 @@ public class InterfaceButton extends InterfaceObject {
 
 	private final String icon;
 	private char name = ' ';
+	private final Shape shape;
 
 	/**
 	 * Erzeigt einen neuen Button für das Interface
@@ -33,10 +35,10 @@ public class InterfaceButton extends InterfaceObject {
 	 *            dargestellt werden soll
 	 */
 	public InterfaceButton(int function, String iconPath) {
-		super(new Rectangle(Vector.ZERO, BUTTON_DIMENSION, BUTTON_DIMENSION),
-				function);
+		super(function);
 		this.icon = iconPath;
-		System.out.println("Button erzeugt mit Funktion: " + function);
+		this.shape = new Rectangle(Vector.ZERO, BUTTON_DIMENSION,
+				BUTTON_DIMENSION);
 	}
 
 	public InterfaceButton(int function, String iconPath, char name) {
@@ -56,15 +58,30 @@ public class InterfaceButton extends InterfaceObject {
 		Shape actShape = this.shape.modifyCenter(pos);
 		GraphicUtils.drawImage(g, actShape, ResourceManager.getInstance()
 				.getImage(this.icon));
+		Color c = g.getColor();
+		switch (this.getStatus()) {
+		case STATUS_MOUSE_OVER:
+			g.setColor(Color.yellow);
+			break;
+		case STATUS_DOWN:
+		case STATUS_PRESSED:
+			g.setColor(Color.cyan);
+			break;
+		case STATUS_NOTHING:
+		default:
+			g.setColor(Color.white);
+			break;
+		}
 		GraphicUtils.drawScaled(g, actShape, new Vector(this.parent
 				.getInterfaceable().getZoomX(), this.parent.getInterfaceable()
 				.getZoomY()));
-		GraphicUtils.string(g, pos, "" + this.name);
+		GraphicUtils.drawString(g, pos, "" + this.name);
+		g.setColor(c);
 		// TODO: Beenden
 	}
 
 	@Override
-	public Shape getPrefferedSize() {
-		return new Rectangle(Vector.ZERO, BUTTON_DIMENSION, BUTTON_DIMENSION);
+	public Shape getPreferedSize() {
+		return this.shape;
 	}
 }
