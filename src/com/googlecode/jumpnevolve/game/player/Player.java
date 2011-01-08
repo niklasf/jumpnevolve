@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
@@ -34,7 +35,7 @@ public class Player implements Pollable, Interfaceable {
 
 	private PlayerFigure figure;
 	private Playable cur;
-	private HashMap<Integer, Playable> figureList = new HashMap<Integer, Playable>();
+	private HashMap<InterfaceFunctions, Playable> figureList = new HashMap<InterfaceFunctions, Playable>();
 	private final Level parent;
 	private final MainGUI gui;
 
@@ -49,10 +50,10 @@ public class Player implements Pollable, Interfaceable {
 		grid.add(selectList, 0, 2, GridContainer.MODUS_X_RIGHT,
 				GridContainer.MODUS_Y_UP);
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.FIGURE_ROLLING_BALL,
+				InterfaceFunctions.FIGURE_ROLLING_BALL,
 				"object-pictures/figure-rolling-ball.png"));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.FIGURE_JUMPING_CROSS,
+				InterfaceFunctions.FIGURE_JUMPING_CROSS,
 				"object-pictures/figure-cross.png"));
 		gui.setMainContainer(grid);
 
@@ -97,31 +98,31 @@ public class Player implements Pollable, Interfaceable {
 	private void setFigures(String avaiableFigures, String startFigure) {
 		String figures[] = avaiableFigures.split(",");
 		for (String figure : figures) {
-			int curNum = InterfaceConstants.ERROR;
+			InterfaceFunctions curNum = InterfaceFunctions.ERROR;
 			if (figure.equals("RollingBall")) {
-				curNum = InterfaceConstants.FIGURE_ROLLING_BALL;
+				curNum = InterfaceFunctions.FIGURE_ROLLING_BALL;
 			} else if (figure.equals("JumpingCross")) {
-				curNum = InterfaceConstants.FIGURE_JUMPING_CROSS;
+				curNum = InterfaceFunctions.FIGURE_JUMPING_CROSS;
 			}
 			this.figureList.put(curNum, this.getNewFigure(curNum));
 		}
-		int curNum = InterfaceConstants.ERROR;
+		InterfaceFunctions curNum = InterfaceFunctions.ERROR;
 		if (startFigure.equals("RollingBall")) {
-			curNum = InterfaceConstants.FIGURE_ROLLING_BALL;
+			curNum = InterfaceFunctions.FIGURE_ROLLING_BALL;
 		} else if (startFigure.equals("JumpingCross")) {
-			curNum = InterfaceConstants.FIGURE_JUMPING_CROSS;
+			curNum = InterfaceFunctions.FIGURE_JUMPING_CROSS;
 		}
 		this.cur = this.figureList.get(curNum);
 		this.figure.setShape(this.cur.getShape());
 	}
 
-	private Playable getNewFigure(int number) {
-		if (number == InterfaceConstants.FIGURE_ROLLING_BALL) {
+	private Playable getNewFigure(InterfaceFunctions number) {
+		if (number == InterfaceFunctions.FIGURE_ROLLING_BALL) {
 			return new RollingBall(this.figure);
-		} else if (number == InterfaceConstants.FIGURE_JUMPING_CROSS) {
+		} else if (number == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
 			return new Basic(this.figure); // TODO: JumpingCross erstellen und
 			// zurückgeben
-		} else if (number == InterfaceConstants.ERROR) {
+		} else if (number == InterfaceFunctions.ERROR) {
 			return new Basic(this.figure); // TODO: Fehlermeldung ausgeben
 		} else {
 			return new Basic(this.figure); // TODO: Fehlermeldung ausgeben
@@ -169,9 +170,9 @@ public class Player implements Pollable, Interfaceable {
 
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
-		int function = object.getFunction();
-		if (function == InterfaceConstants.FIGURE_ROLLING_BALL
-				|| function == InterfaceConstants.FIGURE_JUMPING_CROSS) {
+		InterfaceFunctions function = object.getFunction();
+		if (function == InterfaceFunctions.FIGURE_ROLLING_BALL
+				|| function == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
 			this.cur = this.getNewFigure(function);
 		}
 	}

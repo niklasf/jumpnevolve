@@ -26,9 +26,9 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
 	private InterfaceButton back = new InterfaceButton(
-			InterfaceConstants.INTERFACE_BUTTONLIST_BACK,
+			InterfaceFunctions.INTERFACE_BUTTONLIST_BACK,
 			"interface-icons/back-arrow.png"), forth = new InterfaceButton(
-			InterfaceConstants.INTERFACE_BUTTONLIST_FORTH,
+			InterfaceFunctions.INTERFACE_BUTTONLIST_FORTH,
 			"interface-icons/forth-arrow.png");
 	private static final int BACK_POS = -2;
 	private static final int FORTH_POS = -1;
@@ -125,9 +125,9 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
 		if (object.getStatus() == InterfaceObject.STATUS_PRESSED) {
-			if (object.getFunction() == InterfaceConstants.INTERFACE_BUTTONLIST_FORTH) {
+			if (object.getFunction() == InterfaceFunctions.INTERFACE_BUTTONLIST_FORTH) {
 				this.moveForth();
-			} else if (object.getFunction() == InterfaceConstants.INTERFACE_BUTTONLIST_BACK) {
+			} else if (object.getFunction() == InterfaceFunctions.INTERFACE_BUTTONLIST_BACK) {
 				this.moveBack();
 			}
 		}

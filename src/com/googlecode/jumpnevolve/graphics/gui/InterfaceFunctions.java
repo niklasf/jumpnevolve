@@ -1,0 +1,62 @@
+package com.googlecode.jumpnevolve.graphics.gui;
+
+/**
+ * @author Erik Wagner
+ * 
+ */
+public enum InterfaceFunctions {
+
+	ERROR(),
+
+	FIGURE_ROLLING_BALL(), FIGURE_JUMPING_CROSS(),
+
+	SKILL_HIGH_JUMP(),
+
+	EDITOR_GROUND(), EDITOR_SOLDIER(), EDITOR_WALKING_SOLDIER(), EDITOR_JUMPING_SOLDIER(), EDITOR_KILLINGMACHINE(), EDITOR_GREEN_SLIME_WORM(), EDITOR_BUTTON(), EDITOR_DOOR(), EDITOR_ELEVATOR(),
+
+	INTERFACE_BUTTONLIST_BACK(), INTERFACE_BUTTONLIST_FORTH();
+
+	private InterfaceFunctions() {
+	}
+
+	/**
+	 * @return Die Art des Objekts, dem diese Funktion zugeteilt wurde</br>Der
+	 *         String ist immer im UpperCase ({@link String#toUpperCase()})
+	 *         </br>Beispiele: {@code EDITOR} oder {@code INTERFACE}</br>
+	 *         {@code ERROR}, wenn dieses Objekt das {@code ERROR}-Objekt ist
+	 */
+	public String getKindOfParent() {
+		return this.toString().split("_")[0].toUpperCase();
+	}
+
+	/**
+	 * @return Der Name der Funktion, für den dieses Enum-Objekt steht.</br>Für
+	 *         {@code EDITOR} und {@code FIGURE} entspricht dies einem
+	 *         Klassenname für ein zuerstellendes/auszuwählendes Objekt
+	 *         (Beispiel: {@code WalkingSoldier}
+	 */
+	public String getFunctionName() {
+		String re = "";
+		String[] split = this.toString().split("_");
+		if (split.length > 1) {
+			for (int i = 1; i < split.length; i++) {
+				re += split[i].charAt(0) + split[i].toLowerCase().substring(1);
+			}
+		}
+		return re;
+	}
+
+	/**
+	 * @see InterfaceFunctions#getFunctionName()
+	 * @return Der Klassenname den dieses Objekt beinhaltet für den Editor</br>
+	 *         <code>null</code>, wenn diese Funktion keine Editor-Funktion ist
+	 */
+	public String getClassNameForEditor() {
+		System.out.println("Parent: " + this.getKindOfParent());
+		if (this.getKindOfParent().equals("EDITOR")) {
+			return this.getFunctionName();
+		} else {
+			return null;
+		}
+	}
+}

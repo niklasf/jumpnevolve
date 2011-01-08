@@ -39,7 +39,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public static final int STATUS_DOWN = 3;
 
-	public final int function;
+	public final InterfaceFunctions function;
 	public InterfaceContainer parent;
 	private int status;
 	private boolean wasClicked = false, interfaceableAdded = false;
@@ -52,10 +52,10 @@ public abstract class InterfaceObject implements InterfacePart {
 	 * @param shape
 	 *            Das Shape, welches dieses Objekt in seiner Form beschreibt
 	 * @param function
-	 *            Die Funktion dieses Objekts (eine Konstante aus
-	 *            {@link InterfaceConstants})
+	 *            Die Funktion dieses Objekts (ein Enum aus
+	 *            {@link InterfaceFunctions})
 	 */
-	public InterfaceObject(int function) {
+	public InterfaceObject(InterfaceFunctions function) {
 		this.function = function;
 	}
 
@@ -134,7 +134,7 @@ public abstract class InterfaceObject implements InterfacePart {
 		return this.status;
 	}
 
-	public int getFunction() {
+	public InterfaceFunctions getFunction() {
 		return this.function;
 	}
 
@@ -144,8 +144,8 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public Vector getCenterVector() {
 		return this.parent.getPositionFor(this).add(
-				new Vector(this.getPreferedSize()
-						.getDistanceToSide(Shape.LEFT), this.getPreferedSize()
-						.getDistanceToSide(Shape.UP)));
+				new Vector(
+						this.getPreferedSize().getDistanceToSide(Shape.LEFT),
+						this.getPreferedSize().getDistanceToSide(Shape.UP)));
 	}
 }

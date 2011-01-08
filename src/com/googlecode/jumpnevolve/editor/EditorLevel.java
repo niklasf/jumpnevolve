@@ -19,6 +19,7 @@ import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
@@ -47,7 +48,7 @@ public class EditorLevel extends Level implements Interfaceable {
 	private int selectedActionMode = ACTION_NOT_IDENTIFIED,
 			oldSelectedActionMode = ACTION_NOT_IDENTIFIED;
 	private Vector oldCameraPos, oldClick;
-	private int lastInterfaceFunction = InterfaceConstants.ERROR;
+	private InterfaceFunctions lastInterfaceFunction = InterfaceFunctions.ERROR;
 	private boolean interfaceActionThisRound = false,
 			modeAlreadyChanged = false;
 
@@ -69,27 +70,27 @@ public class EditorLevel extends Level implements Interfaceable {
 		BorderContainer border = new BorderContainer();
 		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_GROUND, "textures/stone.png"));
+				InterfaceFunctions.EDITOR_GROUND, "textures/stone.png"));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_DOOR, "textures/wood.png"));
+				InterfaceFunctions.EDITOR_DOOR, "textures/wood.png"));
 		selectList
 				.addButton(new InterfaceButton(
-						InterfaceConstants.EDITOR_BUTTON,
+						InterfaceFunctions.EDITOR_BUTTON,
 						"textures/aluminium.png", 'B'));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_ELEVATOR, "textures/aluminium.png",
+				InterfaceFunctions.EDITOR_ELEVATOR, "textures/aluminium.png",
 				'E'));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_SOLDIER,
+				InterfaceFunctions.EDITOR_SOLDIER,
 				"object-pictures/simple-foot-soldier.png", 'S'));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_WALKING_SOLDIER,
+				InterfaceFunctions.EDITOR_WALKING_SOLDIER,
 				"object-pictures/simple-foot-soldier.png", 'W'));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_JUMPING_SOLDIER,
+				InterfaceFunctions.EDITOR_JUMPING_SOLDIER,
 				"object-pictures/simple-foot-soldier.png", 'J'));
 		selectList.addButton(new InterfaceButton(
-				InterfaceConstants.EDITOR_GREEN_SLIME_WORM,
+				InterfaceFunctions.EDITOR_GREEN_SLIME_WORM,
 				"object-pictures/green-slime-worm.png"));
 		gui.setMainContainer(border);
 	}
@@ -100,30 +101,6 @@ public class EditorLevel extends Level implements Interfaceable {
 			this.modeAlreadyChanged = true;
 		}
 		this.selectedActionMode = newMode;
-	}
-
-	private String getClassName(int functionConstant) {
-		if (functionConstant == InterfaceConstants.EDITOR_BUTTON) {
-			return "Button";
-		} else if (functionConstant == InterfaceConstants.EDITOR_DOOR) {
-			return "Door";
-		} else if (functionConstant == InterfaceConstants.EDITOR_ELEVATOR) {
-			return "Elevator";
-		} else if (functionConstant == InterfaceConstants.EDITOR_GREEN_SLIME_WORM) {
-			return "GreenSlimeWorm";
-		} else if (functionConstant == InterfaceConstants.EDITOR_GROUND) {
-			return "Ground";
-		} else if (functionConstant == InterfaceConstants.EDITOR_JUMPING_SOLDIER) {
-			return "JumpingSoldier";
-		} else if (functionConstant == InterfaceConstants.EDITOR_KILLINGMACHINE) {
-			return "KillingMachine";
-		} else if (functionConstant == InterfaceConstants.EDITOR_SOLDIER) {
-			return "Soldier";
-		} else if (functionConstant == InterfaceConstants.EDITOR_WALKING_SOLDIER) {
-			return "WalkingSoldier";
-		} else {
-			return null;
-		}
 	}
 
 	public void addSettings(ObjectSettings obj) {
@@ -266,7 +243,8 @@ public class EditorLevel extends Level implements Interfaceable {
 		if (this.oldSelectedActionMode == ACTION_INTERFACE_MOUSE_CLICKED
 				&& this.interfaceActionThisRound == false
 				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			String className = this.getClassName(this.lastInterfaceFunction);
+			String className = this.lastInterfaceFunction
+					.getClassNameForEditor();
 			if (className != null) {
 				this.parent.addNewObject(className, this.parent
 						.translateMouseClick(new Vector(input.getMouseX(),
@@ -360,7 +338,11 @@ public class EditorLevel extends Level implements Interfaceable {
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
 		this.setSelectedActionMode(ACTION_INTERFACE_MOUSE_CLICKED);
-		this.lastInterfaceFunction = object.getFunction();
+		if (object.getFunction().getKindOfParent().equals("EDITOR")) {
+			this.lastInterfaceFunction = object.getFunction();
+		} else {
+			this.lastInterfaceFunction = InterfaceFunctions.ERROR;
+		}
 		this.interfaceActionThisRound = true;
 	}
 

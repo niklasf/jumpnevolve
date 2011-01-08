@@ -28,20 +28,21 @@ public class InterfaceButton extends InterfaceObject {
 	 * Erzeigt einen neuen Button für das Interface
 	 * 
 	 * @param function
-	 *            Die Funktion des Buttons (Eine der Konstanten aus
-	 *            {@link InterfaceConstants});
+	 *            Die Funktion des Buttons (Ein Enum aus
+	 *            {@link InterfaceFunctions});
 	 * @param icon
 	 *            Der Datei-Pfad des Icons, welches auf diesem Button
 	 *            dargestellt werden soll
 	 */
-	public InterfaceButton(int function, String iconPath) {
+	public InterfaceButton(InterfaceFunctions function, String iconPath) {
 		super(function);
 		this.icon = iconPath;
 		this.shape = new Rectangle(Vector.ZERO, BUTTON_DIMENSION,
 				BUTTON_DIMENSION);
 	}
 
-	public InterfaceButton(int function, String iconPath, char name) {
+	public InterfaceButton(InterfaceFunctions function, String iconPath,
+			char name) {
 		this(function, iconPath);
 		this.name = name;
 	}
