@@ -12,7 +12,7 @@ public enum InterfaceFunctions {
 
 	SKILL_HIGH_JUMP(),
 
-	EDITOR_GROUND(), EDITOR_SOLDIER(), EDITOR_WALKING_SOLDIER(), EDITOR_JUMPING_SOLDIER(), EDITOR_KILLINGMACHINE(), EDITOR_GREEN_SLIME_WORM(), EDITOR_BUTTON(), EDITOR_DOOR(), EDITOR_ELEVATOR(), EDITOR_SLIDING_PLATTFORM(),
+	EDITOR_GROUND(), EDITOR_SOLDIER(), EDITOR_WALKING_SOLDIER(), EDITOR_JUMPING_SOLDIER(), EDITOR_KILLING_MACHINE(), EDITOR_GREEN_SLIME_WORM(), EDITOR_BUTTON(), EDITOR_DOOR(), EDITOR_ELEVATOR(), EDITOR_SLIDING_PLATTFORM(),
 
 	INTERFACE_BUTTONLIST_BACK(), INTERFACE_BUTTONLIST_FORTH();
 
@@ -52,7 +52,6 @@ public enum InterfaceFunctions {
 	 *         <code>null</code>, wenn diese Funktion keine Editor-Funktion ist
 	 */
 	public String getClassNameForEditor() {
-		System.out.println("Parent: " + this.getKindOfParent());
 		if (this.getKindOfParent().equals("EDITOR")) {
 			return this.getFunctionName();
 		} else {

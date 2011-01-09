@@ -53,7 +53,8 @@ public class KillingMachine extends EnemyTemplate {
 
 	@Override
 	public boolean canDamage(Collision col) {
-		return !col.isBlocked(Shape.UP);
+		return col.isBlocked(Shape.DOWN) || col.isBlocked(Shape.RIGHT)
+				|| col.isBlocked(Shape.LEFT);
 	}
 
 	@Override

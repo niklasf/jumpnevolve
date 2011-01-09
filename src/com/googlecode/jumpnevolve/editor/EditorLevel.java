@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
@@ -68,32 +69,10 @@ public class EditorLevel extends Level implements Interfaceable {
 		ButtonList selectList = new ButtonList(6, 10);
 		BorderContainer border = new BorderContainer();
 		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_GROUND, "textures/stone.png"));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_DOOR, "textures/wood.png"));
-		selectList
-				.addButton(new InterfaceButton(
-						InterfaceFunctions.EDITOR_BUTTON,
-						"textures/aluminium.png", 'B'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_ELEVATOR, "textures/aluminium.png",
-				'E'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_SLIDING_PLATTFORM,
-				"textures/aluminium.png", 'S'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_SOLDIER,
-				"object-pictures/simple-foot-soldier.png", 'S'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_WALKING_SOLDIER,
-				"object-pictures/simple-foot-soldier.png", 'W'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_JUMPING_SOLDIER,
-				"object-pictures/simple-foot-soldier.png", 'J'));
-		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.EDITOR_GREEN_SLIME_WORM,
-				"object-pictures/green-slime-worm.png"));
+		for (GameObjects obj : GameObjects.values()) {
+			selectList.addButton(new InterfaceButton(obj.getFunctionsEnum(),
+					obj.editorSkinFileName));
+		}
 		gui.setMainContainer(border);
 	}
 

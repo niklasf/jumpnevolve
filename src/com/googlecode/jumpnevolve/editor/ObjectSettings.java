@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
@@ -122,55 +123,11 @@ public class ObjectSettings extends JPanel {
 
 	private void initialize() {
 		this.argumentPanel = new Arguments();
-		if (this.className.equals("WalkingSoldier")) {
-			this.activatings.setText("none");
+		GameObjects gameObj = GameObjects.getGameObject(this.className);
+		gameObj.initArgumentsObject(argumentPanel);
+		this.activatings.setText("none");
+		if (!gameObj.hasActivatings) {
 			this.activatings.setEditable(false);
-		} else if (this.className.equals("JumpingSoldier")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-		} else if (this.className.equals("Soldier")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-		} else if (this.className.equals("KillingMachine")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-		} else if (this.className.equals("Button")) {
-			this.activatings.setText("none");
-			String[] arg1 = { "Active Time" };
-			char[] arg2 = new char[0];
-			String[] arg3 = { "10.0" };
-			this.argumentPanel.initArguments(arg1, arg2, arg3);
-		} else if (this.className.equals("Door")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-			String[] arg1 = { "Width", "Height" };
-			char[] arg2 = { '|' };
-			String[] arg3 = { "30", "10" };
-			this.argumentPanel.initArguments(arg1, arg2, arg3);
-		} else if (this.className.equals("Ground")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-			String[] arg1 = { "Width", "Height" };
-			char[] arg2 = { '|' };
-			String[] arg3 = { "30", "10" };
-			this.argumentPanel.initArguments(arg1, arg2, arg3);
-		} else if (this.className.equals("Elevator")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-			String[] arg1 = { "Width", "Height", "DownEnd", "UpEnd" };
-			char[] arg2 = { '|', ',', ',' };
-			String[] arg3 = { "30", "10", "20.0", "0.0" };
-			this.argumentPanel.initArguments(arg1, arg2, arg3);
-		} else if (this.className.equals("GreenSlimeWorm")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-		} else if (this.className.equals("SlidingPlattform")) {
-			this.activatings.setText("none");
-			this.activatings.setEditable(false);
-			String[] arg1 = { "Width", "Height", "LeftEnd", "RightEnd" };
-			char[] arg2 = { '|', ',', ',' };
-			String[] arg3 = { "30", "10", "0.0", "20.0" };
-			this.argumentPanel.initArguments(arg1, arg2, arg3);
 		}
 		GridBagConstraints constraints = new GridBagConstraints();
 		buildConstraints(constraints, 0, 1, 1, 1);
@@ -196,44 +153,7 @@ public class ObjectSettings extends JPanel {
 	 */
 	public AbstractObject getObject() {
 		// TODO: parseFloat und parseVector ändern
-		AbstractObject object = null;
-		if (this.className.equals("WalkingSoldier")) {
-			object = new WalkingSoldier(this.editorWorld, this
-					.getObjectPosition());
-		} else if (this.className.equals("JumpingSoldier")) {
-			object = new JumpingSoldier(this.editorWorld, this
-					.getObjectPosition());
-		} else if (this.className.equals("Soldier")) {
-			object = new Soldier(this.editorWorld, this.getObjectPosition());
-		} else if (this.className.equals("KillingMachine")) {
-			object = new KillingMachine(this.editorWorld, this
-					.getObjectPosition());
-		} else if (this.className.equals("Button")) {
-			object = new Button(this.editorWorld, this.getObjectPosition(),
-					Float.parseFloat(this.getObjectAttributes()));
-		} else if (this.className.equals("Door")) {
-			object = new Door(this.editorWorld, this.getObjectPosition(),
-					Vector.parseVector(this.getObjectAttributes()));
-		} else if (this.className.equals("Ground")) {
-			object = new Ground(this.editorWorld, this.getObjectPosition(),
-					Vector.parseVector(this.getObjectAttributes()));
-		} else if (this.className.equals("Elevator")) {
-			String[] curArgus = this.getObjectAttributes().split(",");
-			object = new Elevator(this.editorWorld, this.getObjectPosition(),
-					Vector.parseVector(curArgus[0]), Float
-							.parseFloat(curArgus[1]), Float
-							.parseFloat(curArgus[2]));
-		} else if (this.className.equals("GreenSlimeWorm")) {
-			object = new GreenSlimeWorm(this.editorWorld, this
-					.getObjectPosition());
-		} else if (this.className.equals("SlidingPlattform")) {
-			String[] curArgus = this.getObjectAttributes().split(",");
-			object = new SlidingPlattform(this.editorWorld, this
-					.getObjectPosition(), Vector.parseVector(curArgus[0]),
-					Float.parseFloat(curArgus[1]), Float
-							.parseFloat(curArgus[2]));
-		}
-		return object;
+		return GameObjects.loadObject(this.getDataLine(), this.editorWorld);
 	}
 
 	/**

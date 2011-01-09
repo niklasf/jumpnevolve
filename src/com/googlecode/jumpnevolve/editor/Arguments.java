@@ -72,6 +72,9 @@ public class Arguments extends JPanel {
 				re = re + this.contents[i].getText().trim() + this.hyphen[i];
 			}
 			re = re + this.contents[this.contents.length - 1].getText().trim();
+			if (re.equals("")) {
+				re = "none";
+			}
 			return re;
 		} else {
 			return "none";

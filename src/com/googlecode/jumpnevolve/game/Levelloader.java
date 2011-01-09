@@ -107,49 +107,15 @@ public class Levelloader {
 				// mehrere Argumente werden durch "," getrennt
 				while (current != null) { // Pseudo-Methode ersetzen
 					String[] currentSplit = current.split("_");
-					String className = currentSplit[0];
-					Vector position = this.toVector(currentSplit[1]);
 					String name = currentSplit[2];
 					String activates = currentSplit[3];
-					String arguments = currentSplit[4];
 					AbstractObject newObject = null;
+					newObject = GameObjects.loadObject(current, this.level);
 
-					if (className.equals("WalkingSoldier")) {
-						newObject = new WalkingSoldier(this.level, position);
-					} else if (className.equals("JumpingSoldier")) {
-						newObject = new JumpingSoldier(this.level, position);
-					} else if (className.equals("Soldier")) {
-						newObject = new Soldier(this.level, position);
-					} else if (className.equals("KillingMachine")) {
-						newObject = new KillingMachine(this.level, position);
-					} else if (className.equals("Button")) {
-						newObject = new Button(this.level, position, this
-								.toFloat(arguments));
-						argumtensForActivating.add(activates.split(","));
-					} else if (className.equals("Door")) {
-						newObject = new Door(this.level, position, this
-								.toVector(arguments));
-					} else if (className.equals("Ground")) {
-						newObject = new Ground(this.level, position, this
-								.toVector(arguments));
-					} else if (className.equals("Elevator")) {
-						String[] curArgus = arguments.split(",");
-						newObject = new Elevator(this.level, position, this
-								.toVector(curArgus[0]), this
-								.toFloat(curArgus[1]), this
-								.toFloat(curArgus[2]));
-					} else if (className.equals("GreenSlimeWorm")) {
-						newObject = new GreenSlimeWorm(this.level, position);
-					} else if (className.equals("SlidingPlattform")) {
-						String[] curArgus = arguments.split(",");
-						newObject = new SlidingPlattform(this.level, position,
-								this.toVector(curArgus[0]), this
-										.toFloat(curArgus[1]), this
-										.toFloat(curArgus[2]));
-					}
 					if (newObject != null) {
 						boolean alreadyPutted = false;
 						if (newObject instanceof ActivatingObject) {
+							argumtensForActivating.add(activates.split(","));
 							activatingObjects.add((ActivatingObject) newObject);
 							alreadyPutted = true;
 						}
@@ -161,11 +127,10 @@ public class Levelloader {
 							otherObjects.add(newObject);
 						}
 					}
-					// TODO: Weitere Klassen einfügen
-					// Aktivierenden Objekten, die zu aktivierenden Objekt
-					// übergeben
+
 					current = levelFileReader.readLine();
 				}
+				// Zuweisen der zu aktivierenden Objekte
 				for (int i = 0; i < activatingObjects.size(); i++) {
 					for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
 						activatingObjects.get(i).addActivable(

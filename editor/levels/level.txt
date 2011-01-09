@@ -1,9 +1,4 @@
-Leveldimensionen_1000_100_1
+Leveldimensionen_3000_200_1
 Leveleinstellungen_1,1_1000_default
-Player_RollingBall_RollingBall,JumpingCross_100|50_0,100
-Ground_100|250_3-Ground_none_100|10
-Ground_300|300_4-Ground_none_50|10
-Ground_450|250_5-Ground_none_50|10
-Ground_100|100_1-Ground_none_100|10
-Ground_520|150_6-Ground_none_21|150
-Ground_400|150_2-Ground_none_100|10
+Player_RollingBall_RollingBall,JumpingCross_100|0_0,100
+SlidingPlattform_117.0|100.0_0001-SlidingPlattform_none_63.0|15.0,0.0,2000.0
