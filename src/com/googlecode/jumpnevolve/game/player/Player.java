@@ -7,13 +7,11 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.LimitedObjectFocusingCamera;
-import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;

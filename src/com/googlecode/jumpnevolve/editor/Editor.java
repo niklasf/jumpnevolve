@@ -1,18 +1,14 @@
 package com.googlecode.jumpnevolve.editor;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -28,7 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.graphics.SwingEngine;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -112,6 +107,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		objectList.addItem("Button");
 		objectList.addItem("Door");
 		objectList.addItem("Elevator");
+		objectList.addItem("SlidingPlattform");
 		objectList.setEditable(false);
 
 		objectAuswahl = new JPanel();

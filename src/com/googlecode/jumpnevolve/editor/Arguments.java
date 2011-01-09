@@ -30,7 +30,7 @@ public class Arguments extends JPanel {
 	 * Initialisiert das Arguments-Objekt
 	 * 
 	 * @param contents
-	 *            Inhalt der Argumente, pro contens-String wird ein Textfeld
+	 *            Inhalt der Argumente, pro contents-String wird ein Textfeld
 	 *            erzeugt
 	 * @param hyphen
 	 *            Trennungszeichen zwischen den Argumenten für die spätere

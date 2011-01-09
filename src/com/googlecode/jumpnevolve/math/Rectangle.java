@@ -125,11 +125,11 @@ public class Rectangle implements Shape {
 	 * 
 	 * @param center
 	 *            Ortsvektor des Mittelpunkts
-	 * @param corner
+	 * @param centerToCorner
 	 *            Vektor, der vom Zentrum auf eine Ecke des Rechtecks zeigt
 	 */
-	public Rectangle(Vector center, Vector corner) {
-		this(center, corner.x * 2, corner.y * 2);
+	public Rectangle(Vector center, Vector centerToCorner) {
+		this(center, centerToCorner.x * 2, centerToCorner.y * 2);
 	}
 
 	public Rectangle(org.newdawn.slick.geom.Rectangle rect) {

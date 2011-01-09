@@ -16,6 +16,7 @@ import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
+import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.game.player.Player;
@@ -163,6 +164,13 @@ public class ObjectSettings extends JPanel {
 		} else if (this.className.equals("GreenSlimeWorm")) {
 			this.activatings.setText("none");
 			this.activatings.setEditable(false);
+		} else if (this.className.equals("SlidingPlattform")) {
+			this.activatings.setText("none");
+			this.activatings.setEditable(false);
+			String[] arg1 = { "Width", "Height", "LeftEnd", "RightEnd" };
+			char[] arg2 = { '|', ',', ',' };
+			String[] arg3 = { "30", "10", "0.0", "20.0" };
+			this.argumentPanel.initArguments(arg1, arg2, arg3);
 		}
 		GridBagConstraints constraints = new GridBagConstraints();
 		buildConstraints(constraints, 0, 1, 1, 1);
@@ -218,8 +226,13 @@ public class ObjectSettings extends JPanel {
 		} else if (this.className.equals("GreenSlimeWorm")) {
 			object = new GreenSlimeWorm(this.editorWorld, this
 					.getObjectPosition());
+		} else if (this.className.equals("SlidingPlattform")) {
+			String[] curArgus = this.getObjectAttributes().split(",");
+			object = new SlidingPlattform(this.editorWorld, this
+					.getObjectPosition(), Vector.parseVector(curArgus[0]),
+					Float.parseFloat(curArgus[1]), Float
+							.parseFloat(curArgus[2]));
 		}
-
 		return object;
 	}
 
@@ -351,7 +364,8 @@ public class ObjectSettings extends JPanel {
 	private boolean isPullUpAble() {
 		return this.className.equals("Ground")
 				|| this.className.equals("Elevator")
-				|| this.className.equals("Door");
+				|| this.className.equals("Door")
+				|| this.className.equals("SlidingPlattform");
 	}
 
 	private boolean isPointNearPosition(Vector point, Vector other,

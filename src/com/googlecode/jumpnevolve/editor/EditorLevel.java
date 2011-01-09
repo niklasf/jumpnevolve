@@ -18,7 +18,6 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceConstants;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
@@ -80,6 +79,9 @@ public class EditorLevel extends Level implements Interfaceable {
 		selectList.addButton(new InterfaceButton(
 				InterfaceFunctions.EDITOR_ELEVATOR, "textures/aluminium.png",
 				'E'));
+		selectList.addButton(new InterfaceButton(
+				InterfaceFunctions.EDITOR_SLIDING_PLATTFORM,
+				"textures/aluminium.png", 'S'));
 		selectList.addButton(new InterfaceButton(
 				InterfaceFunctions.EDITOR_SOLDIER,
 				"object-pictures/simple-foot-soldier.png", 'S'));

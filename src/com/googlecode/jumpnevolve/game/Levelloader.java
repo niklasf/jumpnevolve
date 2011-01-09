@@ -18,6 +18,7 @@ import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
+import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
@@ -139,6 +140,12 @@ public class Levelloader {
 								.toFloat(curArgus[2]));
 					} else if (className.equals("GreenSlimeWorm")) {
 						newObject = new GreenSlimeWorm(this.level, position);
+					} else if (className.equals("SlidingPlattform")) {
+						String[] curArgus = arguments.split(",");
+						newObject = new SlidingPlattform(this.level, position,
+								this.toVector(curArgus[0]), this
+										.toFloat(curArgus[1]), this
+										.toFloat(curArgus[2]));
 					}
 					if (newObject != null) {
 						boolean alreadyPutted = false;

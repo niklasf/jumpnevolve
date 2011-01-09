@@ -65,8 +65,12 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 		this.states = states;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#addState(com.googlecode.jumpnevolve.graphics.AbstractState)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#addState(com.googlecode
+	 * .jumpnevolve.graphics.AbstractState)
 	 */
 	public void addState(AbstractState state) {
 		if (!containsState(state)) {
@@ -74,15 +78,23 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#containsState(com.googlecode.jumpnevolve.graphics.AbstractState)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#containsState(com.
+	 * googlecode.jumpnevolve.graphics.AbstractState)
 	 */
 	public boolean containsState(AbstractState state) {
 		return this.states.getState(state.getID()) != null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#switchState(com.googlecode.jumpnevolve.graphics.AbstractState)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#switchState(com.googlecode
+	 * .jumpnevolve.graphics.AbstractState)
 	 */
 	public void switchState(AbstractState state) {
 		if (this.states.getState(state.getID()) == null) {
@@ -93,7 +105,9 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#getCurrentState()
 	 */
 	public AbstractState getCurrentState() {
@@ -105,7 +119,9 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 		return (AbstractState) state;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#start()
 	 */
 	@Override
