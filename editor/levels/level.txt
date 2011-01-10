@@ -1,4 +1,11 @@
-Leveldimensionen_3000_200_1
+Leveldimensionen_1000_300_1
 Leveleinstellungen_1,1_1000_default
 Player_RollingBall_RollingBall,JumpingCross_100|0_0,100
-SlidingPlattform_117.0|100.0_0001-SlidingPlattform_none_63.0|15.0,0.0,2000.0
+Ground_355.0|240.0_0001-Ground_none_349.0|18.0
+SpringingSoldier_328.0|-24.0_0007-SpringingSoldier_none_none
+SpringingSoldier_475.0|141.0_0005-SpringingSoldier_none_none
+SpringingSoldier_398.0|186.0_0006-SpringingSoldier_none_none
+SpringingSoldier_670.0|90.0_0002-SpringingSoldier_none_none
+SpringingSoldier_241.0|108.0_0008-SpringingSoldier_none_none
+SpringingSoldier_556.0|-56.0_0004-SpringingSoldier_none_none
+SpringingSoldier_616.0|143.0_0003-SpringingSoldier_none_none

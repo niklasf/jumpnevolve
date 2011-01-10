@@ -65,6 +65,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private Vector velocity = Vector.ZERO;
 
+	private Vector oldVelocity = Vector.ZERO;
+
 	private boolean blockable;
 
 	private boolean pushable;
@@ -195,6 +197,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Dabei wird darauf geachtet, nicht in geblockte Seiten zu laufen.
 	 */
 	public void endRound() {
+		this.oldVelocity = this.velocity;
 		// if (this.getPosition().y > 100) {
 		// System.out.println("Mist....");
 		// }
@@ -375,6 +378,14 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public final Vector getVelocity() {
 		return this.velocity;
+	}
+
+	/**
+	 * @return Die Geschwindigkeit der letzten Runde vor dem Auswerten von Kraft
+	 *         und Kollision.
+	 */
+	public final Vector getOldVelocity() {
+		return this.oldVelocity;
 	}
 
 	/**

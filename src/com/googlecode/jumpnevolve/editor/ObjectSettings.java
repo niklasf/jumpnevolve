@@ -124,6 +124,7 @@ public class ObjectSettings extends JPanel {
 	private void initialize() {
 		this.argumentPanel = new Arguments();
 		GameObjects gameObj = GameObjects.getGameObject(this.className);
+		System.out.println("" + gameObj);
 		gameObj.initArgumentsObject(argumentPanel);
 		this.activatings.setText("none");
 		if (!gameObj.hasActivatings) {
@@ -285,7 +286,8 @@ public class ObjectSettings extends JPanel {
 		return this.className.equals("Ground")
 				|| this.className.equals("Elevator")
 				|| this.className.equals("Door")
-				|| this.className.equals("SlidingPlattform");
+				|| this.className.equals("SlidingPlattform")
+				|| this.className.equals("Fluid");
 	}
 
 	private boolean isPointNearPosition(Vector point, Vector other,

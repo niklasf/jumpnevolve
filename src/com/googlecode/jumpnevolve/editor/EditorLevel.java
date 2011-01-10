@@ -19,6 +19,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
@@ -48,7 +49,7 @@ public class EditorLevel extends Level implements Interfaceable {
 	private int selectedActionMode = ACTION_NOT_IDENTIFIED,
 			oldSelectedActionMode = ACTION_NOT_IDENTIFIED;
 	private Vector oldCameraPos, oldClick;
-	private InterfaceFunctions lastInterfaceFunction = InterfaceFunctions.ERROR;
+	private InterfaceFunction lastInterfaceFunction = InterfaceFunctions.ERROR;
 	private boolean interfaceActionThisRound = false,
 			modeAlreadyChanged = false;
 
@@ -70,7 +71,7 @@ public class EditorLevel extends Level implements Interfaceable {
 		BorderContainer border = new BorderContainer();
 		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
 		for (GameObjects obj : GameObjects.values()) {
-			selectList.addButton(new InterfaceButton(obj.getFunctionsEnum(),
+			selectList.addButton(new InterfaceButton(obj,
 					obj.editorSkinFileName));
 		}
 		gui.setMainContainer(border);

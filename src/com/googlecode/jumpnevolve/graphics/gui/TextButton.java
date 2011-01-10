@@ -28,7 +28,7 @@ public class TextButton extends InterfaceObject {
 	 * @param buttonText
 	 * @param size
 	 */
-	public TextButton(InterfaceFunctions function, String buttonText, int size) {
+	public TextButton(InterfaceFunction function, String buttonText, int size) {
 		super(function);
 		this.buttonText = buttonText;
 		this.size = size;

@@ -1,21 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
-/**
- * @author Erik Wagner
- * 
- */
-public enum InterfaceFunctions implements InterfaceFunction {
-
-	ERROR(),
-
-	FIGURE_ROLLING_BALL(), FIGURE_JUMPING_CROSS(),
-
-	SKILL_HIGH_JUMP(),
-
-	INTERFACE_BUTTONLIST_BACK(), INTERFACE_BUTTONLIST_FORTH();
-
-	private InterfaceFunctions() {
-	}
+public interface InterfaceFunction {
 
 	/**
 	 * @return Die Art des Objekts, dem diese Funktion zugeteilt wurde</br>Der
@@ -23,9 +8,7 @@ public enum InterfaceFunctions implements InterfaceFunction {
 	 *         </br>Beispiele: {@code EDITOR} oder {@code INTERFACE}</br>
 	 *         {@code ERROR}, wenn dieses Objekt das {@code ERROR}-Objekt ist
 	 */
-	public String getKindOfParent() {
-		return this.toString().split("_")[0].toUpperCase();
-	}
+	public String getKindOfParent();
 
 	/**
 	 * @return Der Name der Funktion, für den dieses Enum-Objekt steht.</br>Für
@@ -33,27 +16,12 @@ public enum InterfaceFunctions implements InterfaceFunction {
 	 *         Klassenname für ein zuerstellendes/auszuwählendes Objekt
 	 *         (Beispiel: {@code WalkingSoldier}
 	 */
-	public String getFunctionName() {
-		String re = "";
-		String[] split = this.toString().split("_");
-		if (split.length > 1) {
-			for (int i = 1; i < split.length; i++) {
-				re += split[i].charAt(0) + split[i].toLowerCase().substring(1);
-			}
-		}
-		return re;
-	}
+	public String getFunctionName();
 
 	/**
 	 * @see InterfaceFunctions#getFunctionName()
 	 * @return Der Klassenname den dieses Objekt beinhaltet für den Editor</br>
 	 *         <code>null</code>, wenn diese Funktion keine Editor-Funktion ist
 	 */
-	public String getClassNameForEditor() {
-		if (this.getKindOfParent().equals("EDITOR")) {
-			return this.getFunctionName();
-		} else {
-			return null;
-		}
-	}
+	public String getClassNameForEditor();
 }

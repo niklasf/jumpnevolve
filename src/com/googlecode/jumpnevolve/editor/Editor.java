@@ -108,6 +108,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		objectList.addItem("Door");
 		objectList.addItem("Elevator");
 		objectList.addItem("SlidingPlattform");
+		objectList.addItem("Fluid");
 		objectList.setEditable(false);
 
 		objectAuswahl = new JPanel();

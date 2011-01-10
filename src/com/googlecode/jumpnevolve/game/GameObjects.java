@@ -4,14 +4,16 @@ import com.googlecode.jumpnevolve.editor.Arguments;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.Fluid;
 import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.KillingMachine;
 import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
+import com.googlecode.jumpnevolve.game.objects.SpringingSoldier;
 import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -20,7 +22,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public enum GameObjects {
+public enum GameObjects implements InterfaceFunction {
 
 	SOLDIER("Soldier", "object-pictures/simple-foot-soldier.png", false),
 
@@ -28,6 +30,9 @@ public enum GameObjects {
 			"object-pictures/simple-foot-soldier.png", false),
 
 	JUMPING_SOLDIER("JumpingSoldier",
+			"object-pictures/simple-foot-soldier.png", false),
+
+	SPRINGING_SOLDIER("SpringingSoldier",
 			"object-pictures/simple-foot-soldier.png", false),
 
 	KILLING_MACHINE("KillingMachine",
@@ -57,7 +62,11 @@ public enum GameObjects {
 			new String[] { "Width", "Height", "DownEnd", "UpEnd" }, new char[] {
 					'|', ',', ',' },
 			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
-					"Vector", "Vector", "Float", "Float" }, false);
+					"Vector", "Vector", "Float", "Float" }, false),
+
+	FLUID("Fluid", "textures/water.png", new String[] { "Width", "Height",
+			"MaximumVelocity" }, new char[] { '|', ',' }, new String[] { "30",
+			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false);
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -109,6 +118,8 @@ public enum GameObjects {
 			newObject = new WalkingSoldier(level, position);
 		} else if (className.equals("JumpingSoldier")) {
 			newObject = new JumpingSoldier(level, position);
+		} else if (className.equals("SpringingSoldier")) {
+			newObject = new SpringingSoldier(level, position);
 		} else if (className.equals("Soldier")) {
 			newObject = new Soldier(level, position);
 		} else if (className.equals("KillingMachine")) {
@@ -127,6 +138,9 @@ public enum GameObjects {
 		} else if (className.equals("SlidingPlattform")) {
 			newObject = new SlidingPlattform(level, position,
 					(Vector) argus[0], (Float) argus[1], (Float) argus[2]);
+		} else if (className.equals("Fluid")) {
+			newObject = new Fluid(level, position, (Vector) argus[0],
+					(Float) argus[1]);
 		}
 		return newObject;
 	}
@@ -168,15 +182,25 @@ public enum GameObjects {
 		}
 	}
 
-	public InterfaceFunctions getFunctionsEnum() {
-		for (InterfaceFunctions func : InterfaceFunctions.values()) {
-			String cur = func.getClassNameForEditor();
-			if (cur != null) {
-				if (cur.toUpperCase().equals(this.className.toUpperCase())) {
-					return func;
-				}
+	@Override
+	public String getClassNameForEditor() {
+		return this.getFunctionName();
+	}
+
+	@Override
+	public String getFunctionName() {
+		String re = "";
+		String[] split = this.toString().split("_");
+		if (split.length > 0) {
+			for (int i = 0; i < split.length; i++) {
+				re += split[i].charAt(0) + split[i].toLowerCase().substring(1);
 			}
 		}
-		return InterfaceFunctions.ERROR;
+		return re;
+	}
+
+	@Override
+	public String getKindOfParent() {
+		return "EDITOR";
 	}
 }

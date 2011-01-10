@@ -12,6 +12,7 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
@@ -33,7 +34,7 @@ public class Player implements Pollable, Interfaceable {
 
 	private PlayerFigure figure;
 	private Playable cur;
-	private HashMap<InterfaceFunctions, Playable> figureList = new HashMap<InterfaceFunctions, Playable>();
+	private HashMap<InterfaceFunction, Playable> figureList = new HashMap<InterfaceFunction, Playable>();
 	private final Level parent;
 	private final MainGUI gui;
 
@@ -96,7 +97,7 @@ public class Player implements Pollable, Interfaceable {
 	private void setFigures(String avaiableFigures, String startFigure) {
 		String figures[] = avaiableFigures.split(",");
 		for (String figure : figures) {
-			InterfaceFunctions curNum = InterfaceFunctions.ERROR;
+			InterfaceFunction curNum = InterfaceFunctions.ERROR;
 			if (figure.equals("RollingBall")) {
 				curNum = InterfaceFunctions.FIGURE_ROLLING_BALL;
 			} else if (figure.equals("JumpingCross")) {
@@ -104,7 +105,7 @@ public class Player implements Pollable, Interfaceable {
 			}
 			this.figureList.put(curNum, this.getNewFigure(curNum));
 		}
-		InterfaceFunctions curNum = InterfaceFunctions.ERROR;
+		InterfaceFunction curNum = InterfaceFunctions.ERROR;
 		if (startFigure.equals("RollingBall")) {
 			curNum = InterfaceFunctions.FIGURE_ROLLING_BALL;
 		} else if (startFigure.equals("JumpingCross")) {
@@ -114,7 +115,7 @@ public class Player implements Pollable, Interfaceable {
 		this.figure.setShape(this.cur.getShape());
 	}
 
-	private Playable getNewFigure(InterfaceFunctions number) {
+	private Playable getNewFigure(InterfaceFunction number) {
 		if (number == InterfaceFunctions.FIGURE_ROLLING_BALL) {
 			return new RollingBall(this.figure);
 		} else if (number == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
@@ -168,7 +169,7 @@ public class Player implements Pollable, Interfaceable {
 
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
-		InterfaceFunctions function = object.getFunction();
+		InterfaceFunction function = object.getFunction();
 		if (function == InterfaceFunctions.FIGURE_ROLLING_BALL
 				|| function == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
 			this.cur = this.getNewFigure(function);

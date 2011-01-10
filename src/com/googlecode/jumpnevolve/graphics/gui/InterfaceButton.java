@@ -21,7 +21,6 @@ public class InterfaceButton extends InterfaceObject {
 	public static final float BUTTON_DIMENSION = 50.0f;
 
 	private final String icon;
-	private char name = ' ';
 	private final Shape shape;
 
 	/**
@@ -34,17 +33,11 @@ public class InterfaceButton extends InterfaceObject {
 	 *            Der Datei-Pfad des Icons, welches auf diesem Button
 	 *            dargestellt werden soll
 	 */
-	public InterfaceButton(InterfaceFunctions function, String iconPath) {
+	public InterfaceButton(InterfaceFunction function, String iconPath) {
 		super(function);
 		this.icon = iconPath;
 		this.shape = new Rectangle(Vector.ZERO, BUTTON_DIMENSION,
 				BUTTON_DIMENSION);
-	}
-
-	public InterfaceButton(InterfaceFunctions function, String iconPath,
-			char name) {
-		this(function, iconPath);
-		this.name = name;
 	}
 
 	@Override
@@ -63,6 +56,8 @@ public class InterfaceButton extends InterfaceObject {
 		switch (this.getStatus()) {
 		case STATUS_MOUSE_OVER:
 			g.setColor(Color.yellow);
+			GraphicUtils.drawString(g, pos, this.getFunction()
+					.getFunctionName());
 			break;
 		case STATUS_DOWN:
 		case STATUS_PRESSED:
@@ -76,7 +71,6 @@ public class InterfaceButton extends InterfaceObject {
 		GraphicUtils.drawScaled(g, actShape, new Vector(this.parent
 				.getInterfaceable().getZoomX(), this.parent.getInterfaceable()
 				.getZoomY()));
-		GraphicUtils.drawString(g, pos, "" + this.name);
 		g.setColor(c);
 		// TODO: Beenden
 	}

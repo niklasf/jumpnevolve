@@ -39,7 +39,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public static final int STATUS_DOWN = 3;
 
-	public final InterfaceFunctions function;
+	public final InterfaceFunction function;
 	public InterfaceContainer parent;
 	private int status;
 	private boolean wasClicked = false, interfaceableAdded = false;
@@ -55,7 +55,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            Die Funktion dieses Objekts (ein Enum aus
 	 *            {@link InterfaceFunctions})
 	 */
-	public InterfaceObject(InterfaceFunctions function) {
+	public InterfaceObject(InterfaceFunction function) {
 		this.function = function;
 	}
 
@@ -134,7 +134,7 @@ public abstract class InterfaceObject implements InterfacePart {
 		return this.status;
 	}
 
-	public InterfaceFunctions getFunction() {
+	public InterfaceFunction getFunction() {
 		return this.function;
 	}
 
