@@ -552,7 +552,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			String fileName = saveFileName.getText().trim();
 			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
 				try {
-					this.saveLevel("editor/levels/" + fileName);
+					this.saveLevel("resources/levels/" + fileName);
 				} catch (IOException e) {
 					// TODO Fehlermeldung ausgeben
 					e.printStackTrace();
@@ -565,7 +565,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			String fileName = loadFileName.getText().trim();
 			if (fileName.endsWith(".txt") && fileName.equals("") == false) {
 				try {
-					this.loadLevel("editor/levels/" + fileName);
+					this.loadLevel("resources/levels/" + fileName);
 				} catch (IOException e) {
 					System.out.println("Fehler beim Laden des Levels:\n" + e);
 				}
