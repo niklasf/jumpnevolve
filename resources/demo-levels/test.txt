@@ -1,7 +1,0 @@
-Leveldimensionen_100_100_1
-Leveleinstellungen_30_500_RollingBall,JumpingCross_default
-Player_RollingBall_RollingBall,JumpingCross_20|10_10,20,30,100
-Ground_15|20_none_none_10|2
-Ground_26|12_none_none_1|10
-Ground_4|12_none_none_1|10
-WalkingSoldier_10|15_none_none_none
