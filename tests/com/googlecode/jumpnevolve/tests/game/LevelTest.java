@@ -1,4 +1,4 @@
-package com.google.code.jumpnevolve.tests.game;
+package com.googlecode.jumpnevolve.tests.game;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;

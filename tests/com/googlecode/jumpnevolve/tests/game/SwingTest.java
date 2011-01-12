@@ -1,4 +1,4 @@
-package com.google.code.jumpnevolve.tests.game;
+package com.googlecode.jumpnevolve.tests.game;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
