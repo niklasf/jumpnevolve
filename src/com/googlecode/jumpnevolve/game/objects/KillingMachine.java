@@ -3,9 +3,8 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
-import com.googlecode.jumpnevolve.game.player.PlayerFigure;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Collision;
@@ -34,7 +33,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class KillingMachine extends EnemyTemplate {
+public class KillingMachine extends EnemyTemplate implements GravityActing {
 
 	private static final long serialVersionUID = -5724600752326575341L;
 
@@ -48,7 +47,6 @@ public class KillingMachine extends EnemyTemplate {
 			this.getWorld().removeFromAllLists(this);
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
 		}
-		this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
 	}
 
 	@Override

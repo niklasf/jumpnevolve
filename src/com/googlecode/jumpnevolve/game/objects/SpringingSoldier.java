@@ -5,8 +5,8 @@ package com.googlecode.jumpnevolve.game.objects;
 
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.world.Jumping;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -15,7 +15,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class SpringingSoldier extends Soldier {
+public class SpringingSoldier extends Soldier implements Jumping {
+
+	private float maxVelocityY = 0.0f;
 
 	/**
 	 * @param world
@@ -23,16 +25,18 @@ public class SpringingSoldier extends Soldier {
 	 */
 	public SpringingSoldier(World world, Vector position) {
 		super(world, position);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		super.specialSettingsPerRound(input);
-		if (this.isWayBlocked(Shape.DOWN)) {
-			this.setVelocity(Vector.UP.mul(this.getOldVelocity().abs()));
-			// Sprung nach oben
-		}
+		this.maxVelocityY = Math.max(Math.abs(this.getVelocity().y),
+				this.maxVelocityY);
+	}
+
+	@Override
+	public float getJumpingHeight() {
+		return this.maxVelocityY;
 	}
 
 }

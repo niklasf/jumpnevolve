@@ -1,9 +1,7 @@
 package com.googlecode.jumpnevolve.game.objects;
 
-import org.newdawn.slick.Input;
-
+import com.googlecode.jumpnevolve.graphics.world.Jumping;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -27,7 +25,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class JumpingSoldier extends Soldier {
+public class JumpingSoldier extends Soldier implements Jumping {
 
 	private static final long serialVersionUID = -753627347562694811L;
 
@@ -36,12 +34,7 @@ public class JumpingSoldier extends Soldier {
 	}
 
 	@Override
-	protected void specialSettingsPerRound(Input input) {
-		super.specialSettingsPerRound(input);
-		if (this.isWayBlocked(Shape.DOWN)) {
-			this.setVelocity(Vector.UP.mul(this.getMass() * 0.1f * 98.1f)); // Sprung
-			// nach
-			// oben
-		}
+	public float getJumpingHeight() {
+		return 40.0f;
 	}
 }

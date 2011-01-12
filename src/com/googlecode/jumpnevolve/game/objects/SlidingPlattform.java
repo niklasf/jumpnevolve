@@ -6,6 +6,7 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -16,9 +17,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class SlidingPlattform extends ObjectTemplate {
+public class SlidingPlattform extends ObjectTemplate implements Moving {
 
 	private final float leftEnd, rightEnd;
+	private Vector curDirection;
 
 	/**
 	 * Erzeugt eine neue Plattform, die sich nach rechts und links bewegt
@@ -39,7 +41,7 @@ public class SlidingPlattform extends ObjectTemplate {
 	 */
 	public SlidingPlattform(World world, Vector position, Vector dimension,
 			float end1, float end2) {
-		super(world, new Rectangle(position, dimension), 5.0f, true, false);
+		super(world, new Rectangle(position, dimension), 5.0f, true);
 		if (end1 > end2) {
 			this.leftEnd = end2;
 			this.rightEnd = end1;
@@ -52,18 +54,28 @@ public class SlidingPlattform extends ObjectTemplate {
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.getPosition().x <= this.leftEnd) {
-			this.setVelocity(Vector.RIGHT.mul(50.0f));
+			this.curDirection = Vector.RIGHT;
 		}
 		if (this.getPosition().x >= this.rightEnd) {
-			this.setVelocity(Vector.LEFT.mul(50.0f));
+			this.curDirection = Vector.LEFT;
 		}
 		if (this.getVelocity().x == 0) {
-			this.setVelocity(Vector.LEFT.mul(50.0f));
+			this.curDirection = Vector.LEFT;
 		}
 	}
 
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
 				.getImage("textures/aluminium.png"), true);
+	}
+
+	@Override
+	public Vector getMovingDirection() {
+		return curDirection;
+	}
+
+	@Override
+	public float getMovingSpeed() {
+		return 50.0f;
 	}
 }

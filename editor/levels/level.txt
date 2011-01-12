@@ -1,0 +1,10 @@
+Leveldimensionen_1000_300_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_100.0|0.0_0,100
+Ground_321.0|199.0_0002-Ground_none_317.0|18.0
+Ground_109.0|172.0_0006-Ground_none_30|10
+WalkingSoldier_180.0|148.0_0004-WalkingSoldier_none_none
+WalkingSoldier_598.0|122.0_0003-WalkingSoldier_none_none
+Ground_660.0|173.0_0005-Ground_none_30|10
+Fluid_386.0|155.0_0001-Fluid_none_149.0|25.0,20
+JumpingSoldier_665.0|106.0_0007-JumpingSoldier_none_none

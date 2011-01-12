@@ -4,23 +4,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
-import com.googlecode.jumpnevolve.game.objects.Button;
-import com.googlecode.jumpnevolve.game.objects.Door;
-import com.googlecode.jumpnevolve.game.objects.Elevator;
-import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
-import com.googlecode.jumpnevolve.game.objects.Ground;
-import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
-import com.googlecode.jumpnevolve.game.objects.KillingMachine;
-import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
-import com.googlecode.jumpnevolve.game.objects.Soldier;
-import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
-import com.googlecode.jumpnevolve.game.player.Player;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;

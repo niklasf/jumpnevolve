@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Accompanying;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 
@@ -14,13 +15,18 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class ObjectTemplate extends AbstractObject {
+public abstract class ObjectTemplate extends AbstractObject implements
+		Accompanying {
 
 	private static final long serialVersionUID = 2329577111424159238L;
 
 	public ObjectTemplate(World world, Shape shape, float mass,
-			boolean blockable, boolean pushable) {
-		super(world, shape, mass, blockable, pushable);
+			boolean blockable) {
+		super(world, shape, mass, blockable);
 	}
 
+	@Override
+	public int getCompany() {
+		return COMPANY_OBJECT;
+	}
 }

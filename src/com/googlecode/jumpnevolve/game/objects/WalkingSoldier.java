@@ -3,6 +3,7 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.objects.Soldier;
+import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -29,9 +30,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class WalkingSoldier extends Soldier {
+public class WalkingSoldier extends Soldier implements Moving {
 
 	private static final long serialVersionUID = 3329079316071279296L;
+	private Vector curDirection;
 
 	public WalkingSoldier(World world, Vector position) {
 		super(world, position);
@@ -40,17 +42,24 @@ public class WalkingSoldier extends Soldier {
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		super.specialSettingsPerRound(input);
-		// TODO: Geschwindigkeiten anpassen
 		if (this.isWayBlocked(Shape.RIGHT)) {
-			this.setVelocity(Vector.LEFT.mul(10.0f));
-			// Richtung von Rechts nach Links ändern
+			this.curDirection = Vector.LEFT;
 		}
 		if (this.isWayBlocked(Shape.LEFT)) {
-			this.setVelocity(Vector.RIGHT.mul(10.0f));
-			// Richtung von Links nach Rechts ändern
+			this.curDirection = Vector.RIGHT;
 		}
 		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.DOWN)) {
-			this.setVelocity(Vector.RIGHT.mul(10.0f));
+			this.curDirection = Vector.RIGHT;
 		}
+	}
+
+	@Override
+	public Vector getMovingDirection() {
+		return this.curDirection;
+	}
+
+	@Override
+	public float getMovingSpeed() {
+		return 10.0f;
 	}
 }

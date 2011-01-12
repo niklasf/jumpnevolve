@@ -82,12 +82,8 @@ public class Level extends World {
 	public void addPlayer(Vector position, String avaiableFigures,
 			String startFigure, String[] savePositions) {
 		this.player = new Player(this, position, avaiableFigures, startFigure,
-				savePositions, true);// FIXME:
-		// Startposition
-		// vorgeben
-		// (in
-		// der
-		// Leveldatei)
+				savePositions, true);
+		this.add(this.player);
 	}
 
 	public Player getPlayer() {
@@ -108,9 +104,6 @@ public class Level extends World {
 	@Override
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
-		if (this.player != null) {
-			this.player.poll(input, secounds);
-		}
 		this.timer.poll(input, secounds);
 		if (this.timer.didFinish()) {
 			this.reload();
@@ -129,8 +122,5 @@ public class Level extends World {
 		super.configScreen(g);
 		this.drawBackground(g);
 		super.draw(g);
-		if (this.player != null) {
-			this.player.draw(g);
-		}
 	}
 }

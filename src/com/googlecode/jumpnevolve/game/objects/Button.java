@@ -40,8 +40,7 @@ public class Button extends ActivatingObject implements Activable {
 	private final float activatingTime;
 
 	public Button(World world, Vector position, float activatingTime) {
-		super(world, new Rectangle(position, new Vector(30, 30)), 0.0f, false,
-				false);
+		super(world, new Rectangle(position, new Vector(30, 30)), 0.0f, false);
 		this.remainingTime.setTime(activatingTime);
 		this.activatingTime = activatingTime;
 	}

@@ -19,7 +19,7 @@ public abstract class GroundTemplate extends AbstractObject {
 	private static final long serialVersionUID = 7287324851357837067L;
 
 	public GroundTemplate(World world, Shape shape) {
-		super(world, shape, 0.0f, true, false);
+		super(world, shape, 0.0f, true);
 	}
 
 }

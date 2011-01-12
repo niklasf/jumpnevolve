@@ -8,7 +8,6 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;

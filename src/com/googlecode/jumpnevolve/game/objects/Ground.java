@@ -45,11 +45,6 @@ public class Ground extends GroundTemplate {
 		// Nichts tun
 	}
 
-	@Override
-	public void onPushableCrash(AbstractObject other) {
-		// Boden kann nichts schieben
-	}
-
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
 				.getImage("textures/stone.png"), false);

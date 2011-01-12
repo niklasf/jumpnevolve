@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -53,7 +54,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Konstante für die maximale Geschwindigkeit in einer Richtung (x bzw. y)
 	 */
-	private static final float MAXIMUM_VELOCITY_ONE_WAY = 250;
+	private static final float MAXIMUM_VELOCITY_ONE_WAY = 300;
+
+	public static final float GRAVITY = 98.1f;
 
 	private Shape shape;
 
@@ -68,8 +71,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	private Vector oldVelocity = Vector.ZERO;
 
 	private boolean blockable;
-
-	private boolean pushable;
 
 	private boolean alive = true;
 
@@ -116,11 +117,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Ob das Objekt, ein anderes (lebendes) Objekt töten kann
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
-			boolean blockable, boolean pushable) {
+			boolean blockable) {
 		this(world, shape);
 		this.mass = mass;
 		this.blockable = blockable;
-		this.pushable = pushable;
 	}
 
 	/**
@@ -152,6 +152,37 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.addDone(this);
 		this.force = Vector.ZERO;
 		this.specialSettingsPerRound(input);
+		if (this instanceof Moving) {
+			Vector direction = ((Moving) this).getMovingDirection();
+			float vel = 0.0f;
+			float move = ((Moving) this).getMovingSpeed();
+			if (direction.equals(0, 0)) {
+				move = 0.0f;
+				direction = this.getVelocity().neg();
+				vel = -1.0f;
+			} else if (this.getVelocity().equals(0, 0) == false) {
+				vel = (float) (Math.cos(this.getVelocity().ang(direction)) * this
+						.getVelocity().abs());
+			}
+			float mul = 1.0f;
+			if (direction.x * direction.y != 0) {
+				mul = 0.707f;
+			}
+			this.applyForce(direction.mul(mul * (move - vel) * 1.5f
+					* this.getMass()));
+		}
+		if (this instanceof Jumping) {
+			if (this.isWayBlocked(Shape.DOWN)) {
+				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
+						* ((Jumping) this).getJumpingHeight() * GRAVITY));
+				// FIXME: Statt 4.0 muss hier laut Formel eigentlich 2.0 stehen,
+				// dann springt das Objekt aber nur ca. halb so hoch, wie es
+				// soll --> Wo liegt der Fehler?
+			}
+		}
+		if (this instanceof GravityActing) {
+			this.applyGravity();
+		}
 		this.collision.clear();
 	}
 
@@ -342,6 +373,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.force = this.force.add(force);
 	}
 
+	private void applyGravity() {
+		this.applyForce(Vector.DOWN.mul(GRAVITY * this.mass));
+	}
+
 	/**
 	 * Setzt die Richtung zum "Blocker" als blockiert Wird in
 	 * {@link #endRound()} beim Setzen der neuen Position ausgewertet
@@ -352,16 +387,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void blockWay(AbstractObject blocker) {
 		this.collision.addCollision(this.getShape().getCollision(
 				blocker.getShape(), blocker.isMoveable(), this.isMoveable()));
-	}
-
-	// FIXME: Bitte korrigieren, da hab ich ein Denkfehler gemacht...
-	/**
-	 * Überträgt Energie in Form eines Geschwindigkeitsvektors auf das Objekt
-	 * 
-	 * @param energy
-	 *            Die übertragene Energie
-	 */
-	public void giveEnergy(Vector energy) {
 	}
 
 	// Attribute holen und setzen
@@ -580,13 +605,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
-	 * @return {@code true}, wenn das Objekt schiebbar ist.
-	 */
-	public boolean isPushable() {
-		return this.pushable;
-	}
-
-	/**
 	 * @param direction
 	 *            Richtung, welche abgefragt wird; bezieht sich auf die
 	 *            Richtungs-Konstanten von {@link Shape}
@@ -614,10 +632,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	public final void setPosition(Vector newPosition) {
 		this.shape = this.shape.modifyCenter(newPosition);
-	}
-
-	public final void setForce(Vector newForce) {
-		this.force = newForce;
 	}
 
 	/**
@@ -649,6 +663,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param velocity
 	 *            Die neue Geschwindigkeit
 	 */
+	@Deprecated
 	public void setVelocity(Vector velocity) {
 		this.velocity = velocity;
 	}
@@ -707,9 +722,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (other.blockable) {
 			onBlockableCrash(other);
 		}
-		if (other.pushable) {
-			onPushableCrash(other);
-		}
 		onGeneralCrash(other);
 	}
 
@@ -726,20 +738,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this.blockable) {
 			other.blockWay(this);
 		}
-	}
-
-	/**
-	 * Wird aufgerufen, wenn dieses Objekt auf ein schiebbares Objekt trifft
-	 * 
-	 * Dem anderen Objekt wird die Energie dieses Objekts übertragen.
-	 * 
-	 * @param other
-	 *            Das andere (schiebbare) Objekt
-	 */
-	public void onPushableCrash(AbstractObject other) {
-		other.giveEnergy(this.getVelocity().getDirection().mul(
-				this.getVelocity().abs() * this.getVelocity().abs()
-						* (0.5f * this.getMass())));
 	}
 
 	public void onGeneralCrash(AbstractObject other) {

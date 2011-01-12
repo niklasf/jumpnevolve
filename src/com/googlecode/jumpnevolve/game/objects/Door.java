@@ -41,7 +41,7 @@ public class Door extends ObjectTemplate implements Activable {
 	private boolean openingState = false;
 
 	public Door(World world, Vector position, Vector dimension) {
-		super(world, new Rectangle(position, dimension), 0.0f, true, false);
+		super(world, new Rectangle(position, dimension), 0.0f, true);
 	}
 
 	@Override
@@ -99,10 +99,5 @@ public class Door extends ObjectTemplate implements Activable {
 	@Override
 	public boolean isDeactivableBy(Activating deactivator) {
 		return deactivator.getCompany() == COMPANY_OBJECT;
-	}
-
-	@Override
-	public int getCompany() {
-		return COMPANY_OBJECT;
 	}
 }

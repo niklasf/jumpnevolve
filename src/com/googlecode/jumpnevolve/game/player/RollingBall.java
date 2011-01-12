@@ -1,7 +1,6 @@
 package com.googlecode.jumpnevolve.game.player;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
@@ -20,11 +19,11 @@ public class RollingBall implements Playable {
 	@Override
 	public float getJumpingHeight() {
 		// TODO Auto-generated method stub
-		return 0.30f;
+		return 60.0f;
 	}
 
 	@Override
-	public float getRunningSpeed() {
+	public float getWalkingSpeed() {
 		// TODO Auto-generated method stub
 		return 100;
 	}
@@ -45,12 +44,6 @@ public class RollingBall implements Playable {
 	public boolean isLiving() {
 		// TODO Auto-generated method stub
 		return true;
-	}
-
-	@Override
-	public boolean isPushable() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

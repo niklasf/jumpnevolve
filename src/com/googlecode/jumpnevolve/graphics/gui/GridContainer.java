@@ -3,8 +3,6 @@
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
-import java.util.HashMap;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 

@@ -159,6 +159,9 @@ public enum GameObjects implements InterfaceFunction {
 			for (int i = 0, j = 0; i < split.length; i++, j++) {
 				if (this.kindOfContents[i].toUpperCase().equals("FLOAT")) {
 					re[j] = Float.parseFloat(split[i]);
+				} else if (this.kindOfContents[i].toUpperCase().equals(
+						"BOOLEAN")) {
+					re[j] = Boolean.parseBoolean(split[i]);
 				} else if (this.kindOfContents[i].toUpperCase()
 						.equals("VECTOR")) {
 					Object[] next = new Object[re.length - 1];

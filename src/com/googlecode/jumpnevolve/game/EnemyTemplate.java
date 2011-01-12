@@ -23,7 +23,7 @@ public abstract class EnemyTemplate extends AbstractObject implements Fighting {
 	private static final long serialVersionUID = 6877195164492992576L;
 
 	public EnemyTemplate(World world, Shape shape, float mass, boolean blockable) {
-		super(world, shape, mass, blockable, false);
+		super(world, shape, mass, blockable);
 	}
 
 	@Override

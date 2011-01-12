@@ -19,11 +19,11 @@ public class Basic implements Playable {
 	@Override
 	public float getJumpingHeight() {
 		// TODO Auto-generated method stub
-		return 0.50f;
+		return 100.0f;
 	}
 
 	@Override
-	public float getRunningSpeed() {
+	public float getWalkingSpeed() {
 		// TODO Auto-generated method stub
 		return 50;
 	}
@@ -48,12 +48,6 @@ public class Basic implements Playable {
 
 	@Override
 	public boolean isLiving() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isPushable() {
 		// TODO Auto-generated method stub
 		return true;
 	}

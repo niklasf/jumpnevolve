@@ -4,7 +4,6 @@
 package com.googlecode.jumpnevolve.game.player;
 
 import com.googlecode.jumpnevolve.graphics.Drawable;
-import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Shape;
 
 /**
@@ -20,7 +19,7 @@ public interface Playable extends Drawable {
 	/**
 	 * @return Die Geschwindigkeit mit der sich das Objekt bewegt
 	 */
-	public float getRunningSpeed();
+	public float getWalkingSpeed();
 
 	/**
 	 * @return Die Höhe in Pixeln (bei Zoom = 1), die das Objekt hochspringt
@@ -28,8 +27,6 @@ public interface Playable extends Drawable {
 	public float getJumpingHeight();
 
 	public boolean isBlockable();
-
-	public boolean isPushable();
 
 	public boolean isLiving();
 

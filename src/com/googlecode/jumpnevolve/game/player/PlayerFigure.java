@@ -6,13 +6,15 @@ package com.googlecode.jumpnevolve.game.player;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.Fighting;
+import com.googlecode.jumpnevolve.graphics.world.GravityActing;
+import com.googlecode.jumpnevolve.graphics.world.Jumping;
 import com.googlecode.jumpnevolve.graphics.world.Living;
+import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Collision;
@@ -24,11 +26,15 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class PlayerFigure extends AbstractObject implements Fighting,
-		Activating {
+		Activating, GravityActing, Moving, Jumping {
 
 	private final Player parent;
 
 	private Vector save;
+
+	private Vector curDirection = Vector.ZERO;
+
+	private boolean jumps;
 
 	/**
 	 * 
@@ -37,7 +43,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	 * @param parent
 	 */
 	public PlayerFigure(World world, Vector position, Player parent) {
-		super(world, new Circle(position, 10.0f), 5.0f, true, true);
+		super(world, new Circle(position, 10.0f), 5.0f, true);
 		this.parent = parent;
 		this.save = this.getPosition();
 		// TODO Auto-generated constructor stub
@@ -60,20 +66,15 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 			this.setAlive(true); // Wiederbeleben
 
 		}
-
-		// Schwerkraft
-		this.applyForce(Vector.DOWN.mul(98.1f * this.getMass()));
+		if (this.isWayBlocked(Shape.DOWN) == false) {
+			this.jumps = false;
+		}
 		// TODO: Tod verarbeiten
 	}
 
 	@Override
 	public boolean isBlockable() {
 		return this.parent.getCurPlayable().isBlockable();
-	}
-
-	@Override
-	public boolean isPushable() {
-		return this.parent.getCurPlayable().isPushable();
 	}
 
 	public boolean isLiving() {
@@ -90,27 +91,46 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	}
 
 	public void jump() {
-		if (this.wasWayBlocked(Shape.DOWN)) {
-			this.setVelocity(new Vector(this.getVelocity().x, -this.parent
-					.getCurPlayable().getJumpingHeight()
-					* 98.1f * this.getMass()));
-		}
+		this.jumps = true;
+		/*
+		 * if (this.wasWayBlocked(Shape.DOWN)) {
+		 * this.setVelocity(this.getVelocity().modifyY(
+		 * -this.parent.getCurPlayable().getJumpingHeight() * 98.1f
+		 * this.getMass())); }
+		 */
 	}
 
 	public void run(int direction) {
 		switch (direction) {
 		case Playable.DIRECTION_LEFT:
-			this.setVelocity(this.getVelocity().modifyX(
-					-this.parent.getCurPlayable().getRunningSpeed()));
+			/*
+			 * this.setVelocity(this.getVelocity().modifyX(
+			 * -this.parent.getCurPlayable().getRunningSpeed()));
+			 */
+			/*
+			 * this.applyForce(Vector.ZERO.modifyX((-this.parent.getCurPlayable()
+			 * .getWalkingSpeed() - this.getVelocity().x) 1.5f *
+			 * this.getMass()));
+			 */
 			// Nach links laufen
+			this.curDirection = Vector.LEFT;
 			break;
 		case Playable.DIRECTION_RIGHT:
-			this.setVelocity(this.getVelocity().modifyX(
-					this.parent.getCurPlayable().getRunningSpeed()));
+			/*
+			 * this.setVelocity(this.getVelocity().modifyX(
+			 * this.parent.getCurPlayable().getRunningSpeed()));
+			 */
+			/*
+			 * this.applyForce(Vector.ZERO.modifyX((+this.parent.getCurPlayable()
+			 * .getWalkingSpeed() - this.getVelocity().x) 1.5f *
+			 * this.getMass()));
+			 */
 			// Nach rechts laufen
+			this.curDirection = Vector.RIGHT;
 			break;
 		case Playable.STAY:
-			this.setVelocity(this.getVelocity().modifyX(0));
+			this.curDirection = Vector.ZERO;
+			// this.setVelocity(this.getVelocity().modifyX(0));
 		default:
 			break;
 		}
@@ -186,6 +206,25 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	@Override
 	public boolean wantDeactivate(Activable object) {
 		return false;
+	}
+
+	@Override
+	public Vector getMovingDirection() {
+		return this.curDirection;
+	}
+
+	@Override
+	public float getMovingSpeed() {
+		return this.parent.getCurPlayable().getWalkingSpeed();
+	}
+
+	@Override
+	public float getJumpingHeight() {
+		if (this.jumps) {
+			return this.parent.getCurPlayable().getJumpingHeight();
+		} else {
+			return 0.0f;
+		}
 	}
 
 }

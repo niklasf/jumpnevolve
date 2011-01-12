@@ -7,15 +7,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
-import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.effects.FogEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.effects.WaterfallEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -43,7 +40,7 @@ public class Fluid extends ObjectTemplate {
 	 */
 	public Fluid(World world, Vector position, Vector dimension,
 			float maximumVelocity) {
-		super(world, new Rectangle(position, dimension), 0.0f, false, false);
+		super(world, new Rectangle(position, dimension), 0.0f, false);
 		this.maximumVelocity = maximumVelocity;
 		this.effect1 = new ParticleEffect(position, new FogEmitterFactory());
 		this.effect2 = new ParticleEffect(position,
@@ -63,11 +60,14 @@ public class Fluid extends ObjectTemplate {
 	public void onGeneralCrash(AbstractObject other) {
 		if (other.isMoveable()) {
 			float velAbs = other.getVelocity().abs();
-			// System.out.println("Moveable-Crash: " + velAbs + " MaxVel: "
-			// + maximumVelocity);
+			/*
+			 * System.out.println("Moveable-Crash: " + velAbs + " MaxVel: " +
+			 * maximumVelocity);
+			 */
 			if (velAbs > this.maximumVelocity) {
 				other.applyForce(other.getVelocity().getDirection().mul(
-						(velAbs - maximumVelocity) * 0.7f));
+						(velAbs - maximumVelocity) * 2.0f * other.getMass())
+						.neg());
 			}
 		}
 	}

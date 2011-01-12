@@ -7,12 +7,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
-import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
+import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -42,9 +42,11 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class GreenSlimeWorm extends EnemyTemplate {
+public class GreenSlimeWorm extends EnemyTemplate implements Moving,
+		GravityActing {
 
 	private boolean divisble;
+	private Vector curDirection = Vector.RIGHT;
 
 	public GreenSlimeWorm(World world, Vector position) {
 		super(world, new Rectangle(position, 80.0f, 21.0f), 5.0f, true);
@@ -62,18 +64,14 @@ public class GreenSlimeWorm extends EnemyTemplate {
 			this.getWorld().removeFromAllLists(this);
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
 		}
-		this.applyForce(Vector.DOWN.mul(this.getMass() * 9.81f)); // Schwerkarft
-		// TODO: Geschwindigkeiten anpassen
 		if (this.isWayBlocked(Shape.RIGHT)) {
-			this.setVelocity(Vector.LEFT.mul(5.0f));
-			// Richtung von Rechts nach Links ändern
+			this.curDirection = Vector.LEFT;
 		}
 		if (this.isWayBlocked(Shape.LEFT)) {
-			this.setVelocity(Vector.RIGHT.mul(5.0f));
-			// Richtung von Links nach Rechts ändern
+			this.curDirection = Vector.RIGHT;
 		}
 		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.DOWN)) {
-			this.setVelocity(Vector.RIGHT.mul(5.0f));
+			this.curDirection = Vector.RIGHT;
 		}
 	}
 
@@ -131,5 +129,15 @@ public class GreenSlimeWorm extends EnemyTemplate {
 	public boolean canDamage(Collision col) {
 		return col.isBlocked(Shape.RIGHT) || col.isBlocked(Shape.LEFT)
 				|| col.isBlocked(Shape.DOWN);
+	}
+
+	@Override
+	public Vector getMovingDirection() {
+		return this.curDirection;
+	}
+
+	@Override
+	public float getMovingSpeed() {
+		return 5.0f;
 	}
 }

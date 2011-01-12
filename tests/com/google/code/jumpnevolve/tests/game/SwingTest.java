@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
-import com.googlecode.jumpnevolve.graphics.SlickEngine;
 import com.googlecode.jumpnevolve.graphics.SwingEngine;
 
 public class SwingTest {
@@ -22,20 +21,19 @@ public class SwingTest {
 		frame.setSize(800, 600);
 		frame.setVisible(true);
 		frame.setLayout(new BorderLayout());
-		
+
 		JButton button = new JButton("Reset");
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Level level = Levelloader
-					.asyncLoadLevel("resources/demo-levels/demo.txt");
+						.asyncLoadLevel("resources/demo-levels/demo.txt");
 				engine.switchState(level);
 				engine.requestFocus();
 			}
 		});
 		frame.add(BorderLayout.EAST, button);
-		
-		
+
 		frame.add(engine);
 		engine.start();
 	}
