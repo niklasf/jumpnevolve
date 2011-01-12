@@ -39,7 +39,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 		super(world, shape, 0.1f, true);
 		this.livingTime = new Timer(livingTime);
 		this.livingTime.start();
-		this.shotDirection = shotDirection;
+		this.shotDirection = shotDirection.getDirection();
 		this.shotSpeed = shotSpeed;
 	}
 

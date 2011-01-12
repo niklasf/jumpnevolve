@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.editor.Arguments;
 import com.googlecode.jumpnevolve.game.objects.Button;
+import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
 import com.googlecode.jumpnevolve.game.objects.Fluid;
@@ -24,49 +25,58 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public enum GameObjects implements InterfaceFunction {
 
-	SOLDIER("Soldier", "object-pictures/simple-foot-soldier.png", false),
-
-	WALKING_SOLDIER("WalkingSoldier",
+	SOLDIER(Soldier.class.toString(),
 			"object-pictures/simple-foot-soldier.png", false),
 
-	JUMPING_SOLDIER("JumpingSoldier",
+	WALKING_SOLDIER(WalkingSoldier.class.toString(),
 			"object-pictures/simple-foot-soldier.png", false),
 
-	SPRINGING_SOLDIER("SpringingSoldier",
+	JUMPING_SOLDIER(JumpingSoldier.class.toString(),
 			"object-pictures/simple-foot-soldier.png", false),
 
-	KILLING_MACHINE("KillingMachine",
+	SPRINGING_SOLDIER(SpringingSoldier.class.toString(),
 			"object-pictures/simple-foot-soldier.png", false),
 
-	GREEN_SLIME_WORM("GreenSlimeWorm", "object-pictures/green-slime-worm.png",
+	KILLING_MACHINE(KillingMachine.class.toString(),
+			"object-pictures/simple-foot-soldier.png", false),
+
+	GREEN_SLIME_WORM(GreenSlimeWorm.class.toString(),
+			"object-pictures/green-slime-worm.png", false),
+
+	BUTTON(Button.class.toString(), "textures/aluminium.png",
+			new String[] { "Active Time" }, new char[0],
+			new String[] { "10.0" }, new String[] { "Float" }, true),
+
+	DOOR(Door.class.toString(), "textures/wood.png", new String[] { "Width",
+			"Height" }, new char[] { '|' }, new String[] { "30", "10" },
+			new String[] { "Vector", "Vector" }, false),
+
+	GROUND(Ground.class.toString(), "textures/stone.png", new String[] {
+			"Width", "Height" }, new char[] { '|' },
+			new String[] { "30", "10" }, new String[] { "Vector", "Vector" },
 			false),
 
-	BUTTON("Button", "textures/aluminium.png", new String[] { "Active Time" },
-			new char[0], new String[] { "10.0" }, new String[] { "Float" },
-			true),
+	ELEVATOR(Elevator.class.toString(), "textures/aluminium.png", new String[] {
+			"Width", "Height", "DownEnd", "UpEnd" },
+			new char[] { '|', ',', ',' }, new String[] { "30", "10", "20.0",
+					"0.0" }, new String[] { "Vector", "Vector", "Float",
+					"Float" }, false),
 
-	DOOR("Door", "textures/wood.png", new String[] { "Width", "Height" },
-			new char[] { '|' }, new String[] { "30", "10" }, new String[] {
-					"Vector", "Vector" }, false),
-
-	GROUND("Ground", "textures/stone.png", new String[] { "Width", "Height" },
-			new char[] { '|' }, new String[] { "30", "10" }, new String[] {
-					"Vector", "Vector" }, false),
-
-	ELEVATOR("Elevator", "textures/aluminium.png", new String[] { "Width",
-			"Height", "DownEnd", "UpEnd" }, new char[] { '|', ',', ',' },
+	SLIDING_PLATTFORM(SlidingPlattform.class.toString(),
+			"textures/aluminium.png", new String[] { "Width", "Height",
+					"DownEnd", "UpEnd" }, new char[] { '|', ',', ',' },
 			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
 					"Vector", "Vector", "Float", "Float" }, false),
 
-	SLIDING_PLATTFORM("SlidingPlattform", "textures/aluminium.png",
-			new String[] { "Width", "Height", "DownEnd", "UpEnd" }, new char[] {
-					'|', ',', ',' },
-			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
-					"Vector", "Vector", "Float", "Float" }, false),
+	FLUID(Fluid.class.toString(), "textures/water.png", new String[] { "Width",
+			"Height", "MaximumVelocity" }, new char[] { '|', ',' },
+			new String[] { "30", "10", "20" }, new String[] { "Vector",
+					"Vector", "Float" }, false),
 
-	FLUID("Fluid", "textures/water.png", new String[] { "Width", "Height",
-			"MaximumVelocity" }, new char[] { '|', ',' }, new String[] { "30",
-			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false);
+	CANNON(Cannon.class.toString(), "object-pictures/cannon.png", new String[] {
+			"Activated", "ShotDirectionX", "ShotDirectionY" }, new char[] {
+			',', '|' }, new String[] { "true", "20", "-5" }, new String[] {
+			"Boolean", "Vector", "Vector" }, false);
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -114,33 +124,36 @@ public enum GameObjects implements InterfaceFunction {
 		Vector position = Vector.parseVector(split[1]);
 		Object[] argus = getGameObject(className).loadArgus(arguments);
 		AbstractObject newObject = null;
-		if (className.equals("WalkingSoldier")) {
+		if (className.equals(WalkingSoldier.class.toString())) {
 			newObject = new WalkingSoldier(level, position);
-		} else if (className.equals("JumpingSoldier")) {
+		} else if (className.equals(JumpingSoldier.class.toString())) {
 			newObject = new JumpingSoldier(level, position);
-		} else if (className.equals("SpringingSoldier")) {
+		} else if (className.equals(SpringingSoldier.class.toString())) {
 			newObject = new SpringingSoldier(level, position);
-		} else if (className.equals("Soldier")) {
+		} else if (className.equals(Soldier.class.toString())) {
 			newObject = new Soldier(level, position);
-		} else if (className.equals("KillingMachine")) {
+		} else if (className.equals(KillingMachine.class.toString())) {
 			newObject = new KillingMachine(level, position);
-		} else if (className.equals("Button")) {
+		} else if (className.equals(Button.class.toString())) {
 			newObject = new Button(level, position, (Float) argus[0]);
-		} else if (className.equals("Door")) {
+		} else if (className.equals(Door.class.toString())) {
 			newObject = new Door(level, position, (Vector) argus[0]);
-		} else if (className.equals("Ground")) {
+		} else if (className.equals(Ground.class.toString())) {
 			newObject = new Ground(level, position, (Vector) argus[0]);
-		} else if (className.equals("Elevator")) {
+		} else if (className.equals(Elevator.class.toString())) {
 			newObject = new Elevator(level, position, (Vector) argus[0],
 					(Float) argus[1], (Float) argus[2]);
-		} else if (className.equals("GreenSlimeWorm")) {
+		} else if (className.equals(GreenSlimeWorm.class.toString())) {
 			newObject = new GreenSlimeWorm(level, position);
-		} else if (className.equals("SlidingPlattform")) {
+		} else if (className.equals(SlidingPlattform.class.toString())) {
 			newObject = new SlidingPlattform(level, position,
 					(Vector) argus[0], (Float) argus[1], (Float) argus[2]);
-		} else if (className.equals("Fluid")) {
+		} else if (className.equals(Fluid.class.toString())) {
 			newObject = new Fluid(level, position, (Vector) argus[0],
 					(Float) argus[1]);
+		} else if (className.equals(Cannon.class.toString())) {
+			newObject = new Cannon(level, position, (Boolean) argus[0],
+					(Vector) argus[1]);
 		}
 		return newObject;
 	}
@@ -187,19 +200,12 @@ public enum GameObjects implements InterfaceFunction {
 
 	@Override
 	public String getClassNameForEditor() {
-		return this.getFunctionName();
+		return this.className;
 	}
 
 	@Override
 	public String getFunctionName() {
-		String re = "";
-		String[] split = this.toString().split("_");
-		if (split.length > 0) {
-			for (int i = 0; i < split.length; i++) {
-				re += split[i].charAt(0) + split[i].toLowerCase().substring(1);
-			}
-		}
-		return re;
+		return this.getClassNameForEditor();
 	}
 
 	@Override

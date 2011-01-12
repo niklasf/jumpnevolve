@@ -9,6 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
+import com.googlecode.jumpnevolve.game.objects.Door;
+import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.Fluid;
+import com.googlecode.jumpnevolve.game.objects.Ground;
+import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -271,11 +276,11 @@ public class ObjectSettings extends JPanel {
 	}
 
 	private boolean isPullUpAble() {
-		return this.className.equals("Ground")
-				|| this.className.equals("Elevator")
-				|| this.className.equals("Door")
-				|| this.className.equals("SlidingPlattform")
-				|| this.className.equals("Fluid");
+		return this.className.equals(Ground.class.toString())
+				|| this.className.equals(Elevator.class.toString())
+				|| this.className.equals(Door.class.toString())
+				|| this.className.equals(SlidingPlattform.class.toString())
+				|| this.className.equals(Fluid.class.toString());
 	}
 
 	private boolean isPointNearPosition(Vector point, Vector other,

@@ -20,6 +20,8 @@ public abstract class Shooter extends ObjectTemplate implements Activable {
 
 	private final Timer timeToNextShot;
 
+	protected abstract void shot();
+
 	/**
 	 * @param world
 	 * @param shape
@@ -48,10 +50,6 @@ public abstract class Shooter extends ObjectTemplate implements Activable {
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
 		this.timeToNextShot.poll(input, secounds);
-	}
-
-	private void shot() {
-		this.getWorld();
 	}
 
 	@Override
