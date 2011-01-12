@@ -1,7 +1,6 @@
 package com.googlecode.jumpnevolve.tests.game;
 
 import com.googlecode.jumpnevolve.game.objects.Ground;
-import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.graphics.SlickEngine;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
