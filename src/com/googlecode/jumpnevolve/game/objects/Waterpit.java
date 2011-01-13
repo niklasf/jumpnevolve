@@ -10,17 +10,14 @@ public class Waterpit extends ObjectTemplate {
 
 	private static final long serialVersionUID = -6308218436976045606L;
 
-	public Waterpit(World world, Shape shape, float mass, boolean blockable,
-			boolean pushable) {
-		super(world, shape, mass, blockable, pushable);
+	public Waterpit(World world, Shape shape, float mass, boolean blockable) {
+		super(world, shape, mass, blockable);
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
 
 }

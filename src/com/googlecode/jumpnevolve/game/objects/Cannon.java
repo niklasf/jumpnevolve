@@ -42,7 +42,6 @@ public class Cannon extends Shooter {
 
 	@Override
 	protected void shot() {
-		System.out.println("shooted!");
 		this.getWorld().add(
 				new Cannonball(this.getWorld(), this.startPosition,
 						this.shotDirection));
