@@ -19,11 +19,9 @@ public class Collision {
 	 * @param direction
 	 *            Die Kollisionsrichtung, Konstanten aus Shape
 	 * @param blockedPosition1
-	 *            Die geblockte Position; werden zwei Seiten geblockt, so ist
-	 *            dies die Position der vertikalen Blockung (OBEN bzw. UNTEN)
+	 *            Die vertikale geblockte Position
 	 * @param blockedPosition2
-	 *            Die geblockte Position, wenn zwei Seiten geblockt werden, dies
-	 *            ist die Position der horizontalen Blockung (RECHTS bzw. LINKS)
+	 *            Die horizontale geblockte Position
 	 */
 	public Collision(byte direction, float blockedPosition1,
 			float blockedPosition2) {
@@ -41,7 +39,7 @@ public class Collision {
 			break;
 		case Shape.RIGHT:
 			this.collidingSides[1] = true;
-			this.collidingPositions[1] = blockedPosition1;
+			this.collidingPositions[1] = blockedPosition2;
 			break;
 		case Shape.DOWN_RIGHT:
 			this.collidingSides[1] = true;
@@ -61,7 +59,7 @@ public class Collision {
 			break;
 		case Shape.LEFT:
 			this.collidingSides[3] = true;
-			this.collidingPositions[3] = blockedPosition1;
+			this.collidingPositions[3] = blockedPosition2;
 			break;
 		case Shape.UP_LEFT:
 			this.collidingSides[3] = true;
@@ -72,21 +70,6 @@ public class Collision {
 		default:
 			break;
 		}
-	}
-
-	/**
-	 * Erzeugt eine Kollision, bei der nur eine Seite geblockt wird
-	 * 
-	 * FIXME: ACHTUNG: Wird eine Konstante für die Blockrichtung gewählt, die 2
-	 * geblockte Seiten erwartet, wird die zweite Blockung mit 0.0f übernommen
-	 * 
-	 * @param direction
-	 *            Die Kollisionsrichtung, Konstanten aus Shape
-	 * @param blockedPosition
-	 *            Die geblockte Position
-	 */
-	public Collision(byte direction, float blockedPosition) {
-		this(direction, blockedPosition, 0.0f);
 	}
 
 	/**
@@ -216,21 +199,120 @@ public class Collision {
 		Collision inverted = new Collision();
 		if (this.isBlocked(Shape.UP)) {
 			inverted.addCollision(new Collision(Shape.DOWN, this
-					.getBlockingPosition(Shape.UP)));
+					.getBlockingPosition(Shape.UP), 0));
 		}
 		if (this.isBlocked(Shape.DOWN)) {
 			inverted.addCollision(new Collision(Shape.UP, this
-					.getBlockingPosition(Shape.DOWN)));
+					.getBlockingPosition(Shape.DOWN), 0));
 		}
 		if (this.isBlocked(Shape.RIGHT)) {
-			inverted.addCollision(new Collision(Shape.LEFT, this
+			inverted.addCollision(new Collision(Shape.LEFT, 0, this
 					.getBlockingPosition(Shape.RIGHT)));
 		}
 		if (this.isBlocked(Shape.LEFT)) {
-			inverted.addCollision(new Collision(Shape.RIGHT, this
+			inverted.addCollision(new Collision(Shape.RIGHT, 0, this
 					.getBlockingPosition(Shape.LEFT)));
 		}
 		return inverted;
+	}
+
+	public Vector correctVector(Vector vec) {
+		if (this.isBlocked(Shape.UP)) {
+			if (vec.y < 0) {
+				vec = vec.modifyY(0);
+			}
+		}
+		if (this.isBlocked(Shape.DOWN)) {
+			if (vec.y > 0) {
+				vec = vec.modifyY(0);
+			}
+		}
+		if (this.isBlocked(Shape.RIGHT)) {
+			if (vec.x > 0) {
+				vec = vec.modifyX(0);
+			}
+		}
+		if (this.isBlocked(Shape.LEFT)) {
+			if (vec.x < 0) {
+				vec = vec.modifyX(0);
+			}
+		}
+		return vec;
+	}
+
+	public Shape correctPosition(Shape shape) {
+		if (shape instanceof Rectangle) {
+			return this.correctRectanglePosition(shape);
+		} else if (shape instanceof Circle) {
+			return this.correctCirclePosition((Circle) shape);
+		} else {
+			return this.correctCirclePosition(shape.getBestCircle());
+		}
+	}
+
+	private Shape correctRectanglePosition(Shape shape) {
+		if (this.isBlocked(Shape.UP)) {
+			if (this.isBlocked(Shape.DOWN) == false) {
+				shape = shape.modifyCenter(shape.getCenter().modifyY(
+						this.getBlockingPosition(Shape.UP)
+								+ shape.getDistanceToSide(Shape.UP)));
+			}
+		}
+		if (this.isBlocked(Shape.DOWN)) {
+			if (this.isBlocked(Shape.UP) == false) {
+				shape = shape.modifyCenter(shape.getCenter().modifyY(
+						this.getBlockingPosition(Shape.DOWN)
+								- shape.getDistanceToSide(Shape.DOWN)));
+			}
+		}
+		if (this.isBlocked(Shape.RIGHT)) {
+			if (this.isBlocked(Shape.LEFT) == false) {
+				shape = shape.modifyCenter(shape.getCenter().modifyX(
+						this.getBlockingPosition(Shape.RIGHT)
+								- shape.getDistanceToSide(Shape.RIGHT)));
+			}
+		}
+		if (this.isBlocked(Shape.LEFT)) {
+			if (this.isBlocked(Shape.RIGHT) == false) {
+				shape = shape.modifyCenter(shape.getCenter().modifyX(
+						this.getBlockingPosition(Shape.LEFT)
+								+ shape.getDistanceToSide(Shape.LEFT)));
+			}
+		}
+		return shape;
+	}
+
+	private Shape correctCirclePosition(Circle shape) {
+		Vector correct = shape.getCenter();
+		if (this.isBlocked(Shape.UP)) {
+			if (this.isBlocked(Shape.DOWN) == false) {
+				correct = correct.modifyY(this.getBlockingPosition(Shape.UP));
+			}
+		}
+		if (this.isBlocked(Shape.DOWN)) {
+			if (this.isBlocked(Shape.UP) == false) {
+				correct = correct.modifyY(this.getBlockingPosition(Shape.DOWN));
+			}
+		}
+		if (this.isBlocked(Shape.RIGHT)) {
+			if (this.isBlocked(Shape.LEFT) == false) {
+				correct = correct
+						.modifyX(this.getBlockingPosition(Shape.RIGHT));
+			}
+		}
+		if (this.isBlocked(Shape.LEFT)) {
+			if (this.isBlocked(Shape.RIGHT) == false) {
+				correct = correct.modifyX(this.getBlockingPosition(Shape.LEFT));
+			}
+		}
+		if (correct.equals(shape.getCenter())) {
+			return shape;
+		} else {
+			Vector dir = correct.sub(shape.getCenter());
+			Vector diff = dir.mul(shape.radius / dir.abs() - 1);
+			Vector newPos = shape.getCenter().sub(diff);
+			return shape.modifyCenter(newPos);
+		}
 	}
 
 	/**

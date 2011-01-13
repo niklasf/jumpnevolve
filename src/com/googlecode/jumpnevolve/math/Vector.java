@@ -406,4 +406,38 @@ public class Vector implements Cloneable, Serializable {
 			throw new NumberFormatException("Input is no vector: " + s);
 		}
 	}
+
+	public byte toShapeDirection() {
+		if (x * y == 0) {
+			if (y == 0) {
+				if (x > 0) {
+					return Shape.RIGHT;
+				} else if (x < 0) {
+					return Shape.LEFT;
+				} else {
+					return Shape.NULL;
+				}
+			} else {
+				if (y > 0) {
+					return Shape.DOWN;
+				} else {
+					return Shape.UP;
+				}
+			}
+		} else {
+			if (x > 0) {
+				if (y > 0) {
+					return Shape.DOWN_RIGHT;
+				} else {
+					return Shape.UP_RIGHT;
+				}
+			} else {
+				if (y > 0) {
+					return Shape.DOWN_LEFT;
+				} else {
+					return Shape.UP_LEFT;
+				}
+			}
+		}
+	}
 }

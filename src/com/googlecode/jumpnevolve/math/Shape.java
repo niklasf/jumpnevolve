@@ -85,29 +85,6 @@ public interface Shape extends Serializable {
 	public float getDistanceToSide(byte direction);
 
 	/**
-	 * 
-	 * @param other
-	 *            Das andere geometricsche Objekt, das dieses Objekt trifft
-	 * @return Die Seite dieses Objekts, die berührt wird als {@link Vector#UP},
-	 *         {@link Vector#DOWN}, {@link Vector#LEFT} oder
-	 *         {@link Vector#RIGHT}.
-	 * @Deprecated Es sollte getCollision verwendet werden
-	 */
-	@Deprecated
-	public byte getTouchedSideOfThis(Shape other);
-
-	/**
-	 * @param other
-	 *            Das andere Shape
-	 * @return Ein Kollisionsobjekt, das die Kollision von diesem Objekt zum
-	 *         anderen darstellt
-	 * @Deprecated Es sollte getCollision mit moveable-booleans verwendet werden
-	 *             verwendet werden
-	 */
-	@Deprecated
-	public Collision getCollision(Shape other);
-
-	/**
 	 * @param other
 	 *            Das andere Shape
 	 * @param moveable

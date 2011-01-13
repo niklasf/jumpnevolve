@@ -234,109 +234,6 @@ public class Rectangle implements Shape {
 		return this.x + this.width;
 	}
 
-	@Override
-	public byte getTouchedSideOfThis(Shape other) {
-		if (other instanceof Rectangle) {
-			Vector directionToCorner;
-			switch (this.getTouchedCorner((Rectangle) other)) {
-			case Shape.UP_LEFT:
-				directionToCorner = ((Rectangle) other).getLowRightCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getHighLeftCorner()
-						.sub(this.getCenter()))) {
-					return Shape.UP;
-				} else {
-					return Shape.LEFT;
-				}
-			case Shape.UP_RIGHT:
-				directionToCorner = ((Rectangle) other).getLowLeftCorner().sub(
-						this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getHighRightCorner()
-						.sub(this.getCenter()))) {
-					return Shape.UP;
-				} else {
-					return Shape.RIGHT;
-				}
-			case Shape.DOWN_LEFT:
-				directionToCorner = ((Rectangle) other).getHighRightCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getLowLeftCorner()
-						.sub(this.getCenter()))) {
-					return Shape.LEFT;
-				} else {
-					return Shape.DOWN;
-				}
-			case Shape.DOWN_RIGHT:
-				directionToCorner = ((Rectangle) other).getHighLeftCorner()
-						.sub(this.getCenter());
-				if (directionToCorner.isMoreUpwards(this.getLowRightCorner()
-						.sub(this.getCenter()))) {
-					return Shape.RIGHT;
-				} else {
-					return Shape.DOWN;
-				}
-			case Shape.UP:
-				return Shape.UP;
-			case Shape.DOWN:
-				return Shape.DOWN;
-			case Shape.RIGHT:
-				return Shape.RIGHT;
-			case Shape.LEFT:
-				return Shape.LEFT;
-			default:
-				break;
-			}
-		} else if (other instanceof Circle) {
-			return (byte) -other.getTouchedSideOfThis(this);
-		}
-		return Shape.NULL;
-	}
-
-	private byte getTouchedCorner(Rectangle other) {
-		if (this.isPointInThis(other.getHighLeftCorner())) {
-			if (this.isPointInThis(other.getHighRightCorner())) {
-				return Shape.DOWN;
-			} else if (this.isPointInThis(other.getLowLeftCorner())) {
-				return Shape.RIGHT;
-			}
-			return Shape.DOWN_RIGHT;
-		} else if (this.isPointInThis(other.getLowRightCorner())) {
-			if (this.isPointInThis(other.getHighRightCorner())) {
-				return Shape.LEFT;
-			} else if (this.isPointInThis(other.getLowLeftCorner())) {
-				return Shape.UP;
-			}
-			return Shape.UP_LEFT;
-		} else if (this.isPointInThis(other.getLowLeftCorner())) {
-			return Shape.UP_RIGHT;
-		} else if (this.isPointInThis(other.getHighRightCorner())) {
-			return Shape.DOWN_LEFT;
-		} else {
-			// Rechtecke umgekehrt prüfen und den entgegengesetzten Wert
-			// zurückgeben
-			if (other.isPointInThis(this.getHighLeftCorner())) {
-				if (other.isPointInThis(this.getHighRightCorner())) {
-					return -Shape.DOWN;
-				} else if (other.isPointInThis(this.getLowLeftCorner())) {
-					return -Shape.RIGHT;
-				}
-				return -Shape.DOWN_RIGHT;
-			} else if (other.isPointInThis(this.getLowRightCorner())) {
-				if (other.isPointInThis(this.getHighRightCorner())) {
-					return -Shape.LEFT;
-				} else if (other.isPointInThis(this.getLowLeftCorner())) {
-					return -Shape.UP;
-				}
-				return -Shape.UP_LEFT;
-			} else if (other.isPointInThis(this.getLowLeftCorner())) {
-				return -Shape.UP_RIGHT;
-			} else if (other.isPointInThis(this.getHighRightCorner())) {
-				return -Shape.DOWN_LEFT;
-			}
-			return Shape.NULL;
-		}
-	}
-
 	public Vector getHighLeftCorner() {
 		return this.getCenter().add(
 				new Vector(-this.width / 2.0f, -this.height / 2.0f));
@@ -429,9 +326,9 @@ public class Rectangle implements Shape {
 					return new Collision(Shape.DOWN_RIGHT, low, right);
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.DOWN, low);
+						return new Collision(Shape.DOWN, low, 0);
 					} else {
-						return new Collision(Shape.RIGHT, right);
+						return new Collision(Shape.RIGHT, 0, right);
 					}
 				}
 			} else if (cornersInside[1]) {
@@ -441,9 +338,9 @@ public class Rectangle implements Shape {
 					return new Collision(Shape.DOWN_LEFT, low, left);
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.DOWN, low);
+						return new Collision(Shape.DOWN, low, 0);
 					} else {
-						return new Collision(Shape.LEFT, left);
+						return new Collision(Shape.LEFT, 0, left);
 					}
 				}
 			} else if (cornersInside[2]) {
@@ -453,9 +350,9 @@ public class Rectangle implements Shape {
 					return new Collision(Shape.UP_LEFT, up, left);
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.UP, up);
+						return new Collision(Shape.UP, up, 0);
 					} else {
-						return new Collision(Shape.LEFT, left);
+						return new Collision(Shape.LEFT, 0, left);
 					}
 				}
 			} else if (cornersInside[3]) {
@@ -465,26 +362,26 @@ public class Rectangle implements Shape {
 					return new Collision(Shape.UP_RIGHT, up, right);
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.UP, up);
+						return new Collision(Shape.UP, up, 0);
 					} else {
-						return new Collision(Shape.RIGHT, right);
+						return new Collision(Shape.RIGHT, 0, right);
 					}
 				}
 			}
 		} else if (numbersOfInsideCorners == 2) {
 			if (cornersInside[0]) {
 				if (cornersInside[1]) {
-					return new Collision(Shape.DOWN, low);
+					return new Collision(Shape.DOWN, low, 0);
 				} else if (cornersInside[3]) {
-					return new Collision(Shape.RIGHT, right);
+					return new Collision(Shape.RIGHT, 0, right);
 				}
 			} else if (cornersInside[1]) {
 				if (cornersInside[2]) {
-					return new Collision(Shape.LEFT, left);
+					return new Collision(Shape.LEFT, 0, left);
 				}
 			} else if (cornersInside[2]) {
 				if (cornersInside[3]) {
-					return new Collision(Shape.UP, up);
+					return new Collision(Shape.UP, up, 0);
 				}
 			}
 		} else if (numbersOfInsideCorners == 4 && firstRound == false) {
@@ -528,28 +425,12 @@ public class Rectangle implements Shape {
 			return getRectangleCollision((Rectangle) other, otherMoveable,
 					thisMoveable, true);
 		} else if (other instanceof Circle) {
-			Collision col = other.getCollision(this);
-			Collision thisCol = new Collision();
-			if (col.isBlocked(Shape.UP)) {
-				thisCol.addCollision(new Collision(Shape.DOWN, other
-						.getUpperEnd()));
-			}
-			if (col.isBlocked(Shape.RIGHT)) {
-				thisCol.addCollision(new Collision(Shape.LEFT, other
-						.getRightEnd()));
-			}
-			if (col.isBlocked(Shape.DOWN)) {
-				thisCol.addCollision(new Collision(Shape.UP, other
-						.getLowerEnd()));
-			}
-			if (col.isBlocked(Shape.LEFT)) {
-				thisCol.addCollision(new Collision(Shape.RIGHT, other
-						.getLeftEnd()));
-			}
-			return thisCol;
+			return other.getCollision(this, thisMoveable, otherMoveable)
+					.getInvertedCollision();
 
 		} else {
-			return other.getBestCircle().getCollision(this);
+			return other.getBestCircle().getCollision(this, thisMoveable,
+					otherMoveable).getInvertedCollision();
 		}
 	}
 
@@ -573,11 +454,6 @@ public class Rectangle implements Shape {
 	}
 
 	@Override
-	public Collision getCollision(Shape other) {
-		return getCollision(other, true, true);
-	}
-
-	@Override
 	public float getXRange() {
 		return width;
 	}
@@ -585,5 +461,21 @@ public class Rectangle implements Shape {
 	@Override
 	public float getYRange() {
 		return height;
+	}
+
+	public Vector getCorner(Vector direction) {
+		if (direction.x > 0) {
+			if (direction.y > 0) {
+				return this.getLowRightCorner();
+			} else {
+				return this.getHighRightCorner();
+			}
+		} else {
+			if (direction.y > 0) {
+				return this.getLowLeftCorner();
+			} else {
+				return this.getHighLeftCorner();
+			}
+		}
 	}
 }

@@ -233,78 +233,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// System.out.println("Mist....");
 		// }
 		if (this.mass != 0.0f) { // Beweglich
-			if (this.isWayBlocked(Shape.UP)) {
-				if (this.getForce().y < 0) {
-					this.force = this.force.modifyY(0);
-				}
-				if (this.getVelocity().y < 0) {
-					this.velocity = this.velocity.modifyY(0);
-				}
-				if (this.isWayBlocked(Shape.DOWN) == false) {
-					this.shape = this.shape
-							.modifyCenter(this
-									.getPosition()
-									.modifyY(
-											this.collision
-													.getBlockingPosition(Shape.UP)
-													+ this.shape
-															.getDistanceToSide(Shape.UP)));
-				}
-			}
-			if (this.isWayBlocked(Shape.DOWN)) {
-				if (this.getForce().y > 0) {
-					this.force = this.force.modifyY(0);
-				}
-				if (this.getVelocity().y > 0) {
-					this.velocity = this.velocity.modifyY(0);
-				}
-				if (this.isWayBlocked(Shape.UP) == false) {
-					this.shape = this.shape
-							.modifyCenter(this.shape
-									.getCenter()
-									.modifyY(
-											this.collision
-													.getBlockingPosition(Shape.DOWN)
-													- this.shape
-															.getDistanceToSide(Shape.DOWN)));
-				}
-			}
-			if (this.isWayBlocked(Shape.RIGHT)) {
-				if (this.getForce().x > 0) {
-					this.force = this.force.modifyX(0);
-				}
-				if (this.getVelocity().x > 0) {
-					this.velocity = this.velocity.modifyX(0);
-				}
-				if (this.isWayBlocked(Shape.LEFT) == false) {
-					this.shape = this.shape
-							.modifyCenter(this
-									.getPosition()
-									.modifyX(
-											this.collision
-													.getBlockingPosition(Shape.RIGHT)
-													- this.shape
-															.getDistanceToSide(Shape.RIGHT)));
-				}
-			}
-			if (this.isWayBlocked(Shape.LEFT)) {
-				if (this.getForce().x < 0) {
-					this.force = this.force.modifyX(0);
-				}
-				if (this.getVelocity().x < 0) {
-					this.velocity = this.velocity.modifyX(0);
-				}
-				if (this.isWayBlocked(Shape.RIGHT) == false) {
-					this.shape = this.shape
-							.modifyCenter(this
-									.getPosition()
-									.modifyX(
-											this.collision
-													.getBlockingPosition(Shape.LEFT)
-													+ this.shape
-															.getDistanceToSide(Shape.LEFT)));
-				}
-			}
+			this.shape = this.collision.correctPosition(this.shape);
+			this.force = this.collision.correctVector(this.force);
+			this.velocity = this.collision.correctVector(this.velocity);
 
 			// Neue Geschwindigkeit bestimmen
 			Vector acceleration = this.force.div(this.mass);
