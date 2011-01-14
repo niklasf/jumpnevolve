@@ -107,20 +107,25 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Die Masse des Objekts.
 	 * @param blockable
 	 *            Ob das Objekt in seiner Bewegung blockierbar ist
-	 * @param pushable
-	 *            Ob das Objekt durch andere Objekte geschoben werden kann
-	 * @param living
-	 *            Ob das Objekt lebt
-	 * @param activable
-	 *            Ob das Objekt ein anderes bestimmtes Objekt aktivieren kann.
-	 * @param killable
-	 *            Ob das Objekt, ein anderes (lebendes) Objekt töten kann
 	 */
 	public AbstractObject(World world, Shape shape, float mass,
 			boolean blockable) {
 		this(world, shape);
 		this.mass = mass;
 		this.blockable = blockable;
+	}
+
+	/**
+	 * Erzeugt ein neues, bewegliches Objekt mit einer Startgeschwindigkeit
+	 * 
+	 * @see #AbstractObject(World, Shape, float, boolean)
+	 * @param velocity
+	 *            Die Start-Geschwindigkeit des Objekts
+	 */
+	public AbstractObject(World world, Shape shape, float mass,
+			boolean blockable, Vector velocity) {
+		this(world, shape, mass, blockable);
+		this.velocity = velocity;
 	}
 
 	/**

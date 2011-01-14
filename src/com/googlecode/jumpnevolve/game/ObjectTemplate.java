@@ -4,6 +4,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Accompanying;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Die Vorlage für alle Objekte jeder Art.
@@ -23,6 +24,11 @@ public abstract class ObjectTemplate extends AbstractObject implements
 	public ObjectTemplate(World world, Shape shape, float mass,
 			boolean blockable) {
 		super(world, shape, mass, blockable);
+	}
+
+	public ObjectTemplate(World world, Shape shape, float mass,
+			boolean blockable, Vector velocity) {
+		super(world, shape, mass, blockable, velocity);
 	}
 
 	@Override

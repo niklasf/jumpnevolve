@@ -10,7 +10,6 @@ import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
-import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
@@ -21,11 +20,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public abstract class Shot extends ObjectTemplate implements Damageable,
-		GravityActing, Moving {
+		GravityActing {
 
 	private final Timer livingTime;
-	private final Vector shotDirection;
-	private final float shotSpeed;
 
 	/**
 	 * @param world
@@ -36,11 +33,10 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	 */
 	public Shot(World world, Shape shape, float livingTime,
 			Vector shotDirection, float shotSpeed) {
-		super(world, shape, 0.1f, true);
+		super(world, shape, 0.1f, true, shotDirection.getDirection().mul(
+				shotSpeed));
 		this.livingTime = new Timer(livingTime);
 		this.livingTime.start();
-		this.shotDirection = shotDirection.getDirection();
-		this.shotSpeed = shotSpeed;
 	}
 
 	@Override
@@ -76,15 +72,5 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	public boolean wantDamaging(Living object) {
 		// Beschädigt jedes Objekt, mit dem es zusammentrifft
 		return true;
-	}
-
-	@Override
-	public Vector getMovingDirection() {
-		return this.shotDirection;
-	}
-
-	@Override
-	public float getMovingSpeed() {
-		return this.shotSpeed;
 	}
 }
