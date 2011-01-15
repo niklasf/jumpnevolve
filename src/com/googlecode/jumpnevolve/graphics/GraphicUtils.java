@@ -82,9 +82,8 @@ public class GraphicUtils {
 	}
 
 	public static void drawScaled(Graphics g, Rectangle rect, Vector zoom) {
-		Vector dim = rect.getDimensions();
-		Rectangle rect2 = new Rectangle(rect.getCenter(), new Vector(dim.x
-				* zoom.x, dim.y * zoom.y));
+		Rectangle rect2 = new Rectangle(rect.getCenter(), new Vector(rect.width
+				/ 2.0f * zoom.x, rect.height / 2.0f * zoom.y));
 		draw(g, rect2);
 	}
 

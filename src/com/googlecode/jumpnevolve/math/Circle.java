@@ -323,11 +323,6 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public Vector getDimensions() {
-		return new Vector(this.radius, 0);
-	}
-
-	@Override
 	public float getXRange() {
 		return radius * 2;
 	}

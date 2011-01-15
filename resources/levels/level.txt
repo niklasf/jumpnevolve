@@ -1,5 +1,5 @@
 Leveldimensionen_1000_300_1
 Leveleinstellungen_1,1_1000_default
 Player_RollingBall_RollingBall,JumpingCross_100.0|0.0_0,100
-class com.googlecode.jumpnevolve.game.objects.Cannon_662.0|196.0_0001-class com.googlecode.jumpnevolve.game.objects.Cannon_none_true,-20|-5
-class com.googlecode.jumpnevolve.game.objects.Ground_281.0|225.0_0002-class com.googlecode.jumpnevolve.game.objects.Ground_none_244.0|13.0
+Cannon_662.0|196.0_0001-Cannon_none_true,-20|-5
+Ground_281.0|225.0_0002-Ground_none_244.0|13.0

@@ -72,11 +72,6 @@ public class ShapeCollection implements Shape {
 	}
 
 	@Override
-	public Vector getDimensions() {
-		return this.boundingRectangle.getDimensions();
-	}
-
-	@Override
 	public float getDistanceToSide(byte direction) {
 		return this.boundingRectangle.getDistanceToSide(direction);
 	}

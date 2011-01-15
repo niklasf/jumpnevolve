@@ -89,7 +89,7 @@ public enum GameObjects implements InterfaceFunction {
 	private GameObjects(String className, String editorSkinFileName,
 			String[] contents, char[] hyphen, String[] initContents,
 			String[] kindOfContents, boolean hasActivatings) {
-		this.className = className;
+		this.className = formatClassName(className);
 		this.editorSkinFileName = editorSkinFileName;
 		this.contents = contents;
 		this.hyphen = hyphen;
@@ -109,6 +109,10 @@ public enum GameObjects implements InterfaceFunction {
 				new String[] { "" }, new String[] { "" }, hasActivatings);
 	}
 
+	private static String formatClassName(String className) {
+		return className.substring(className.lastIndexOf('.') + 1);
+	}
+
 	public static GameObjects getGameObject(String className) {
 		for (GameObjects obj : GameObjects.values()) {
 			if (className.equals(obj.className)) {
@@ -124,34 +128,39 @@ public enum GameObjects implements InterfaceFunction {
 		Vector position = Vector.parseVector(split[1]);
 		Object[] argus = getGameObject(className).loadArgus(arguments);
 		AbstractObject newObject = null;
-		if (className.equals(WalkingSoldier.class.toString())) {
+		if (className.equals(formatClassName(WalkingSoldier.class.toString()))) {
 			newObject = new WalkingSoldier(level, position);
-		} else if (className.equals(JumpingSoldier.class.toString())) {
+		} else if (className.equals(formatClassName(JumpingSoldier.class
+				.toString()))) {
 			newObject = new JumpingSoldier(level, position);
-		} else if (className.equals(SpringingSoldier.class.toString())) {
+		} else if (className.equals(formatClassName(SpringingSoldier.class
+				.toString()))) {
 			newObject = new SpringingSoldier(level, position);
-		} else if (className.equals(Soldier.class.toString())) {
+		} else if (className.equals(formatClassName(Soldier.class.toString()))) {
 			newObject = new Soldier(level, position);
-		} else if (className.equals(KillingMachine.class.toString())) {
+		} else if (className.equals(formatClassName(KillingMachine.class
+				.toString()))) {
 			newObject = new KillingMachine(level, position);
-		} else if (className.equals(Button.class.toString())) {
+		} else if (className.equals(formatClassName(Button.class.toString()))) {
 			newObject = new Button(level, position, (Float) argus[0]);
-		} else if (className.equals(Door.class.toString())) {
+		} else if (className.equals(formatClassName(Door.class.toString()))) {
 			newObject = new Door(level, position, (Vector) argus[0]);
-		} else if (className.equals(Ground.class.toString())) {
+		} else if (className.equals(formatClassName(Ground.class.toString()))) {
 			newObject = new Ground(level, position, (Vector) argus[0]);
-		} else if (className.equals(Elevator.class.toString())) {
+		} else if (className.equals(formatClassName(Elevator.class.toString()))) {
 			newObject = new Elevator(level, position, (Vector) argus[0],
 					(Float) argus[1], (Float) argus[2]);
-		} else if (className.equals(GreenSlimeWorm.class.toString())) {
+		} else if (className.equals(formatClassName(GreenSlimeWorm.class
+				.toString()))) {
 			newObject = new GreenSlimeWorm(level, position);
-		} else if (className.equals(SlidingPlattform.class.toString())) {
+		} else if (className.equals(formatClassName(SlidingPlattform.class
+				.toString()))) {
 			newObject = new SlidingPlattform(level, position,
 					(Vector) argus[0], (Float) argus[1], (Float) argus[2]);
-		} else if (className.equals(Fluid.class.toString())) {
+		} else if (className.equals(formatClassName(Fluid.class.toString()))) {
 			newObject = new Fluid(level, position, (Vector) argus[0],
 					(Float) argus[1]);
-		} else if (className.equals(Cannon.class.toString())) {
+		} else if (className.equals(formatClassName(Cannon.class.toString()))) {
 			newObject = new Cannon(level, position, (Boolean) argus[0],
 					(Vector) argus[1]);
 		}

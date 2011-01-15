@@ -117,11 +117,6 @@ public interface Shape extends Serializable {
 	public org.newdawn.slick.geom.Shape toSlickShape();
 
 	/**
-	 * @return Die Dimensionen des Shapes
-	 */
-	public Vector getDimensions();
-
-	/**
 	 * @return Die Distanz, die das Objekt in x-Richtung einschließt (vom linken
 	 *         Ende bis zum rechten Ende)
 	 */
