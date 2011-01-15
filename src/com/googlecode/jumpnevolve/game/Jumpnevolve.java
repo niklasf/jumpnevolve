@@ -22,23 +22,21 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 
 /**
  * @author niklas
- *
+ * 
  */
 public class Jumpnevolve {
 
 	/**
 	 * Startet das Spiel.
 	 * 
-	 * @param args Kommandozeilenargumente
+	 * @param args
+	 *            Kommandozeilenargumente
 	 */
 	public static void main(String[] args) {
 		AbstractEngine engine = Engine.getInstance();
-		
-		// TODO: Ressource laden, Menüs erzeugen
-		Level level = Levelloader.asyncLoadLevel("demolevel.txt");
-		
-		engine.switchState(level);
-	
+
+		engine.setTargetFrameRate(100);
+		engine.switchState(new LevelSelection("resources/levels/"));
 		engine.start();
 	}
 

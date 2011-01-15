@@ -46,7 +46,7 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 		GravityActing {
 
 	private boolean divisble;
-	private Vector curDirection = Vector.RIGHT;
+	private Vector curDirection = Vector.ZERO;
 
 	public GreenSlimeWorm(World world, Vector position) {
 		super(world, new Rectangle(position, 80.0f, 21.0f), 5.0f, true);

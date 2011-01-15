@@ -33,7 +33,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class WalkingSoldier extends Soldier implements Moving {
 
 	private static final long serialVersionUID = 3329079316071279296L;
-	private Vector curDirection;
+	private Vector curDirection = Vector.ZERO;
 
 	public WalkingSoldier(World world, Vector position) {
 		super(world, position);

@@ -16,10 +16,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class TextButton extends InterfaceObject {
+public class InterfaceTextButton extends InterfaceObject {
 
-	public final String buttonText;
-	public final int size;
+	private static int size = 20;
+	private final String buttonText;
 	private Rectangle curShape = new Rectangle(Vector.ZERO, 1, 1);
 
 	/**
@@ -28,10 +28,23 @@ public class TextButton extends InterfaceObject {
 	 * @param buttonText
 	 * @param size
 	 */
-	public TextButton(InterfaceFunction function, String buttonText, int size) {
+	public InterfaceTextButton(InterfaceFunction function, String buttonText) {
 		super(function);
 		this.buttonText = buttonText;
-		this.size = size;
+	}
+
+	public static void setTextHeight(int newHeight) {
+		if (newHeight > 0) {
+			size = newHeight;
+		}
+	}
+
+	public static int getSize() {
+		return size;
+	}
+
+	public String getText() {
+		return this.buttonText;
 	}
 
 	@Override
@@ -50,7 +63,7 @@ public class TextButton extends InterfaceObject {
 										.getInterfaceable().getHeight() / 2)));
 		Font font = g.getFont();
 		Font newFont = new UnicodeFont(new java.awt.Font("Cambria",
-				java.awt.Font.PLAIN, this.size), this.size, false, false);
+				java.awt.Font.PLAIN, size), size, false, false);
 		newFont = font;
 		/*
 		 * FIXME: Die Zeile 55 (newFont = font) soll entfernt werden, zur Zeit

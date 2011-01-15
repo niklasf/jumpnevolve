@@ -37,7 +37,7 @@ public class Elevator extends ObjectTemplate implements Moving {
 	private static final long serialVersionUID = 4385912397697222758L;
 
 	private final float upEnd, downEnd;
-	private Vector curDirection;
+	private Vector curDirection = Vector.UP;
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {

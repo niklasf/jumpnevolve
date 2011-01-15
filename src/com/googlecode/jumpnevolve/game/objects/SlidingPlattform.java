@@ -20,7 +20,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class SlidingPlattform extends ObjectTemplate implements Moving {
 
 	private final float leftEnd, rightEnd;
-	private Vector curDirection;
+	private Vector curDirection = Vector.LEFT;
 
 	/**
 	 * Erzeugt eine neue Plattform, die sich nach rechts und links bewegt

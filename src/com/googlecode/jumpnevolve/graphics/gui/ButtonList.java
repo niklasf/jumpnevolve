@@ -24,11 +24,6 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	private int next = 0;
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
-	private InterfaceButton back = new InterfaceButton(
-			InterfaceFunctions.INTERFACE_BUTTONLIST_BACK,
-			"interface-icons/back-arrow.png"), forth = new InterfaceButton(
-			InterfaceFunctions.INTERFACE_BUTTONLIST_FORTH,
-			"interface-icons/forth-arrow.png");
 	private static final int BACK_POS = -2;
 	private static final int FORTH_POS = -1;
 
@@ -42,6 +37,11 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		super();
 		this.numberOfButtonsDisplayed = numberOfButtonDisplayed;
 		this.distanceBetweenButtons = distanceBetweenButtons;
+		InterfaceButton back = new InterfaceButton(
+				InterfaceFunctions.INTERFACE_BUTTONLIST_BACK,
+				"interface-icons/back-arrow.png"), forth = new InterfaceButton(
+				InterfaceFunctions.INTERFACE_BUTTONLIST_FORTH,
+				"interface-icons/forth-arrow.png");
 		this.list.put(BACK_POS, back);
 		this.invertList.put(back, BACK_POS);
 		this.add(back, Vector.ZERO);
@@ -84,12 +84,6 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		}
 	}
 
-	/**
-	 * Master
-	 * 
-	 * @param object
-	 * @return
-	 */
 	public Vector getPositionFor(InterfacePart object) {
 		if (object instanceof InterfaceButton) {
 			int listPos = this.invertList.get(object);
