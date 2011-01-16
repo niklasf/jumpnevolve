@@ -387,9 +387,18 @@ public class Vector implements Cloneable, Serializable {
 	 * 
 	 * @return Der gedrehte Vektor
 	 */
-	public Vector rotateQuarter() {
+	public Vector rotateQuarterClockwise() {
 		return new Vector(y, -x);
 
+	}
+
+	/**
+	 * Dreht diesen Vektor um 90-Grad bzw. Pi-Halbe gegen den Uhrzeigersinn
+	 * 
+	 * @return Der gedrehte Vektor
+	 */
+	public Vector rotateQuarterAnticlockwise() {
+		return new Vector(-y, x);
 	}
 
 	/**

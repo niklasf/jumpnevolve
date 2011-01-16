@@ -24,11 +24,10 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
-import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.Kollision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -86,9 +85,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Kollision, die die Kollisionen von diesem Objekt wiederspiegelt
 	 */
 
-	private Collision collision = new Collision();
-
-	private Collision oldCollision = new Collision();
+	private Kollision collision = new Kollision();
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -188,7 +185,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof GravityActing) {
 			this.applyGravity();
 		}
-		this.collision.clear();
+		this.collision = new Kollision();
 	}
 
 	@Override
@@ -234,9 +231,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public void endRound() {
 		this.oldVelocity = this.velocity;
-		// if (this.getPosition().y > 100) {
-		// System.out.println("Mist....");
-		// }
 		if (this.mass != 0.0f) { // Beweglich
 			this.shape = this.collision.correctPosition(this.shape);
 			this.force = this.collision.correctVector(this.force);
@@ -271,8 +265,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			Shape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
 			this.shape = newShape;
-			this.oldCollision = this.collision.getInvertedCollision()
-					.getInvertedCollision();
 
 			// Welt informieren
 			// TODO: Automatisch alle n Runden machen
@@ -321,7 +313,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
-		this.collision.addCollision(this.getShape().getCollision(
+		this.collision.addKollision(this.getShape().getCollision(
 				blocker.getShape(), blocker.isMoveable(), this.isMoveable()));
 	}
 
@@ -515,15 +507,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return Die aktuelle Kollision
 	 */
-	public final Collision getCollision() {
+	public final Kollision getCollision() {
 		return this.collision;
-	}
-
-	/**
-	 * @return Die Kollision der letzten Berechnungsrunde
-	 */
-	public final Collision getOldCollision() {
-		return this.oldCollision;
 	}
 
 	/**
@@ -551,17 +536,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		return this.collision.isBlocked(direction);
 	}
 
-	/**
-	 * @param direction
-	 *            Richtung, welche abgefragt wird; bezieht sich auf die
-	 *            Richtungs-Konstanten von {@link Shape}
-	 * @return {@code true}, wenn der Weg in Richtung von Direction den letzten
-	 *         Berechnungsdurchgang blockiert war
-	 */
-	public final boolean wasWayBlocked(byte direction) {
-		return this.oldCollision.isBlocked(direction);
-	}
-
 	protected final void setAlive(boolean alive) {
 		this.alive = alive;
 	}
@@ -581,12 +555,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		System.out.println("Shape gesetzt" + this.shape);
 	}
 
-	public final void setCollision(Collision newCollision) {
+	public final void setCollision(Kollision newCollision) {
 		this.collision = newCollision;
-	}
-
-	public final void setOldCollision(Collision newOldCollision) {
-		this.oldCollision = newOldCollision;
 	}
 
 	public final boolean isAlive() {
@@ -625,9 +595,11 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof Damageable && other instanceof Living) {
 			// Schaden zufügen, wenn das Damageable dem Living Schaden zufügen
 			// will
+			Kollision col = new Kollision();
+			col.addKollision(this.getShape().getCollision(other.getShape(),
+					true, true));
 			if (((Damageable) this).wantDamaging((Living) other)
-					&& ((Damageable) this).canDamage(this.getShape()
-							.getCollision(other.getShape(), true, true))) {
+					&& ((Damageable) this).canDamage(col)) {
 				((Living) other).damage((Damageable) this);
 			}
 		}

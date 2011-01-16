@@ -59,16 +59,17 @@ public class ShapeCollection implements Shape {
 	}
 
 	@Override
-	public Collision getCollision(Shape other, boolean otherMoveable,
+	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
-		Collision col = new Collision();
+		// FIXME: Das muss irgendwie anders gelöst werden
+		Kollision col = new Kollision();
 		for (Shape shape : this.shapes) {
 			if (shape.doesCollide(other)) {
-				col.addCollision(shape.getCollision(other, otherMoveable,
+				col.addKollision(shape.getCollision(other, otherMoveable,
 						thisMoveable));
 			}
 		}
-		return col;
+		return new ElementalKollision();// FIXME: Ändern
 	}
 
 	@Override

@@ -12,12 +12,29 @@ public class ElementalKollision {
 	/**
 	 * 
 	 */
-	public ElementalKollision(Vector restoring, Vector overlap) {
+	public ElementalKollision(boolean thisMoveable, boolean otherMoveable,
+			Vector overlap) {
+		this.restoring = this.toRestoring(overlap, thisMoveable, otherMoveable);
+		this.overlap = overlap;
+	}
+
+	public ElementalKollision() {
+		this(true, true, Vector.ZERO);
+	}
+
+	private ElementalKollision(Vector restoring, Vector overlap) {
 		this.restoring = restoring;
 		this.overlap = overlap;
-		// Kontrolle, dass Overlap entgegen Restoring zeigt
-		if (restoring.ang(overlap) < Math.PI) {
-			System.out.println("Falsche Vektoren");
+	}
+
+	private Vector toRestoring(Vector overlap, boolean thisMoveable,
+			boolean otherMoveable) {
+		if (otherMoveable == thisMoveable) {
+			return overlap.div(-2.0f);
+		} else if (otherMoveable) {
+			return Vector.ZERO;
+		} else {
+			return overlap.neg();
 		}
 	}
 

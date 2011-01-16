@@ -287,7 +287,7 @@ public class Rectangle implements Shape {
 				this.height);
 	}
 
-	private Collision getRectangleCollision(Rectangle other,
+	private ElementalKollision getRectangleCollision(Rectangle other,
 			boolean otherMoveable, boolean thisMoveable, boolean firstRound) {
 		boolean cornersInside[] = new boolean[4]; // Ecke beginnend oben-links
 		// im Uhrzeigersinn
@@ -301,136 +301,127 @@ public class Rectangle implements Shape {
 				numbersOfInsideCorners++;
 			}
 		}
-		float low = 0.0f, up = 0.0f, right = 0.0f, left = 0.0f;
-		if (otherMoveable == thisMoveable) {
-			low = (this.getLowerEnd() + other.getUpperEnd()) / 2;
-			up = (this.getUpperEnd() + other.getLowerEnd()) / 2;
-			right = (this.getRightEnd() + other.getLeftEnd()) / 2;
-			left = (this.getLeftEnd() + other.getRightEnd()) / 2;
-		} else if (otherMoveable) {
-			low = this.getLowerEnd();
-			up = this.getUpperEnd();
-			right = this.getRightEnd();
-			left = this.getLeftEnd();
-		} else if (thisMoveable) {
-			low = other.getUpperEnd();
-			up = other.getLowerEnd();
-			right = other.getLeftEnd();
-			left = other.getRightEnd();
-		}
+		Vector overlap = Vector.ZERO;
 		if (numbersOfInsideCorners == 1) {
 			if (cornersInside[0]) {
 				Vector vec = this.getLowRightCorner().sub(
 						other.getHighLeftCorner());
 				if (vec.ang(Vector.DOWN_RIGHT) < 0.7) {
-					return new Collision(Shape.DOWN_RIGHT, low, right);
+					overlap = this.getLowRightCorner().sub(
+							other.getHighLeftCorner());
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.DOWN, low, 0);
+						overlap = new Vector(0.0f, this.getLowerEnd()
+								- other.getUpperEnd());
 					} else {
-						return new Collision(Shape.RIGHT, 0, right);
+						overlap = new Vector(this.getRightEnd()
+								- other.getLeftEnd(), 0.0f);
 					}
 				}
 			} else if (cornersInside[1]) {
 				Vector vec = this.getLowLeftCorner().sub(
 						other.getHighRightCorner());
 				if (vec.ang(Vector.DOWN_LEFT) < 0.7) {
-					return new Collision(Shape.DOWN_LEFT, low, left);
+					overlap = this.getLowLeftCorner().sub(
+							other.getHighRightCorner());
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.DOWN, low, 0);
+						overlap = new Vector(0.0f, this.getLowerEnd()
+								- other.getUpperEnd());
 					} else {
-						return new Collision(Shape.LEFT, 0, left);
+						overlap = new Vector(this.getLeftEnd()
+								- other.getRightEnd(), 0.0f);
 					}
 				}
 			} else if (cornersInside[2]) {
 				Vector vec = this.getHighLeftCorner().sub(
 						other.getLowRightCorner());
 				if (vec.ang(Vector.UP_LEFT) < 0.7) {
-					return new Collision(Shape.UP_LEFT, up, left);
+					overlap = this.getHighLeftCorner().sub(
+							other.getLowerRightCorner());
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.UP, up, 0);
+						overlap = new Vector(0.0f, this.getUpperEnd()
+								- other.getLowerEnd());
 					} else {
-						return new Collision(Shape.LEFT, 0, left);
+						overlap = new Vector(this.getLeftEnd()
+								- other.getRightEnd(), 0.0f);
 					}
-				}
+				}// Hier weiter machen
 			} else if (cornersInside[3]) {
 				Vector vec = this.getHighRightCorner().sub(
 						other.getLowLeftCorner());
 				if (vec.ang(Vector.UP_RIGHT) < 0.7) {
-					return new Collision(Shape.UP_RIGHT, up, right);
+					overlap = this.getHighRightCorner().sub(
+							other.getLowLeftCorner());
 				} else {
 					if (vec.x * vec.x > vec.y * vec.y) {
-						return new Collision(Shape.UP, up, 0);
+						overlap = new Vector(0.0f, this.getUpperEnd()
+								- other.getLowerEnd());
 					} else {
-						return new Collision(Shape.RIGHT, 0, right);
+						overlap = new Vector(this.getRightEnd()
+								- other.getLeftEnd(), 0.0f);
 					}
 				}
 			}
+			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
 		} else if (numbersOfInsideCorners == 2) {
 			if (cornersInside[0]) {
 				if (cornersInside[1]) {
-					return new Collision(Shape.DOWN, low, 0);
+					overlap = new Vector(0.0f, this.getLowerEnd()
+							- other.getUpperEnd());
 				} else if (cornersInside[3]) {
-					return new Collision(Shape.RIGHT, 0, right);
+					overlap = new Vector(this.getRightEnd()
+							- other.getLeftEnd(), 0.0f);
 				}
 			} else if (cornersInside[1]) {
 				if (cornersInside[2]) {
-					return new Collision(Shape.LEFT, 0, left);
+					overlap = new Vector(this.getLeftEnd()
+							- other.getRightEnd(), 0.0f);
 				}
 			} else if (cornersInside[2]) {
 				if (cornersInside[3]) {
-					return new Collision(Shape.UP, up, 0);
+					overlap = new Vector(0.0f, this.getUpperEnd()
+							- other.getLowerEnd());
 				}
 			}
-		} else if (numbersOfInsideCorners == 4 && firstRound == false) {
-			Collision col = new Collision(Shape.UP_RIGHT, this.getUpperEnd(),
-					this.getRightEnd());
-			col.addCollision(new Collision(Shape.DOWN_LEFT, this.getLowerEnd(),
-					this.getLeftEnd()));
-			return col;
-		} else if (numbersOfInsideCorners == 4 && firstRound == true) {
-			return new Collision();
+			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
+		} else if (numbersOfInsideCorners == 4) {
+			return new ElementalKollision(); // Nichts blockieren
+			// FIXME: Oder alles blockieren
 		} else if (numbersOfInsideCorners == 0 && firstRound == true) {
 			return other.getRectangleCollision(this, thisMoveable,
-					otherMoveable, false).getInvertedCollision();
+					otherMoveable, false).invertKollision();
 		} else if (numbersOfInsideCorners == 0 && firstRound == false) {
 			if ((this.getUpperEnd() > other.getUpperEnd() && this.getLowerEnd() < other
 					.getLowerEnd())
 					|| (this.getRightEnd() < other.getRightEnd() && this
 							.getLeftEnd() > other.getLeftEnd())) {
-				Collision col = new Collision(Shape.UP_RIGHT, this
-						.getUpperEnd(), this.getRightEnd());
-				col.addCollision(new Collision(Shape.DOWN_LEFT, this
-						.getLowerEnd(), this.getLeftEnd()));
-				return col;
-				// TODO: Diesen Fall vllt. noch verbessern (nicht alle Seiten
-				// blocken)
+				return new ElementalKollision();// Nichts blockieren
+				// FIXME: Oder alles blockieren
 			} else {
-				return new Collision(); // Leere Kollision zurückgeben
+				return new ElementalKollision(); // Leere Kollision zurückgeben
 				// FIXME: Fehler ausgeben
 			}
 		} else {
-			return new Collision(); // Leere Kollision zurückgeben
+			return new ElementalKollision(); // Leere Kollision zurückgeben
 			// FIXME: Fehler ausgeben
 		}
-		return new Collision();
 	}
 
 	@Override
-	public Collision getCollision(Shape other, boolean otherMoveable,
+	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
 		if (other instanceof Rectangle) {
 			return getRectangleCollision((Rectangle) other, otherMoveable,
 					thisMoveable, true);
 		} else if (other instanceof Circle) {
 			return other.getCollision(this, thisMoveable, otherMoveable)
-					.getInvertedCollision();
+					.invertKollision();
 
 		} else {
 			return other.getBestCircle().getCollision(this, thisMoveable,
-					otherMoveable).getInvertedCollision();
+					otherMoveable).invertKollision();
 		}
 	}
 

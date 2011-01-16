@@ -10,7 +10,7 @@ import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.Kollision;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -61,7 +61,7 @@ public class Soldier extends EnemyTemplate implements GravityActing {
 	}
 
 	@Override
-	public boolean canDamage(Collision col) {
+	public boolean canDamage(Kollision col) {
 		return col.isBlocked(Shape.DOWN) || col.isBlocked(Shape.RIGHT)
 				|| col.isBlocked(Shape.LEFT);
 	}

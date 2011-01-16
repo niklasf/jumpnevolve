@@ -92,7 +92,7 @@ public interface Shape extends Serializable {
 	 * @return Ein Kollisionsobjekt, das die Kollision von diesem Objekt zum
 	 *         anderen darstellt
 	 */
-	public Collision getCollision(Shape other, boolean otherMoveable,
+	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable);
 
 	/**

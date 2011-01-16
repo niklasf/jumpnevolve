@@ -73,7 +73,7 @@ public class Triangle implements Shape {
 	 * .math.Shape, boolean, boolean)
 	 */
 	@Override
-	public Collision getCollision(Shape other, boolean otherMoveable,
+	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
 		// TODO Auto-generated method stub
 		return null;

@@ -25,10 +25,11 @@ public class Kollision {
 	 *            Die elementare Kollision
 	 */
 	public void addKollision(ElementalKollision other) {
-		Vector newBlocking = other.getRestoring().rotateQuarter();
-		this.blocking.add(newBlocking);
-		this.restoring = this.restoring.add(other.getRestoring());
-		this.addBlockedSide(newBlocking.toShapeDirection());
+		if (other.getRestoring().equals(0.0f, 0.0f) == false) {
+			this.blocking.add(other.getRestoring());
+			this.restoring = this.restoring.add(other.getRestoring());
+			this.addBlockedSide(other.getRestoring().neg().toShapeDirection());
+		}
 	}
 
 	private void addBlockedSide(byte direction) {
@@ -109,10 +110,14 @@ public class Kollision {
 	public Vector correctVector(Vector toCorrect) {
 		Vector vec = toCorrect;
 		for (int i = 0; i < this.blocking.size(); i++) {
-			vec = Vector
-					.min(this.blocking.get(i).mul(
-							(float) Math.cos(toCorrect
-									.ang(this.blocking.get(i)))), vec);
+			Vector blocked = this.blocking.get(i);
+			if (toCorrect.ang(blocked) > Math.PI / 2.0) {
+				blocked = blocked.rotateQuarterClockwise();
+				vec = Vector.min(blocked.getDirection().mul(
+						toCorrect.abs()
+								* (float) Math.cos(toCorrect.ang(blocked))),
+						vec);
+			}
 		}
 		return vec;
 	}
@@ -126,5 +131,8 @@ public class Kollision {
 			System.out.println(vec.toString());
 		}
 		System.out.println("Rückstellvektor: " + restoring.toString());
+		for (boolean b : collidingSides) {
+			System.out.println("Blocked: " + b);
+		}
 	}
 }

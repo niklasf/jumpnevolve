@@ -187,54 +187,11 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public Collision getCollision(Shape other, boolean otherMoveable,
+	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
-
 		if (other instanceof Circle) {
-			float low = 0.0f, up = 0.0f, right = 0.0f, left = 0.0f;
-			if (otherMoveable == thisMoveable) {
-				low = (this.getLowerEnd() + other.getUpperEnd()) / 2;
-				up = (this.getUpperEnd() + other.getLowerEnd()) / 2;
-				right = (this.getRightEnd() + other.getLeftEnd()) / 2;
-				left = (this.getLeftEnd() + other.getRightEnd()) / 2;
-			} else if (otherMoveable) {
-				low = this.getLowerEnd();
-				up = this.getUpperEnd();
-				right = this.getRightEnd();
-				left = this.getLeftEnd();
-			} else if (thisMoveable) {
-				low = other.getUpperEnd();
-				up = other.getLowerEnd();
-				right = other.getLeftEnd();
-				left = other.getRightEnd();
-			}
-
-			Vector direction = other.getCenter().sub(this.getCenter());
-			if (direction.x > 0) {
-				if (direction.y > 0) {
-					return new Collision(Shape.DOWN_RIGHT, low, right);
-				} else if (direction.y < 0) {
-					return new Collision(Shape.UP_RIGHT, up, right);
-				} else {
-					return new Collision(Shape.RIGHT, 0, right);
-				}
-			} else if (direction.x < 0) {
-				if (direction.y > 0) {
-					return new Collision(Shape.DOWN_LEFT, low, left);
-				} else if (direction.y < 0) {
-					return new Collision(Shape.UP_LEFT, up, left);
-				} else {
-					return new Collision(Shape.LEFT, 0, left);
-				}
-			} else {
-				if (direction.y > 0) {
-					return new Collision(Shape.DOWN, low, 0);
-				} else if (direction.y < 0) {
-					return new Collision(Shape.UP, up, 0);
-				} else {
-					return new Collision();
-				}
-			}
+			Vector overlap = other.getCenter().sub(this.getCenter());
+			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
 		} else if (other instanceof Rectangle) {
 			Vector direction;
 
@@ -295,22 +252,10 @@ public class Circle implements Shape {
 					}
 				}
 			}
-			Vector pos;
-			if (thisMoveable == otherMoveable) {
-				Vector diff = referencePoint.sub(this.position);
-				pos = diff.mul(1 / 2 + this.radius / (2 * diff.abs())).add(
-						this.position);
-			} else if (thisMoveable) {
-				pos = referencePoint;
-			} else {
-				Vector diff = referencePoint.sub(this.position);
-				pos = diff.mul(this.radius / diff.abs()).add(this.position);
-			}
-			if (this.radius == 21.0f) {
-				new Collision(direction.toShapeDirection(), pos.y, pos.x)
-						.print();
-			}
-			return new Collision(direction.toShapeDirection(), pos.y, pos.x);
+			Vector toReference = referencePoint.sub(this.position);
+			Vector overlap = toReference.mul(this.radius / toReference.abs()
+					- 1.0f);
+			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
 		} else {
 			return this.getCollision(other.getBestCircle(), otherMoveable,
 					thisMoveable);
