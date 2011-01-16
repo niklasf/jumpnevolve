@@ -382,6 +382,50 @@ public class Vector implements Cloneable, Serializable {
 		return ang(Vector.UP);
 	}
 
+	/**
+	 * Dreht diesen Vektor um 90-Grad bzw. Pi-Halbe im Uhrzeigersinn
+	 * 
+	 * @return Der gedrehte Vektor
+	 */
+	public Vector rotateQuarter() {
+		return new Vector(y, -x);
+
+	}
+
+	/**
+	 * Vergleicht zwei Vektoren in ihrer Länge
+	 * 
+	 * @param a
+	 *            Der eine Vektor
+	 * @param b
+	 *            Der zweite Vektor
+	 * @return Der kleinere der beiden Vektoren
+	 */
+	public static Vector min(Vector a, Vector b) {
+		if (a.squareAbs() < b.squareAbs()) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	/**
+	 * Vergleicht zwei Vektoren in ihrer Länge
+	 * 
+	 * @param a
+	 *            Der eine Vektor
+	 * @param b
+	 *            Der zweite Vektor
+	 * @return Der größere der beiden Vektoren
+	 */
+	public static Vector max(Vector a, Vector b) {
+		if (a.squareAbs() > b.squareAbs()) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "(" + this.x + ", " + this.y + ")";
