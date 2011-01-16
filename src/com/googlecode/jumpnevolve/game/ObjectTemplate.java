@@ -21,14 +21,12 @@ public abstract class ObjectTemplate extends AbstractObject implements
 
 	private static final long serialVersionUID = 2329577111424159238L;
 
-	public ObjectTemplate(World world, Shape shape, float mass,
-			boolean blockable) {
-		super(world, shape, mass, blockable);
+	public ObjectTemplate(World world, Shape shape, float mass) {
+		super(world, shape, mass);
 	}
 
-	public ObjectTemplate(World world, Shape shape, float mass,
-			boolean blockable, Vector velocity) {
-		super(world, shape, mass, blockable, velocity);
+	public ObjectTemplate(World world, Shape shape, float mass, Vector velocity) {
+		super(world, shape, mass, velocity);
 	}
 
 	@Override

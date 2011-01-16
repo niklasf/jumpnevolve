@@ -5,8 +5,6 @@ package com.googlecode.jumpnevolve.math;
 
 import org.newdawn.slick.geom.Polygon;
 
-import com.sun.corba.se.internal.Interceptors.PIORB;
-
 /**
  * @author Erik Wagner
  * 
@@ -73,7 +71,7 @@ public class Triangle implements Shape {
 	 * .math.Shape, boolean, boolean)
 	 */
 	@Override
-	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
+	public Collision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
 		// TODO Auto-generated method stub
 		return null;
@@ -158,5 +156,12 @@ public class Triangle implements Shape {
 		re.addPoint(points[1].x, points[1].y);
 		re.addPoint(points[2].x, points[2].y);
 		return re;
+	}
+
+	@Override
+	public ElementalCollision getElementalCollision(Shape other,
+			boolean otherMoveable, boolean thisMoveable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

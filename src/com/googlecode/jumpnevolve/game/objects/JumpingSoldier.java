@@ -35,6 +35,6 @@ public class JumpingSoldier extends Soldier implements Jumping {
 
 	@Override
 	public float getJumpingHeight() {
-		return 40.0f;
+		return 100.0f;
 	}
 }

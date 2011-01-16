@@ -9,6 +9,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -34,14 +35,14 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Door extends ObjectTemplate implements Activable {
+public class Door extends ObjectTemplate implements Activable, Blockable {
 
 	private static final long serialVersionUID = -1980816280681808337L;
 
 	private boolean openingState = false;
 
 	public Door(World world, Vector position, Vector dimension) {
-		super(world, new Rectangle(position, dimension), 0.0f, true);
+		super(world, new Rectangle(position, dimension), 0.0f);
 	}
 
 	@Override
@@ -61,13 +62,6 @@ public class Door extends ObjectTemplate implements Activable {
 	public void deactivate(Activating deactivator) {
 		if (deactivator.getCompany() == COMPANY_OBJECT) {
 			this.close();
-		}
-	}
-
-	@Override
-	public void onBlockableCrash(AbstractObject other) {
-		if (openingState == false) {
-			other.blockWay(this);
 		}
 	}
 
@@ -99,5 +93,15 @@ public class Door extends ObjectTemplate implements Activable {
 	@Override
 	public boolean isDeactivableBy(Activating deactivator) {
 		return deactivator.getCompany() == COMPANY_OBJECT;
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		return false;
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return !openingState;
 	}
 }

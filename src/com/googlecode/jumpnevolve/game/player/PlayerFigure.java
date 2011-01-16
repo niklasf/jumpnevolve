@@ -9,6 +9,7 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.Fighting;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
@@ -17,7 +18,7 @@ import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Kollision;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -26,7 +27,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class PlayerFigure extends AbstractObject implements Fighting,
-		Activating, GravityActing, Moving, Jumping {
+		Activating, GravityActing, Moving, Jumping, Blockable {
 
 	private final Player parent;
 
@@ -43,7 +44,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	 * @param parent
 	 */
 	public PlayerFigure(World world, Vector position, Player parent) {
-		super(world, new Circle(position, 10.0f), 5.0f, true);
+		super(world, new Circle(position, 10.0f), 5.0f);
 		this.parent = parent;
 		this.save = this.getPosition();
 		// TODO Auto-generated constructor stub
@@ -70,11 +71,6 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 			this.jumps = false;
 		}
 		// TODO: Tod verarbeiten
-	}
-
-	@Override
-	public boolean isBlockable() {
-		return this.parent.getCurPlayable().isBlockable();
 	}
 
 	public boolean isLiving() {
@@ -141,7 +137,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	}
 
 	@Override
-	public boolean canDamage(Kollision col) {
+	public boolean canDamage(Collision col) {
 		return col.isBlocked(Shape.DOWN) && col.isBlocked(Shape.RIGHT) == false
 				&& col.isBlocked(Shape.LEFT) == false;
 	}
@@ -225,6 +221,16 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 		} else {
 			return 0.0f;
 		}
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return true;
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		return true;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.game;
 
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 
@@ -14,12 +15,25 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class GroundTemplate extends AbstractObject {
+public abstract class GroundTemplate extends AbstractObject implements
+		Blockable {
 
 	private static final long serialVersionUID = 7287324851357837067L;
 
 	public GroundTemplate(World world, Shape shape) {
-		super(world, shape, 0.0f, true);
+		super(world, shape, 0.0f);
 	}
 
+	public boolean wantBlock(Blockable other) {
+		return true;
+	}
+
+	public boolean canBeBlockedBy(Blockable other) {
+		return false;
+	}
+
+	@Override
+	public int getCompany() {
+		return COMPANY_GROUND;
+	}
 }

@@ -287,7 +287,7 @@ public class Rectangle implements Shape {
 				this.height);
 	}
 
-	private ElementalKollision getRectangleCollision(Rectangle other,
+	private ElementalCollision getRectangleCollision(Rectangle other,
 			boolean otherMoveable, boolean thisMoveable, boolean firstRound) {
 		boolean cornersInside[] = new boolean[4]; // Ecke beginnend oben-links
 		// im Uhrzeigersinn
@@ -364,7 +364,7 @@ public class Rectangle implements Shape {
 					}
 				}
 			}
-			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
+			return new ElementalCollision(thisMoveable, otherMoveable, overlap);
 		} else if (numbersOfInsideCorners == 2) {
 			if (cornersInside[0]) {
 				if (cornersInside[1]) {
@@ -385,9 +385,9 @@ public class Rectangle implements Shape {
 							- other.getLowerEnd());
 				}
 			}
-			return new ElementalKollision(thisMoveable, otherMoveable, overlap);
+			return new ElementalCollision(thisMoveable, otherMoveable, overlap);
 		} else if (numbersOfInsideCorners == 4) {
-			return new ElementalKollision(); // Nichts blockieren
+			return new ElementalCollision(); // Nichts blockieren
 			// FIXME: Oder alles blockieren
 		} else if (numbersOfInsideCorners == 0 && firstRound == true) {
 			return other.getRectangleCollision(this, thisMoveable,
@@ -397,31 +397,39 @@ public class Rectangle implements Shape {
 					.getLowerEnd())
 					|| (this.getRightEnd() < other.getRightEnd() && this
 							.getLeftEnd() > other.getLeftEnd())) {
-				return new ElementalKollision();// Nichts blockieren
+				return new ElementalCollision();// Nichts blockieren
 				// FIXME: Oder alles blockieren
 			} else {
-				return new ElementalKollision(); // Leere Kollision zurückgeben
+				return new ElementalCollision(); // Leere Kollision zurückgeben
 				// FIXME: Fehler ausgeben
 			}
 		} else {
-			return new ElementalKollision(); // Leere Kollision zurückgeben
+			return new ElementalCollision(); // Leere Kollision zurückgeben
 			// FIXME: Fehler ausgeben
 		}
 	}
 
 	@Override
-	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
+	public Collision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
+		Collision col = new Collision();
+		col.addCollision(this.getElementalCollision(other, otherMoveable,
+				thisMoveable));
+		return col;
+	}
+
+	public ElementalCollision getElementalCollision(Shape other,
+			boolean otherMoveable, boolean thisMoveable) {
 		if (other instanceof Rectangle) {
 			return getRectangleCollision((Rectangle) other, otherMoveable,
 					thisMoveable, true);
 		} else if (other instanceof Circle) {
-			return other.getCollision(this, thisMoveable, otherMoveable)
-					.invertKollision();
+			return other.getElementalCollision(this, thisMoveable,
+					otherMoveable).invertKollision();
 
 		} else {
-			return other.getBestCircle().getCollision(this, thisMoveable,
-					otherMoveable).invertKollision();
+			return other.getBestCircle().getElementalCollision(this,
+					thisMoveable, otherMoveable).invertKollision();
 		}
 	}
 

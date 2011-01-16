@@ -7,6 +7,7 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -32,7 +33,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Elevator extends ObjectTemplate implements Moving {
+public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	private static final long serialVersionUID = 4385912397697222758L;
 
@@ -41,7 +42,7 @@ public class Elevator extends ObjectTemplate implements Moving {
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {
-		super(world, new Rectangle(position, dimension), 2.0f, true);
+		super(world, new Rectangle(position, dimension), 2.0f);
 		if (upEnd > downEnd) {
 			this.upEnd = downEnd;
 			this.downEnd = upEnd;
@@ -70,7 +71,6 @@ public class Elevator extends ObjectTemplate implements Moving {
 		}
 	}
 
-	// TODO: draw-Methode einfügen
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
 				.getImage("textures/aluminium.png"), true);
@@ -84,5 +84,19 @@ public class Elevator extends ObjectTemplate implements Moving {
 	@Override
 	public float getMovingSpeed() {
 		return 50.0f;
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		if (other instanceof AbstractObject) {
+			return !((AbstractObject) other).isMoveable();
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return true;
 	}
 }

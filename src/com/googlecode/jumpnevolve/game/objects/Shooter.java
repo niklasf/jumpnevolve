@@ -9,6 +9,7 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;
 
@@ -16,7 +17,8 @@ import com.googlecode.jumpnevolve.math.Shape;
  * @author Erik Wagner
  * 
  */
-public abstract class Shooter extends ObjectTemplate implements Activable {
+public abstract class Shooter extends ObjectTemplate implements Activable,
+		Blockable {
 
 	private final Timer timeToNextShot;
 
@@ -31,7 +33,7 @@ public abstract class Shooter extends ObjectTemplate implements Activable {
 	 */
 	public Shooter(World world, Shape shape, float shotInterval,
 			boolean activated) {
-		super(world, shape, 0.0f, true);
+		super(world, shape, 0.0f);
 		this.timeToNextShot = new Timer(shotInterval);
 		if (activated) {
 			this.timeToNextShot.start();
@@ -77,5 +79,13 @@ public abstract class Shooter extends ObjectTemplate implements Activable {
 	public boolean isDeactivableBy(Activating deactivator) {
 		// Kann nicht vom Spieler deaktiviert werden
 		return deactivator.getCompany() != COMPANY_PLAYER;
+	}
+
+	public boolean wantBlock(Blockable other) {
+		return true;
+	}
+
+	public boolean canBeBlockedBy(Blockable other) {
+		return false;
 	}
 }

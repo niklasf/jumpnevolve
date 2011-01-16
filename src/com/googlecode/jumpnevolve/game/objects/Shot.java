@@ -7,11 +7,12 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.Timer;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Kollision;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -20,7 +21,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public abstract class Shot extends ObjectTemplate implements Damageable,
-		GravityActing {
+		GravityActing, Blockable {
 
 	private final Timer livingTime;
 
@@ -33,8 +34,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	 */
 	public Shot(World world, Shape shape, float livingTime,
 			Vector shotDirection, float shotSpeed) {
-		super(world, shape, 0.1f, true, shotDirection.getDirection().mul(
-				shotSpeed));
+		super(world, shape, 0.1f, shotDirection.getDirection().mul(shotSpeed));
 		this.livingTime = new Timer(livingTime);
 		this.livingTime.start();
 	}
@@ -53,7 +53,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	}
 
 	@Override
-	public boolean canDamage(Kollision col) {
+	public boolean canDamage(Collision col) {
 		// Kann immmer beschädigen
 		return true;
 	}
@@ -72,5 +72,13 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	public boolean wantDamaging(Living object) {
 		// Beschädigt jedes Objekt, mit dem es zusammentrifft
 		return true;
+	}
+
+	public boolean wantBlock(Blockable other) {
+		return true;
+	}
+
+	public boolean canBeBlockedBy(Blockable other) {
+		return !(other instanceof Living);
 	}
 }

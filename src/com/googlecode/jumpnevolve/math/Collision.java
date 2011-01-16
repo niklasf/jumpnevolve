@@ -6,30 +6,58 @@ import java.util.ArrayList;
  * @author Erik Wagner
  * 
  */
-public class Kollision {
+public class Collision {
 
 	private ArrayList<Vector> blocking = new ArrayList<Vector>();
-	private Vector restoring = Vector.ZERO;
+	private float[] restorings = new float[4];
 	private boolean[] collidingSides = new boolean[4];
 
 	/**
 	 * Erzeugt ein neues Kollisions-Objekt
 	 */
-	public Kollision() {
+	public Collision() {
 	}
 
 	/**
 	 * Fügt dieser Kollision eine elementare Kollision hinzu
 	 * 
-	 * @param other
+	 * @param toAdd
 	 *            Die elementare Kollision
 	 */
-	public void addKollision(ElementalKollision other) {
-		if (other.getRestoring().equals(0.0f, 0.0f) == false) {
-			this.blocking.add(other.getRestoring());
-			this.restoring = this.restoring.add(other.getRestoring());
-			this.addBlockedSide(other.getRestoring().neg().toShapeDirection());
+	public void addCollision(ElementalCollision toAdd) {
+		if (toAdd.getRestoring().equals(0.0f, 0.0f) == false) {
+			this.blocking.add(toAdd.getRestoring());
+			this.addBlockedSide(toAdd.getRestoring().neg().toShapeDirection());
+			this.restorings[0] = Math.min(toAdd.getRestoring().y,
+					this.restorings[0]);
+			this.restorings[1] = Math.max(toAdd.getRestoring().x,
+					this.restorings[1]);
+			this.restorings[2] = Math.max(toAdd.getRestoring().y,
+					this.restorings[2]);
+			this.restorings[3] = Math.min(toAdd.getRestoring().x,
+					this.restorings[3]);
 		}
+	}
+
+	public void addCollision(Collision toAdd) {
+		this.blocking.addAll(toAdd.blocking);
+		this.restorings[0] = Math.min(toAdd.restorings[0], this.restorings[0]);
+		this.restorings[1] = Math.max(toAdd.restorings[1], this.restorings[1]);
+		this.restorings[2] = Math.max(toAdd.restorings[2], this.restorings[2]);
+		this.restorings[3] = Math.min(toAdd.restorings[3], this.restorings[3]);
+		this.collidingSides[0] = this.collidingSides[0]
+				|| toAdd.collidingSides[0];
+		this.collidingSides[1] = this.collidingSides[1]
+				|| toAdd.collidingSides[1];
+		this.collidingSides[2] = this.collidingSides[2]
+				|| toAdd.collidingSides[2];
+		this.collidingSides[3] = this.collidingSides[3]
+				|| toAdd.collidingSides[3];
+	}
+
+	private Vector getRestoring() {
+		return new Vector(restorings[1] + restorings[3], restorings[0]
+				+ restorings[2]);
 	}
 
 	private void addBlockedSide(byte direction) {
@@ -97,7 +125,8 @@ public class Kollision {
 	 * @return Das korrigierte Shape
 	 */
 	public Shape correctPosition(Shape toCorrect) {
-		return toCorrect.modifyCenter(toCorrect.getCenter().add(restoring));
+		return toCorrect.modifyCenter(toCorrect.getCenter().add(
+				this.getRestoring()));
 	}
 
 	/**
@@ -130,7 +159,8 @@ public class Kollision {
 		for (Vector vec : this.blocking) {
 			System.out.println(vec.toString());
 		}
-		System.out.println("Rückstellvektor: " + restoring.toString());
+		System.out
+				.println("Rückstellvektor: " + this.getRestoring().toString());
 		for (boolean b : collidingSides) {
 			System.out.println("Blocked: " + b);
 		}

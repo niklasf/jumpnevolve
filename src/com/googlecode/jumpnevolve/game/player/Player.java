@@ -17,6 +17,7 @@ import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
+import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -71,7 +72,7 @@ public class Player implements Pollable, Interfaceable {
 		gui.poll(input, secounds);
 		if (this.figure.getShape().getUpperEnd() > this.parent.height) {
 			this.figure.setPosition(this.figure.getLastSave());
-			this.figure.setVelocity(Vector.ZERO);
+			this.figure.stopMoving();
 		}
 		if (input.isKeyDown(Input.KEY_UP)) {
 			figure.jump();

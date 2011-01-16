@@ -16,9 +16,8 @@ public abstract class ActivatingObject extends ObjectTemplate implements
 	private ArrayList<Activable> objectsToActivate = new ArrayList<Activable>();
 	private ArrayList<Activable> objectsToDeactivate = new ArrayList<Activable>();
 
-	public ActivatingObject(World world, Shape shape, float mass,
-			boolean blockable) {
-		super(world, shape, mass, blockable);
+	public ActivatingObject(World world, Shape shape, float mass) {
+		super(world, shape, mass);
 	}
 
 	/**

@@ -6,6 +6,8 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -17,7 +19,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class SlidingPlattform extends ObjectTemplate implements Moving {
+public class SlidingPlattform extends ObjectTemplate implements Moving,
+		Blockable {
 
 	private final float leftEnd, rightEnd;
 	private Vector curDirection = Vector.LEFT;
@@ -41,7 +44,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving {
 	 */
 	public SlidingPlattform(World world, Vector position, Vector dimension,
 			float end1, float end2) {
-		super(world, new Rectangle(position, dimension), 5.0f, true);
+		super(world, new Rectangle(position, dimension), 5.0f);
 		if (end1 > end2) {
 			this.leftEnd = end2;
 			this.rightEnd = end1;
@@ -77,5 +80,19 @@ public class SlidingPlattform extends ObjectTemplate implements Moving {
 	@Override
 	public float getMovingSpeed() {
 		return 50.0f;
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		if (other instanceof AbstractObject) {
+			return !((AbstractObject) other).isMoveable();
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return true;
 	}
 }

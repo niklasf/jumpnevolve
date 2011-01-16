@@ -59,17 +59,17 @@ public class ShapeCollection implements Shape {
 	}
 
 	@Override
-	public ElementalKollision getCollision(Shape other, boolean otherMoveable,
+	public Collision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
 		// FIXME: Das muss irgendwie anders gelöst werden
-		Kollision col = new Kollision();
+		Collision col = new Collision();
 		for (Shape shape : this.shapes) {
 			if (shape.doesCollide(other)) {
-				col.addKollision(shape.getCollision(other, otherMoveable,
+				col.addCollision(shape.getCollision(other, otherMoveable,
 						thisMoveable));
 			}
 		}
-		return new ElementalKollision();// FIXME: Ändern
+		return col;// FIXME: Ändern
 	}
 
 	@Override
@@ -143,6 +143,16 @@ public class ShapeCollection implements Shape {
 			re.addShape(shapes[i].toSlickShape());
 		}
 		return re;
+	}
+
+	/**
+	 * Sollte für ShapeCollection nicht verwendet werden
+	 */
+	@Override
+	public ElementalCollision getElementalCollision(Shape other,
+			boolean otherMoveable, boolean thisMoveable) {
+		return this.boundingRectangle.getElementalCollision(other,
+				otherMoveable, thisMoveable);
 	}
 
 }

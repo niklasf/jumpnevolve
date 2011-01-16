@@ -9,12 +9,13 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Kollision;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -43,18 +44,18 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class GreenSlimeWorm extends EnemyTemplate implements Moving,
-		GravityActing {
+		GravityActing, Blockable {
 
 	private boolean divisble;
 	private Vector curDirection = Vector.ZERO;
 
 	public GreenSlimeWorm(World world, Vector position) {
-		super(world, new Rectangle(position, 80.0f, 21.0f), 5.0f, true);
+		super(world, new Rectangle(position, 80.0f, 21.0f), 5.0f);
 		this.divisble = true;
 	}
 
 	private GreenSlimeWorm(World world, Vector position, boolean next) {
-		super(world, new Rectangle(position, 50.0f, 13.0f), 5.0f, true);
+		super(world, new Rectangle(position, 50.0f, 13.0f), 5.0f);
 		this.divisble = false;
 	}
 
@@ -126,7 +127,7 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 	}
 
 	@Override
-	public boolean canDamage(Kollision col) {
+	public boolean canDamage(Collision col) {
 		return col.isBlocked(Shape.RIGHT) || col.isBlocked(Shape.LEFT)
 				|| col.isBlocked(Shape.DOWN);
 	}
@@ -139,5 +140,15 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 	@Override
 	public float getMovingSpeed() {
 		return 5.0f;
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		return other.getCompany() != COMPANY_PLAYER;
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return true;
 	}
 }

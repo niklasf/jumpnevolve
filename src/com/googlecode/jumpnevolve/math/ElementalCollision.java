@@ -4,7 +4,7 @@ package com.googlecode.jumpnevolve.math;
  * @author Erik Wagner
  * 
  */
-public class ElementalKollision {
+public class ElementalCollision {
 
 	private final Vector restoring;
 	private final Vector overlap;
@@ -12,17 +12,17 @@ public class ElementalKollision {
 	/**
 	 * 
 	 */
-	public ElementalKollision(boolean thisMoveable, boolean otherMoveable,
+	public ElementalCollision(boolean thisMoveable, boolean otherMoveable,
 			Vector overlap) {
 		this.restoring = this.toRestoring(overlap, thisMoveable, otherMoveable);
 		this.overlap = overlap;
 	}
 
-	public ElementalKollision() {
+	public ElementalCollision() {
 		this(true, true, Vector.ZERO);
 	}
 
-	private ElementalKollision(Vector restoring, Vector overlap) {
+	private ElementalCollision(Vector restoring, Vector overlap) {
 		this.restoring = restoring;
 		this.overlap = overlap;
 	}
@@ -38,8 +38,8 @@ public class ElementalKollision {
 		}
 	}
 
-	public ElementalKollision invertKollision() {
-		return new ElementalKollision(this.overlap.add(this.restoring),
+	public ElementalCollision invertKollision() {
+		return new ElementalCollision(this.overlap.add(this.restoring),
 				this.overlap.neg());
 	}
 

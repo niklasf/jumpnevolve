@@ -40,7 +40,7 @@ public class Fluid extends ObjectTemplate {
 	 */
 	public Fluid(World world, Vector position, Vector dimension,
 			float maximumVelocity) {
-		super(world, new Rectangle(position, dimension), 0.0f, false);
+		super(world, new Rectangle(position, dimension), 0.0f);
 		this.maximumVelocity = maximumVelocity;
 		this.effect1 = new ParticleEffect(position, new FogEmitterFactory());
 		this.effect2 = new ParticleEffect(position,

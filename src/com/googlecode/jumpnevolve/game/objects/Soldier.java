@@ -6,11 +6,12 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.EnemyTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Kollision;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -36,13 +37,12 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Soldier extends EnemyTemplate implements GravityActing {
+public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 
 	private static final long serialVersionUID = 5378834855856957746L;
 
 	public Soldier(World world, Vector position) {
-		super(world, new Rectangle(position, new Vector(20.0f, 20.0f)), 5.0f,
-				true);
+		super(world, new Rectangle(position, new Vector(20.0f, 20.0f)), 5.0f);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Soldier extends EnemyTemplate implements GravityActing {
 	}
 
 	@Override
-	public boolean canDamage(Kollision col) {
+	public boolean canDamage(Collision col) {
 		return col.isBlocked(Shape.DOWN) || col.isBlocked(Shape.RIGHT)
 				|| col.isBlocked(Shape.LEFT);
 	}
@@ -99,5 +99,15 @@ public class Soldier extends EnemyTemplate implements GravityActing {
 	@Override
 	public void killed() {
 		this.setAlive(false);
+	}
+
+	@Override
+	public boolean canBeBlockedBy(Blockable other) {
+		return other.getCompany() != COMPANY_PLAYER;
+	}
+
+	@Override
+	public boolean wantBlock(Blockable other) {
+		return true;
 	}
 }

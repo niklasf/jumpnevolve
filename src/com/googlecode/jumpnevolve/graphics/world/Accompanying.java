@@ -15,6 +15,7 @@ public interface Accompanying {
 	public static int COMPANY_OBJECT = 1;
 	public static int COMPANY_ENEMY = 2;
 	public static int COMPANY_PLAYER = 3;
+	public static int COMPANY_GROUND = 4;
 
 	/**
 	 * Die "Gruppe" des Objekts

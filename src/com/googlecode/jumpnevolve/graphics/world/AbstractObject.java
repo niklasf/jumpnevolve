@@ -27,7 +27,7 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
-import com.googlecode.jumpnevolve.math.Kollision;
+import com.googlecode.jumpnevolve.math.Collision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -67,10 +67,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private Vector velocity = Vector.ZERO;
 
-	private Vector oldVelocity = Vector.ZERO;
-
-	private boolean blockable;
-
 	private boolean alive = true;
 
 	// Attribute pro Runde
@@ -85,7 +81,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Kollision, die die Kollisionen von diesem Objekt wiederspiegelt
 	 */
 
-	private Kollision collision = new Kollision();
+	private Collision collision = new Collision();
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -105,11 +101,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param blockable
 	 *            Ob das Objekt in seiner Bewegung blockierbar ist
 	 */
-	public AbstractObject(World world, Shape shape, float mass,
-			boolean blockable) {
+	public AbstractObject(World world, Shape shape, float mass) {
 		this(world, shape);
 		this.mass = mass;
-		this.blockable = blockable;
 	}
 
 	/**
@@ -119,9 +113,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param velocity
 	 *            Die Start-Geschwindigkeit des Objekts
 	 */
-	public AbstractObject(World world, Shape shape, float mass,
-			boolean blockable, Vector velocity) {
-		this(world, shape, mass, blockable);
+	public AbstractObject(World world, Shape shape, float mass, Vector velocity) {
+		this(world, shape, mass);
 		this.velocity = velocity;
 	}
 
@@ -185,7 +178,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof GravityActing) {
 			this.applyGravity();
 		}
-		this.collision = new Kollision();
+		this.collision = new Collision();
 	}
 
 	@Override
@@ -230,7 +223,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Dabei wird darauf geachtet, nicht in geblockte Seiten zu laufen.
 	 */
 	public void endRound() {
-		this.oldVelocity = this.velocity;
 		if (this.mass != 0.0f) { // Beweglich
 			this.shape = this.collision.correctPosition(this.shape);
 			this.force = this.collision.correctVector(this.force);
@@ -313,7 +305,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(AbstractObject blocker) {
-		this.collision.addKollision(this.getShape().getCollision(
+		this.collision.addCollision(this.getShape().getCollision(
 				blocker.getShape(), blocker.isMoveable(), this.isMoveable()));
 	}
 
@@ -331,14 +323,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public final Vector getVelocity() {
 		return this.velocity;
-	}
-
-	/**
-	 * @return Die Geschwindigkeit der letzten Runde vor dem Auswerten von Kraft
-	 *         und Kollision.
-	 */
-	public final Vector getOldVelocity() {
-		return this.oldVelocity;
 	}
 
 	/**
@@ -507,7 +491,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return Die aktuelle Kollision
 	 */
-	public final Kollision getCollision() {
+	public final Collision getCollision() {
 		return this.collision;
 	}
 
@@ -516,13 +500,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public final boolean isMoveable() {
 		return this.mass != 0.0f;
-	}
-
-	/**
-	 * @return {@code true}, wenn das Objekt blockbar ist.
-	 */
-	public boolean isBlockable() {
-		return this.blockable;
 	}
 
 	/**
@@ -555,7 +532,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		System.out.println("Shape gesetzt" + this.shape);
 	}
 
-	public final void setCollision(Kollision newCollision) {
+	public final void setCollision(Collision newCollision) {
 		this.collision = newCollision;
 	}
 
@@ -564,14 +541,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	}
 
 	/**
-	 * Setzt die aktuelle Geschwindigkeit auf eine gradlienige neue.
-	 * 
-	 * @param velocity
-	 *            Die neue Geschwindigkeit
+	 * Setzt die aktuelle Geschwindigkeit auf 0
 	 */
-	@Deprecated
-	public void setVelocity(Vector velocity) {
-		this.velocity = velocity;
+	public void stopMoving() {
+		this.velocity = Vector.ZERO;
 	}
 
 	// Standartimplementierung für das Zeichnen
@@ -595,8 +568,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof Damageable && other instanceof Living) {
 			// Schaden zufügen, wenn das Damageable dem Living Schaden zufügen
 			// will
-			Kollision col = new Kollision();
-			col.addKollision(this.getShape().getCollision(other.getShape(),
+			Collision col = new Collision();
+			col.addCollision(this.getShape().getCollision(other.getShape(),
 					true, true));
 			if (((Damageable) this).wantDamaging((Living) other)
 					&& ((Damageable) this).canDamage(col)) {
@@ -627,25 +600,12 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// System.out.println("Crash!" + other.getShape());
 		// Spezielle Methoden aufrufen
 		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
-		if (other.blockable) {
-			onBlockableCrash(other);
-		}
-		onGeneralCrash(other);
-	}
-
-	/**
-	 * Wird aufgerufen, wenn das Objekt auf ein blockbares Objekt trifft.
-	 * 
-	 * Grundsätzlich wird das andere Objekt (other) geblockt, wenn auch dieses
-	 * Objekt (this) blockbar ist.
-	 * 
-	 * @param other
-	 *            Das andere (blockbare) Objekt
-	 */
-	public void onBlockableCrash(AbstractObject other) {
-		if (this.blockable) {
+		if (this instanceof Blockable && other instanceof Blockable
+				&& ((Blockable) this).wantBlock((Blockable) other)
+				&& ((Blockable) other).canBeBlockedBy((Blockable) this)) {
 			other.blockWay(this);
 		}
+		onGeneralCrash(other);
 	}
 
 	public void onGeneralCrash(AbstractObject other) {
