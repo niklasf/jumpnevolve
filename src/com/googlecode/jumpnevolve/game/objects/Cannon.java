@@ -28,7 +28,7 @@ public class Cannon extends Shooter {
 	 */
 	public Cannon(World world, Vector position, boolean activated,
 			Vector shotDirection) {
-		super(world, new Rectangle(position, 25.0f, 50.0f), 5.0f, activated);
+		super(world, new Rectangle(position, 25.0f, 50.0f), 1.0f, activated);
 		this.shotDirection = shotDirection.getDirection();
 		this.startPosition = this.getPosition().add(
 				new Vector(Math.abs(12.5f) * Math.signum(this.shotDirection.x),

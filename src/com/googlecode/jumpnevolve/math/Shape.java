@@ -98,19 +98,6 @@ public interface Shape extends Serializable {
 			boolean thisMoveable);
 
 	/**
-	 * @param other
-	 *            Das andere Shape
-	 * @param moveable
-	 *            Ob das andere Objekt beweglich ist
-	 * @param thisMoveable
-	 *            Ob dieses Objekt beweglich ist
-	 * @return Ein elementares Kollisionsobjekt, das die Kollision von diesem
-	 *         Objekt zum anderen darstellt
-	 */
-	public ElementalCollision getElementalCollision(Shape other,
-			boolean otherMoveable, boolean thisMoveable);
-
-	/**
 	 * 
 	 * @param p
 	 *            Der Punkt in Form eines Ortvektors.

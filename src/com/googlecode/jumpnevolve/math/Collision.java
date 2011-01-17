@@ -1,6 +1,8 @@
 package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * @author Erik Wagner
@@ -8,54 +10,71 @@ import java.util.ArrayList;
  */
 public class Collision {
 
+	private HashMap<Vector, Boolean> overlaps = new HashMap<Vector, Boolean>();
 	private ArrayList<Vector> blocking = new ArrayList<Vector>();
 	private float[] restorings = new float[4];
 	private boolean[] collidingSides = new boolean[4];
+	private final boolean thisMoveable;
 
 	/**
 	 * Erzeugt ein neues Kollisions-Objekt
 	 */
-	public Collision() {
+	public Collision(boolean thisMoveable) {
+		this.thisMoveable = thisMoveable;
 	}
 
-	/**
-	 * Fügt dieser Kollision eine elementare Kollision hinzu
-	 * 
-	 * @param toAdd
-	 *            Die elementare Kollision
-	 */
-	public void addCollision(ElementalCollision toAdd) {
-		if (toAdd.getRestoring().equals(0.0f, 0.0f) == false) {
-			this.blocking.add(toAdd.getRestoring());
-			this.addBlockedSide(toAdd.getRestoring().neg().toShapeDirection());
-			this.restorings[0] = Math.min(toAdd.getRestoring().y,
-					this.restorings[0]);
-			this.restorings[1] = Math.max(toAdd.getRestoring().x,
-					this.restorings[1]);
-			this.restorings[2] = Math.max(toAdd.getRestoring().y,
-					this.restorings[2]);
-			this.restorings[3] = Math.min(toAdd.getRestoring().x,
-					this.restorings[3]);
+	public Collision(Vector overlap, boolean thisMoveable, boolean otherMoveable) {
+		this.thisMoveable = thisMoveable;
+		this.addOverlap(overlap, otherMoveable);
+	}
+
+	private Collision(HashMap<Vector, Boolean> overlaps, boolean thisMoveable) {
+		this.thisMoveable = thisMoveable;
+		for (Vector overlap : overlaps.keySet()) {
+			this.addOverlap(overlap, overlaps.get(overlap));
 		}
 	}
 
-	public void addCollision(Collision toAdd) {
-		this.blocking.addAll(toAdd.blocking);
-		this.restorings[0] = Math.min(toAdd.restorings[0], this.restorings[0]);
-		this.restorings[1] = Math.max(toAdd.restorings[1], this.restorings[1]);
-		this.restorings[2] = Math.max(toAdd.restorings[2], this.restorings[2]);
-		this.restorings[3] = Math.min(toAdd.restorings[3], this.restorings[3]);
-		this.collidingSides[0] = this.collidingSides[0]
-				|| toAdd.collidingSides[0];
-		this.collidingSides[1] = this.collidingSides[1]
-				|| toAdd.collidingSides[1];
-		this.collidingSides[2] = this.collidingSides[2]
-				|| toAdd.collidingSides[2];
-		this.collidingSides[3] = this.collidingSides[3]
-				|| toAdd.collidingSides[3];
+	private void addOverlap(Vector overlap, boolean otherMoveable) {
+		Vector restoring = this.toRestoring(overlap, otherMoveable);
+		this.overlaps.put(overlap, otherMoveable);
+		this.addRestoring(restoring);
 	}
 
-	private Vector getRestoring() {
+	private Vector toRestoring(Vector overlap, boolean otherMoveable) {
+		if (otherMoveable == this.thisMoveable) {
+			return overlap.div(-2.0f);
+		} else if (otherMoveable) {
+			return Vector.ZERO;
+		} else {
+			return overlap.neg();
+		}
+	}
+
+	private void addRestoring(Vector restoring) {
+		this.blocking.add(restoring);
+		this.restorings[0] = Math.min(restoring.y, this.restorings[0]);
+		this.restorings[1] = Math.max(restoring.x, this.restorings[1]);
+		this.restorings[2] = Math.max(restoring.y, this.restorings[2]);
+		this.restorings[3] = Math.min(restoring.x, this.restorings[3]);
+		this.addBlockedSide(restoring.neg().toShapeDirection());
+	}
+
+	/**
+	 * Fügt dieser Kollision eine weitere Kollision hinzu. Dabei wird der
+	 * Beweglichkeits-Status der hinzuzufügenden Kollision ignoriert und nur der
+	 * Beweglichkeits-Status dieser Kollision berücksichtigt
+	 * 
+	 * @param toAdd
+	 *            Die hinzuzufügende Kollision
+	 */
+	public void addCollision(Collision toAdd) {
+		for (Vector overlap : toAdd.overlaps.keySet()) {
+			this.addOverlap(overlap, toAdd.overlaps.get(overlap));
+		}
+	}
+
+	public Vector getRestoring() {
 		return new Vector(restorings[1] + restorings[3], restorings[0]
 				+ restorings[2]);
 	}
@@ -125,8 +144,12 @@ public class Collision {
 	 * @return Das korrigierte Shape
 	 */
 	public Shape correctPosition(Shape toCorrect) {
-		return toCorrect.modifyCenter(toCorrect.getCenter().add(
-				this.getRestoring()));
+		Vector restore = this.getRestoring();
+		if (!Float.isNaN(restore.x) && !Float.isNaN(restore.y)) {
+			return toCorrect.modifyCenter(toCorrect.getCenter().add(restore));
+		} else {
+			return toCorrect;
+		}
 	}
 
 	/**
@@ -149,6 +172,24 @@ public class Collision {
 			}
 		}
 		return vec;
+	}
+
+	/**
+	 * Invertiert diese Kollision, d.h. die Overlaps werden umgedreht
+	 * 
+	 * Sollte nur bei einfachen Kollisionen verwendet werden
+	 * 
+	 * @param otherMoveable
+	 *            Der Beweglichkeit-Status des Objekts, dem die invertierte
+	 *            Kollision zugeordnet wird
+	 * @return Die invertierte Kollision
+	 */
+	public Collision invert(boolean otherMoveable) {
+		HashMap<Vector, Boolean> newOverlaps = new HashMap<Vector, Boolean>();
+		for (Vector overlap : this.overlaps.keySet()) {
+			newOverlaps.put(overlap.neg(), thisMoveable);
+		}
+		return new Collision(newOverlaps, otherMoveable);
 	}
 
 	/**

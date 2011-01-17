@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.objects.Cannonball;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -81,7 +82,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Kollision, die die Kollisionen von diesem Objekt wiederspiegelt
 	 */
 
-	private Collision collision = new Collision();
+	private Collision collision;
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -104,6 +105,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public AbstractObject(World world, Shape shape, float mass) {
 		this(world, shape);
 		this.mass = mass;
+		this.collision = new Collision(this.isMoveable());
 	}
 
 	/**
@@ -129,6 +131,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public AbstractObject(World world, Shape shape) {
 		this.world = world;
 		this.shape = this.oldShape = shape;
+		this.collision = new Collision(this.isMoveable());
 	}
 
 	// Simulationsablauf
@@ -178,7 +181,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof GravityActing) {
 			this.applyGravity();
 		}
-		this.collision = new Collision();
+		this.collision = new Collision(this.isMoveable());
 	}
 
 	@Override
@@ -227,7 +230,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			this.shape = this.collision.correctPosition(this.shape);
 			this.force = this.collision.correctVector(this.force);
 			this.velocity = this.collision.correctVector(this.velocity);
-
 			// Neue Geschwindigkeit bestimmen
 			Vector acceleration = this.force.div(this.mass);
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
@@ -568,9 +570,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof Damageable && other instanceof Living) {
 			// Schaden zufügen, wenn das Damageable dem Living Schaden zufügen
 			// will
-			Collision col = new Collision();
-			col.addCollision(this.getShape().getCollision(other.getShape(),
-					true, true));
+			Collision col = this.getShape().getCollision(other.getShape(),
+					true, true);
 			if (((Damageable) this).wantDamaging((Living) other)
 					&& ((Damageable) this).canDamage(col)) {
 				((Living) other).damage((Damageable) this);

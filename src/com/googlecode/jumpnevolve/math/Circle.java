@@ -187,11 +187,11 @@ public class Circle implements Shape {
 	}
 
 	@Override
-	public ElementalCollision getElementalCollision(Shape other,
-			boolean otherMoveable, boolean thisMoveable) {
+	public Collision getCollision(Shape other, boolean otherMoveable,
+			boolean thisMoveable) {
 		if (other instanceof Circle) {
 			Vector overlap = other.getCenter().sub(this.getCenter());
-			return new ElementalCollision(thisMoveable, otherMoveable, overlap);
+			return new Collision(overlap, thisMoveable, otherMoveable);
 		} else if (other instanceof Rectangle) {
 			Vector direction;
 
@@ -255,10 +255,10 @@ public class Circle implements Shape {
 			Vector toReference = referencePoint.sub(this.position);
 			Vector overlap = toReference.mul(this.radius / toReference.abs()
 					- 1.0f);
-			return new ElementalCollision(thisMoveable, otherMoveable, overlap);
+			return new Collision(overlap, thisMoveable, otherMoveable);
 		} else {
-			return this.getElementalCollision(other.getBestCircle(),
-					otherMoveable, thisMoveable);
+			return this.getCollision(other.getBestCircle(), otherMoveable,
+					thisMoveable);
 		}
 	}
 
@@ -275,14 +275,5 @@ public class Circle implements Shape {
 	@Override
 	public float getYRange() {
 		return radius * 2;
-	}
-
-	@Override
-	public Collision getCollision(Shape other, boolean otherMoveable,
-			boolean thisMoveable) {
-		Collision col = new Collision();
-		col.addCollision(this.getElementalCollision(other, otherMoveable,
-				thisMoveable));
-		return col;
 	}
 }
