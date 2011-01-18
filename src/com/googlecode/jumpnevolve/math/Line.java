@@ -135,4 +135,9 @@ public abstract class Line {
 			return 0.0f;
 		}
 	}
+
+	public final boolean arePointsOnTheSameSide(Vector point1, Vector point2) {
+		return Math.signum(this.getDistanceTo(point1)) == Math.signum(this
+				.getDistanceTo(point2));
+	}
 }

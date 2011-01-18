@@ -276,4 +276,30 @@ public class Circle implements Shape {
 	public float getYRange() {
 		return radius * 2;
 	}
+
+	@Override
+	public Vector getOverlap(PointLine line, Vector pointInOtherShape) {
+		Vector overlap = line.getDistanceVectorTo(this.position);
+		if (line.arePointsOnTheSameSide(this.position, pointInOtherShape)) {
+			return overlap.getDirection().mul(overlap.abs() + this.radius);
+		} else {
+			return overlap.neg().mul(this.radius / overlap.abs() - 1);
+		}
+	}
+
+	@Override
+	public boolean isIntersecting(PointLine line) {
+		Vector dist = line.getDistanceVectorTo(this.position);
+		if (dist.abs() > this.radius) {
+			return false;
+		} else {
+			if (!new StraightLine(this.position, this.position.add(dist))
+					.arePointsOnTheSameSide(line.p1, line.p2)) {
+				return true;
+			} else {
+				return line.p1.getDistance(this.position) <= this.radius
+						|| line.p2.getDistance(this.position) <= this.radius;
+			}
+		}
+	}
 }

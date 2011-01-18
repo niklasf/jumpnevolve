@@ -44,7 +44,15 @@ public interface Shape extends Serializable {
 	 * @param other
 	 *            Die andere Figur
 	 */
-	boolean doesCollide(Shape other);
+	public boolean doesCollide(Shape other);
+
+	/**
+	 * Prüft, ob die Linie durch die geometrische Figur verläuft
+	 * 
+	 * @param line
+	 *            Die Linie, die überprüft werden soll
+	 */
+	public boolean isIntersecting(PointLine line);
 
 	/**
 	 * @return Ein Kreis, der die Figur möglichst gut annähert.
@@ -96,6 +104,21 @@ public interface Shape extends Serializable {
 	 */
 	public Collision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable);
+
+	/**
+	 * Ermittelt die Überlappung dieser geometrischen Figur zu der Linie einer
+	 * anderen geometrischen Figur
+	 * 
+	 * @param line
+	 *            Die zu überprüfende Punkt-zu-Punkt-Linie
+	 * @param pointInOtherShape
+	 *            Ein Punkt in der anderen Figur, der charakterisiert, auf
+	 *            welcher Seite der Linie sich die geometrische Figur, zu
+	 *            welcher die Linie gehört, befindet
+	 * @return Der Überlappungsvektor, senkrect zu <code>line</code>, zeigt zur
+	 *         anderen Figur hin
+	 */
+	public Vector getOverlap(PointLine line, Vector pointInOtherShape);
 
 	/**
 	 * 

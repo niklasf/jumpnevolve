@@ -20,7 +20,7 @@ package com.googlecode.jumpnevolve.math;
 /**
  * Diese Klasse speichert Rechtecke und ermöglicht Berechnungen damit.
  */
-public class Rectangle implements Shape {
+public class Rectangle implements LineConsisting {
 
 	private static final long serialVersionUID = -4556824470497571683L;
 
@@ -166,7 +166,7 @@ public class Rectangle implements Shape {
 	 * @return Der Ortsvektor der unteren rechten Ecke
 	 */
 	public Vector getLowerRightCorner() {
-		return new Vector(this.x + this.width, this.y + this.height);
+		return this.getLowRightCorner();
 	}
 
 	/**
@@ -464,5 +464,51 @@ public class Rectangle implements Shape {
 				return this.getHighLeftCorner();
 			}
 		}
+	}
+
+	@Override
+	public Vector getOverlap(PointLine line, Vector pointInOtherShape) {
+		Vector dir = line.getDistanceVectorTo(this.getCenter());
+		if (!line.arePointsOnTheSameSide(this.getCenter(), pointInOtherShape)) {
+			dir = dir.neg();
+		}
+		return line.getDistanceVectorTo(this.getCorner(dir));
+	}
+
+	@Override
+	public boolean isIntersecting(PointLine line) {
+		if (line.crosses(new PointLine(this.getHighLeftCorner(), this
+				.getHighRightCorner()))) {
+			return true;
+		} else if (line.crosses(new PointLine(this.getHighRightCorner(), this
+				.getLowRightCorner()))) {
+			return true;
+		} else if (line.crosses(new PointLine(this.getLowRightCorner(), this
+				.getLowLeftCorner()))) {
+			return true;
+		} else if (line.crosses(new PointLine(this.getLowLeftCorner(), this
+				.getHighLeftCorner()))) {
+			return true;
+		} else {
+			return this.isPointInThis(line.p1);
+		}
+	}
+
+	@Override
+	public PointLine[] getLines() {
+		return new PointLine[] {
+				new PointLine(this.getHighLeftCorner(), this
+						.getHighRightCorner()),
+				new PointLine(this.getHighRightCorner(), this
+						.getLowRightCorner()),
+				new PointLine(this.getLowRightCorner(), this.getLowLeftCorner()),
+				new PointLine(this.getLowLeftCorner(), this.getHighLeftCorner()) };
+	}
+
+	@Override
+	public Vector[] getPoints() {
+		return new Vector[] { this.getHighLeftCorner(),
+				this.getHighRightCorner(), this.getLowRightCorner(),
+				this.getLowLeftCorner() };
 	}
 }

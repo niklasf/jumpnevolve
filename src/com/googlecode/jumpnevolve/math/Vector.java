@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
+
 /**
  * Klasse für Vektoren mit einfacher Gleitkommagenauigkeit.
  * 
@@ -383,12 +385,42 @@ public class Vector implements Cloneable, Serializable {
 	}
 
 	/**
+	 * Lässt den Punkt, den dieser Ortsvektor darstellt, um einen Punkt rotieren
+	 * 
+	 * @param phi
+	 *            Der Winkel, um den rotiert wird (im Uhrzeigersinn)
+	 * @param point
+	 *            Der Punkt, um den gedreht wird
+	 * @return Der Ortsvektor des neuen um <code>phi</code> um
+	 *         <code>point</code> rotierten Punktes
+	 */
+	public Vector rotate(float phi, Vector point) {
+		Vector vec = this.sub(point);
+		vec = vec.rotate(phi);
+		return vec.add(point);
+	}
+
+	/**
+	 * Lässt diesen Vektor um den Urspung um den Winkel Phi im Uhrzeigersinn
+	 * rotieren
+	 * 
+	 * @param phi
+	 *            Der Winkel, um den der Vektor rotiert werden soll
+	 * @return Der rotierte Vektor
+	 */
+	public Vector rotate(float phi) {
+		return new Vector((float) (this.x * Math.cos(phi) - this.y
+				* Math.sin(phi)), (float) (this.x * Math.sin(phi) + y
+				* Math.cos(phi)));
+	}
+
+	/**
 	 * Dreht diesen Vektor um 90-Grad bzw. Pi-Halbe im Uhrzeigersinn
 	 * 
 	 * @return Der gedrehte Vektor
 	 */
 	public Vector rotateQuarterClockwise() {
-		return new Vector(y, -x);
+		return new Vector(-y, x);
 
 	}
 
@@ -398,7 +430,7 @@ public class Vector implements Cloneable, Serializable {
 	 * @return Der gedrehte Vektor
 	 */
 	public Vector rotateQuarterAnticlockwise() {
-		return new Vector(-y, x);
+		return new Vector(y, -x);
 	}
 
 	/**

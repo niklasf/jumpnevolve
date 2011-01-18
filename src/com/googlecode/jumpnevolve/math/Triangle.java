@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.googlecode.jumpnevolve.math;
 
 import org.newdawn.slick.geom.Polygon;
@@ -9,7 +6,7 @@ import org.newdawn.slick.geom.Polygon;
  * @author Erik Wagner
  * 
  */
-public class Triangle implements Shape {
+public class Triangle implements LineConsisting {
 
 	public final Vector[] points;
 	public final PointLine[] lines;
@@ -19,7 +16,6 @@ public class Triangle implements Shape {
 	 * 
 	 */
 	public Triangle(Vector p1, Vector p2, Vector p3) {
-		// TODO Auto-generated constructor stub
 		this.points = new Vector[] { p1, p2, p3 };
 		this.center = p1.add(p3.add(p2.sub(p3).div(2.0f)).sub(p1).mul(
 				2.0f / 3.0f));
@@ -76,18 +72,14 @@ public class Triangle implements Shape {
 			boolean thisMoveable) {
 		// TODO Auto-generated method stub
 		if (other instanceof Triangle) {
-			Collision col = new Collision();
-			col
-					.addCollision(new ElementalCollision(thisMoveable,
-							otherMoveable,
-							getTriangleTriangleOverlap((Triangle) other)));
-			return col;
+			return new Collision(this
+					.getTriangleTriangleOverlap((Triangle) other),
+					thisMoveable, otherMoveable);
 		}
 		return null;
 	}
 
 	private Vector getTriangleTriangleOverlap(Triangle other) {
-		// TODO Auto-generated method stub
 		boolean[] cornerInsideThis = new boolean[3];
 		boolean[] cornerInsideOther = new boolean[3];
 		cornerInsideOther[0] = other.isPointInThis(this.points[0]);
@@ -329,9 +321,50 @@ public class Triangle implements Shape {
 	}
 
 	@Override
-	public ElementalCollision getElementalCollision(Shape other,
-			boolean otherMoveable, boolean thisMoveable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Vector getOverlap(PointLine line, Vector pointInOtherShape) {
+		Vector dir = line.getDistanceVectorTo(this.getCenter());
+		if (!line.arePointsOnTheSameSide(this.getCenter(), pointInOtherShape)) {
+			dir = dir.neg();
+		}
+		return line.getDistanceVectorTo(this.getCorner(dir));
+	}
+
+	@Override
+	public boolean isIntersecting(PointLine line) {
+		for (Line pointLine : this.lines) {
+			if (line.crosses(pointLine)) {
+				return true;
+			}
+		}
+		return this.isPointInThis(line.p1);
+	}
+
+	private Vector getCorner(Vector direction) {
+		if (direction.ang(this.points[0].sub(this.center)) < direction
+				.ang(this.points[1].sub(this.center))) {
+			if (direction.ang(this.points[0].sub(this.center)) < direction
+					.ang(this.points[2].sub(this.center))) {
+				return this.points[0];
+			} else {
+				return this.points[2];
+			}
+		} else {
+			if (direction.ang(this.points[1].sub(this.center)) < direction
+					.ang(this.points[2].sub(this.center))) {
+				return this.points[1];
+			} else {
+				return this.points[2];
+			}
+		}
+	}
+
+	@Override
+	public PointLine[] getLines() {
+		return this.lines;
+	}
+
+	@Override
+	public Vector[] getPoints() {
+		return this.points;
 	}
 }
