@@ -1,7 +1,5 @@
 package com.googlecode.jumpnevolve.math;
 
-import org.newdawn.slick.geom.Polygon;
-
 /**
  * @author Erik Wagner
  * 
@@ -313,7 +311,7 @@ public class Triangle implements LineConsisting {
 
 	@Override
 	public org.newdawn.slick.geom.Shape toSlickShape() {
-		Polygon re = new Polygon();
+		org.newdawn.slick.geom.Polygon re = new org.newdawn.slick.geom.Polygon();
 		re.addPoint(points[0].x, points[0].y);
 		re.addPoint(points[1].x, points[1].y);
 		re.addPoint(points[2].x, points[2].y);
@@ -359,12 +357,7 @@ public class Triangle implements LineConsisting {
 	}
 
 	@Override
-	public PointLine[] getLines() {
-		return this.lines;
-	}
-
-	@Override
-	public Vector[] getPoints() {
-		return this.points;
+	public Polygon toPolygon() {
+		return new Polygon(points);
 	}
 }

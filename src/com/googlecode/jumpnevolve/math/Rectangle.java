@@ -495,20 +495,14 @@ public class Rectangle implements LineConsisting {
 	}
 
 	@Override
-	public PointLine[] getLines() {
-		return new PointLine[] {
-				new PointLine(this.getHighLeftCorner(), this
-						.getHighRightCorner()),
-				new PointLine(this.getHighRightCorner(), this
-						.getLowRightCorner()),
-				new PointLine(this.getLowRightCorner(), this.getLowLeftCorner()),
-				new PointLine(this.getLowLeftCorner(), this.getHighLeftCorner()) };
+	public Polygon toPolygon() {
+		return new Polygon(new Vector[] { this.getHighLeftCorner(),
+				this.getHighRightCorner(), this.getLowRightCorner(),
+				this.getLowLeftCorner() });
 	}
 
 	@Override
-	public Vector[] getPoints() {
-		return new Vector[] { this.getHighLeftCorner(),
-				this.getHighRightCorner(), this.getLowRightCorner(),
-				this.getLowLeftCorner() };
+	public boolean isCompletlyIn(PointLine line) {
+		return this.isPointInThis(line.p1) && this.isPointInThis(line.p2);
 	}
 }

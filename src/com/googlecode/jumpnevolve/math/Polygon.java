@@ -5,8 +5,6 @@ package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
 
-import sun.misc.FpUtils;
-
 /**
  * @author Erik Wagner
  * 
@@ -19,6 +17,10 @@ public class Polygon implements LineConsisting {
 	private Vector center;
 
 	public Polygon(ArrayList<Vector> points) {
+		this((Vector[]) points.toArray());
+	}
+
+	public Polygon(Vector[] points) {
 		for (Vector p : points) {
 			this.addPoint(p);
 		}
@@ -30,8 +32,7 @@ public class Polygon implements LineConsisting {
 			this.lines.remove(this.lines.size() - 1);
 		}
 		if (size >= 2) {
-			this.lines.add(new PointLine(this.points
-					.get(size - 1), point));
+			this.lines.add(new PointLine(this.points.get(size - 1), point));
 		}
 		this.lines.add(new PointLine(point, this.points.get(0)));
 
@@ -65,64 +66,66 @@ public class Polygon implements LineConsisting {
 		this.points.add(point);
 	}
 
+	public Rectangle getBoundingRect() {
+		return new Rectangle(this.getLeftEnd(), this.getUpperEnd(), this
+				.getXRange(), this.getYRange());
+	}
+
 	@Override
 	public boolean doesCollide(Shape other) {
-		if (other instanceof Circle) {
-			return other.doesCollide(this);
-		} else if (other instanceof LineConsisting) {
-			for (PointLine line : this.lines) {
-				for (PointLine l : ((LineConsisting) other).getLines()) {
-					if (line.crosses(l)) {
+		if (this.getBoundingRect().doesCollide(other)) {
+			if (other instanceof Circle) {
+				for (PointLine line : this.lines) {
+					if (other.isIntersecting(line)) {
 						return true;
 					}
 				}
-			}
-			if (this.isPointInThis(other.getCenter())) {
-				return true;
-			} else {
 				return false;
+			} else if (other instanceof LineConsisting) {
+				for (PointLine line : this.lines) {
+					for (PointLine l : ((LineConsisting) other).toPolygon().lines) {
+						if (line.crosses(l)) {
+							return true;
+						}
+					}
+				}
+				if (this.isPointInThis(other.getCenter())) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return this.doesCollide(other.getBestCircle());
 			}
 		} else {
-			return other.getBestCircle().doesCollide(this);
+			return false;
 		}
 	}
 
 	@Override
 	public Circle getBestCircle() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.getBoundingRect().getBestCircle();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.jumpnevolve.math.Shape#getCenter()
-	 */
 	@Override
 	public Vector getCenter() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.center;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.jumpnevolve.math.Shape#getCollision(com.googlecode.jumpnevolve
-	 * .math.Shape, boolean, boolean)
-	 */
 	@Override
 	public Collision getCollision(Shape other, boolean otherMoveable,
 			boolean thisMoveable) {
-		// TODO Auto-generated method stub
-		return null;
+		Collision col = new Collision(thisMoveable);
+		for (PointLine line : this.lines) {
+			if (other.isIntersecting(line)) {
+				col.addOverlap(other.getOverlap(line, this.getCenter()),
+						otherMoveable);
+			}
+		}
+		return col;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.googlecode.jumpnevolve.math.Shape#getDistanceToSide(byte)
-	 */
 	@Override
 	public float getDistanceToSide(byte direction) {
 		switch (direction) {
@@ -149,17 +152,36 @@ public class Polygon implements LineConsisting {
 		return this.down;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.jumpnevolve.math.Shape#getOverlap(com.googlecode.jumpnevolve
-	 * .math.PointLine, com.googlecode.jumpnevolve.math.Vector)
-	 */
 	@Override
 	public Vector getOverlap(PointLine line, Vector pointInOtherShape) {
 		// TODO Auto-generated method stub
-		return null;
+		Vector overlap = null;
+		for (Vector point : this.points) {
+			if (MathUtils.arePointsInTheSameRayRect(point, pointInOtherShape,
+					line)) {
+				if (overlap == null) {
+					overlap = line.getDistanceVectorTo(point);
+				} else {
+					overlap = Vector.max(overlap, line
+							.getDistanceVectorTo(point));
+				}
+			}
+		}
+		if (overlap == null) {
+			for (PointLine line2 : this.lines) {
+				if (MathUtils.isLineInRayRect(line2, line, pointInOtherShape)) {
+					if (overlap == null) {
+						overlap = MathUtils.getMaxDistanceToLineInRayRect(
+								line2, line, pointInOtherShape);
+					} else {
+						overlap = Vector.max(overlap, MathUtils
+								.getMaxDistanceToLineInRayRect(line2, line,
+										pointInOtherShape));
+					}
+				}
+			}
+		}
+		return overlap;
 	}
 
 	@Override
@@ -182,33 +204,32 @@ public class Polygon implements LineConsisting {
 		return this.down - this.up;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seecom.googlecode.jumpnevolve.math.Shape#isIntersecting(com.googlecode.
-	 * jumpnevolve.math.PointLine)
-	 */
 	@Override
 	public boolean isIntersecting(PointLine line) {
-		// TODO Auto-generated method stub
+		if (this.isPointInThis(line.p1) || this.isPointInThis(line.p2)) {
+			return true;
+		} else {
+			for (PointLine line2 : this.lines) {
+				if (line.crosses(line2)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seecom.googlecode.jumpnevolve.math.Shape#isPointInThis(com.googlecode.
-	 * jumpnevolve.math.Vector)
-	 */
 	@Override
 	public boolean isPointInThis(Vector p) {
-		PointLine centerToPoint = new PointLine(this.getCenter(), p);
-		for (Vector point : this.points) {
-			if (centerToPoint.crosses(new PointLine(point, this.getCenter()))) {
-				return false;
+		// Angewendet wird die allgemeine Strahlen-Methode
+		// (siehe http://rw7.de/ralf/inffaq/polygon.html#strahl)
+		Ray testRay = new Ray(p, Vector.RIGHT);
+		int n = 0;
+		for (PointLine line : this.lines) {
+			if (testRay.crosses(line)) {
+				n++;
 			}
 		}
-		return true;
+		return n % 2 == 1;
 	}
 
 	@Override
@@ -231,13 +252,22 @@ public class Polygon implements LineConsisting {
 	}
 
 	@Override
-	public PointLine[] getLines() {
-		return (PointLine[]) this.lines.toArray();
+	public Polygon toPolygon() {
+		return this;
 	}
 
 	@Override
-	public Vector[] getPoints() {
-		return (Vector[]) this.points.toArray();
+	public boolean isCompletlyIn(PointLine line) {
+		if (this.isPointInThis(line.p1) && this.isPointInThis(line.p2)) {
+			for (PointLine line2 : this.lines) {
+				if (line.crosses(line2)) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

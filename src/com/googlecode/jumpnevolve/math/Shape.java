@@ -54,6 +54,8 @@ public interface Shape extends Serializable {
 	 */
 	public boolean isIntersecting(PointLine line);
 
+	public boolean isCompletlyIn(PointLine line);
+
 	/**
 	 * @return Ein Kreis, der die Figur möglichst gut annähert.
 	 */

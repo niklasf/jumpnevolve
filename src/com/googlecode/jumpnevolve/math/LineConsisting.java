@@ -6,7 +6,10 @@ package com.googlecode.jumpnevolve.math;
  */
 public interface LineConsisting extends Shape {
 
-	public PointLine[] getLines();
-
-	public Vector[] getPoints();
+	/**
+	 * Erzeugt ein allgemeines Polygon, das dieser Figur entspricht
+	 * 
+	 * @return Dieses Objekt in Form eines Polygons
+	 */
+	public Polygon toPolygon();
 }

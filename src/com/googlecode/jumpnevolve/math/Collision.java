@@ -35,7 +35,7 @@ public class Collision {
 		}
 	}
 
-	private void addOverlap(Vector overlap, boolean otherMoveable) {
+	public void addOverlap(Vector overlap, boolean otherMoveable) {
 		Vector restoring = this.toRestoring(overlap, otherMoveable);
 		this.overlaps.put(overlap, otherMoveable);
 		this.addRestoring(restoring);

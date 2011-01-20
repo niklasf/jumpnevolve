@@ -302,4 +302,9 @@ public class Circle implements Shape {
 			}
 		}
 	}
+
+	@Override
+	public boolean isCompletlyIn(PointLine line) {
+		return this.isPointInThis(line.p1) && this.isPointInThis(line.p2);
+	}
 }
