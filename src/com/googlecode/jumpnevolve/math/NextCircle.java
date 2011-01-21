@@ -1,10 +1,12 @@
 package com.googlecode.jumpnevolve.math;
 
+import java.util.ArrayList;
+
 /**
  * @author Erik Wagner
  * 
  */
-public class NextCircle implements NextShape {
+class NextCircle implements ConvexShape {
 
 	public final float radius;
 	public final Vector center;
@@ -18,7 +20,7 @@ public class NextCircle implements NextShape {
 	}
 
 	@Override
-	public NextShape MoveCenter(Vector diff) {
+	public ConvexShape MoveCenter(Vector diff) {
 		return this.modifyCenter(this.center.add(diff));
 	}
 
@@ -49,7 +51,7 @@ public class NextCircle implements NextShape {
 	}
 
 	@Override
-	public NextShape modifyCenter(Vector newCenter) {
+	public ConvexShape modifyCenter(Vector newCenter) {
 		return new NextCircle(newCenter, this.radius);
 	}
 
@@ -57,6 +59,26 @@ public class NextCircle implements NextShape {
 	public AxisProjection projectOnAxis(Vector axis) {
 		float d = this.getCenter().mul(axis);
 		return new AxisProjection(d - this.radius, d + this.radius);
+	}
+
+	@Override
+	public Vector[] getAxises(ConvexShape other) {
+		if (other instanceof NextPolygon) {
+			NextPolygon poly = (NextPolygon) other;
+			ArrayList<Vector> points = poly.getPoints();
+			Vector[] axises = new Vector[points.size()];
+			for (int i = 0; i < points.size(); i++) {
+				axises[i] = points.get(i).sub(this.center);
+			}
+			return axises;
+		} else {
+			return new Vector[] { other.getCenter().sub(this.getCenter()) };
+		}
+	}
+
+	@Override
+	public boolean isFinished() {
+		return true;
 	}
 
 }

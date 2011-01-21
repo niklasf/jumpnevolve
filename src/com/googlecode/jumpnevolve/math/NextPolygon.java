@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author Erik Wagner
  * 
  */
-public class NextPolygon implements NextShape {
+class NextPolygon implements ConvexShape {
 
 	private ArrayList<Vector> points = new ArrayList<Vector>();
 	private ArrayList<Vector> lines = new ArrayList<Vector>();
@@ -34,6 +34,9 @@ public class NextPolygon implements NextShape {
 		this.finished = true;
 	}
 
+	public NextPolygon() {
+	}
+
 	public void addPoint(Vector point) {
 		if (!finished) {
 			this.points.add(point);
@@ -50,6 +53,14 @@ public class NextPolygon implements NextShape {
 
 	public boolean isFinished() {
 		return this.finished;
+	}
+
+	public int getNumberOfPoints() {
+		return this.points.size();
+	}
+
+	public ArrayList<Vector> getPoints() {
+		return this.points;
 	}
 
 	private void buildLines() {
@@ -73,7 +84,7 @@ public class NextPolygon implements NextShape {
 	}
 
 	@Override
-	public NextShape MoveCenter(Vector diff) {
+	public ConvexShape MoveCenter(Vector diff) {
 		ArrayList<Vector> nextPoints = new ArrayList<Vector>();
 		for (Vector vector : this.points) {
 			nextPoints.add(vector.add(diff));
@@ -92,22 +103,24 @@ public class NextPolygon implements NextShape {
 	@Override
 	public CollisionResult getCollision(NextShape other) {
 		CollisionResult colRe = new CollisionResult();
-		if (other instanceof NextPolygon) {
-			NextPolygon otherPoly = (NextPolygon) other;
-			if (this.finished && otherPoly.finished) {
-				int thisLineCount = this.lines.size();
-				int otherLineCount = otherPoly.lines.size();
+		if (this.isFinished() && other.isFinished()) {
+			if (other instanceof ConvexShape) {
+				ConvexShape otherConvex = (ConvexShape) other;
+				Vector[] thisAxises = this.getAxises(otherConvex);
+				Vector[] otherAxises = otherConvex.getAxises(this);
+				int thisLineCount = thisAxises.length;
+				int otherLineCount = otherAxises.length;
 				float minOverlapDistance = Float.POSITIVE_INFINITY;
 				Vector translationAxis = Vector.ZERO;
 				Vector curAxis;
 				for (int i = 0; i < thisLineCount + otherLineCount; i++) {
 					if (i < thisLineCount) {
-						curAxis = this.lines.get(i);
+						curAxis = thisAxises[i];
 					} else {
-						curAxis = otherPoly.lines.get(i - thisLineCount);
+						curAxis = otherAxises[i - thisLineCount];
 					}
 					AxisProjection thisProjection = this.projectOnAxis(curAxis);
-					AxisProjection otherProjection = other
+					AxisProjection otherProjection = otherConvex
 							.projectOnAxis(curAxis);
 					float dist = getIntervalDistance(thisProjection.minimum,
 							thisProjection.maximum, otherProjection.minimum,
@@ -119,8 +132,8 @@ public class NextPolygon implements NextShape {
 						dist = -dist;
 						if (dist < minOverlapDistance) {
 							minOverlapDistance = dist;
-							Vector d = this.getCenter().sub(other.getCenter());
-							if (d.mul(curAxis) < 0) {
+							if (this.getCenter().sub(other.getCenter()).mul(
+									curAxis) < 0) {
 								translationAxis = curAxis.neg();
 							} else {
 								translationAxis = curAxis;
@@ -132,51 +145,37 @@ public class NextPolygon implements NextShape {
 						.setMinimumOverlap(translationAxis
 								.mul(minOverlapDistance));
 				return colRe;
-			} else {
-				colRe.setNotIntersecting();
-				return colRe;
-			}
-		} else if (other instanceof NextCircle) {
-			if (this.finished) {
-				int thisLineCount = this.lines.size();
-				float minOverlapDistance = Float.POSITIVE_INFINITY;
-				Vector translationAxis = Vector.ZERO;
-				Vector curAxis;
-				for (int i = 0; i < thisLineCount; i++) {
-					curAxis = this.lines.get(i);
-					AxisProjection thisProjection = this.projectOnAxis(curAxis);
-					AxisProjection otherProjection = other
-							.projectOnAxis(curAxis);
-					float dist = getIntervalDistance(thisProjection.minimum,
-							thisProjection.maximum, otherProjection.minimum,
-							otherProjection.maximum);
-					if (dist > 0) {
-						colRe.setNotIntersecting();
-						return colRe;
-					} else {
-						dist = -dist;
-						if (dist < minOverlapDistance) {
-							minOverlapDistance = dist;
-							Vector d = this.getCenter().sub(other.getCenter());
-							if (d.mul(curAxis) < 0) {
-								translationAxis = curAxis.neg();
-							} else {
-								translationAxis = curAxis;
-							}
-						}
+			} else if (other instanceof NotConvexShape) {
+				ConvexShape[] convexes = ((NotConvexShape) other)
+						.toConvexShapes();
+				CollisionResult[] results = new CollisionResult[convexes.length];
+				for (int i = 0; i < convexes.length; i++) {
+					results[i] = this.getCollision(convexes[i]);
+				}
+				Vector overlap = Vector.ZERO;
+				int numberOfOverlaps = 0;
+				for (CollisionResult result : results) {
+					if (result.isIntersecting()) {
+						overlap.add(result.getMinimumOverlap());
+						numberOfOverlaps++;
 					}
 				}
-				colRe
-						.setMinimumOverlap(translationAxis
-								.mul(minOverlapDistance));
-				return colRe;
+				if (numberOfOverlaps > 0) {
+					overlap = overlap.div(numberOfOverlaps);
+					colRe.setMinimumOverlap(overlap);
+					return colRe;
+				} else {
+					colRe.setNotIntersecting();
+					return colRe;
+				}
 			} else {
 				colRe.setNotIntersecting();
 				return colRe;
 			}
+		} else {
+			colRe.setNotIntersecting();
+			return colRe;
 		}
-		colRe.setNotIntersecting();
-		return colRe;
 	}
 
 	private float getIntervalDistance(float minA, float maxA, float minB,
@@ -189,7 +188,7 @@ public class NextPolygon implements NextShape {
 	}
 
 	@Override
-	public NextShape modifyCenter(Vector newCenter) {
+	public ConvexShape modifyCenter(Vector newCenter) {
 		return this.MoveCenter(newCenter.sub(this.center));
 	}
 
@@ -209,5 +208,14 @@ public class NextPolygon implements NextShape {
 			}
 		}
 		return new AxisProjection(min, max);
+	}
+
+	@Override
+	public Vector[] getAxises(ConvexShape other) {
+		Vector[] axises = new Vector[this.lines.size()];
+		for (int i = 0; i < this.lines.size(); i++) {
+			axises[i] = this.lines.get(i).rotateQuarterClockwise();
+		}
+		return axises;
 	}
 }
