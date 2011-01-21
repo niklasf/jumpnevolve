@@ -30,7 +30,7 @@ class NextCircle implements ConvexShape {
 	}
 
 	@Override
-	public CollisionResult getCollision(NextShape other) {
+	public CollisionResult getCollision(NextShape other, Vector deltaVelocity) {
 		CollisionResult colRe = new CollisionResult();
 		if (other instanceof NextCircle) {
 			float dist = other.getCenter().getDistance(this.center);
@@ -39,12 +39,12 @@ class NextCircle implements ConvexShape {
 				colRe.setNotIntersecting();
 				return colRe;
 			} else {
-				colRe.setMinimumOverlap(this.center.sub(other.getCenter()).mul(
+				colRe.setIsOverlap(this.center.sub(other.getCenter()).mul(
 						radsum - dist));
 				return colRe;
 			}
 		} else if (other instanceof NextPolygon) {
-			return other.getCollision(this).invert();
+			return other.getCollision(this, deltaVelocity.neg()).invert();
 		}
 		colRe.setNotIntersecting();
 		return colRe;

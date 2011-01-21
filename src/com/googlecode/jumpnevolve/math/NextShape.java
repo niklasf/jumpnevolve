@@ -10,5 +10,5 @@ public interface NextShape {
 
 	public ConvexShape MoveCenter(Vector diff);
 
-	public CollisionResult getCollision(NextShape other);
+	public CollisionResult getCollision(NextShape other, Vector deltaVelocity);
 }

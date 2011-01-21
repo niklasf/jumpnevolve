@@ -6,46 +6,82 @@ package com.googlecode.jumpnevolve.math;
  */
 public class CollisionResult {
 
-	private boolean intersecting = true;
-	private Vector minimumOverlap = Vector.ZERO;
+	private boolean isIntersecting = true;
+	private boolean willIntersect = true;
+	private Vector isOverlap = Vector.ZERO;
+	private Vector willOverlap = Vector.ZERO;
 
 	public CollisionResult() {
 	}
 
-	private CollisionResult(boolean intersecting, Vector minimumOverlap) {
-		this.intersecting = intersecting;
-		this.minimumOverlap = minimumOverlap;
+	private CollisionResult(boolean intersecting, boolean willIntersect,
+			Vector isOverlap, Vector willOverlap) {
+		this.isIntersecting = intersecting;
+		this.willIntersect = willIntersect;
+		this.isOverlap = isOverlap;
+		this.willOverlap = willOverlap;
 	}
 
 	/**
 	 * Setzt den Status der Kollision auf <code>false</code>
 	 */
 	public void setNotIntersecting() {
-		this.intersecting = false;
+		this.isIntersecting = false;
 	}
 
 	/**
 	 * @return Der Status der Kollision
 	 */
 	public boolean isIntersecting() {
-		return intersecting;
+		return this.isIntersecting;
+	}
+	
+	/**
+	 * Setzt den Status der Kollision auf <code>false</code>
+	 */
+	public void setWillNotIntersect() {
+		this.isIntersecting = false;
+	}
+
+	/**
+	 * @return Der Status der Kollision
+	 */
+	public boolean willIntersect() {
+		return this.willIntersect;
 	}
 
 	/**
 	 * Setzt die minimale Strecke zum Verschieben des Objekts
 	 * 
-	 * @param minimumTranslation
+	 * @param translation
 	 *            Die Verschiebungsstrecke
 	 */
-	public void setMinimumOverlap(Vector minimumTranslation) {
-		this.minimumOverlap = minimumTranslation;
+	public void setIsOverlap(Vector translation) {
+		this.isOverlap = translation;
 	}
 
 	/**
 	 * @return Die Verschiebungsstrecke
 	 */
-	public Vector getMinimumOverlap() {
-		return minimumOverlap;
+	public Vector getIsOverlap() {
+		return this.isOverlap;
+	}
+	
+	/**
+	 * Setzt die minimale Strecke zum Verschieben des Objekts
+	 * 
+	 * @param translation
+	 *            Die Verschiebungsstrecke
+	 */
+	public void setWillOverlap(Vector translation) {
+		this.willOverlap = translation;
+	}
+
+	/**
+	 * @return Die Verschiebungsstrecke
+	 */
+	public Vector getWillOverlap() {
+		return this.willOverlap;
 	}
 
 	/**
@@ -53,6 +89,7 @@ public class CollisionResult {
 	 *         Richtung zeigt
 	 */
 	public CollisionResult invert() {
-		return new CollisionResult(this.intersecting, this.minimumOverlap.neg());
+		return new CollisionResult(this.isIntersecting, this.willIntersect,
+				this.isOverlap.neg(), this.willOverlap.neg());
 	}
 }

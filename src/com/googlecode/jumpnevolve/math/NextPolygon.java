@@ -101,7 +101,7 @@ class NextPolygon implements ConvexShape {
 	}
 
 	@Override
-	public CollisionResult getCollision(NextShape other) {
+	public CollisionResult getCollision(NextShape other, Vector deltaVelocity) {
 		CollisionResult colRe = new CollisionResult();
 		if (this.isFinished() && other.isFinished()) {
 			if (other instanceof ConvexShape) {
@@ -110,8 +110,10 @@ class NextPolygon implements ConvexShape {
 				Vector[] otherAxises = otherConvex.getAxises(this);
 				int thisLineCount = thisAxises.length;
 				int otherLineCount = otherAxises.length;
-				float minOverlapDistance = Float.POSITIVE_INFINITY;
-				Vector translationAxis = Vector.ZERO;
+				float minOverlapDistanceIs = Float.POSITIVE_INFINITY;
+				float minOverlapDistanceWill = Float.POSITIVE_INFINITY;
+				Vector translationAxisIs = Vector.ZERO;
+				Vector translationAxisWill = Vector.ZERO;
 				Vector curAxis;
 				for (int i = 0; i < thisLineCount + otherLineCount; i++) {
 					if (i < thisLineCount) {
@@ -122,60 +124,91 @@ class NextPolygon implements ConvexShape {
 					AxisProjection thisProjection = this.projectOnAxis(curAxis);
 					AxisProjection otherProjection = otherConvex
 							.projectOnAxis(curAxis);
-					float dist = getIntervalDistance(thisProjection.minimum,
+					float distIs = getIntervalDistance(thisProjection.minimum,
 							thisProjection.maximum, otherProjection.minimum,
 							otherProjection.maximum);
-					if (dist > 0) {
+					float velAdd = curAxis.mul(deltaVelocity);
+					float distWill = getIntervalDistance(thisProjection.minimum
+							+ velAdd, thisProjection.maximum + velAdd,
+							otherProjection.minimum, otherProjection.maximum);
+					if (distIs > 0 && distWill > 0) {
 						colRe.setNotIntersecting();
+						colRe.setWillNotIntersect();
 						return colRe;
 					} else {
-						dist = -dist;
-						if (dist < minOverlapDistance) {
-							minOverlapDistance = dist;
+						distIs = -distIs;
+						distWill = -distWill;
+						if (distIs < minOverlapDistanceIs) {
+							minOverlapDistanceIs = distIs;
 							if (this.getCenter().sub(other.getCenter()).mul(
 									curAxis) < 0) {
-								translationAxis = curAxis.neg();
+								translationAxisIs = curAxis.neg();
 							} else {
-								translationAxis = curAxis;
+								translationAxisIs = curAxis;
+							}
+						}
+						if (distWill < minOverlapDistanceWill) {
+							minOverlapDistanceWill = distWill;
+							if (this.getCenter().sub(other.getCenter()).mul(
+									curAxis) < 0) {
+								translationAxisWill = curAxis.neg();
+							} else {
+								translationAxisWill = curAxis;
 							}
 						}
 					}
 				}
-				colRe
-						.setMinimumOverlap(translationAxis
-								.mul(minOverlapDistance));
+				colRe.setIsOverlap(translationAxisIs.mul(minOverlapDistanceIs));
+				colRe.setWillOverlap(translationAxisWill
+						.mul(minOverlapDistanceWill));
 				return colRe;
 			} else if (other instanceof NotConvexShape) {
 				ConvexShape[] convexes = ((NotConvexShape) other)
 						.toConvexShapes();
 				CollisionResult[] results = new CollisionResult[convexes.length];
 				for (int i = 0; i < convexes.length; i++) {
-					results[i] = this.getCollision(convexes[i]);
+					results[i] = this.getCollision(convexes[i], deltaVelocity);
 				}
-				Vector overlap = Vector.ZERO;
-				int numberOfOverlaps = 0;
-				for (CollisionResult result : results) {
-					if (result.isIntersecting()) {
-						overlap.add(result.getMinimumOverlap());
-						numberOfOverlaps++;
-					}
-				}
-				if (numberOfOverlaps > 0) {
-					overlap = overlap.div(numberOfOverlaps);
-					colRe.setMinimumOverlap(overlap);
-					return colRe;
-				} else {
-					colRe.setNotIntersecting();
-					return colRe;
-				}
+				return getUnionedResult(results);
 			} else {
 				colRe.setNotIntersecting();
+				colRe.setWillNotIntersect();
 				return colRe;
 			}
 		} else {
 			colRe.setNotIntersecting();
+			colRe.setWillNotIntersect();
 			return colRe;
 		}
+	}
+
+	private static CollisionResult getUnionedResult(CollisionResult[] results) {
+		CollisionResult colRe = new CollisionResult();
+		Vector overlapIs = Vector.ZERO, overlapWill = Vector.ZERO;
+		int numberOfOverlapsIs = 0, numberOfOverlapsWill = 0;
+		for (CollisionResult result : results) {
+			if (result.isIntersecting()) {
+				overlapIs.add(result.getIsOverlap());
+				numberOfOverlapsIs++;
+			}
+			if (result.willIntersect()) {
+				overlapWill.add(result.getWillOverlap());
+				numberOfOverlapsWill++;
+			}
+		}
+		if (numberOfOverlapsIs > 0) {
+			overlapIs = overlapIs.div(numberOfOverlapsIs);
+			colRe.setIsOverlap(overlapIs);
+		} else {
+			colRe.setNotIntersecting();
+		}
+		if (numberOfOverlapsWill > 0) {
+			overlapWill = overlapWill.div(numberOfOverlapsWill);
+			colRe.setWillOverlap(overlapWill);
+		} else {
+			colRe.setWillNotIntersect();
+		}
+		return colRe;
 	}
 
 	private float getIntervalDistance(float minA, float maxA, float minB,
