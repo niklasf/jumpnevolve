@@ -10,16 +10,22 @@ public class CollisionResult {
 	private boolean willIntersect = true;
 	private Vector isOverlap = Vector.ZERO;
 	private Vector willOverlap = Vector.ZERO;
+	private final boolean thisMoveable, otherMoveable;
 
-	public CollisionResult() {
+	public CollisionResult(boolean thisMoveable, boolean otherMoveable) {
+		this.thisMoveable = thisMoveable;
+		this.otherMoveable = otherMoveable;
 	}
 
 	private CollisionResult(boolean intersecting, boolean willIntersect,
-			Vector isOverlap, Vector willOverlap) {
+			Vector isOverlap, Vector willOverlap, boolean thisMoveable,
+			boolean otherMoveable) {
 		this.isIntersecting = intersecting;
 		this.willIntersect = willIntersect;
 		this.isOverlap = isOverlap;
 		this.willOverlap = willOverlap;
+		this.thisMoveable = thisMoveable;
+		this.otherMoveable = otherMoveable;
 	}
 
 	/**
@@ -35,7 +41,7 @@ public class CollisionResult {
 	public boolean isIntersecting() {
 		return this.isIntersecting;
 	}
-	
+
 	/**
 	 * Setzt den Status der Kollision auf <code>false</code>
 	 */
@@ -66,7 +72,7 @@ public class CollisionResult {
 	public Vector getIsOverlap() {
 		return this.isOverlap;
 	}
-	
+
 	/**
 	 * Setzt die minimale Strecke zum Verschieben des Objekts
 	 * 
@@ -90,6 +96,22 @@ public class CollisionResult {
 	 */
 	public CollisionResult invert() {
 		return new CollisionResult(this.isIntersecting, this.willIntersect,
-				this.isOverlap.neg(), this.willOverlap.neg());
+				this.isOverlap.neg(), this.willOverlap.neg(),
+				this.otherMoveable, this.thisMoveable);
+	}
+
+	public boolean isOtherMoveable() {
+		return this.otherMoveable;
+	}
+
+	public boolean isThisMoveable() {
+		return this.thisMoveable;
+	}
+
+	public void print() {
+		System.out.println("IsIntersecting: " + this.isIntersecting
+				+ " isOverlap: " + this.isOverlap);
+		System.out.println("WillIntersecting: " + this.willIntersect
+				+ " willOverlap: " + this.willOverlap);
 	}
 }

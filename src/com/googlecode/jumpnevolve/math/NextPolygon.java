@@ -101,8 +101,9 @@ class NextPolygon implements ConvexShape {
 	}
 
 	@Override
-	public CollisionResult getCollision(NextShape other, Vector deltaVelocity) {
-		CollisionResult colRe = new CollisionResult();
+	public CollisionResult getCollision(NextShape other, Vector deltaVelocity,
+			boolean thisMoveable, boolean otherMoveable) {
+		CollisionResult colRe = new CollisionResult(thisMoveable, otherMoveable);
 		if (this.isFinished() && other.isFinished()) {
 			if (other instanceof ConvexShape) {
 				ConvexShape otherConvex = (ConvexShape) other;
@@ -167,9 +168,10 @@ class NextPolygon implements ConvexShape {
 						.toConvexShapes();
 				CollisionResult[] results = new CollisionResult[convexes.length];
 				for (int i = 0; i < convexes.length; i++) {
-					results[i] = this.getCollision(convexes[i], deltaVelocity);
+					results[i] = this.getCollision(convexes[i], deltaVelocity,
+							thisMoveable, otherMoveable);
 				}
-				return getUnionedResult(results);
+				return getUnionedResult(results, thisMoveable, otherMoveable);
 			} else {
 				colRe.setNotIntersecting();
 				colRe.setWillNotIntersect();
@@ -182,8 +184,9 @@ class NextPolygon implements ConvexShape {
 		}
 	}
 
-	private static CollisionResult getUnionedResult(CollisionResult[] results) {
-		CollisionResult colRe = new CollisionResult();
+	private static CollisionResult getUnionedResult(CollisionResult[] results,
+			boolean thisMoveable, boolean otherMoveable) {
+		CollisionResult colRe = new CollisionResult(thisMoveable, otherMoveable);
 		Vector overlapIs = Vector.ZERO, overlapWill = Vector.ZERO;
 		int numberOfOverlapsIs = 0, numberOfOverlapsWill = 0;
 		for (CollisionResult result : results) {
