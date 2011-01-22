@@ -2,7 +2,7 @@
 <project default="Build" name="Build the project for distribution"
 	basedir="../">
 
-	<property name="distfile" value="jumpnevolve-pre-alpha-1.jar" />
+	<property name="distfile" value="jumpnevolve-pre-alpha-2.jar" />
 
 	<target name="Build">
 
@@ -16,7 +16,6 @@
 			<classpath>
 				<pathelement path="lib/slick/slick.jar" />
 				<pathelement path="lib/lwjgl/lwjgl.jar" />
-				<pathelement path="lib/phys2d/phys2d-060408.jar" />
 			</classpath>
 		</javac>
 
@@ -32,10 +31,12 @@
 				<attribute name="SplashScreen-Image" value="cover.png" />
 			</manifest>
 
-			<!-- Lizenzen -->
+			<!-- Lizenz -->
 			<metainf dir=".">
-				<include name="license.txt" />
+				<include name="LICENSE" />
 			</metainf>
+			
+			<!-- TODO: Include third party licenses
 			<metainf dir="lib/slick">
 				<include name="slick-license.txt" />
 			</metainf>
@@ -44,21 +45,18 @@
 			</metainf>
 			<metainf dir="lib/lwjgl">
 				<include name="lwjgl-license.txt" />
-			</metainf>
+			</metainf> -->
 
 			<!-- Programm -->
 			<fileset dir="bin" />
 			<fileset dir="resources" />
 
 			<!-- Native Bibliotheken -->
-			<fileset dir="lib/lwjgl/bin" />
-
-
+			<fileset dir="lib/lwjgl/native" />
 
 			<!-- Java Bibliotheken -->
 			<zipfileset excludes="META-INF/*.SF" src="lib/slick/slick.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="lib/lwjgl/lwjgl.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="lib/phys2d/phys2d-060408.jar" />
 		</jar>
 	</target>
 </project>
