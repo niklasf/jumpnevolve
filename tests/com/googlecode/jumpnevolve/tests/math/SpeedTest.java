@@ -7,8 +7,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -16,11 +18,16 @@ public class SpeedTest {
 
 	@Test
 	public void testSpeedNewRectCollisions() {
-		NextShape rect = ShapeFactory.createRectangle(new Vector(10, 10), 5, 5);
+		NextShape rect = ShapeFactory.createRectangle(new Vector(10, 100), 20,
+				20);
+		// NextShape rect2 = ShapeFactory.createRectangle(new Vector(10, 90),
+		// 20,20);
+		NextShape rect2 = ShapeFactory.createCircle(new Vector(10, 90), 10);
 		Date start = new Date();
 		long startTime = start.getTime();
 		for (int i = 0; i < 1000000; i++) {
-			rect.getCollision(rect, Vector.ZERO, true, true);
+			rect.getCollision(rect2, Vector.ZERO, true, true);
+			rect = rect.MoveCenter(new Vector(0, 0.000001f));
 		}
 		Date end = new Date();
 		long endTime = end.getTime();
@@ -29,11 +36,17 @@ public class SpeedTest {
 
 	@Test
 	public void testSpeedOldRectCollisions() {
-		Rectangle rect = new Rectangle(new Vector(10, 10), 5, 5);
+		Shape rect = new Rectangle(new Vector(10, 100), 20, 20);
+		// Rectangle rect2 = new Rectangle(new Vector(10, 90), 20, 20);
+		Shape rect2 = new Circle(new Vector(10, 90), 10);
 		Date start = new Date();
 		long startTime = start.getTime();
 		for (int i = 0; i < 1000000; i++) {
-			rect.getCollision(rect, true, true);
+			if (rect.doesCollide(rect2)) {
+				rect.getCollision(rect2, false, true);
+			}
+			rect = rect.modifyCenter(rect.getCenter().add(
+					new Vector(0, 0.000001f)));
 		}
 		Date end = new Date();
 		long endTime = end.getTime();

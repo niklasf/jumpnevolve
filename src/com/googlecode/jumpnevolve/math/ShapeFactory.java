@@ -6,19 +6,19 @@ package com.googlecode.jumpnevolve.math;
  */
 public class ShapeFactory {
 
-	public static NextPolygon createPolygon(Vector[] points) {
-		NextPolygon poly = new NextPolygon(points);
+	public static NextPolygon createPolygon(Vector center, Vector[] points) {
+		NextPolygon poly = new NextPolygon(center, points);
 		poly.finish();
 		return poly;
 	}
 
 	public static NextPolygon createRectangle(Vector center, float width,
 			float height) {
-		NextPolygon poly = new NextPolygon();
-		poly.addPoint(center.sub(width / 2, height / 2));
-		poly.addPoint(center.sub(-width / 2, height / 2));
-		poly.addPoint(center.sub(-width / 2, -height / 2));
-		poly.addPoint(center.sub(width / 2, -height / 2));
+		NextPolygon poly = new NextPolygon(center);
+		poly.addPoint(new Vector(-width / 2, -height / 2));
+		poly.addPoint(new Vector(width / 2, -height / 2));
+		poly.addPoint(new Vector(width / 2, height / 2));
+		poly.addPoint(new Vector(-width / 2, height / 2));
 		poly.finish();
 		return poly;
 	}

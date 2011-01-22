@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.math;
 
+import java.util.ArrayList;
+
 /**
  * Neue allgemeine Klasse für geometrische Figuren
  * 
@@ -10,5 +12,13 @@ interface ConvexShape extends NextShape {
 
 	public AxisProjection projectOnAxis(Vector axis);
 
-	public Vector[] getAxises(ConvexShape other);
+	/**
+	 * Ein Array mit den Achsen, die bei der Kollision überprüft werden müssen
+	 * 
+	 * WICHTIG: Die Achsen müssen normiert sein
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public ArrayList<Vector> getAxises(ConvexShape other);
 }

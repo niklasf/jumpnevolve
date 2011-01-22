@@ -8,46 +8,55 @@ import java.util.ArrayList;
  */
 class NextPolygon implements ConvexShape {
 
-	private ArrayList<Vector> points = new ArrayList<Vector>();
-	private ArrayList<Vector> lines = new ArrayList<Vector>();
+	private ArrayList<Vector> relativePoints = new ArrayList<Vector>();
+	private ArrayList<Vector> axises = new ArrayList<Vector>();
 	private boolean finished = false;
-	private Vector center = null;
+	private final Vector center;
+	private float left = Float.POSITIVE_INFINITY,
+			right = Float.NEGATIVE_INFINITY, up = Float.POSITIVE_INFINITY,
+			down = Float.NEGATIVE_INFINITY;
 
 	/**
 	 * 
 	 */
-	public NextPolygon(ArrayList<Vector> points) {
-		this((Vector[]) points.toArray());
+	public NextPolygon(Vector center, ArrayList<Vector> relativePoints) {
+		this(center, (Vector[]) relativePoints.toArray());
 	}
 
-	public NextPolygon(Vector[] points) {
-		for (Vector p : points) {
+	public NextPolygon(Vector center, Vector[] relativePoints) {
+		for (Vector p : relativePoints) {
 			this.addPoint(p);
 		}
+		this.center = center;
 	}
 
-	private NextPolygon(ArrayList<Vector> points, ArrayList<Vector> lines,
-			Vector center) {
-		this.points = points;
-		this.lines = lines;
+	private NextPolygon(Vector center, ArrayList<Vector> relativePoints,
+			ArrayList<Vector> lines, float left, float right, float up,
+			float down) {
+		this.relativePoints = relativePoints;
+		this.axises = lines;
 		this.center = center;
 		this.finished = true;
 	}
 
-	public NextPolygon() {
+	public NextPolygon(Vector center) {
+		this.center = center;
 	}
 
 	public void addPoint(Vector point) {
 		if (!finished) {
-			this.points.add(point);
+			this.relativePoints.add(point);
+			this.left = Math.min(point.x, this.left);
+			this.right = Math.max(point.x, this.right);
+			this.up = Math.min(point.x, this.up);
+			this.down = Math.max(point.x, this.down);
 		}
 	}
 
 	public void finish() {
-		if (this.points.size() >= 3) {
+		if (this.relativePoints.size() >= 3) {
 			this.finished = true;
-			this.buildLines();
-			this.createCenter();
+			this.buildAxises();
 		}
 	}
 
@@ -56,47 +65,44 @@ class NextPolygon implements ConvexShape {
 	}
 
 	public int getNumberOfPoints() {
-		return this.points.size();
+		return this.relativePoints.size();
+	}
+
+	public ArrayList<Vector> getRelativePoints() {
+		return this.relativePoints;
 	}
 
 	public ArrayList<Vector> getPoints() {
-		return this.points;
+		ArrayList<Vector> re = new ArrayList<Vector>();
+		for (Vector vector : this.relativePoints) {
+			re.add(vector.add(this.center));
+		}
+		return re;
 	}
 
-	private void buildLines() {
+	private void buildAxises() {
 		Vector p1;
 		Vector p2;
-		int size = points.size();
+		int size = relativePoints.size();
 		for (int i = 0; i < size - 1; i++) {
-			p1 = this.points.get(i);
-			p2 = this.points.get(i + 1);
-			lines.add(p2.sub(p1));
+			p1 = this.relativePoints.get(i);
+			p2 = this.relativePoints.get(i + 1);
+			axises.add(p2.sub(p1).rotateQuarterClockwise().getDirection());
 		}
-		this.lines.add(this.points.get(size - 1).sub(this.points.get(0)));
-	}
-
-	private void createCenter() {
-		Vector c = Vector.ZERO;
-		for (Vector point : this.points) {
-			c.add(point);
-		}
-		this.center = c.div(this.points.size());
+		this.axises.add(this.relativePoints.get(size - 1).sub(
+				this.relativePoints.get(0)).rotateQuarterClockwise()
+				.getDirection());
 	}
 
 	@Override
 	public ConvexShape MoveCenter(Vector diff) {
-		ArrayList<Vector> nextPoints = new ArrayList<Vector>();
-		for (Vector vector : this.points) {
-			nextPoints.add(vector.add(diff));
-		}
-		return new NextPolygon(nextPoints, this.lines, this.center.add(diff));
+		return new NextPolygon(this.center.add(diff), this.relativePoints,
+				this.axises, this.left + diff.x, this.right + diff.x, this.up
+						+ diff.y, this.down + diff.y);
 	}
 
 	@Override
 	public Vector getCenter() {
-		if (this.center == null) {
-			this.createCenter();
-		}
 		return this.center;
 	}
 
@@ -107,10 +113,10 @@ class NextPolygon implements ConvexShape {
 		if (this.isFinished() && other.isFinished()) {
 			if (other instanceof ConvexShape) {
 				ConvexShape otherConvex = (ConvexShape) other;
-				Vector[] thisAxises = this.getAxises(otherConvex);
-				Vector[] otherAxises = otherConvex.getAxises(this);
-				int thisLineCount = thisAxises.length;
-				int otherLineCount = otherAxises.length;
+				ArrayList<Vector> thisAxises = this.getAxises(otherConvex);
+				ArrayList<Vector> otherAxises = otherConvex.getAxises(this);
+				int thisLineCount = thisAxises.size();
+				int otherLineCount = otherAxises.size();
 				float minOverlapDistanceIs = Float.POSITIVE_INFINITY;
 				float minOverlapDistanceWill = Float.POSITIVE_INFINITY;
 				Vector translationAxisIs = Vector.ZERO;
@@ -118,9 +124,9 @@ class NextPolygon implements ConvexShape {
 				Vector curAxis;
 				for (int i = 0; i < thisLineCount + otherLineCount; i++) {
 					if (i < thisLineCount) {
-						curAxis = thisAxises[i];
+						curAxis = thisAxises.get(i);
 					} else {
-						curAxis = otherAxises[i - thisLineCount];
+						curAxis = otherAxises.get(i - thisLineCount);
 					}
 					AxisProjection thisProjection = this.projectOnAxis(curAxis);
 					AxisProjection otherProjection = otherConvex
@@ -230,11 +236,11 @@ class NextPolygon implements ConvexShape {
 
 	@Override
 	public AxisProjection projectOnAxis(Vector axis) {
-		float dotProduct = axis.mul(this.points.get(0));
+		float dotProduct = axis.mul(this.relativePoints.get(0));
 		float min = dotProduct;
 		float max = dotProduct;
-		for (int i = 1; i < this.points.size(); i++) {
-			dotProduct = this.points.get(i).mul(axis);
+		for (int i = 1; i < this.relativePoints.size(); i++) {
+			dotProduct = this.relativePoints.get(i).mul(axis);
 			if (dotProduct < min) {
 				min = dotProduct;
 			} else {
@@ -243,15 +249,32 @@ class NextPolygon implements ConvexShape {
 				}
 			}
 		}
-		return new AxisProjection(min, max);
+		float centerProduct = axis.mul(this.center);
+		return new AxisProjection(min + centerProduct, max + centerProduct);
 	}
 
 	@Override
-	public Vector[] getAxises(ConvexShape other) {
-		Vector[] axises = new Vector[this.lines.size()];
-		for (int i = 0; i < this.lines.size(); i++) {
-			axises[i] = this.lines.get(i).rotateQuarterClockwise();
-		}
-		return axises;
+	public ArrayList<Vector> getAxises(ConvexShape other) {
+		return this.axises;
+	}
+
+	@Override
+	public float getLeftEnd() {
+		return this.left;
+	}
+
+	@Override
+	public float getLowerEnd() {
+		return this.down;
+	}
+
+	@Override
+	public float getRightEnd() {
+		return this.right;
+	}
+
+	@Override
+	public float getUpperEnd() {
+		return this.up;
 	}
 }

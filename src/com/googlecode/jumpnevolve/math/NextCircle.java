@@ -38,12 +38,19 @@ class NextCircle implements ConvexShape {
 			float radsum = this.radius + ((NextCircle) other).radius;
 			if (dist > radsum) {
 				colRe.setNotIntersecting();
-				return colRe;
 			} else {
-				colRe.setIsOverlap(this.center.sub(other.getCenter()).mul(
-						radsum - dist));
-				return colRe;
+				colRe.setIsOverlap(this.center.sub(other.getCenter())
+						.getDirection().mul(radsum - dist));
 			}
+			Vector nextCenter = this.center.add(deltaVelocity);
+			dist = nextCenter.getDistance(other.getCenter());
+			if (dist > radsum) {
+				colRe.setWillNotIntersect();
+			} else {
+				colRe.setWillOverlap(nextCenter.sub(other.getCenter())
+						.getDirection().mul(radsum - dist));
+			}
+			return colRe;
 		} else if (other instanceof NextPolygon) {
 			return other.getCollision(this, deltaVelocity.neg(), otherMoveable,
 					thisMoveable).invert();
@@ -64,23 +71,46 @@ class NextCircle implements ConvexShape {
 	}
 
 	@Override
-	public Vector[] getAxises(ConvexShape other) {
+	public ArrayList<Vector> getAxises(ConvexShape other) {
 		if (other instanceof NextPolygon) {
 			NextPolygon poly = (NextPolygon) other;
-			ArrayList<Vector> points = poly.getPoints();
-			Vector[] axises = new Vector[points.size()];
+			ArrayList<Vector> points = poly.getRelativePoints();
+			Vector diffedCenter = poly.getCenter().sub(this.center);
+			ArrayList<Vector> axises = new ArrayList<Vector>();
 			for (int i = 0; i < points.size(); i++) {
-				axises[i] = points.get(i).sub(this.center);
+				axises.add(points.get(i).sub(diffedCenter).getDirection());
 			}
 			return axises;
 		} else {
-			return new Vector[] { other.getCenter().sub(this.getCenter()) };
+			ArrayList<Vector> axises = new ArrayList<Vector>();
+			axises.add(other.getCenter().sub(this.center).getDirection());
+			return axises;
 		}
 	}
 
 	@Override
 	public boolean isFinished() {
 		return true;
+	}
+
+	@Override
+	public float getLeftEnd() {
+		return this.center.x - this.radius;
+	}
+
+	@Override
+	public float getLowerEnd() {
+		return this.center.y + this.radius;
+	}
+
+	@Override
+	public float getRightEnd() {
+		return this.center.x + this.radius;
+	}
+
+	@Override
+	public float getUpperEnd() {
+		return this.center.y - this.radius;
 	}
 
 }
