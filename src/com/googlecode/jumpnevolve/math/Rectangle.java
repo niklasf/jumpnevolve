@@ -20,7 +20,7 @@ package com.googlecode.jumpnevolve.math;
 /**
  * Diese Klasse speichert Rechtecke und ermöglicht Berechnungen damit.
  */
-public class Rectangle implements LineConsisting {
+public class Rectangle implements Shape {
 
 	private static final long serialVersionUID = -4556824470497571683L;
 
@@ -492,13 +492,6 @@ public class Rectangle implements LineConsisting {
 		} else {
 			return this.isPointInThis(line.p1);
 		}
-	}
-
-	@Override
-	public Polygon toPolygon() {
-		return new Polygon(new Vector[] { this.getHighLeftCorner(),
-				this.getHighRightCorner(), this.getLowRightCorner(),
-				this.getLowLeftCorner() });
 	}
 
 	@Override

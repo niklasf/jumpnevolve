@@ -27,7 +27,7 @@ public class SpeedTest {
 		long startTime = start.getTime();
 		for (int i = 0; i < 1000000; i++) {
 			rect.getCollision(rect2, Vector.ZERO, true, true);
-			rect = rect.MoveCenter(new Vector(0, 0.000001f));
+			rect = rect.moveCenter(new Vector(0, 0.000001f));
 		}
 		Date end = new Date();
 		long endTime = end.getTime();

@@ -12,6 +12,7 @@ import org.newdawn.slick.geom.Shape;
 class NextPolygon implements ConvexShape {
 
 	private ArrayList<Vector> relativePoints = new ArrayList<Vector>();
+	private ArrayList<Vector> points;
 	private ArrayList<Vector> axises = new ArrayList<Vector>();
 	private boolean finished = false;
 	private final Vector center;
@@ -68,10 +69,6 @@ class NextPolygon implements ConvexShape {
 		}
 	}
 
-	public boolean isFinished() {
-		return this.finished;
-	}
-
 	public int getNumberOfPoints() {
 		return this.relativePoints.size();
 	}
@@ -81,21 +78,20 @@ class NextPolygon implements ConvexShape {
 	}
 
 	public ArrayList<Vector> getPoints() {
-		ArrayList<Vector> re = new ArrayList<Vector>();
-		for (Vector vector : this.relativePoints) {
-			re.add(vector.add(this.center));
+		if (this.points == null) {
+			this.buildPoints();
 		}
-		return re;
+		return this.points;
 	}
 
 	public ArrayList<PointLine> getRelativeLines() {
 		if (this.relativeLines == null) {
-			this.createRelativeLines();
+			this.buildRelativeLines();
 		}
 		return relativeLines;
 	}
 
-	private void createRelativeLines() {
+	private void buildRelativeLines() {
 		this.relativeLines = new ArrayList<PointLine>();
 		for (int i = 1; i < this.relativePoints.size(); i++) {
 			this.relativeLines
@@ -105,6 +101,13 @@ class NextPolygon implements ConvexShape {
 		this.relativeLines.add(new PointLine(this.relativePoints
 				.get(this.relativePoints.size() - 1), this.relativePoints
 				.get(0)));
+	}
+
+	private void buildPoints() {
+		this.points = new ArrayList<Vector>();
+		for (Vector vector : this.relativePoints) {
+			this.points.add(vector.add(this.center));
+		}
 	}
 
 	private void buildAxises() {
@@ -119,18 +122,6 @@ class NextPolygon implements ConvexShape {
 		this.axises.add(this.relativePoints.get(size - 1).sub(
 				this.relativePoints.get(0)).rotateQuarterClockwise()
 				.getDirection());
-	}
-
-	@Override
-	public ConvexShape MoveCenter(Vector diff) {
-		return new NextPolygon(this.center.add(diff), this.relativePoints,
-				this.axises, this.left + diff.x, this.right + diff.x, this.up
-						+ diff.y, this.down + diff.y);
-	}
-
-	@Override
-	public Vector getCenter() {
-		return this.center;
 	}
 
 	@Override
@@ -262,7 +253,19 @@ class NextPolygon implements ConvexShape {
 
 	@Override
 	public ConvexShape modifyCenter(Vector newCenter) {
-		return this.MoveCenter(newCenter.sub(this.center));
+		return this.moveCenter(newCenter.sub(this.center));
+	}
+
+	@Override
+	public ConvexShape moveCenter(Vector diff) {
+		return new NextPolygon(this.center.add(diff), this.relativePoints,
+				this.axises, this.left + diff.x, this.right + diff.x, this.up
+						+ diff.y, this.down + diff.y);
+	}
+
+	@Override
+	public Vector getCenter() {
+		return this.center;
 	}
 
 	@Override
@@ -282,6 +285,10 @@ class NextPolygon implements ConvexShape {
 		}
 		float centerProduct = axis.mul(this.center);
 		return new AxisProjection(min + centerProduct, max + centerProduct);
+	}
+
+	public boolean isFinished() {
+		return this.finished;
 	}
 
 	@Override
@@ -312,11 +319,10 @@ class NextPolygon implements ConvexShape {
 	@Override
 	public Shape toSlickShape() {
 		Polygon poly = new Polygon();
-		for (Vector relPoint : this.relativePoints) {
+		for (Vector relPoint : this.getPoints()) {
 			poly.addPoint(relPoint.x, relPoint.y);
 		}
 		poly.setClosed(true);
-		poly.setLocation(this.center.x, this.center.y);
 		return poly;
 	}
 

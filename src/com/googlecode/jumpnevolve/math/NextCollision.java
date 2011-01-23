@@ -180,7 +180,6 @@ public class NextCollision {
 				}
 			}
 		}
-		System.out.println("toCorrect: " + toCorrect + " --> " + vec);
 		return vec;
 	}
 

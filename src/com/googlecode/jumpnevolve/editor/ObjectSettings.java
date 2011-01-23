@@ -276,11 +276,12 @@ public class ObjectSettings extends JPanel {
 	}
 
 	private boolean isPullUpAble() {
-		return this.className.equals(Ground.class.toString())
-				|| this.className.equals(Elevator.class.toString())
-				|| this.className.equals(Door.class.toString())
-				|| this.className.equals(SlidingPlattform.class.toString())
-				|| this.className.equals(Fluid.class.toString());
+		return this.className.equals(GameObjects.GROUND.className)
+				|| this.className.equals(GameObjects.ELEVATOR.className)
+				|| this.className.equals(GameObjects.DOOR.className)
+				|| this.className
+						.equals(GameObjects.SLIDING_PLATTFORM.className)
+				|| this.className.equals(GameObjects.FLUID.className);
 	}
 
 	private boolean isPointNearPosition(Vector point, Vector other,

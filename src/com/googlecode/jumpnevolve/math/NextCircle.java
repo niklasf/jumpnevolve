@@ -23,7 +23,7 @@ class NextCircle implements ConvexShape {
 	}
 
 	@Override
-	public ConvexShape MoveCenter(Vector diff) {
+	public ConvexShape moveCenter(Vector diff) {
 		return this.modifyCenter(this.center.add(diff));
 	}
 

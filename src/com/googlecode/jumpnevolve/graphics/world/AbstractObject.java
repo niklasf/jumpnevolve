@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -233,21 +232,12 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public void endRound() {
 		if (this.mass != 0.0f) { // Beweglich
-			if (this instanceof PlayerFigure) {
-				System.out.println("Force: " + this.force);
-				System.out.println("Velocity: " + this.velocity);
-				System.out.println("Shape: " + this.shape);
-				this.collision.print();
-				this.collision.print2();
-			}
+
+			// Korrektur von Kraft, Geschwindigkeit und Shape
 			this.shape = this.collision.correctPosition(this.shape);
 			this.force = this.collision.correctForce(this.force);
 			this.velocity = this.collision.correctVelocity(this.velocity);
-			if (this instanceof PlayerFigure) {
-				System.out.println("Force: " + this.force);
-				System.out.println("Velocity: " + this.velocity);
-				System.out.println("Shape: " + this.shape);
-			}
+
 			// Neue Geschwindigkeit bestimmen
 			Vector acceleration = this.force.div(this.mass);
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
