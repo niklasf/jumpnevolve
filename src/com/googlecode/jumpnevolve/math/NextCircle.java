@@ -131,4 +131,8 @@ class NextCircle implements ConvexShape {
 		return this.center.getDistance(point) <= this.radius;
 	}
 
+	@Override
+	public String toString() {
+		return "Circle --> Center: " + this.center + " Radius: " + this.radius;
+	}
 }

@@ -5,7 +5,6 @@ package com.googlecode.jumpnevolve.game.player;
 
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.math.NextShape;
-import com.googlecode.jumpnevolve.math.Shape;
 
 /**
  * @author Erik Wagner

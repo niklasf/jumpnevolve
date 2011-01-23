@@ -17,7 +17,6 @@ import com.googlecode.jumpnevolve.graphics.world.Jumping;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;

@@ -2,7 +2,6 @@ package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * @author Erik Wagner

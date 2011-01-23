@@ -46,7 +46,7 @@ public class CollisionResult {
 	 * Setzt den Status der Kollision auf <code>false</code>
 	 */
 	public void setWillNotIntersect() {
-		this.isIntersecting = false;
+		this.willIntersect = false;
 	}
 
 	/**

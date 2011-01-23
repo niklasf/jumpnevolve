@@ -63,11 +63,11 @@ public class NextCollision {
 
 	private Vector toRestoring(Vector overlap, boolean otherMoveable) {
 		if (otherMoveable == this.thisMoveable) {
-			return overlap.div(-2.0f);
+			return overlap.div(2.0f);
 		} else if (otherMoveable) {
 			return Vector.ZERO;
 		} else {
-			return overlap.neg();
+			return overlap;
 		}
 	}
 
@@ -174,11 +174,13 @@ public class NextCollision {
 				float ang = toCorrect.ang(blocked);
 				if (ang > Math.PI / 2.0) {
 					blocked = blocked.rotateQuarterClockwise();
+					ang = toCorrect.ang(blocked);
 					vec = Vector.min(blocked.getDirection().mul(
 							toCorrect.abs() * (float) Math.cos(ang)), vec);
 				}
 			}
 		}
+		System.out.println("toCorrect: " + toCorrect + " --> " + vec);
 		return vec;
 	}
 
@@ -203,6 +205,7 @@ public class NextCollision {
 			float ang = toCorrect.ang(blocked);
 			if (ang > Math.PI / 2.0) {
 				blocked = blocked.rotateQuarterClockwise();
+				ang = toCorrect.ang(blocked);
 				vec = Vector.min(blocked.getDirection().mul(
 						toCorrect.abs() * (float) Math.cos(ang)), vec);
 			}
@@ -235,6 +238,20 @@ public class NextCollision {
 		System.out.println("Results:");
 		for (CollisionResult result : this.results) {
 			result.print();
+		}
+	}
+
+	/**
+	 * Gibt diese Kollision in der Konsole aus
+	 */
+	public void print2() {
+		System.out.println("IsIntersects:");
+		for (Vector is : this.isIntersects) {
+			System.out.println("" + is);
+		}
+		System.out.println("WillIntersects:");
+		for (Vector will : this.willIntersects) {
+			System.out.println("" + will);
 		}
 	}
 }

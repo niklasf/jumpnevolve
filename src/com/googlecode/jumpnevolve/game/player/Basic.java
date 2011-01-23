@@ -4,9 +4,7 @@ import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.NextShape;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 

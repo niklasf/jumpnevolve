@@ -165,9 +165,13 @@ class NextPolygon implements ConvexShape {
 					float distWill = getIntervalDistance(thisProjection.minimum
 							+ velAdd, thisProjection.maximum + velAdd,
 							otherProjection.minimum, otherProjection.maximum);
-					if (distIs > 0 && distWill > 0) {
+					if (distIs > 0) {
 						colRe.setNotIntersecting();
+					}
+					if (distWill > 0) {
 						colRe.setWillNotIntersect();
+					}
+					if (!(colRe.isIntersecting() && colRe.willIntersect())) {
 						return colRe;
 					} else {
 						distIs = -distIs;
@@ -340,5 +344,11 @@ class NextPolygon implements ConvexShape {
 			}
 		}
 		return n % 2 == 1;
+	}
+
+	@Override
+	public String toString() {
+		return "Polygon --> Center: " + this.center + " RelativePoints: "
+				+ this.relativePoints;
 	}
 }
