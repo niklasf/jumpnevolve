@@ -3,7 +3,7 @@ package com.googlecode.jumpnevolve.game;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * Die Vorlage für jede Art von Landschaft.
@@ -20,7 +20,7 @@ public abstract class GroundTemplate extends AbstractObject implements
 
 	private static final long serialVersionUID = 7287324851357837067L;
 
-	public GroundTemplate(World world, Shape shape) {
+	public GroundTemplate(World world, NextShape shape) {
 		super(world, shape, 0.0f);
 	}
 

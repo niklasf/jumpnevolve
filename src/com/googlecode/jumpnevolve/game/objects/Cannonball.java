@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Circle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -22,7 +22,8 @@ public class Cannonball extends Shot {
 	 * @param shotSpeed
 	 */
 	public Cannonball(World world, Vector position, Vector shotDirection) {
-		super(world, new Circle(position, 10.0f), 10.0f, shotDirection, 500.0f);
+		super(world, ShapeFactory.createCircle(position, 10), 10.0f,
+				shotDirection, 500.0f);
 	}
 
 	public void draw(Graphics g) {

@@ -1,7 +1,6 @@
 package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Erik Wagner
@@ -146,7 +145,7 @@ public class NextCollision {
 	 *            Das Shape, dessen Position korrigiert werden soll
 	 * @return Das korrigierte Shape
 	 */
-	public Shape correctPosition(Shape toCorrect) {
+	public NextShape correctPosition(NextShape toCorrect) {
 		Vector restore = Vector.ZERO;
 		if (isIntersecting) {
 			restore = this.getIsRestoring();

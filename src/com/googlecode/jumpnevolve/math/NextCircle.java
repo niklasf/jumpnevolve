@@ -2,6 +2,9 @@ package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
+
 /**
  * @author Erik Wagner
  * 
@@ -111,6 +114,21 @@ class NextCircle implements ConvexShape {
 	@Override
 	public float getUpperEnd() {
 		return this.center.y - this.radius;
+	}
+
+	@Override
+	public Shape toSlickShape() {
+		return new Circle(this.center.x, this.center.y, this.radius);
+	}
+
+	@Override
+	public NextShape scale(float zoom) {
+		return new NextCircle(this.center, this.radius * zoom);
+	}
+
+	@Override
+	public boolean isPointIn(Vector point) {
+		return this.center.getDistance(point) <= this.radius;
 	}
 
 }

@@ -21,12 +21,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import com.googlecode.jumpnevolve.math.Circle;
+import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Zeichnet Obhekte in einen OpenGL Grafikkontext.
+ * Zeichnet Objekte in einen OpenGL Grafikkontext.
  * 
  * @author Niklas Fiekas
  */
@@ -73,7 +74,19 @@ public class GraphicUtils {
 		}
 	}
 
-	public static void drawScaled(Graphics g, Shape shape, Vector zoom) {
+	/**
+	 * Zeichnet eine Figur.
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Figur
+	 */
+	public static void draw(Graphics g, NextShape shape) {
+		g.draw(shape.toSlickShape());
+	}
+
+	public static void drawScaled(Graphics g, Shape shape, float zoom) {
 		if (shape instanceof Circle) {
 			drawScaled(g, (Circle) shape, zoom);
 		} else if (shape instanceof Rectangle) {
@@ -81,14 +94,19 @@ public class GraphicUtils {
 		}
 	}
 
-	public static void drawScaled(Graphics g, Rectangle rect, Vector zoom) {
+	public static void drawScaled(Graphics g, Rectangle rect, float zoom) {
 		Rectangle rect2 = new Rectangle(rect.getCenter(), new Vector(rect.width
-				/ 2.0f * zoom.x, rect.height / 2.0f * zoom.y));
+				/ 2.0f * zoom, rect.height / 2.0f * zoom));
 		draw(g, rect2);
 	}
 
-	public static void drawScaled(Graphics g, Circle circlee, Vector zoom) {
-		draw(g, new Circle(circlee.getCenter(), circlee.radius * zoom.x));
+	public static void drawScaled(Graphics g, Circle circle, float zoom) {
+		draw(g, new Circle(circle.getCenter(), circle.radius * zoom));
+	}
+
+	public static void drawScaled(Graphics g, NextShape shape, float zoom) {
+		NextShape scaled = shape.scale(zoom);
+		draw(g, scaled);
 	}
 
 	/**
@@ -126,6 +144,14 @@ public class GraphicUtils {
 	}
 
 	/**
+	 * Zeichnet eine Textur
+	 */
+	public static void texture(Graphics g, NextShape shape, Image image,
+			boolean fit) {
+		g.texture(shape.toSlickShape(), image, fit);
+	}
+
+	/**
 	 * Zeichnet einen String
 	 * 
 	 * @param position
@@ -148,6 +174,24 @@ public class GraphicUtils {
 	 *            Das Bild
 	 */
 	public static void drawImage(Graphics g, Shape shape, Image image) {
+		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(), shape
+				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
+				image.getHeight());
+	}
+
+	/**
+	 * Zeichnet ein Bild in ein Shape
+	 * 
+	 * ACHTUNG: Das Bild wird bei einem unpassenden Shape verzerrt (z.B.
+	 * quadratisches Bild in einem länglichen Rechteck) bzw. über die Grenzen
+	 * hinaus gezeichnet (z.B. rechteckiges Bild in einem Kreis)
+	 * 
+	 * @param shape
+	 *            Das Shape
+	 * @param image
+	 *            Das Bild
+	 */
+	public static void drawImage(Graphics g, NextShape shape, Image image) {
 		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(), shape
 				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
 				image.getHeight());

@@ -122,9 +122,12 @@ public class Levelloader {
 				// Zuweisen der zu aktivierenden Objekte
 				for (int i = 0; i < activatingObjects.size(); i++) {
 					for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
-						activatingObjects.get(i).addActivable(
-								activableObjects.get(argumtensForActivating
-										.get(i)[j]));
+						if (activableObjects
+								.get(argumtensForActivating.get(i)[j]) != null) {
+							activatingObjects.get(i).addActivable(
+									activableObjects.get(argumtensForActivating
+											.get(i)[j]));
+						}
 					}
 				}
 				// Einfügen der Objekte in das Level

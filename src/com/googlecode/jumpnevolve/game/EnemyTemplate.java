@@ -3,7 +3,7 @@ package com.googlecode.jumpnevolve.game;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Fighting;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * Die Vorlage für jede Art von Gegnern.
@@ -22,7 +22,7 @@ public abstract class EnemyTemplate extends AbstractObject implements Fighting {
 
 	private static final long serialVersionUID = 6877195164492992576L;
 
-	public EnemyTemplate(World world, Shape shape, float mass) {
+	public EnemyTemplate(World world, NextShape shape, float mass) {
 		super(world, shape, mass);
 	}
 

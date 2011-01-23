@@ -12,8 +12,8 @@ import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Collision;
-import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.NextCollision;
+import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -32,7 +32,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	 * @param blockable
 	 * @param pushable
 	 */
-	public Shot(World world, Shape shape, float livingTime,
+	public Shot(World world, NextShape shape, float livingTime,
 			Vector shotDirection, float shotSpeed) {
 		super(world, shape, 0.1f, shotDirection.getDirection().mul(shotSpeed));
 		this.livingTime = new Timer(livingTime);
@@ -53,7 +53,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	}
 
 	@Override
-	public boolean canDamage(Collision col) {
+	public boolean canDamage(NextCollision col) {
 		// Kann immmer beschädigen
 		return true;
 	}

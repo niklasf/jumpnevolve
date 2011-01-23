@@ -6,12 +6,11 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -42,7 +41,7 @@ public class Door extends ObjectTemplate implements Activable, Blockable {
 	private boolean openingState = false;
 
 	public Door(World world, Vector position, Vector dimension) {
-		super(world, new Rectangle(position, dimension), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension), 0.0f);
 	}
 
 	@Override

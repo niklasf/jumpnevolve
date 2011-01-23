@@ -17,7 +17,6 @@ import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -38,6 +37,7 @@ public class Player implements Pollable, Interfaceable {
 	private HashMap<InterfaceFunction, Playable> figureList = new HashMap<InterfaceFunction, Playable>();
 	private final Level parent;
 	private final MainGUI gui;
+	private Vector save;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
 			String startFigure, String[] savePositions, boolean cameraOnPlayer) {
@@ -59,19 +59,22 @@ public class Player implements Pollable, Interfaceable {
 
 		this.figure = new PlayerFigure(parent, startPosition, this);
 		setFigures(avaiableFigures, startFigure);
+		this.setActivSavepoint(this.figure.getPosition());
 		this.parent.add(this.figure);
 		if (cameraOnPlayer) {
 			this.parent.setCamera(new LimitedObjectFocusingCamera(this.figure));
 		}
-		// TODO: GUI initialisieren (addFunction())
-		// TODO: savePositions verarbeiten
+		for (String string : savePositions) {
+			this.parent.add(new SavePoint(this.parent, this, Vector
+					.parseVector(string)));
+		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
 		gui.poll(input, secounds);
 		if (this.figure.getShape().getUpperEnd() > this.parent.height) {
-			this.figure.setPosition(this.figure.getLastSave());
+			this.figure.setPosition(this.getLastSave());
 			this.figure.stopMoving();
 		}
 		if (input.isKeyDown(Input.KEY_UP)) {
@@ -179,7 +182,14 @@ public class Player implements Pollable, Interfaceable {
 
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
-		// TODO Auto-generated method stub
+		// Vorerst nichts tun
+	}
 
+	public Vector getLastSave() {
+		return this.save;
+	}
+
+	void setActivSavepoint(Vector position) {
+		this.save = position;
 	}
 }

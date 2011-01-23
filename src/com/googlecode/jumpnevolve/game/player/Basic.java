@@ -5,7 +5,9 @@ import org.newdawn.slick.Graphics;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.math.Circle;
+import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 public class Basic implements Playable {
@@ -29,9 +31,9 @@ public class Basic implements Playable {
 	}
 
 	@Override
-	public Shape getShape() {
+	public NextShape getShape() {
 		// TODO Auto-generated method stub
-		return new Circle(Vector.ZERO, 20.0f);
+		return ShapeFactory.createRectangle(Vector.ZERO, 20, 20);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 			"RollingBall,JumpingCross"), startFigure = new JTextField(
 			"RollingBall"), playerPositionX = new JTextField("100"),
 			playerPositionY = new JTextField("0"),
-			savePositions = new JTextField("0,100");
+			savePositions = new JTextField("0|0,100|0");
 	private float lastClickX, lastClickY;
 	private String waitFor;
 	private SwingEngine engine = SwingEngine.getInstance();

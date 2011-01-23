@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.world;
 
-import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.NextCollision;
 
 /**
  * 
@@ -44,5 +44,5 @@ public interface Damageable extends Accompanying {
 	 * @return <code>true</code>, wenn dieses Objekt dem anderen Objekt Schaden
 	 *         zufügen kann
 	 */
-	public boolean canDamage(Collision col);
+	public boolean canDamage(NextCollision col);
 }

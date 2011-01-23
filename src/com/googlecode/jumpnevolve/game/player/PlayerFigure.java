@@ -18,8 +18,9 @@ import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -30,8 +31,6 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 		Activating, GravityActing, Moving, Jumping, Blockable {
 
 	private final Player parent;
-
-	private Vector save;
 
 	private Vector curDirection = Vector.ZERO;
 
@@ -44,24 +43,14 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	 * @param parent
 	 */
 	public PlayerFigure(World world, Vector position, Player parent) {
-		super(world, new Circle(position, 10.0f), 5.0f);
+		super(world, ShapeFactory.createCircle(position, 10), 5.0f);
 		this.parent = parent;
-		this.save = this.getPosition();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Vector getLastSave() {
-		return this.save;
-	}
-
-	public void setNewSave(Vector save) {
-		this.save = save;
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.isAlive() == false) {
-			this.setPosition(this.getLastSave());
+			this.setPosition(this.parent.getLastSave());
 			// Zurücksetzen zum letzten Speicherort
 
 			this.setAlive(true); // Wiederbeleben
@@ -137,7 +126,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	}
 
 	@Override
-	public boolean canDamage(Collision col) {
+	public boolean canDamage(NextCollision col) {
 		return col.isBlocked(Shape.DOWN) && col.isBlocked(Shape.RIGHT) == false
 				&& col.isBlocked(Shape.LEFT) == false;
 	}

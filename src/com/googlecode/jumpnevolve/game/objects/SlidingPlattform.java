@@ -10,7 +10,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -44,7 +44,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 	 */
 	public SlidingPlattform(World world, Vector position, Vector dimension,
 			float end1, float end2) {
-		super(world, new Rectangle(position, dimension), 5.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension), 5.0f);
 		if (end1 > end2) {
 			this.leftEnd = end2;
 			this.rightEnd = end1;

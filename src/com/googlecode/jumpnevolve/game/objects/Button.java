@@ -9,7 +9,7 @@ import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -40,7 +40,7 @@ public class Button extends ActivatingObject implements Activable {
 	private final float activatingTime;
 
 	public Button(World world, Vector position, float activatingTime) {
-		super(world, new Rectangle(position, new Vector(30, 30)), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, 60, 60), 0.0f);
 		this.remainingTime.setTime(activatingTime);
 		this.activatingTime = activatingTime;
 	}

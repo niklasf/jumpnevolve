@@ -2,6 +2,9 @@ package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
+
 /**
  * @author Erik Wagner
  * 
@@ -15,6 +18,7 @@ class NextPolygon implements ConvexShape {
 	private float left = Float.POSITIVE_INFINITY,
 			right = Float.NEGATIVE_INFINITY, up = Float.POSITIVE_INFINITY,
 			down = Float.NEGATIVE_INFINITY;
+	private ArrayList<PointLine> relativeLines;
 
 	/**
 	 * 
@@ -25,7 +29,7 @@ class NextPolygon implements ConvexShape {
 
 	public NextPolygon(Vector center, Vector[] relativePoints) {
 		for (Vector p : relativePoints) {
-			this.addPoint(p);
+			this.addRelativePoint(p);
 		}
 		this.center = center;
 	}
@@ -43,7 +47,7 @@ class NextPolygon implements ConvexShape {
 		this.center = center;
 	}
 
-	public void addPoint(Vector point) {
+	public void addRelativePoint(Vector point) {
 		if (!finished) {
 			this.relativePoints.add(point);
 			this.left = Math.min(point.x, this.left);
@@ -57,6 +61,10 @@ class NextPolygon implements ConvexShape {
 		if (this.relativePoints.size() >= 3) {
 			this.finished = true;
 			this.buildAxises();
+			this.left += this.center.x;
+			this.right += this.center.x;
+			this.up += this.center.y;
+			this.down += this.center.y;
 		}
 	}
 
@@ -78,6 +86,25 @@ class NextPolygon implements ConvexShape {
 			re.add(vector.add(this.center));
 		}
 		return re;
+	}
+
+	public ArrayList<PointLine> getRelativeLines() {
+		if (this.relativeLines == null) {
+			this.createRelativeLines();
+		}
+		return relativeLines;
+	}
+
+	private void createRelativeLines() {
+		this.relativeLines = new ArrayList<PointLine>();
+		for (int i = 1; i < this.relativePoints.size(); i++) {
+			this.relativeLines
+					.add(new PointLine(this.relativePoints.get(i - 1),
+							this.relativePoints.get(i)));
+		}
+		this.relativeLines.add(new PointLine(this.relativePoints
+				.get(this.relativePoints.size() - 1), this.relativePoints
+				.get(0)));
 	}
 
 	private void buildAxises() {
@@ -276,5 +303,42 @@ class NextPolygon implements ConvexShape {
 	@Override
 	public float getUpperEnd() {
 		return this.up;
+	}
+
+	@Override
+	public Shape toSlickShape() {
+		Polygon poly = new Polygon();
+		for (Vector relPoint : this.relativePoints) {
+			poly.addPoint(relPoint.x, relPoint.y);
+		}
+		poly.setClosed(true);
+		poly.setLocation(this.center.x, this.center.y);
+		return poly;
+	}
+
+	@Override
+	public NextShape scale(float zoom) {
+		ArrayList<Vector> newPoints = new ArrayList<Vector>();
+		for (Vector vector : this.relativePoints) {
+			newPoints.add(vector.mul(zoom));
+		}
+		NextPolygon poly = new NextPolygon(this.center, newPoints);
+		poly.finish();
+		return poly;
+	}
+
+	@Override
+	public boolean isPointIn(Vector p) {
+		// Angewendet wird die allgemeine Strahlen-Methode
+		// (siehe http://rw7.de/ralf/inffaq/polygon.html#strahl)
+		p = p.sub(this.center);
+		Ray testRay = new Ray(p, Vector.RIGHT);
+		int n = 0;
+		for (PointLine line : this.getRelativeLines()) {
+			if (testRay.crosses(line)) {
+				n++;
+			}
+		}
+		return n % 2 == 1;
 	}
 }

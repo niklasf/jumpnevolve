@@ -17,8 +17,8 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
@@ -194,7 +194,7 @@ public class EditorLevel extends Level implements Interfaceable {
 				}
 				if (this.selected == null) {
 					for (ObjectSettings obj : abbild) {
-						if (obj.getObject().getShape().isPointInThis(
+						if (obj.getObject().getShape().isPointIn(
 								this.parent.translateMouseClick(input
 										.getMouseX(), input.getMouseY()))) {
 							if (this.selected == null) {
@@ -249,7 +249,7 @@ public class EditorLevel extends Level implements Interfaceable {
 			ObjectSettings select = null;
 			boolean onlyOne = false;
 			for (ObjectSettings obj : abbild) {
-				if (obj.getObject().getShape().isPointInThis(pos)) {
+				if (obj.getObject().getShape().isPointIn(pos)) {
 					if (select == null) {
 						select = obj;
 						onlyOne = true;

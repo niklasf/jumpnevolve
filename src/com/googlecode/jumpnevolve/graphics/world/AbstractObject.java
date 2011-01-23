@@ -24,11 +24,12 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.objects.Cannonball;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
-import com.googlecode.jumpnevolve.math.Collision;
+import com.googlecode.jumpnevolve.math.CollisionResult;
+import com.googlecode.jumpnevolve.math.NextCollision;
+import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -58,9 +59,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	public static final float GRAVITY = 98.1f;
 
-	private Shape shape;
+	private NextShape shape;
 
-	private Shape oldShape;
+	private NextShape oldShape;
 
 	private float mass = 0;
 
@@ -82,7 +83,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * Kollision, die die Kollisionen von diesem Objekt wiederspiegelt
 	 */
 
-	private Collision collision;
+	private NextCollision collision;
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -102,10 +103,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param blockable
 	 *            Ob das Objekt in seiner Bewegung blockierbar ist
 	 */
-	public AbstractObject(World world, Shape shape, float mass) {
+	public AbstractObject(World world, NextShape shape, float mass) {
 		this(world, shape);
 		this.mass = mass;
-		this.collision = new Collision(this.isMoveable());
 	}
 
 	/**
@@ -115,7 +115,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param velocity
 	 *            Die Start-Geschwindigkeit des Objekts
 	 */
-	public AbstractObject(World world, Shape shape, float mass, Vector velocity) {
+	public AbstractObject(World world, NextShape shape, float mass,
+			Vector velocity) {
 		this(world, shape, mass);
 		this.velocity = velocity;
 	}
@@ -128,10 +129,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param shape
 	 *            Die Form mit Angaben zur Position des Objekts.
 	 */
-	public AbstractObject(World world, Shape shape) {
+	public AbstractObject(World world, NextShape shape) {
 		this.world = world;
 		this.shape = this.oldShape = shape;
-		this.collision = new Collision(this.isMoveable());
+		this.collision = new NextCollision(this.isMoveable());
 	}
 
 	// Simulationsablauf
@@ -173,15 +174,12 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			if (this.isWayBlocked(Shape.DOWN)) {
 				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
 						* ((Jumping) this).getJumpingHeight() * GRAVITY));
-				// FIXME: Statt 4.0 muss hier laut Formel eigentlich 2.0 stehen,
-				// dann springt das Objekt aber nur ca. halb so hoch, wie es
-				// soll --> Wo liegt der Fehler?
 			}
 		}
 		if (this instanceof GravityActing) {
 			this.applyGravity();
 		}
-		this.collision = new Collision(this.isMoveable());
+		this.collision = new NextCollision(this.isMoveable());
 	}
 
 	@Override
@@ -208,9 +206,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					other.addDone(this);
 
 					// Kollisionen mit dem Nachbarn prüfen
-					if (this.shape.doesCollide(other.getShape())) {
-						onCrash(other);
-						other.onCrash(this);
+					CollisionResult colResult = this.shape.getCollision(other
+							.getShape(), this.velocity.sub(other.velocity).mul(
+							secounds), this.isMoveable(), other.isMoveable());
+					if (this instanceof Blockable && other instanceof Blockable) {
+						other.blockWay((Blockable) this, colResult.invert());
+						this.blockWay((Blockable) other, colResult);
+					}
+					if (colResult.isIntersecting()) {
+						onCrash(other, colResult);
+						other.onCrash(this, colResult.invert());
 					}
 				}
 			}
@@ -228,8 +233,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public void endRound() {
 		if (this.mass != 0.0f) { // Beweglich
 			this.shape = this.collision.correctPosition(this.shape);
-			this.force = this.collision.correctVector(this.force);
-			this.velocity = this.collision.correctVector(this.velocity);
+			this.force = this.collision.correctForce(this.force);
+			this.velocity = this.collision.correctVelocity(this.velocity);
 			// Neue Geschwindigkeit bestimmen
 			Vector acceleration = this.force.div(this.mass);
 			Vector deltaVelocity = acceleration.mul(this.oldStep);
@@ -256,7 +261,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					this.velocity.mul(this.oldStep));
 
 			// Neues Shape bestimmen
-			Shape newShape = this.shape.modifyCenter(newPos);
+			NextShape newShape = this.shape.modifyCenter(newPos);
 			this.oldShape = this.shape;
 			this.shape = newShape;
 
@@ -306,9 +311,11 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param blocker
 	 *            Das blockende Objekt
 	 */
-	public void blockWay(AbstractObject blocker) {
-		this.collision.addCollision(this.getShape().getCollision(
-				blocker.getShape(), blocker.isMoveable(), this.isMoveable()));
+	public void blockWay(Blockable blocker, CollisionResult colResult) {
+		if (blocker.wantBlock((Blockable) this)
+				&& ((Blockable) this).canBeBlockedBy(blocker)) {
+			this.collision.addCollisionResult(colResult);
+		}
 	}
 
 	// Attribute holen und setzen
@@ -457,7 +464,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return Die mathematische Figur, die das Objekt beschreibt
 	 */
-	public final Shape getShape() {
+	public final NextShape getShape() {
 		return this.shape;
 	}
 
@@ -465,7 +472,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @return Die mathematische Figur, die das Objekt (vor einer
 	 *         Berechnungsrunde) beschreibt
 	 */
-	public final Shape getOldShape() {
+	public final NextShape getOldShape() {
 		return this.oldShape;
 	}
 
@@ -493,7 +500,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return Die aktuelle Kollision
 	 */
-	public final Collision getCollision() {
+	public final NextCollision getCollision() {
 		return this.collision;
 	}
 
@@ -529,12 +536,12 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param newShape
 	 *            Das Shape, dessen Form übernommen wird
 	 */
-	public final void setShape(Shape newShape) {
+	public final void setShape(NextShape newShape) {
 		this.shape = newShape.modifyCenter(this.shape.getCenter());
 		System.out.println("Shape gesetzt" + this.shape);
 	}
 
-	public final void setCollision(Collision newCollision) {
+	public final void setCollision(NextCollision newCollision) {
 		this.collision = newCollision;
 	}
 
@@ -565,13 +572,13 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 * @param other
 	 *            Der Kollisionspartner
 	 */
-	public void onCrash(AbstractObject other) {
+	public void onCrash(AbstractObject other, CollisionResult colResult) {
 		// Treffen auf ein Living-Object, wenn dieses ein Damageable ist
 		if (this instanceof Damageable && other instanceof Living) {
 			// Schaden zufügen, wenn das Damageable dem Living Schaden zufügen
 			// will
-			Collision col = this.getShape().getCollision(other.getShape(),
-					true, true);
+			NextCollision col = new NextCollision(this.isMoveable());
+			col.addCollisionResult(colResult);
 			if (((Damageable) this).wantDamaging((Living) other)
 					&& ((Damageable) this).canDamage(col)) {
 				((Living) other).damage((Damageable) this);
@@ -596,20 +603,10 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				}
 			}
 		}
-
-		// if (this instanceof Soldier)
-		// System.out.println("Crash!" + other.getShape());
-		// Spezielle Methoden aufrufen
-		// ACHTUNG: Aktualisieren, wenn neue Objekte eingefügt werden
-		if (this instanceof Blockable && other instanceof Blockable
-				&& ((Blockable) this).wantBlock((Blockable) other)
-				&& ((Blockable) other).canBeBlockedBy((Blockable) this)) {
-			other.blockWay(this);
-		}
-		onGeneralCrash(other);
+		onGeneralCrash(other, colResult);
 	}
 
-	public void onGeneralCrash(AbstractObject other) {
+	public void onGeneralCrash(AbstractObject other, CollisionResult colResult) {
 	}
 
 	@Override

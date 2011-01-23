@@ -13,6 +13,8 @@ public interface NextShape {
 	public CollisionResult getCollision(NextShape other, Vector deltaVelocity,
 			boolean thisMoveable, boolean otherMoveable);
 
+	public boolean isPointIn(Vector point);
+
 	/**
 	 * @return Die X-Koordinate des linken Endes des Objekts
 	 */
@@ -32,4 +34,18 @@ public interface NextShape {
 	 * @return Die Y-Koordinate des unteren Endes des Objekts
 	 */
 	public float getLowerEnd();
+
+	/**
+	 * @return Eine Slick Version dieser Form.
+	 */
+	public org.newdawn.slick.geom.Shape toSlickShape();
+
+	/**
+	 * Skaliert dieses Objekt zu einem Zoom
+	 * 
+	 * @param zoom
+	 *            Der Zoom zum Skalieren
+	 * @return Das skalierte Shape
+	 */
+	public NextShape scale(float zoom);
 }

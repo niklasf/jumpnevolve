@@ -10,7 +10,8 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.CollisionResult;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -42,7 +43,7 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {
-		super(world, new Rectangle(position, dimension), 2.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension), 2.0f);
 		if (upEnd > downEnd) {
 			this.upEnd = downEnd;
 			this.downEnd = upEnd;
@@ -65,9 +66,11 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 		}
 	}
 
-	public void blockWay(AbstractObject blocker) {
-		if (blocker.isMoveable() == false) {
-			super.blockWay(blocker);
+	public void blockWay(Blockable blocker, CollisionResult colRe) {
+		if (blocker instanceof AbstractObject) {
+			if (((AbstractObject) blocker).isMoveable() == false) {
+				super.blockWay(blocker, colRe);
+			}
 		}
 	}
 

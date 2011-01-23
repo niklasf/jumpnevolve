@@ -6,7 +6,7 @@ import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.NextShape;
 
 public abstract class ActivatingObject extends ObjectTemplate implements
 		Activating {
@@ -16,7 +16,7 @@ public abstract class ActivatingObject extends ObjectTemplate implements
 	private ArrayList<Activable> objectsToActivate = new ArrayList<Activable>();
 	private ArrayList<Activable> objectsToDeactivate = new ArrayList<Activable>();
 
-	public ActivatingObject(World world, Shape shape, float mass) {
+	public ActivatingObject(World world, NextShape shape, float mass) {
 		super(world, shape, mass);
 	}
 

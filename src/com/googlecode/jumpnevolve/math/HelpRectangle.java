@@ -59,4 +59,13 @@ class HelpRectangle {
 		// Rechteck erzeugen
 		return new HelpRectangle(left, top, right - left, bottom - top);
 	}
+
+	public boolean isPointIn(Vector p) {
+		if (p.x < this.x || p.y < this.y || p.x > this.x + this.width
+				|| p.y > this.y + this.height) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

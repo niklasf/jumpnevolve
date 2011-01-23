@@ -21,8 +21,6 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
-
 /**
  * Klasse für Vektoren mit einfacher Gleitkommagenauigkeit.
  * 

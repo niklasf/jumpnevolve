@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -28,7 +28,8 @@ public class Cannon extends Shooter {
 	 */
 	public Cannon(World world, Vector position, boolean activated,
 			Vector shotDirection) {
-		super(world, new Rectangle(position, 25.0f, 50.0f), 1.0f, activated);
+		super(world, ShapeFactory.createRectangle(position, 50, 50), 1.0f,
+				activated);
 		this.shotDirection = shotDirection.getDirection();
 		this.startPosition = this.getPosition().add(
 				new Vector(Math.abs(12.5f) * Math.signum(this.shotDirection.x),

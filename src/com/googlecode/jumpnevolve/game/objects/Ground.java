@@ -6,9 +6,8 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.GroundTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -37,7 +36,7 @@ public class Ground extends GroundTemplate {
 	private static final long serialVersionUID = 7842858995624719370L;
 
 	public Ground(World world, Vector position, Vector dimension) {
-		super(world, new Rectangle(position, dimension));
+		super(world, ShapeFactory.createRectangle(position, dimension));
 	}
 
 	@Override

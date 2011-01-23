@@ -11,9 +11,9 @@ import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Living;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Collision;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -42,7 +42,8 @@ public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 	private static final long serialVersionUID = 5378834855856957746L;
 
 	public Soldier(World world, Vector position) {
-		super(world, new Rectangle(position, new Vector(20.0f, 20.0f)), 5.0f);
+		super(world, ShapeFactory.createRectangle(position, new Vector(20.0f,
+				20.0f)), 5.0f);
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 	}
 
 	@Override
-	public boolean canDamage(Collision col) {
+	public boolean canDamage(NextCollision col) {
 		return col.isBlocked(Shape.DOWN) || col.isBlocked(Shape.RIGHT)
 				|| col.isBlocked(Shape.LEFT);
 	}

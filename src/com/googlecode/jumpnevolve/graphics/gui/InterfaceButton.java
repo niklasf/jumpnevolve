@@ -68,9 +68,8 @@ public class InterfaceButton extends InterfaceObject {
 			g.setColor(Color.white);
 			break;
 		}
-		GraphicUtils.drawScaled(g, actShape, new Vector(this.parent
-				.getInterfaceable().getZoomX(), this.parent.getInterfaceable()
-				.getZoomY()));
+		GraphicUtils.drawScaled(g, actShape, this.parent.getInterfaceable()
+				.getZoomX());
 		g.setColor(c);
 		// TODO: Beenden
 	}

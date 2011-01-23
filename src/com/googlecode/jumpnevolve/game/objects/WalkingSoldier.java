@@ -2,7 +2,6 @@ package com.googlecode.jumpnevolve.game.objects;
 
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Shape;

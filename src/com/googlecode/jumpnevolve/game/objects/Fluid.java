@@ -12,7 +12,8 @@ import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.effects.WaterfallEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.CollisionResult;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -40,7 +41,7 @@ public class Fluid extends ObjectTemplate {
 	 */
 	public Fluid(World world, Vector position, Vector dimension,
 			float maximumVelocity) {
-		super(world, new Rectangle(position, dimension), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension), 0.0f);
 		this.maximumVelocity = maximumVelocity;
 		this.effect1 = new ParticleEffect(position, new FogEmitterFactory());
 		this.effect2 = new ParticleEffect(position,
@@ -57,13 +58,9 @@ public class Fluid extends ObjectTemplate {
 	}
 
 	@Override
-	public void onGeneralCrash(AbstractObject other) {
+	public void onGeneralCrash(AbstractObject other, CollisionResult colRe) {
 		if (other.isMoveable()) {
 			float velAbs = other.getVelocity().abs();
-			/*
-			 * System.out.println("Moveable-Crash: " + velAbs + " MaxVel: " +
-			 * maximumVelocity);
-			 */
 			if (velAbs > this.maximumVelocity) {
 				other.applyForce(other.getVelocity().getDirection().mul(
 						(velAbs - maximumVelocity) * 2.0f * other.getMass())
