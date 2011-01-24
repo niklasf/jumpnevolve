@@ -318,12 +318,12 @@ public class JarClassLoader extends ClassLoader {
 				}
 				// Example: sName is "Native.dll"
 				String sEntry = je.getName(); // "lib/Native.dll"
-				
+
 				// Blacklist
-				if(sEntry.endsWith(".png")) {
+				if (sEntry.endsWith(".png")) {
 					continue;
 				}
-				
+
 				if (sEntry.lastIndexOf(sName) == sEntry.length()
 						- sName.length()) {
 					return new JarEntryInfo(jarFile, je);
@@ -735,7 +735,8 @@ public class JarClassLoader extends ClassLoader {
 	 * https://lists.xcf.berkeley.edu/lists/advanced-java/2001-January
 	 * /015374.html
 	 * 
-	 * @throws ClassNotFoundException If the class could not be found.
+	 * @throws ClassNotFoundException
+	 *             If the class could not be found.
 	 */
 	public static void loadLookAndFeel() throws ClassNotFoundException {
 		LookAndFeel laf = UIManager.getLookAndFeel();
@@ -812,7 +813,8 @@ public class JarClassLoader extends ClassLoader {
 
 		@Override
 		public String toString() {
-			return "JAR: " + this.jarFile.getName() + " ENTRY: " + this.jarEntry;
+			return "JAR: " + this.jarFile.getName() + " ENTRY: "
+					+ this.jarEntry;
 		}
 	} // inner class JarEntryInfo
 

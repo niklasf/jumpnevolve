@@ -9,11 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
-import com.googlecode.jumpnevolve.game.objects.Door;
-import com.googlecode.jumpnevolve.game.objects.Elevator;
-import com.googlecode.jumpnevolve.game.objects.Fluid;
-import com.googlecode.jumpnevolve.game.objects.Ground;
-import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;

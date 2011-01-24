@@ -8,11 +8,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public class SwingEngine extends CanvasGameContainer implements AbstractEngine {
 
 	private static final long serialVersionUID = -4831927693282260285L;
-	
+
 	private static SwingEngine instance;
-	
+
 	public static SwingEngine getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			try {
 				instance = new SwingEngine(new StateBasedGame("") {
 					@Override
@@ -27,20 +27,20 @@ public class SwingEngine extends CanvasGameContainer implements AbstractEngine {
 		}
 		return instance;
 	}
-	
+
 	private StateBasedGame states;
-	
+
 	private SwingEngine(StateBasedGame states) throws SlickException {
 		super(states);
-		
+
 		this.states = states;
-		
+
 		this.getContainer().setAlwaysRender(true);
 	}
 
 	@Override
 	public void addState(AbstractState state) {
-		if(!this.containsState(state)) {
+		if (!this.containsState(state)) {
 			this.states.addState(state);
 		}
 	}
@@ -74,12 +74,11 @@ public class SwingEngine extends CanvasGameContainer implements AbstractEngine {
 			this.states.enterState(state.getID());
 		}
 	}
-	
+
 	@Override
 	public void setTargetFrameRate(int fps) {
 		super.getContainer().setTargetFrameRate(fps);
 	}
-
 
 	@Override
 	public void start() {

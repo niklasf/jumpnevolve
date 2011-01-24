@@ -25,11 +25,12 @@ import org.newdawn.slick.Graphics;
  * @author Niklas Fiekas
  */
 public interface Drawable {
-	
+
 	/**
 	 * Wird aufgerufen, wenn das Objekt gezeichnet werden soll.
 	 * 
-	 * @param g Grafikkontext
+	 * @param g
+	 *            Grafikkontext
 	 */
 	public void draw(Graphics g);
 }

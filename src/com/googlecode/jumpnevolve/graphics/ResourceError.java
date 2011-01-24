@@ -30,11 +30,11 @@ public class ResourceError extends Error {
 	public ResourceError() {
 		super();
 	}
-	
+
 	public ResourceError(String description) {
 		super(description);
 	}
-	
+
 	public ResourceError(Throwable cause) {
 		super(cause);
 	}

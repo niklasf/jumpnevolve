@@ -76,7 +76,7 @@ public class ResourceManager {
 			if (identifier.endsWith(".png")) { // Bild laden
 				this.images.put(identifier, new Image(identifier));
 			} else if (identifier.endsWith(".png?reverse")) { // Umgedrehted
-																// Bild laden
+				// Bild laden
 				this.images.put(identifier, getImage(
 						identifier.substring(0, identifier.indexOf('?')))
 						.getFlippedCopy(true, false));

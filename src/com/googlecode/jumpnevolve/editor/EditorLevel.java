@@ -25,7 +25,6 @@ import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
 import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 

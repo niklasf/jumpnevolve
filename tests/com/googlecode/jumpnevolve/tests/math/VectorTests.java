@@ -17,10 +17,10 @@
 
 package com.googlecode.jumpnevolve.tests.math;
 
-import static org.hamcrest.Matchers.either;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.either;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
@@ -185,7 +185,7 @@ public class VectorTests {
 		assertThat(new Vector(77, -11).sub(new Vector(1, 2)), is(new Vector(76,
 				-13)));
 	}
-	
+
 	/**
 	 * Test method for
 	 * {@link com.googlecode.jumpnevolve.math.Vector#ang(com.googlecode.jumpnevolve.math.Vector)}
@@ -194,14 +194,19 @@ public class VectorTests {
 	@Test
 	public void testAng() {
 		assertThat(Vector.DOWN.ang(Vector.LEFT), is((float) Math.PI / 2.0f));
-		assertThat(Vector.DOWN.mul(72.1f).ang(Vector.RIGHT.mul(0.2f)), is((float) Math.PI / 2.0f));
+		assertThat(Vector.DOWN.mul(72.1f).ang(Vector.RIGHT.mul(0.2f)),
+				is((float) Math.PI / 2.0f));
 		assertThat(Vector.LEFT.ang(Vector.RIGHT), is((float) Math.PI));
-		assertThat(new Vector(8, 2).getNormal().ang(new Vector(8, 2)), is((float) Math.PI / 2.0f));
-		assertThat(new Vector(735.0f, 24.0f).ang(new Vector(1.1f, 34.0f)), is(new Vector(1.1f, 34.0f).ang(new Vector(735.0f, 24.0f))));
-		assertThat(Vector.UP.ang(new Vector(1.0f, -1.0f)), is((float) Math.PI / 4.0f));
-		assertThat(new Vector(635.0f, 2.0f).ang(), is(greaterThan(new Vector(-1.0f, -1.0f).ang())));
+		assertThat(new Vector(8, 2).getNormal().ang(new Vector(8, 2)),
+				is((float) Math.PI / 2.0f));
+		assertThat(new Vector(735.0f, 24.0f).ang(new Vector(1.1f, 34.0f)),
+				is(new Vector(1.1f, 34.0f).ang(new Vector(735.0f, 24.0f))));
+		assertThat(Vector.UP.ang(new Vector(1.0f, -1.0f)),
+				is((float) Math.PI / 4.0f));
+		assertThat(new Vector(635.0f, 2.0f).ang(), is(greaterThan(new Vector(
+				-1.0f, -1.0f).ang())));
 	}
-	
+
 	/**
 	 * Test method for
 	 * {@link com.googlecode.jumpnevolve.math.Vector#isMoreUpwards(com.googlecode.jumpnevolve.math.Vector)}
@@ -213,7 +218,7 @@ public class VectorTests {
 		assertThat(Vector.LEFT.isMoreUpwards(Vector.RIGHT), is(false));
 		assertThat(Vector.UP.mul(3).isMoreUpwards(Vector.UP), is(false));
 	}
-	
+
 	/**
 	 * Test method for
 	 * {@link com.googlecode.jumpnevolve.math.Vector#parseVector(String)}.
@@ -221,13 +226,16 @@ public class VectorTests {
 	@Test
 	public void testParseVector() {
 		assertThat(Vector.parseVector("17|18"), is(new Vector(17, 18)));
-		assertThat(Vector.parseVector("  (9, 1e-5   "), is(new Vector(9, 1e-5f)));
+		assertThat(Vector.parseVector("  (9, 1e-5   "),
+				is(new Vector(9, 1e-5f)));
 		assertThat(Vector.parseVector(Vector.UP.toString()), is(Vector.UP));
-		assertThat(Vector.parseVector("   ( 1.000 , 2.123  \t  )"), is(new Vector(1.0f, 2.123f)));
-		
+		assertThat(Vector.parseVector("   ( 1.000 , 2.123  \t  )"),
+				is(new Vector(1.0f, 2.123f)));
+
 		try {
 			Vector.parseVector("(ABC,eee");
 			throw new AssertionError("NumberFormatException expeted.");
-		} catch(NumberFormatException expected) { }
+		} catch (NumberFormatException expected) {
+		}
 	}
 }

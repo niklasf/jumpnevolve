@@ -38,12 +38,12 @@ public interface AbstractEngine {
 	public abstract void start();
 
 	public abstract int getScreenHeight();
-	
+
 	public abstract int getWidth();
-	
+
 	public abstract int getHeight();
 
 	public abstract int getScreenWidth();
-	
+
 	public abstract void setTargetFrameRate(int fps);
 }

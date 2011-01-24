@@ -49,7 +49,7 @@ abstract class ParticleEmitterAdapter implements ParticleEmitter {
 
 	public void setEnabled(boolean enabled) {
 		throw new UnsupportedOperationException();
-	}		
+	}
 
 	public boolean useAdditive() {
 		return false;

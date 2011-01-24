@@ -27,7 +27,7 @@ public class SwingTest {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Level level = Levelloader
-					.asyncLoadLevel("resources/levels/level.txt");
+						.asyncLoadLevel("resources/levels/level.txt");
 				engine.switchState(level);
 				engine.requestFocus();
 			}

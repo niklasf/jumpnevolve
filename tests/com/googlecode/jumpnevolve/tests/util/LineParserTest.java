@@ -1,13 +1,13 @@
 package com.googlecode.jumpnevolve.tests.util;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.junit.Test;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import com.googlecode.jumpnevolve.util.LineAdapter;
 import com.googlecode.jumpnevolve.util.LineFailedException;
@@ -21,9 +21,12 @@ public class LineParserTest {
 	public void testLineParser() throws IOException {
 		// Beispielreader erzeugen
 		// Die Zeilen könnten auch aus einer Datei stammen.
-		String test = "123,abc\r\n" +
-				"983, def\n" +
-				"   \t   \r\n" // Leere	Zeile, die ignoriert werden sollte
+		String test = "123,abc\r\n" + "983, def\n" + "   \t   \r\n" // Leere
+																	// Zeile,
+																	// die
+																	// ignoriert
+																	// werden
+																	// sollte
 				+ "786   ,zdhfjs\n";
 		StringReader reader = new StringReader(test);
 

@@ -28,6 +28,7 @@ public class ShapeFactory {
 	}
 
 	public static NextCircle createCircle(Vector center, float radius) {
+		System.out.println("Circle created");
 		return new NextCircle(center, radius);
 	}
 }

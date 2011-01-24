@@ -24,17 +24,17 @@ package com.googlecode.jumpnevolve.graphics;
  * @author Niklas Fiekas
  */
 public class GraphicsError extends Error {
-	
+
 	private static final long serialVersionUID = -5309858224099417866L;
 
 	public GraphicsError() {
 		super();
 	}
-	
+
 	public GraphicsError(Throwable e) {
 		super(e);
 	}
-	
+
 	public GraphicsError(String description) {
 		super(description);
 	}

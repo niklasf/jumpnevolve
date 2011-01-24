@@ -17,12 +17,13 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 public class EmptyWorldTest {
 
 	/**
-	 * @param args Kommandozeilenargumente werden ignoriert.
+	 * @param args
+	 *            Kommandozeilenargumente werden ignoriert.
 	 */
 	public static void main(String[] args) {
 		// Neue, leere Welt erzeugen
 		Engine.getInstance().addState(new World(0, 0, 0));
-		
+
 		// Engine starten
 		Engine.getInstance().start();
 	}

@@ -13,7 +13,6 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
