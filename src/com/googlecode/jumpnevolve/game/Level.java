@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -111,9 +112,11 @@ public class Level extends World {
 	}
 
 	public void drawBackground(Graphics g) {
-		GraphicUtils.drawImage(g, new Rectangle(new Vector(this.width / 2.0f,
-				this.height / 2.0f), this.width, this.height), ResourceManager
-				.getInstance().getImage(this.getBackgroundFile()));
+		GraphicUtils.drawImage(g, ShapeFactory
+				.createRectangle(new Vector(this.width / 2.0f,
+						this.height / 2.0f), this.width, this.height),
+				ResourceManager.getInstance()
+						.getImage(this.getBackgroundFile()));
 
 	}
 

@@ -6,6 +6,8 @@ public interface NextShape {
 
 	public Vector getCenter();
 
+	public HelpRectangle getBoundingRect();
+
 	public ConvexShape modifyCenter(Vector newCenter);
 
 	public ConvexShape moveCenter(Vector diff);

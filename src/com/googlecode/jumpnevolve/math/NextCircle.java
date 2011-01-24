@@ -135,4 +135,10 @@ class NextCircle implements ConvexShape {
 	public String toString() {
 		return "Circle --> Center: " + this.center + " Radius: " + this.radius;
 	}
+
+	@Override
+	public HelpRectangle getBoundingRect() {
+		return new HelpRectangle(this.getLeftEnd(), this.getRightEnd(), this
+				.getUpperEnd(), this.getLowerEnd());
+	}
 }

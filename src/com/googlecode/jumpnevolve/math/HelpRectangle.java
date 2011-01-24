@@ -4,7 +4,7 @@ package com.googlecode.jumpnevolve.math;
  * @author Erik Wagner
  * 
  */
-class HelpRectangle {
+public class HelpRectangle {
 
 	/**
 	 * Die X-Koordinate der oberen linken Ecke
@@ -57,7 +57,7 @@ class HelpRectangle {
 		float bottom = Math.max(this.y + this.height, other.y + other.height);
 
 		// Rechteck erzeugen
-		return new HelpRectangle(left, top, right - left, bottom - top);
+		return new HelpRectangle(left, right, top, bottom);
 	}
 
 	public boolean isPointIn(Vector p) {
@@ -67,5 +67,17 @@ class HelpRectangle {
 		} else {
 			return true;
 		}
+	}
+
+	public HelpRectangle moveCenter(Vector deltaVelocity) {
+		float newX = this.x + deltaVelocity.x, newY = this.y + deltaVelocity.y;
+		return new HelpRectangle(newX, newX + this.width, newY, newY
+				+ this.height);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + this.x + ", " + this.y + "): " + this.width + " x "
+				+ this.height;
 	}
 }

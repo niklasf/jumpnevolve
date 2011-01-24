@@ -26,6 +26,7 @@ import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -271,7 +272,7 @@ public class EditorLevel extends Level implements Interfaceable {
 		this.setBackground(parent.getBackgroundFile());
 		// super.drawBackground(g);
 		// Hintergrund für das spätere Level malen
-		GraphicUtils.drawImage(g, new Rectangle(new Vector(
+		GraphicUtils.drawImage(g, ShapeFactory.createRectangle(new Vector(
 				parent.getCurWidth() / 2.0f, parent.getCurHeight() / 2.0f),
 				parent.getCurWidth(), parent.getCurHeight()), ResourceManager
 				.getInstance().getImage(this.getBackgroundFile()));

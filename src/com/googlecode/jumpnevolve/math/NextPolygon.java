@@ -14,12 +14,13 @@ class NextPolygon implements ConvexShape {
 	private ArrayList<Vector> relativePoints = new ArrayList<Vector>();
 	private ArrayList<Vector> points;
 	private ArrayList<Vector> axises = new ArrayList<Vector>();
+	private ArrayList<PointLine> relativeLines;
 	private boolean finished = false;
 	private final Vector center;
 	private float left = Float.POSITIVE_INFINITY,
 			right = Float.NEGATIVE_INFINITY, up = Float.POSITIVE_INFINITY,
 			down = Float.NEGATIVE_INFINITY;
-	private ArrayList<PointLine> relativeLines;
+	private HelpRectangle boundingRect;
 
 	/**
 	 * 
@@ -36,12 +37,17 @@ class NextPolygon implements ConvexShape {
 	}
 
 	private NextPolygon(Vector center, ArrayList<Vector> relativePoints,
-			ArrayList<Vector> lines, float left, float right, float up,
-			float down) {
+			ArrayList<Vector> axises, float left, float right, float up,
+			float down, HelpRectangle boundingRect) {
 		this.relativePoints = relativePoints;
-		this.axises = lines;
+		this.axises = axises;
 		this.center = center;
 		this.finished = true;
+		this.left = left;
+		this.right = right;
+		this.up = up;
+		this.down = down;
+		this.boundingRect = boundingRect;
 	}
 
 	public NextPolygon(Vector center) {
@@ -49,12 +55,15 @@ class NextPolygon implements ConvexShape {
 	}
 
 	public void addRelativePoint(Vector point) {
-		if (!finished) {
+		if (!(finished || this.relativePoints.contains(point))) {
 			this.relativePoints.add(point);
 			this.left = Math.min(point.x, this.left);
 			this.right = Math.max(point.x, this.right);
-			this.up = Math.min(point.x, this.up);
-			this.down = Math.max(point.x, this.down);
+			this.up = Math.min(point.y, this.up);
+			this.down = Math.max(point.y, this.down);
+			this.boundingRect = null;
+			this.points = null;
+			this.relativeLines = null;
 		}
 	}
 
@@ -66,6 +75,9 @@ class NextPolygon implements ConvexShape {
 			this.right += this.center.x;
 			this.up += this.center.y;
 			this.down += this.center.y;
+		} else {
+			System.out.println("Cannot finish polygon (" + super.toString()
+					+ ") with less than two points");
 		}
 	}
 
@@ -113,15 +125,27 @@ class NextPolygon implements ConvexShape {
 	private void buildAxises() {
 		Vector p1;
 		Vector p2;
+		Vector axis;
 		int size = relativePoints.size();
 		for (int i = 0; i < size - 1; i++) {
 			p1 = this.relativePoints.get(i);
 			p2 = this.relativePoints.get(i + 1);
-			axises.add(p2.sub(p1).rotateQuarterClockwise().getDirection());
+			axis = p2.sub(p1).rotateQuarterClockwise().getDirection();
+			if (!this.axises.contains(axis)) {
+				axises.add(axis);
+			}
 		}
-		this.axises.add(this.relativePoints.get(size - 1).sub(
-				this.relativePoints.get(0)).rotateQuarterClockwise()
-				.getDirection());
+		axis = this.relativePoints.get(size - 1)
+				.sub(this.relativePoints.get(0)).rotateQuarterClockwise()
+				.getDirection();
+		if (!this.axises.contains(axis)) {
+			axises.add(axis);
+		}
+	}
+
+	private void buildBoundingRect() {
+		this.boundingRect = new HelpRectangle(this.left, this.right, this.up,
+				this.down);
 	}
 
 	@Override
@@ -129,6 +153,17 @@ class NextPolygon implements ConvexShape {
 			boolean thisMoveable, boolean otherMoveable) {
 		CollisionResult colRe = new CollisionResult(thisMoveable, otherMoveable);
 		if (this.isFinished() && other.isFinished()) {
+			if (!(other.getBoundingRect().doesCollide(this.getBoundingRect()))) {
+				colRe.setNotIntersecting();
+				if (!(other.getBoundingRect().doesCollide(this
+						.getBoundingRect().moveCenter(deltaVelocity)))) {
+					colRe.setWillNotIntersect();
+					return colRe;
+				}
+			} else if (!(other.getBoundingRect().doesCollide(this
+					.getBoundingRect().moveCenter(deltaVelocity)))) {
+				colRe.setWillNotIntersect();
+			}
 			if (other instanceof ConvexShape) {
 				ConvexShape otherConvex = (ConvexShape) other;
 				ArrayList<Vector> thisAxises = this.getAxises(otherConvex);
@@ -260,7 +295,8 @@ class NextPolygon implements ConvexShape {
 	public ConvexShape moveCenter(Vector diff) {
 		return new NextPolygon(this.center.add(diff), this.relativePoints,
 				this.axises, this.left + diff.x, this.right + diff.x, this.up
-						+ diff.y, this.down + diff.y);
+						+ diff.y, this.down + diff.y, this.boundingRect
+						.moveCenter(diff));
 	}
 
 	@Override
@@ -356,5 +392,13 @@ class NextPolygon implements ConvexShape {
 	public String toString() {
 		return "Polygon --> Center: " + this.center + " RelativePoints: "
 				+ this.relativePoints;
+	}
+
+	@Override
+	public HelpRectangle getBoundingRect() {
+		if (this.boundingRect == null) {
+			this.buildBoundingRect();
+		}
+		return this.boundingRect;
 	}
 }
