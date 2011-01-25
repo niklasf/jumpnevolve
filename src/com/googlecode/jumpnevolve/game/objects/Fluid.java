@@ -48,6 +48,11 @@ public class Fluid extends ObjectTemplate {
 				new WaterfallEmitterFactory(dimension.y * 2));
 	}
 
+	public Fluid(World world, Vector position, String arguments) {
+		this(world, position, Vector.parseVector(arguments.split(",")[0]),
+				Float.parseFloat(arguments.split(",")[1]));
+	}
+
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 	}

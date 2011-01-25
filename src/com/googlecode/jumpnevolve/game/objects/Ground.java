@@ -39,6 +39,11 @@ public class Ground extends GroundTemplate {
 		super(world, ShapeFactory.createRectangle(position, dimension));
 	}
 
+	public Ground(World world, Vector position, String arguments) {
+		super(world, ShapeFactory.createRectangle(position, Vector
+				.parseVector(arguments)));
+	}
+
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		// Nichts tun

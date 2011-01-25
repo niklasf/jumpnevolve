@@ -45,6 +45,10 @@ public class Button extends ActivatingObject implements Activable {
 		this.activatingTime = activatingTime;
 	}
 
+	public Button(World world, Vector position, String arguments) {
+		this(world, position, Float.parseFloat(arguments));
+	}
+
 	public Button(World world, Vector position) {
 		this(world, position, 0);
 	}

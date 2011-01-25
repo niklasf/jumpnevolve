@@ -54,6 +54,12 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 		}
 	}
 
+	public SlidingPlattform(World world, Vector position, String arguments) {
+		this(world, position, Vector.parseVector(arguments.split(",")[0]),
+				Float.parseFloat(arguments.split(",")[1]), Float
+						.parseFloat(arguments.split(",")[2]));
+	}
+
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.getPosition().x <= this.leftEnd) {

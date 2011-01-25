@@ -36,6 +36,11 @@ public class Cannon extends Shooter {
 						Math.abs(25.0f) * Math.signum(this.shotDirection.y)));
 	}
 
+	public Cannon(World world, Vector position, String arguments) {
+		this(world, position, Boolean.parseBoolean(arguments.split(",")[0]),
+				Vector.parseVector(arguments.split(",")[1]));
+	}
+
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
 				.getInstance().getImage("object-pictures/cannon.png"));

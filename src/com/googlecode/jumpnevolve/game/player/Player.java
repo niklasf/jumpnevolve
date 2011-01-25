@@ -65,8 +65,8 @@ public class Player implements Pollable, Interfaceable {
 			this.parent.setCamera(new LimitedObjectFocusingCamera(this.figure));
 		}
 		for (String string : savePositions) {
-			this.parent.add(new SavePoint(this.parent, this, Vector
-					.parseVector(string)));
+			this.parent.add(new SavePoint(this.parent, Vector
+					.parseVector(string), this));
 		}
 	}
 

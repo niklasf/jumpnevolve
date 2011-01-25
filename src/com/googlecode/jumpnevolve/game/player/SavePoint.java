@@ -25,7 +25,7 @@ public class SavePoint extends AbstractObject implements Activable {
 	 * @param world
 	 * @param shape
 	 */
-	SavePoint(World world, Player parent, Vector position) {
+	public SavePoint(World world, Vector position, Player parent) {
 		super(world, ShapeFactory.createRectangle(position, 30.0f, 50.0f));
 		this.parent = parent;
 	}

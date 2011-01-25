@@ -53,6 +53,12 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 		}
 	}
 
+	public Elevator(World world, Vector position, String arguments) {
+		this(world, position, Vector.parseVector(arguments.split(",")[0]),
+				Float.parseFloat(arguments.split(",")[1]), Float
+						.parseFloat(arguments.split(",")[2]));
+	}
+
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.getPosition().y <= this.upEnd) {

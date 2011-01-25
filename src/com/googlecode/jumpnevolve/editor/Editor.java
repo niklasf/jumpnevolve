@@ -438,16 +438,14 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 	}
 
 	public void addNewObject(String className) {
-		this.addObject(new ObjectSettings(this, className, className
-				+ this.getTransformedId(this.nextObjectId), this.previewLevel));
-		this.nextObjectId++;
-	}
-
-	public void addNewObject(String className, Vector position) {
 		this.addObject(new ObjectSettings(this, className, this
 				.getTransformedId(this.nextObjectId)
 				+ "-" + className, this.previewLevel));
 		this.nextObjectId++;
+	}
+
+	public void addNewObject(String className, Vector position) {
+		this.addNewObject(className);
 		actSettings.setPosition(position.x, position.y);
 	}
 

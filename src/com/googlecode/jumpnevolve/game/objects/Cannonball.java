@@ -12,7 +12,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class Cannonball extends Shot {
+class Cannonball extends Shot {
 
 	/**
 	 * @param world
@@ -24,6 +24,10 @@ public class Cannonball extends Shot {
 	public Cannonball(World world, Vector position, Vector shotDirection) {
 		super(world, ShapeFactory.createCircle(position, 10), 10.0f,
 				shotDirection, 500.0f);
+	}
+
+	public Cannonball(World world, Vector position, String arguments) {
+		this(world, position, Vector.parseVector(arguments));
 	}
 
 	public void draw(Graphics g) {

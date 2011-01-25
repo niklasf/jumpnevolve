@@ -9,8 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
+import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
-import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 //FIXME: Mit dieser Klasse wird Dataable und alle abhängigen Methoden überflüssig
@@ -20,7 +20,7 @@ public class ObjectSettings extends JPanel {
 	private JTextField activatings = new JTextField(),
 			positionX = new JTextField("0"), positionY = new JTextField("0");
 	private final String className, objectName;
-	private final World editorWorld;
+	private final Level editorWorld;
 	private GridBagLayout layout = new GridBagLayout();
 	private Arguments argumentPanel;
 	private static int NextID;
@@ -39,7 +39,7 @@ public class ObjectSettings extends JPanel {
 	 *            Die Datenzeile aus einer Leveldatei, aus der die Daten
 	 *            entnommen werden sollen
 	 */
-	public ObjectSettings(Editor parent, World editorWorld, String dataLine) {
+	public ObjectSettings(Editor parent, Level editorWorld, String dataLine) {
 		this(parent, dataLine.split("_")[0], dataLine.split("_")[2],
 				editorWorld);
 		this.positionX.setText(Vector.parseVector(dataLine.split("_")[1]).x
@@ -70,7 +70,7 @@ public class ObjectSettings extends JPanel {
 	 *            erzeugt werden kann zugeordnet wird
 	 */
 	public ObjectSettings(Editor parent, String className, String objectName,
-			World editorWorld) {
+			Level editorWorld) {
 		super();
 		this.setLayout(layout);
 		this.parent = parent;

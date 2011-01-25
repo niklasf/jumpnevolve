@@ -44,6 +44,10 @@ public class Door extends ObjectTemplate implements Activable, Blockable {
 		super(world, ShapeFactory.createRectangle(position, dimension), 0.0f);
 	}
 
+	public Door(World world, Vector position, String arguments) {
+		this(world, position, Vector.parseVector(arguments));
+	}
+
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		// nichts tun
