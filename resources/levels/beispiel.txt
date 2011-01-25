@@ -1,6 +1,6 @@
 Leveldimensionen_10000_1000_1
 Leveleinstellungen_1,1_1000_default
-Player_RollingBall_RollingBall,JumpingCross_100|0_0,100
+Player_RollingBall_RollingBall,JumpingCross_100|0_0|0,100|0
 WalkingSoldier_950|370_18-WalkingSoldier_none_none
 Ground_100|100_2-Ground_none_100|10
 Ground_600|240_9-Ground_none_25|151

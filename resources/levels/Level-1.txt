@@ -1,6 +1,6 @@
 Leveldimensionen_1920_1080_1
 Leveleinstellungen_1,1_1000_bg-grass1.png
-Player_RollingBall_RollingBall,JumpingCross_100|100_0,100
+Player_RollingBall_RollingBall,JumpingCross_100|100_0|100,100|100
 JumpingSoldier_1134.0|405.0_32-JumpingSoldier_none_none
 JumpingSoldier_1710.0|250.0_34-JumpingSoldier_none_none
 Ground_678.0|172.0_2-Ground_none_100|10
