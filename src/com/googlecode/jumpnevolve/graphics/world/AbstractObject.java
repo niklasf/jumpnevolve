@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.editor2.EditorArguments;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -133,6 +134,15 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.world = world;
 		this.shape = this.oldShape = shape;
 		this.collision = new NextCollision(this.isMoveable());
+	}
+
+	/**
+	 * Liefert ein Einstellungsobjekt für den Editor
+	 * 
+	 * Sollte in den Subklassen überschrieben werden
+	 */
+	public static EditorArguments getEditorArguments() {
+		return new EditorArguments();
 	}
 
 	// Simulationsablauf
@@ -617,5 +627,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		// Paketnamen abtrennen
 		String superString = super.toString();
 		return superString.substring(superString.lastIndexOf('.') + 1);
+	}
+
+	public static void test() {
+
 	}
 }

@@ -132,7 +132,7 @@ public class Player implements Pollable, Interfaceable {
 		}
 	}
 
-	public void changeFigure(int newFigure) {
+	public void changeFigure(InterfaceFunctions newFigure) {
 		this.cur = this.figureList.get(newFigure);
 		this.figure.setShape(this.cur.getShape());
 	}
@@ -176,7 +176,7 @@ public class Player implements Pollable, Interfaceable {
 		InterfaceFunction function = object.getFunction();
 		if (function == InterfaceFunctions.FIGURE_ROLLING_BALL
 				|| function == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
-			this.cur = this.getNewFigure(function);
+			this.changeFigure((InterfaceFunctions) function);
 		}
 	}
 

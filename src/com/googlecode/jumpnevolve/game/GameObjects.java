@@ -1,6 +1,9 @@
 package com.googlecode.jumpnevolve.game;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.googlecode.jumpnevolve.editor.Arguments;
+import com.googlecode.jumpnevolve.editor2.EditorArguments;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
@@ -86,11 +89,20 @@ public enum GameObjects implements InterfaceFunction {
 	public final String[] initContents;
 	public final String[] kindOfContents;
 	public final boolean hasActivatings;
+	public final EditorArguments editorArguments;
 
 	private GameObjects(Class thisClass, String editorSkinFileName,
 			String[] contents, char[] hyphen, String[] initContents,
 			String[] kindOfContents, boolean hasActivatings) {
 		this.className = formatClassName(thisClass.toString());
+		EditorArguments init = null;
+		try {
+			init = (EditorArguments) thisClass.getMethod("getEditorArguments",
+					null).invoke(null, null);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		this.editorArguments = init;
 		this.editorSkinFileName = editorSkinFileName;
 		this.contents = contents;
 		this.hyphen = hyphen;

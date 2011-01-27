@@ -295,7 +295,7 @@ class NextPolygon implements ConvexShape {
 	public ConvexShape moveCenter(Vector diff) {
 		return new NextPolygon(this.center.add(diff), this.relativePoints,
 				this.axises, this.left + diff.x, this.right + diff.x, this.up
-						+ diff.y, this.down + diff.y, this.boundingRect
+						+ diff.y, this.down + diff.y, this.getBoundingRect()
 						.moveCenter(diff));
 	}
 
