@@ -17,6 +17,7 @@
 
 package com.googlecode.jumpnevolve.graphics;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -84,6 +85,23 @@ public class GraphicUtils {
 	 */
 	public static void draw(Graphics g, NextShape shape) {
 		g.draw(shape.toSlickShape());
+	}
+
+	/**
+	 * Zeichnet eine Figur in einer bestimmten Farbe;
+	 * 
+	 * @param g
+	 *            Der Grafikkontext
+	 * @param shape
+	 *            Die Figur
+	 * @param color
+	 *            Die Farbe
+	 */
+	public static void draw(Graphics g, NextShape shape, Color color) {
+		Color c = g.getColor();
+		g.setColor(color);
+		g.draw(shape.toSlickShape());
+		g.setColor(c);
 	}
 
 	public static void drawScaled(Graphics g, Shape shape, float zoom) {
