@@ -1,5 +1,9 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import com.googlecode.jumpnevolve.math.Rectangle;
+import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Vector;
+
 /**
  * @author e.wagner
  * 
@@ -54,5 +58,12 @@ public class InterfaceNumberSelection extends GridContainer implements
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
 		// Nichts tun
+	}
+
+	@Override
+	public Shape getPreferedSize() {
+		return new Rectangle(Vector.ZERO, InterfaceButton.BUTTON_DIMENSION * 2
+				+ this.label.getPreferedSize().getXRange(),
+				InterfaceButton.BUTTON_DIMENSION);
 	}
 }
