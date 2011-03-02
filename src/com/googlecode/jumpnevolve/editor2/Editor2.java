@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -15,6 +16,7 @@ import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
@@ -42,6 +44,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private InterfaceFunction lastFunction;
 	private int curGuiMode = GUI_MODE_NONE;
 	private int lastGuiMode = GUI_MODE_NONE;
+	private Dialog settings;
 
 	/**
 	 * @param loader
@@ -51,6 +54,17 @@ public class Editor2 extends Level implements Interfaceable {
 	 */
 	public Editor2(Levelloader loader, int width, int height, int subareaWidth) {
 		super(loader, width, height, subareaWidth);
+		this.settings = new Dialog();
+		this.settings.addTextField("Name");
+		this.settings.addNumberSelection("Breite", 1, 100000);
+		this.settings.addNumberSelection("Höhe", 1, 100000);
+		this.settings.addTextField("Hintergrund");
+		this.settings.addNumberSelection("Zeit", 1, 10000);
+		this.settings.addNumberSelection("Zoom X", 1, 100);
+		this.settings.addNumberSelection("Zoom Y", 1, 100);
+		this.settings.addNumberSelection("Subarea-Breite", 1, 1000);
+		// TODO: Maxima so in Ordnung?
+
 		this.gui = new MainGUI(this);
 		ButtonList selectList = new ButtonList(6, 10);
 		BorderContainer border = new BorderContainer();
@@ -59,6 +73,7 @@ public class Editor2 extends Level implements Interfaceable {
 			selectList.addButton(new InterfaceButton(obj,
 					obj.editorSkinFileName));
 		}
+		border.add(this.settings, BorderContainer.POSITION_MIDDLE);
 		gui.setMainContainer(border);
 	}
 
@@ -225,16 +240,19 @@ public class Editor2 extends Level implements Interfaceable {
 			// FIXME: Entsprechende Variablen erstellen
 			// Settingsline verarbeiten
 			String[] zoom = settingsLineSplit[1].split(",");
+			int zX = 1, zY = 1;
 			if (zoom.length == 1) {
-				this.zoomX = Float.parseFloat(zoom[0]);
-				this.zoomY = Float.parseFloat(zoom[0]);
+				zX = (int) (Float.parseFloat(zoom[0]));
+				zY = (int) (Float.parseFloat(zoom[0]));
 			} else if (zoom.length == 2) {
-				this.zoomX = Float.parseFloat(zoom[0]);
-				this.zoomY = Float.parseFloat(zoom[1]);
+				zX = (int) (Float.parseFloat(zoom[0]));
+				zY = (int) (Float.parseFloat(zoom[1]));
 			} else {
 				throw new IOException(
 						"Fehler im Aufbau der Leveldatei (Fehler bei Zoom)");
 			}
+			this.settings.get("Zoom X").setContent("" + zX);
+			this.settings.get("Zoom Y").setContent("" + zY);
 			// FIXME: Entsprechende Variablen erstellen
 			// Playerline verarbeiten
 			// FIXME: Entsprechende Variablen erstellen
@@ -303,12 +321,15 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	private String getSettingsLine() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, String> map = this.settings.getContents();
+		return "Leveleinstellungen_" + map.get("Zoom X") + ","
+				+ map.get("Zoom Y") + "_" + map.get("Zeit") + "_"
+				+ map.get("Hintergrund");
 	}
 
 	private String getDimensionsLine() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, String> map = this.settings.getContents();
+		return "Leveldimensionen_" + map.get("Breite") + "_" + map.get("Höhe")
+				+ "_" + map.get("Subarea-Breite");
 	}
 }

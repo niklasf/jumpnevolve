@@ -10,7 +10,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  *         TODO: Maximum und Minimum für curNumber sollten eingefügt werden
  */
 public class InterfaceNumberSelection extends GridContainer implements
-		Informable {
+		Informable, Contentable {
 
 	private InterfaceLabel label = new InterfaceLabel("0", 12);
 	private int curNumber = 0;
@@ -65,5 +65,15 @@ public class InterfaceNumberSelection extends GridContainer implements
 		return new Rectangle(Vector.ZERO, InterfaceButton.BUTTON_DIMENSION * 2
 				+ this.label.getPreferedSize().getXRange(),
 				InterfaceButton.BUTTON_DIMENSION);
+	}
+
+	@Override
+	public String getContent() {
+		return "" + curNumber;
+	}
+
+	@Override
+	public void setContent(String newContent) {
+		this.curNumber = (int) (Float.parseFloat(newContent));
 	}
 }

@@ -4,6 +4,7 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -47,6 +48,15 @@ public class Dialog extends InterfaceContainer {
 
 	public void setShown(boolean shown) {
 		this.shown = shown;
+	}
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, String> getContents() {
+		HashMap<String, String> re = new HashMap<String, String>();
+		for (DialogPart part : (ArrayList<DialogPart>) this.contents.clone()) {
+			re.put(part.name, part.part.getContent());
+		}
+		return re;
 	}
 
 	private void changeCon(GridContainer gridContainer) {
@@ -106,6 +116,21 @@ public class Dialog extends InterfaceContainer {
 			height += part.part.getPreferedSize().getYRange();
 		}
 		return new Rectangle(Vector.ZERO, width, height);
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return <code>null</code>, wenn es kein Objekt mit dem Namen gibt
+	 */
+	public Contentable get(String name) {
+		for (DialogPart part : this.contents) {
+			if (part.name.equals(name)) {
+				return part.part;
+			}
+		}
+		System.out.println("Item not found");
+		return null;
 	}
 
 }
