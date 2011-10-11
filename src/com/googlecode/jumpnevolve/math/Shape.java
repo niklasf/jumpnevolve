@@ -62,6 +62,11 @@ public interface Shape extends Serializable {
 	public Circle getBestCircle();
 
 	/**
+	 * @return Ein Recteck, das die Figur umschließt
+	 */
+	public Rectangle getBoundingRect();
+
+	/**
 	 * @return Der Ortsvektor des Mittelpunkts.
 	 */
 	public Vector getCenter();

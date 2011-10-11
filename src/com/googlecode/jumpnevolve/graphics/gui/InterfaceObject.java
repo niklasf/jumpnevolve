@@ -24,15 +24,18 @@ public abstract class InterfaceObject implements InterfacePart {
 	 * Die Maus befindet sich nicht über dem Objekt
 	 */
 	public static final int STATUS_NOTHING = 0;
+
 	/**
 	 * Es wurde gerade mit der linken Maustaste auf das Objekt geklickt
 	 */
 	public static final int STATUS_PRESSED = 1;
+
 	/**
 	 * Die Maus befindet sich über dem Objekt, ohne dass die linke Maustaste
 	 * gedrückt wurde
 	 */
 	public static final int STATUS_MOUSE_OVER = 2;
+
 	/**
 	 * Die Maus befindet sich über dem Objekt, die linke Maustaste ist gedrückt
 	 */
@@ -81,8 +84,7 @@ public abstract class InterfaceObject implements InterfacePart {
 				this.interfaceableAdded = true;
 			}
 		}
-		if (this
-				.getPreferedSize()
+		if (this.getPreferedSize()
 				.modifyCenter(this.getCenterVector())
 				.isPointInThis(new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
@@ -90,7 +92,7 @@ public abstract class InterfaceObject implements InterfacePart {
 				for (Object informable : infos) {
 					((Informable) informable).mouseClickedAction(this);
 				}
-				if (wasClicked) {
+				if (this.wasClicked) {
 					this.status = STATUS_DOWN;
 				} else {
 					this.status = STATUS_PRESSED;

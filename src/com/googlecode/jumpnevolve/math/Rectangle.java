@@ -421,8 +421,9 @@ public class Rectangle implements Shape {
 					.invert(thisMoveable);
 
 		} else {
-			return other.getBestCircle().getCollision(this, thisMoveable,
-					otherMoveable).invert(thisMoveable);
+			return other.getBestCircle()
+					.getCollision(this, thisMoveable, otherMoveable)
+					.invert(thisMoveable);
 		}
 	}
 
@@ -497,5 +498,10 @@ public class Rectangle implements Shape {
 	@Override
 	public boolean isCompletlyIn(PointLine line) {
 		return this.isPointInThis(line.p1) && this.isPointInThis(line.p2);
+	}
+
+	@Override
+	public Rectangle getBoundingRect() {
+		return this;
 	}
 }

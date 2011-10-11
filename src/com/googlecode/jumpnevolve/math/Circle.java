@@ -76,7 +76,7 @@ public class Circle implements Shape {
 	/**
 	 * @return Das kleinste Rechteck, dass den Kreis vollständig enthält.
 	 */
-	public Rectangle getBoundingRectangle() {
+	public Rectangle getBoundingRect() {
 		return new Rectangle(this.position, this.radius * 2.0f,
 				this.radius * 2.0f);
 	}
@@ -236,11 +236,11 @@ public class Circle implements Shape {
 			} else {
 				if (direction.x == 0) {
 					if (direction.y > 0) {
-						referencePoint = new Vector(this.position.x, other
-								.getUpperEnd());
+						referencePoint = new Vector(this.position.x,
+								other.getUpperEnd());
 					} else {
-						referencePoint = new Vector(this.position.x, other
-								.getLowerEnd());
+						referencePoint = new Vector(this.position.x,
+								other.getLowerEnd());
 					}
 				} else {
 					if (direction.x > 0) {

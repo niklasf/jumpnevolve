@@ -41,7 +41,7 @@ public class CircleTests {
 	public void testDoesCollide() {
 		Circle circle = new Circle(0.4f, 0.99f, 29.0f);
 		assertThat(circle.doesCollide(circle), is(true));
-		assertThat(circle.doesCollide(circle.getBoundingRectangle()), is(true));
+		assertThat(circle.doesCollide(circle.getBoundingRect()), is(true));
 		assertThat(
 				circle.doesCollide(new Rectangle(26.0f, 0.0f, 80.0f, 21.0f)),
 				is(true));
@@ -74,11 +74,11 @@ public class CircleTests {
 
 	/**
 	 * Test method for
-	 * {@link com.googlecode.jumpnevolve.math.Circle#getBoundingRectangle()}.
+	 * {@link com.googlecode.jumpnevolve.math.Circle#getBoundingRect()}.
 	 */
 	@Test
 	public void testGetBoundingRectangle() {
-		assertThat(new Circle(0.0f, 0.0f, 20.0f).getBoundingRectangle(),
+		assertThat(new Circle(0.0f, 0.0f, 20.0f).getBoundingRect(),
 				is(new Rectangle(-20.0f, -20.0f, 40.0f, 40.f)));
 	}
 

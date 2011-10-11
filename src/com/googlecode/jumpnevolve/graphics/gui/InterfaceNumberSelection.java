@@ -14,9 +14,12 @@ public class InterfaceNumberSelection extends GridContainer implements
 
 	private InterfaceLabel label = new InterfaceLabel("0", 12);
 	private int curNumber = 0;
+	private final int min, max;
 
-	public InterfaceNumberSelection() {
+	public InterfaceNumberSelection(int min, int max) {
 		super(1, 3);
+		this.min = min;
+		this.max = max;
 		InterfaceButton a = new InterfaceButton(
 				InterfaceFunctions.INTERFACE_NUMBER_SELECTION_BACK,
 				"interface-icons/back-arrow.png");

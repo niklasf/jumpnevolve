@@ -43,7 +43,7 @@ public class GraphicUtils {
 	 *            Kreis
 	 */
 	public static void draw(Graphics g, Circle circle) {
-		Rectangle rect = circle.getBoundingRectangle();
+		Rectangle rect = circle.getBoundingRect();
 		g.drawOval(rect.x, rect.y, rect.width, rect.height);
 	}
 
@@ -192,9 +192,9 @@ public class GraphicUtils {
 	 *            Das Bild
 	 */
 	public static void drawImage(Graphics g, Shape shape, Image image) {
-		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(), shape
-				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
-				image.getHeight());
+		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(),
+				shape.getRightEnd(), shape.getLowerEnd(), 0, 0,
+				image.getWidth(), image.getHeight());
 	}
 
 	/**
@@ -210,9 +210,9 @@ public class GraphicUtils {
 	 *            Das Bild
 	 */
 	public static void drawImage(Graphics g, NextShape shape, Image image) {
-		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(), shape
-				.getRightEnd(), shape.getLowerEnd(), 0, 0, image.getWidth(),
-				image.getHeight());
+		g.drawImage(image, shape.getLeftEnd(), shape.getUpperEnd(),
+				shape.getRightEnd(), shape.getLowerEnd(), 0, 0,
+				image.getWidth(), image.getHeight());
 	}
 
 	/**

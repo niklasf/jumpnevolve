@@ -23,17 +23,22 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author e.wagner
  * 
  */
-public class Dialog extends InterfaceContainer {
+public class Dialog extends InterfaceContainer implements Informable {
 
 	private GridContainer curCon;
 	private ArrayList<DialogPart> contents;
 	private boolean shown = false;
+	private InterfaceTextButton closeButton;
 
 	/**
 	 * 
 	 */
 	public Dialog() {
-		GridContainer gridContainer = new GridContainer(0, 0);
+		this.closeButton = new InterfaceTextButton(
+				InterfaceFunctions.DIALOG_CLOSE, "Dialog schließen");
+		this.closeButton.addInformable(this);
+		GridContainer gridContainer = new GridContainer(1, 0);
+		gridContainer.add(closeButton, 0, 0);
 		this.add(gridContainer, Vector.ZERO);
 		this.curCon = gridContainer;
 	}
@@ -50,6 +55,10 @@ public class Dialog extends InterfaceContainer {
 		this.shown = shown;
 	}
 
+	/**
+	 * @return Eine Hash-Map, die nach Bezeichnungen geordnet die Werte der
+	 *         Dialog-Teile (als Strings) enthält
+	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, String> getContents() {
 		HashMap<String, String> re = new HashMap<String, String>();
@@ -67,20 +76,38 @@ public class Dialog extends InterfaceContainer {
 
 	private void addPart(DialogPart dialogPart) {
 		this.contents.add(dialogPart);
-		GridContainer con = new GridContainer(contents.size(), 2);
+		GridContainer con = new GridContainer(contents.size() + 1, 2);
 		for (int i = 0; i < this.contents.size(); i++) {
 			con.add(new InterfaceLabel(this.contents.get(i).name, 12), i, 0,
 					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 			con.add(this.contents.get(i).part, i, 1,
 					GridContainer.MODUS_X_RIGHT, GridContainer.MODUS_DEFAULT);
 		}
+		con.add(this.closeButton, this.contents.size(), 1);
 		this.changeCon(con);
 	}
 
+	/**
+	 * Fügt dem Dialog eine Zahlenauswahl hinzu
+	 * 
+	 * @param name
+	 *            Bezeichnung der Zahlenauswahl
+	 * @param min
+	 *            Der minimale Wert
+	 * @param max
+	 *            Der maximale Wert
+	 */
 	public void addNumberSelection(String name, int min, int max) {
-		this.addPart(new DialogPart(new InterfaceNumberSelection(), name));
+		this.addPart(new DialogPart(new InterfaceNumberSelection(min, max),
+				name));
 	}
 
+	/**
+	 * Fügt dem Dialog ein Textfeld hinzu
+	 * 
+	 * @param name
+	 *            Bezeichnung des Textfeldes
+	 */
 	public void addTextField(String name) {
 		this.addPart(new DialogPart(new InterfaceTextField(
 				InterfaceFunctions.ERROR), name));
@@ -97,8 +124,8 @@ public class Dialog extends InterfaceContainer {
 	public void draw(Graphics g) {
 		if (this.shown) {
 			Rectangle rect = (Rectangle) this.getPreferedSize();
-			Vector center = this.parentContainer.getPositionFor(this).modifyX(
-					rect.width / 2).modifyY(rect.height / 2);
+			Vector center = this.parentContainer.getPositionFor(this)
+					.modifyX(rect.width / 2).modifyY(rect.height / 2);
 			Color c = g.getColor();
 			// TODO: fill-Methode in GraphicsUtils auslagern
 			g.setColor(Color.black);
@@ -123,14 +150,27 @@ public class Dialog extends InterfaceContainer {
 	 * @param name
 	 * @return <code>null</code>, wenn es kein Objekt mit dem Namen gibt
 	 */
+	@SuppressWarnings("unchecked")
 	public Contentable get(String name) {
-		for (DialogPart part : this.contents) {
+		for (DialogPart part : (ArrayList<DialogPart>) this.contents.clone()) {
 			if (part.name.equals(name)) {
 				return part.part;
 			}
 		}
 		System.out.println("Item not found");
 		return null;
+	}
+
+	@Override
+	public void mouseClickedAction(InterfaceObject object) {
+		if (object.function == InterfaceFunctions.DIALOG_CLOSE) {
+			this.hide();
+		}
+	}
+
+	@Override
+	public void mouseOverAction(InterfaceObject object) {
+		// Nichts tun
 	}
 
 }
