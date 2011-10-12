@@ -51,9 +51,12 @@ public class Editor2 extends Level implements Interfaceable {
 	 * @param width
 	 * @param height
 	 * @param subareaWidth
+	 * @throws IOException
 	 */
-	public Editor2(Levelloader loader, int width, int height, int subareaWidth) {
+	public Editor2(Levelloader loader, int width, int height, int subareaWidth)
+			throws IOException {
 		super(loader, width, height, subareaWidth);
+
 		this.settings = new Dialog();
 		this.settings.addTextField("Name");
 		this.settings.addNumberSelection("Breite", 1, 100000);
@@ -75,6 +78,10 @@ public class Editor2 extends Level implements Interfaceable {
 		}
 		border.add(this.settings, BorderContainer.POSITION_MIDDLE);
 		gui.setMainContainer(border);
+
+		// Start-Level laden
+		// TODO: default-Level ohne Inhalt erstellen
+		this.loadLevel(loader.source);
 	}
 
 	private void addNewObject(GameObjects function, Vector position) {
@@ -84,12 +91,11 @@ public class Editor2 extends Level implements Interfaceable {
 		function.editorArguments.initObject(obj);
 		this.objects.add(obj);
 		this.selected = obj;
-		this.objects.add(obj);
 	}
 
 	private String getObjectName(String className) {
 		this.curID++;
-		return this.getTransformedId(this.curID);
+		return this.getTransformedId(this.curID) + "-" + className;
 	}
 
 	private String getTransformedId(int value) {
@@ -106,12 +112,16 @@ public class Editor2 extends Level implements Interfaceable {
 		return id;
 	}
 
-	private float getCameraPosY() {
+	public float getCameraPosY() {
 		return cameraPos.y;
 	}
 
-	private float getCameraPosX() {
+	public float getCameraPosX() {
 		return cameraPos.x;
+	}
+
+	public Vector getCameraPos() {
+		return this.cameraPos;
 	}
 
 	private void setCameraPosition(Vector newPos) {
@@ -157,7 +167,7 @@ public class Editor2 extends Level implements Interfaceable {
 		} else {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 				if (!this.guiAction) {
-					if (!cameraMove) {
+					if (!this.cameraMove) {
 						this.oldClick = mousePos;
 					}
 					this.cameraMove = true;
@@ -167,16 +177,24 @@ public class Editor2 extends Level implements Interfaceable {
 					Vector dif = mousePos.sub(oldClick);
 					dif = dif.modifyX(dif.x / this.getZoomX());
 					dif = dif.modifyY(dif.y / this.getZoomY());
-					this.setCameraPosition(this.oldCameraPos.sub(dif));
+					this.setCameraPosition(this.oldCameraPos.add(dif));
 				}
+			} else {
+				this.cameraMove = false;
+				this.oldCameraPos = this.getCameraPos();
 			}
 		}
 		if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
+			boolean found = false;
 			for (EditorObject obj : (ArrayList<EditorObject>) this.objects
 					.clone()) {
 				if (obj.isPointIn(translatedMousePos)) {
 					this.selected = obj;
+					found = true;
 				}
+			}
+			if (!found) {
+				this.selected = null;
 			}
 		}
 	}
@@ -188,7 +206,9 @@ public class Editor2 extends Level implements Interfaceable {
 		for (EditorObject obj : (ArrayList<EditorObject>) this.objects.clone()) {
 			obj.draw(g);
 		}
-		this.selected.drawInterface(g);
+		if (this.selected != null) {
+			this.selected.drawInterface(g);
+		}
 	}
 
 	@Override
@@ -273,8 +293,8 @@ public class Editor2 extends Level implements Interfaceable {
 								+ current + " )");
 			} else {
 				EditorObject cur = new EditorObject(this,
-						current.split("_")[2], current.split("_")[0], Vector
-								.parseVector(current.split("_")[1]));
+						current.split("_")[2], current.split("_")[0],
+						Vector.parseVector(current.split("_")[1]));
 				try {
 					int id = Integer.parseInt(cur.objectName.split("-")[0]);
 					if (id > highestID) {

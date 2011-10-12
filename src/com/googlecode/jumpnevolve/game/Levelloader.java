@@ -23,7 +23,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class Levelloader {
 
-	private String source;
+	public final String source;
 
 	private Level level;
 
