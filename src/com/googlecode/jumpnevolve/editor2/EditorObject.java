@@ -94,5 +94,6 @@ public class EditorObject implements Pollable, Drawable {
 				.clone()) {
 			arg.draw(g);
 		}
+		this.position.draw(g);
 	}
 }

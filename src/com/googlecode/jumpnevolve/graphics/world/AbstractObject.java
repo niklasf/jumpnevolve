@@ -217,8 +217,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 					// Kollisionen mit dem Nachbarn prüfen
 					CollisionResult colResult = this.shape.getCollision(other
-							.getShape(), this.velocity.sub(other.velocity).mul(
-							secounds), this.isMoveable(), other.isMoveable());
+							.getShape(),
+							this.velocity.sub(other.velocity).mul(secounds),
+							this.isMoveable(), other.isMoveable());
 					if (this instanceof Blockable && other instanceof Blockable) {
 						other.blockWay((Blockable) this, colResult.invert());
 						this.blockWay((Blockable) other, colResult);

@@ -26,7 +26,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class Dialog extends InterfaceContainer implements Informable {
 
 	private GridContainer curCon;
-	private ArrayList<DialogPart> contents;
+	private ArrayList<DialogPart> contents = new ArrayList<DialogPart>();
 	private boolean shown = false;
 	private InterfaceTextButton closeButton;
 
@@ -37,7 +37,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 		this.closeButton = new InterfaceTextButton(
 				InterfaceFunctions.DIALOG_CLOSE, "Dialog schließen");
 		this.closeButton.addInformable(this);
-		GridContainer gridContainer = new GridContainer(1, 0);
+		GridContainer gridContainer = new GridContainer(1, 1);
 		gridContainer.add(closeButton, 0, 0);
 		this.add(gridContainer, Vector.ZERO);
 		this.curCon = gridContainer;

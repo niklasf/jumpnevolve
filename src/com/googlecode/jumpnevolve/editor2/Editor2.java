@@ -44,7 +44,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private InterfaceFunction lastFunction;
 	private int curGuiMode = GUI_MODE_NONE;
 	private int lastGuiMode = GUI_MODE_NONE;
-	private Dialog settings;
+	private Dialog settings, player;
 
 	/**
 	 * @param loader
@@ -57,6 +57,7 @@ public class Editor2 extends Level implements Interfaceable {
 			throws IOException {
 		super(loader, width, height, subareaWidth);
 
+		// Settings-Dialog erstellen
 		this.settings = new Dialog();
 		this.settings.addTextField("Name");
 		this.settings.addNumberSelection("Breite", 1, 100000);
@@ -68,6 +69,14 @@ public class Editor2 extends Level implements Interfaceable {
 		this.settings.addNumberSelection("Subarea-Breite", 1, 1000);
 		// TODO: Maxima so in Ordnung?
 
+		// Player-Dialog erstellen
+		this.player = new Dialog();
+		this.player.addTextField("Startfigur");
+		this.player.addTextField("Verfügbare Figuren");
+		this.player.addTextField("Startvektor");
+		this.player.addTextField("Savevektoren");
+		// TODO: Vektoren sollten im Editor per Drag'n'Drop auswählbar sein
+
 		this.gui = new MainGUI(this);
 		ButtonList selectList = new ButtonList(6, 10);
 		BorderContainer border = new BorderContainer();
@@ -77,6 +86,7 @@ public class Editor2 extends Level implements Interfaceable {
 					obj.editorSkinFileName));
 		}
 		border.add(this.settings, BorderContainer.POSITION_MIDDLE);
+		border.add(this.player, BorderContainer.POSITION_MIDDLE);
 		gui.setMainContainer(border);
 
 		// Start-Level laden
@@ -243,6 +253,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	public void loadLevel(String path) throws IOException {
 		BufferedReader levelFile = new BufferedReader(new FileReader(path));
+
 		// Die ersten drei Zeilen laden
 		String dimensionsLine = levelFile.readLine();
 		String settingsLine = levelFile.readLine();
@@ -250,14 +261,20 @@ public class Editor2 extends Level implements Interfaceable {
 		String[] dimensionsLineSplit = dimensionsLine.split("_");
 		String[] settingsLineSplit = settingsLine.split("_");
 		String[] playerLineSplit = playerLine.split("_");
+
 		// Grundeinstellungen vornehmen
 		if (dimensionsLineSplit[0].equals("Leveldimensionen")
 				&& settingsLineSplit[0].equals("Leveleinstellungen")
 				&& playerLineSplit[0].equals("Player")
 				&& dimensionsLineSplit.length == 4
 				&& settingsLineSplit.length == 4 && playerLineSplit.length == 5) {
+
 			// Dimensionsline verarbeiten
-			// FIXME: Entsprechende Variablen erstellen
+			this.settings.get("Breite").setContent(dimensionsLineSplit[1]);
+			this.settings.get("Höhe").setContent(dimensionsLineSplit[2]);
+			this.settings.get("Subarea-Breite").setContent(
+					dimensionsLineSplit[3]);
+
 			// Settingsline verarbeiten
 			String[] zoom = settingsLineSplit[1].split(",");
 			int zX = 1, zY = 1;
@@ -273,15 +290,24 @@ public class Editor2 extends Level implements Interfaceable {
 			}
 			this.settings.get("Zoom X").setContent("" + zX);
 			this.settings.get("Zoom Y").setContent("" + zY);
-			// FIXME: Entsprechende Variablen erstellen
+			this.settings.get("Zeit").setContent(settingsLineSplit[2]);
+			this.settings.get("Hintergrund").setContent(settingsLineSplit[3]);
+
 			// Playerline verarbeiten
-			// FIXME: Entsprechende Variablen erstellen
+			this.player.get("Startfigur").setContent(playerLineSplit[1]);
+			this.player.get("Verfügbare Figuren")
+					.setContent(playerLineSplit[2]);
+			this.player.get("Startvektor").setContent(playerLineSplit[3]);
+			this.player.get("Savevektoren").setContent(playerLineSplit[4]);
+
 		} else {
 			throw new IOException(
 					"Fehler im Aufbau der Leveldatei (In den ersten drei Zeilen)");
 		}
+
 		// Alle Objekte löschen
 		this.objects.clear();
+
 		// Objekte laden
 		int highestID = 0;
 		String current = levelFile.readLine();
@@ -337,7 +363,10 @@ public class Editor2 extends Level implements Interfaceable {
 
 	private String getPlayerLine() {
 		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, String> map = this.player.getContents();
+		return "Player_" + map.get("Startfigur") + "_"
+				+ map.get("Verfügbare Figuren") + "_" + map.get("Startvektor")
+				+ "_" + map.get("Savevektoren");
 	}
 
 	private String getSettingsLine() {

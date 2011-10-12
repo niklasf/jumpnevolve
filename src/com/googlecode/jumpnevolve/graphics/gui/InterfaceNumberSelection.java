@@ -77,6 +77,6 @@ public class InterfaceNumberSelection extends GridContainer implements
 
 	@Override
 	public void setContent(String newContent) {
-		this.curNumber = (int) (Float.parseFloat(newContent));
+		this.curNumber = (int) (Float.parseFloat(newContent.trim()));
 	}
 }
