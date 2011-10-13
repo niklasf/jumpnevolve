@@ -87,7 +87,7 @@ public class Editor2 extends Level implements Interfaceable {
 			selectList.addButton(new InterfaceButton(obj,
 					obj.editorSkinFileName));
 		}
-		border.add(this.settings, BorderContainer.POSITION_MIDDLE);
+		border.add(this.settings, BorderContainer.POSITION_HIGH_LEFT);
 		border.add(this.player, BorderContainer.POSITION_MIDDLE);
 		this.gui.setMainContainer(border);
 

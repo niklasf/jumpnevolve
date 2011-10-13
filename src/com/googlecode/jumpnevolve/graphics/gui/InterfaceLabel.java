@@ -34,15 +34,17 @@ public class InterfaceLabel extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		return new Rectangle(Vector.ZERO, this.curFont.getWidth(text),
 				this.curFont.getHeight(text));
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		this.curFont = g.getFont();
-		GraphicUtils.drawString(g, this.parent.getPositionFor(this), this.text);
+		// TODO: Font-Änderung sollte möglich sein
+		// this.curFont = g.getFont();
+		GraphicUtils.drawString(g, this.parent.getTransformedPositionFor(this),
+				this.text);
 	}
 
 }

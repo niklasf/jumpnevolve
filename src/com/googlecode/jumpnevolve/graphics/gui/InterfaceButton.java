@@ -42,13 +42,7 @@ public class InterfaceButton extends InterfaceObject {
 
 	@Override
 	public void draw(Graphics g) {
-		Vector pos = this.getCenterVector();
-		pos = pos
-				.add(this.parent.getInterfaceable().getCamera().getPosition()
-						.sub(
-								new Vector(this.parent.getInterfaceable()
-										.getWidth() / 2, this.parent
-										.getInterfaceable().getHeight() / 2)));
+		Vector pos = this.getTransformedCenterVector();
 		Shape actShape = this.shape.modifyCenter(pos);
 		GraphicUtils.drawImage(g, actShape, ResourceManager.getInstance()
 				.getImage(this.icon));
@@ -75,7 +69,7 @@ public class InterfaceButton extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		return this.shape;
 	}
 }

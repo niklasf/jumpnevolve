@@ -169,7 +169,7 @@ public class GridContainer extends InterfaceContainer {
 		Rectangle place = this.parentContainer.getPlaceFor(this);
 		if (this.objects.containsKey(object)) {
 			Vector cell = this.objects.get(object);
-			Shape shape = object.getPreferedSize();
+			Shape shape = object.getNeededSize();
 			int x = (int) (this.getXPosInCell((int) cell.x, (int) cell.y,
 					place.width / cols, shape.getXRange()) + place.width / cols
 					* cell.x);
@@ -218,7 +218,7 @@ public class GridContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		return this.parentContainer.getPlaceFor(this);
 	}
 

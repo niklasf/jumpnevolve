@@ -81,7 +81,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 			con.add(new InterfaceLabel(this.contents.get(i).name, 12), i, 0,
 					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 			con.add(this.contents.get(i).part, i, 1,
-					GridContainer.MODUS_X_RIGHT, GridContainer.MODUS_DEFAULT);
+					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 		}
 		con.add(this.closeButton, this.contents.size(), 1);
 		this.changeCon(con);
@@ -123,9 +123,11 @@ public class Dialog extends InterfaceContainer implements Informable {
 	@Override
 	public void draw(Graphics g) {
 		if (this.shown) {
-			Rectangle rect = (Rectangle) this.getPreferedSize();
-			Vector center = this.parentContainer.getPositionFor(this)
-					.modifyX(rect.width / 2).modifyY(rect.height / 2);
+			Rectangle rect = (Rectangle) this.getNeededSize();
+			Vector center = this.parentContainer
+					.getTransformedPositionFor(this);
+			center = center.modifyX(center.x + rect.width / 2).modifyY(
+					center.y + rect.height / 2);
 			Color c = g.getColor();
 			// TODO: fill-Methode in GraphicsUtils auslagern
 			g.setColor(Color.red);
@@ -136,13 +138,14 @@ public class Dialog extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		float width = 0, height = 0;
 		for (DialogPart part : this.contents) {
-			width = Math.max(part.part.getPreferedSize().getXRange(), width);
-			height += part.part.getPreferedSize().getYRange();
+			width = Math.max(part.part.getNeededSize().getXRange(), width);
+			height += part.part.getNeededSize().getYRange();
 		}
-		return new Rectangle(Vector.ZERO, width * 2, height);
+		// return new Rectangle(Vector.ZERO, width * 2, height);
+		return new Rectangle(Vector.ZERO, 400, 400);
 	}
 
 	/**

@@ -19,7 +19,7 @@ public interface InterfacePart extends Drawable, Pollable {
 	 * @return Die Größe, die das Objekt belegen möchte, in Form eines Shapes,
 	 *         dessen Position aber <b>keine</b> Bedeutung hat
 	 */
-	public Shape getPreferedSize();
+	public Shape getNeededSize();
 
 	/**
 	 * Setzt das parent-Objekt dieses Objekts

@@ -89,6 +89,7 @@ public class EditorObject implements Pollable, Drawable {
 				.clone()) {
 			arg.poll(input, secounds);
 		}
+		this.position.poll(input, secounds);
 	}
 
 	@Override

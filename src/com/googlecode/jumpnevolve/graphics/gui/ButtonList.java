@@ -154,7 +154,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		int z = 1;
 		if (this.isForthMoveable()) {
 			z++;

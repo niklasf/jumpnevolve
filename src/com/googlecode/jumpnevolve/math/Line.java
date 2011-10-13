@@ -32,7 +32,7 @@ public abstract class Line {
 	 */
 	public Line(Vector p1, Vector p2) {
 		this.a = p1.y - p2.y;
-		this.b = -p1.x - p2.x;
+		this.b = p2.x - p1.x;
 		this.c = -(this.a * p1.x + this.b * p1.y);
 	}
 

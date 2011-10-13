@@ -139,7 +139,8 @@ public enum GameObjects implements InterfaceFunction {
 		String[] split = dataLine.split("_");
 		String className = split[0], arguments = split[4];
 		Vector position = Vector.parseVector(split[1]);
-		Object[] argus = getGameObject(className).loadArgus(arguments);
+		// Die folgende Zeile wird nicht mehr benötigt:
+		// Object[] argus = getGameObject(className).loadArgus(arguments);
 		AbstractObject newObject = null;
 		if (className.equals(WALKING_SOLDIER.className)) {
 			newObject = new WalkingSoldier(level, position);

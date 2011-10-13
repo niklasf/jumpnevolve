@@ -48,19 +48,13 @@ public class InterfaceTextButton extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		return this.curShape;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		Vector pos = this.getCenterVector();
-		pos = pos
-				.add(this.parent.getInterfaceable().getCamera().getPosition()
-						.sub(
-								new Vector(this.parent.getInterfaceable()
-										.getWidth() / 2, this.parent
-										.getInterfaceable().getHeight() / 2)));
+		Vector pos = this.getTransformedCenterVector();
 		Font font = g.getFont();
 		Font newFont = new UnicodeFont(new java.awt.Font("Cambria",
 				java.awt.Font.PLAIN, size), size, false, false);

@@ -84,7 +84,7 @@ public abstract class InterfaceObject implements InterfacePart {
 				this.interfaceableAdded = true;
 			}
 		}
-		if (this.getPreferedSize()
+		if (this.getNeededSize()
 				.modifyCenter(this.getCenterVector())
 				.isPointInThis(new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
@@ -145,8 +145,22 @@ public abstract class InterfaceObject implements InterfacePart {
 	 */
 	public Vector getCenterVector() {
 		return this.parent.getPositionFor(this).add(
-				new Vector(
-						this.getPreferedSize().getDistanceToSide(Shape.LEFT),
-						this.getPreferedSize().getDistanceToSide(Shape.UP)));
+				new Vector(this.getNeededSize().getDistanceToSide(Shape.LEFT),
+						this.getNeededSize().getDistanceToSide(Shape.UP)));
+	}
+
+	/**
+	 * @return Die Position des Zentrum dieses Objekts auf der Zeichenfläche,
+	 *         inklusive der Translation durch die Kamera
+	 */
+	public Vector getTransformedCenterVector() {
+		return this.getCenterVector().add(
+				this.parent
+						.getInterfaceable()
+						.getCamera()
+						.getPosition()
+						.sub(new Vector(this.parent.getInterfaceable()
+								.getWidth() / 2, this.parent.getInterfaceable()
+								.getHeight() / 2)));
 	}
 }

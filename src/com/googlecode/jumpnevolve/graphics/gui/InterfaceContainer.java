@@ -43,11 +43,11 @@ public abstract class InterfaceContainer implements InterfacePart {
 	}
 
 	/**
-	 * @return Das Interfaceable, dem dieser Container zugeordnet ist; {@code
-	 *         null}, wenn es kein solches Interfaceable gibt, weil dieser
-	 *         InterfaceContainer weder dirket einem Interfaceable zugeordnet
-	 *         ist und auch keinem InterfaceContainer zugeordent ist, der einem
-	 *         Interfaceable zugeordnet wurde
+	 * @return Das Interfaceable, dem dieser Container zugeordnet ist;
+	 *         {@code null}, wenn es kein solches Interfaceable gibt, weil
+	 *         dieser InterfaceContainer weder dirket einem Interfaceable
+	 *         zugeordnet ist und auch keinem InterfaceContainer zugeordent ist,
+	 *         der einem Interfaceable zugeordnet wurde
 	 */
 	public Interfaceable getInterfaceable() {
 		if (this.parentInterfaceable == null) {
@@ -97,8 +97,9 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * @param object
 	 *            Das Objekt, dessen Position angefragt wird
-	 * @return Position der oberen, linken Ecke des Objekts; {@code null}, wenn
-	 *         das Objekt nicht in diesem Container enthalten ist
+	 * @return Position der oberen, linken Ecke des Objekts auf der Oberfläche
+	 *         (ohne Translation durch die Kamera); {@code null}, wenn das
+	 *         Objekt nicht in diesem Container enthalten ist
 	 */
 	public Vector getPositionFor(InterfacePart object) {
 		if (this.parentInterfaceable == null) {
@@ -114,6 +115,28 @@ public abstract class InterfaceContainer implements InterfacePart {
 			} else {
 				return null;
 			}
+		}
+	}
+
+	/**
+	 * @param object
+	 *            Das Objekt, dessen Position angefragt wird
+	 * @return Position der oberen, linken Ecke des Objekts auf der
+	 *         Zeichenfläche (mit Translation durch die Kamera); {@code null},
+	 *         wenn das Objekt nicht in diesem Container enthalten ist
+	 */
+	public Vector getTransformedPositionFor(InterfacePart object) {
+		Vector pos = this.getPositionFor(object);
+		if (pos != null) {
+			return this.getPositionFor(object).add(
+					this.getInterfaceable()
+							.getCamera()
+							.getPosition()
+							.sub(new Vector(
+									this.getInterfaceable().getWidth() / 2,
+									this.getInterfaceable().getHeight() / 2)));
+		} else {
+			return null;
 		}
 	}
 

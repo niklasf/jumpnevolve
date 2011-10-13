@@ -133,7 +133,7 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public Shape getPreferedSize() {
+	public Shape getNeededSize() {
 		float height = (InterfaceTextButton.getSize() + this.distanceBetweenButtons)
 				* (this.numberOfButtonsDisplayed + 2)
 				- this.distanceBetweenButtons;

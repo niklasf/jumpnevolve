@@ -25,6 +25,7 @@ public class PositionMarker extends EditorArgument {
 	private final Color color;
 	private Vector position;
 	private NextShape circle;
+	private boolean wasInCircle = false;
 
 	/**
 	 * @param parent
@@ -63,12 +64,16 @@ public class PositionMarker extends EditorArgument {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			Vector mousePos = this.parent.parent.translateMousePos(input
-					.getMouseX(), input.getMouseY());
-			if (this.circle.isPointIn(mousePos)) {
-				this.changePosition(mousePos);
-			}
+		Vector mousePos = this.parent.parent.translateMousePos(
+				input.getMouseX(), input.getMouseY());
+		if (this.wasInCircle) {
+			this.changePosition(mousePos);
+		}
+		if (this.circle.isPointIn(mousePos)
+				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			this.wasInCircle = true;
+		} else {
+			this.wasInCircle = false;
 		}
 	}
 
