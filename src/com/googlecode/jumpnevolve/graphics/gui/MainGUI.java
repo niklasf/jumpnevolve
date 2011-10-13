@@ -7,6 +7,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * @author Erik Wagner
  * 
+ *         FIXME: Interface wird bei Zoom != 1 nicht richtig angezeigt
+ * 
  */
 public class MainGUI extends InterfaceContainer {
 

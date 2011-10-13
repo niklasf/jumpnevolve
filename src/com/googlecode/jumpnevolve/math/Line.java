@@ -32,7 +32,7 @@ public abstract class Line {
 	 */
 	public Line(Vector p1, Vector p2) {
 		this.a = p1.y - p2.y;
-		this.b = p2.x - p1.x;
+		this.b = -p1.x - p2.x;
 		this.c = -(this.a * p1.x + this.b * p1.y);
 	}
 
@@ -54,8 +54,7 @@ public abstract class Line {
 				&& !(this.a * other.b == this.b * other.a);
 		if (canCross) {
 			Vector crossPoint = this.getCrossingPoint(other);
-			System.out.println("CP: " + crossPoint + " von: " + this + " und "
-					+ other);
+			System.out.println("CP: " + crossPoint);
 			return this.canPointBeOnLine(crossPoint)
 					&& other.canPointBeOnLine(crossPoint);
 		} else {
@@ -73,11 +72,11 @@ public abstract class Line {
 	 * @return Der Schnittpunkt der Geraden
 	 */
 	public Vector getCrossingPoint(Line other) {
-		if (this.a * other.b != other.a * this.b) {
+		if (!(this.a * other.b == other.a * this.b)) {
 			System.out.println("Neues Verfahren");
 			float q = this.a * other.b - other.a * this.b;
-			float x = (this.b * other.c - this.c * other.b) / (q);
-			float y = (this.c * other.a - this.a * other.c) / (q);
+			float x = (this.b * other.c - this.c * other.b) / q;
+			float y = (this.c * other.a - this.a * other.c) / q;
 			return new Vector(x, y);
 		}
 

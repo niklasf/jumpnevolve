@@ -43,6 +43,9 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	public boolean isPointIn(Vector point) {
+		System.out.println("Point: " + point + " Shape: "
+				+ this.getObject().getShape() + " isPointIn: "
+				+ this.getObject().getShape().isPointIn(point));
 		return this.getObject().getShape().isPointIn(point);
 	}
 

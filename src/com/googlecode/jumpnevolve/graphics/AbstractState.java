@@ -41,7 +41,7 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 
 	public static final float DEFAULT_ZOOM = 200;
 
-	protected float zoomX, zoomY = DEFAULT_ZOOM;
+	protected float zoomX = DEFAULT_ZOOM, zoomY = DEFAULT_ZOOM;
 
 	/**
 	 * Legt die Zoom Faktoren zur Umrechnung von virtuellen Koordinaten in

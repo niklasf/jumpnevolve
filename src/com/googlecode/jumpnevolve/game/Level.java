@@ -116,7 +116,6 @@ public class Level extends World {
 						this.height / 2.0f), this.width, this.height),
 				ResourceManager.getInstance()
 						.getImage(this.getBackgroundFile()));
-
 	}
 
 	@Override

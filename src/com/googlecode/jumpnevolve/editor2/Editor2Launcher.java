@@ -13,7 +13,7 @@ public class Editor2Launcher {
 	 * 
 	 * @param args
 	 *            Kommandozeilenargumente
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
 		AbstractEngine engine = Engine.getInstance();

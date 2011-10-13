@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.Dialog;
@@ -22,6 +23,7 @@ import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
+import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -87,7 +89,7 @@ public class Editor2 extends Level implements Interfaceable {
 		}
 		border.add(this.settings, BorderContainer.POSITION_MIDDLE);
 		border.add(this.player, BorderContainer.POSITION_MIDDLE);
-		gui.setMainContainer(border);
+		this.gui.setMainContainer(border);
 
 		this.setCamera(new EditorCamera(this));
 		this.setZoom(1);
@@ -203,11 +205,13 @@ public class Editor2 extends Level implements Interfaceable {
 			for (EditorObject obj : (ArrayList<EditorObject>) this.objects
 					.clone()) {
 				if (obj.isPointIn(translatedMousePos)) {
+					System.out.println("Found");
 					this.selected = obj;
 					found = true;
 				}
 			}
 			if (!found) {
+				System.out.println("Not Found");
 				this.selected = null;
 			}
 		}

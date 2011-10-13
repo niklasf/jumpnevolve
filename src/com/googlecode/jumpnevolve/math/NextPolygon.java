@@ -204,8 +204,8 @@ class NextPolygon implements ConvexShape {
 						distWill = -distWill;
 						if (distIs < minOverlapDistanceIs) {
 							minOverlapDistanceIs = distIs;
-							if (this.getCenter().sub(other.getCenter()).mul(
-									curAxis) < 0) {
+							if (this.getCenter().sub(other.getCenter())
+									.mul(curAxis) < 0) {
 								translationAxisIs = curAxis.neg();
 							} else {
 								translationAxisIs = curAxis;
@@ -213,8 +213,8 @@ class NextPolygon implements ConvexShape {
 						}
 						if (distWill < minOverlapDistanceWill) {
 							minOverlapDistanceWill = distWill;
-							if (this.getCenter().sub(other.getCenter()).mul(
-									curAxis) < 0) {
+							if (this.getCenter().sub(other.getCenter())
+									.mul(curAxis) < 0) {
 								translationAxisWill = curAxis.neg();
 							} else {
 								translationAxisWill = curAxis;
@@ -385,7 +385,6 @@ class NextPolygon implements ConvexShape {
 				n++;
 			}
 		}
-		System.out.println("Polygon: " + this + " P: " + p + " n: " + n);
 		return n % 2 == 1;
 	}
 
