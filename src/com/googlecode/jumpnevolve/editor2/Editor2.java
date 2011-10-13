@@ -35,7 +35,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private static final int GUI_MODE_OTHER = 2;
 	private ArrayList<EditorObject> objects = new ArrayList<EditorObject>();
 	private EditorObject selected;
-	private Vector cameraPos, oldCameraPos;
+	private Vector cameraPos = Vector.ZERO, oldCameraPos = Vector.ZERO;
 	private int curID;
 	private MainGUI gui;
 	private boolean guiAction;
@@ -89,9 +89,13 @@ public class Editor2 extends Level implements Interfaceable {
 		border.add(this.player, BorderContainer.POSITION_MIDDLE);
 		gui.setMainContainer(border);
 
+		this.setCamera(new EditorCamera(this));
+		this.setZoom(1);
+
 		// Start-Level laden
 		// TODO: default-Level ohne Inhalt erstellen
 		this.loadLevel(loader.source);
+		this.settings.show();
 	}
 
 	private void addNewObject(GameObjects function, Vector position) {
@@ -187,7 +191,7 @@ public class Editor2 extends Level implements Interfaceable {
 					Vector dif = mousePos.sub(oldClick);
 					dif = dif.modifyX(dif.x / this.getZoomX());
 					dif = dif.modifyY(dif.y / this.getZoomY());
-					this.setCameraPosition(this.oldCameraPos.add(dif));
+					this.setCameraPosition(this.oldCameraPos.sub(dif));
 				}
 			} else {
 				this.cameraMove = false;
@@ -219,6 +223,7 @@ public class Editor2 extends Level implements Interfaceable {
 		if (this.selected != null) {
 			this.selected.drawInterface(g);
 		}
+		this.gui.draw(g);
 	}
 
 	@Override

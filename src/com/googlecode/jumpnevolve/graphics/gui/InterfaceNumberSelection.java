@@ -1,5 +1,8 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -34,17 +37,34 @@ public class InterfaceNumberSelection extends GridContainer implements
 	}
 
 	private void moveBack() {
-		this.curNumber--;
-		this.updateLabel();
+		if (this.curNumber > min) {
+			this.curNumber--;
+			this.updateLabel();
+		}
 	}
 
 	private void moveForth() {
-		this.curNumber++;
-		this.updateLabel();
+		if (this.curNumber < max) {
+			this.curNumber++;
+			this.updateLabel();
+		}
 	}
 
 	private void updateLabel() {
 		this.label.setText("" + this.curNumber);
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		Rectangle rect = (Rectangle) this.getPreferedSize();
+		Vector center = this.parentContainer.getPositionFor(this)
+				.modifyX(rect.width / 2).modifyY(rect.height / 2);
+		Color c = g.getColor();
+		// TODO: fill-Methode in GraphicsUtils auslagern
+		g.setColor(Color.green);
+		g.fill(rect.modifyCenter(center).toSlickShape());
+		g.setColor(c);
+		super.draw(g);
 	}
 
 	@Override

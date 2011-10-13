@@ -385,6 +385,7 @@ class NextPolygon implements ConvexShape {
 				n++;
 			}
 		}
+		System.out.println("Polygon: " + this + " P: " + p + " n: " + n);
 		return n % 2 == 1;
 	}
 

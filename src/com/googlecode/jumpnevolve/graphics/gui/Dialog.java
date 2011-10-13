@@ -128,7 +128,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 					.modifyX(rect.width / 2).modifyY(rect.height / 2);
 			Color c = g.getColor();
 			// TODO: fill-Methode in GraphicsUtils auslagern
-			g.setColor(Color.black);
+			g.setColor(Color.red);
 			g.fill(rect.modifyCenter(center).toSlickShape());
 			g.setColor(c);
 			super.draw(g);
@@ -142,7 +142,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 			width = Math.max(part.part.getPreferedSize().getXRange(), width);
 			height += part.part.getPreferedSize().getYRange();
 		}
-		return new Rectangle(Vector.ZERO, width, height);
+		return new Rectangle(Vector.ZERO, width * 2, height);
 	}
 
 	/**

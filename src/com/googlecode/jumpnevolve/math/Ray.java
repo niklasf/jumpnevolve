@@ -17,7 +17,7 @@ public class Ray extends Line {
 	 *            Die Richtung des Strahls (ein Richtungsvektor)
 	 */
 	public Ray(Vector p1, Vector p2) {
-		super(p1, p2);
+		super(p1, p1.add(p2));
 		this.p1 = p1;
 		this.p2 = p2;
 	}

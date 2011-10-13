@@ -25,7 +25,17 @@ public class PointLine extends Line {
 
 	@Override
 	public boolean canPointBeOnLine(Vector point) {
-		return new Rectangle(p1, p2.sub(p1)).isPointInThis(point);
+		if (p1.equals(p2)) {
+			return false;
+		} else {
+			Vector halfDist = p2.sub(p1).div(2);
+			return new Circle(p1.add(halfDist), halfDist).isPointInThis(point);
+		}
 	}
 
+	@Override
+	public String toString() {
+		return "PointLine: " + this.a + "*x + " + this.b + "*y + " + this.c
+				+ " Punkt1: " + this.p1 + " Punkt2: " + this.p2;
+	}
 }

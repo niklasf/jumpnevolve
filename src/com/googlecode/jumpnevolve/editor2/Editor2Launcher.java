@@ -19,7 +19,7 @@ public class Editor2Launcher {
 		AbstractEngine engine = Engine.getInstance();
 
 		engine.setTargetFrameRate(100);
-		engine.switchState(new Editor2(new Levelloader(""), 1000000, 100, 1));
+		engine.switchState(new Editor2(new Levelloader("resources/levels/default.txt"), 100, 100, 1));
 		engine.start();
 	}
 }

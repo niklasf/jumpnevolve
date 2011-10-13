@@ -62,12 +62,17 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	private String getArgumentString() {
-		String re = "";
-		for (int i = 0; i < this.arguments.size() - 1; i++) {
-			re += this.arguments.get(i).getArgumentPart() + ",";
+		if (this.arguments.size() > 0) {
+			String re = "";
+			for (int i = 0; i < this.arguments.size() - 1; i++) {
+				re += this.arguments.get(i).getArgumentPart() + ",";
+			}
+			re += this.arguments.get(this.arguments.size() - 1)
+					.getArgumentPart();
+			return re;
+		} else {
+			return "none";
 		}
-		re += this.arguments.get(this.arguments.size() - 1).getArgumentPart();
-		return re;
 	}
 
 	private String getActivatings() {

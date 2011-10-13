@@ -32,7 +32,7 @@ public abstract class Line {
 	 */
 	public Line(Vector p1, Vector p2) {
 		this.a = p1.y - p2.y;
-		this.b = -p1.x - p2.x;
+		this.b = p2.x - p1.x;
 		this.c = -(this.a * p1.x + this.b * p1.y);
 	}
 
@@ -53,7 +53,11 @@ public abstract class Line {
 				&& !(other.a == 0 && other.b == 0)
 				&& !(this.a * other.b == this.b * other.a);
 		if (canCross) {
-			return this.canPointBeOnLine(this.getCrossingPoint(other));
+			Vector crossPoint = this.getCrossingPoint(other);
+			System.out.println("CP: " + crossPoint + " von: " + this + " und "
+					+ other);
+			return this.canPointBeOnLine(crossPoint)
+					&& other.canPointBeOnLine(crossPoint);
 		} else {
 			return false;
 		}
@@ -69,6 +73,14 @@ public abstract class Line {
 	 * @return Der Schnittpunkt der Geraden
 	 */
 	public Vector getCrossingPoint(Line other) {
+		if (this.a * other.b != other.a * this.b) {
+			System.out.println("Neues Verfahren");
+			float q = this.a * other.b - other.a * this.b;
+			float x = (this.b * other.c - this.c * other.b) / (q);
+			float y = (this.c * other.a - this.a * other.c) / (q);
+			return new Vector(x, y);
+		}
+
 		if (this.a != 0) {
 			float y = (other.a / this.a * this.c - other.c)
 					/ (other.b - other.a / this.a * this.b);
@@ -139,5 +151,10 @@ public abstract class Line {
 	public final boolean arePointsOnTheSameSide(Vector point1, Vector point2) {
 		return Math.signum(this.getDistanceTo(point1)) == Math.signum(this
 				.getDistanceTo(point2));
+	}
+
+	@Override
+	public String toString() {
+		return "Line: " + this.a + "*x + " + this.b + "*y + " + this.c;
 	}
 }
