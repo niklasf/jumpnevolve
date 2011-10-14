@@ -2,8 +2,14 @@ package com.googlecode.jumpnevolve.game;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.newdawn.slick.Color;
+
 import com.googlecode.jumpnevolve.editor.Arguments;
+import com.googlecode.jumpnevolve.editor2.EditorArgument;
 import com.googlecode.jumpnevolve.editor2.EditorArguments;
+import com.googlecode.jumpnevolve.editor2.PositionMarker;
+import com.googlecode.jumpnevolve.editor2.RectangleDimension;
+import com.googlecode.jumpnevolve.editor2.RelativePositionMarker;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
@@ -48,36 +54,46 @@ public enum GameObjects implements InterfaceFunction {
 
 	BUTTON(Button.class, "textures/aluminium.png",
 			new String[] { "Active Time" }, new char[0],
-			new String[] { "10.0" }, new String[] { "Float" }, true),
+			new String[] { "10.0" }, new String[] { "Float" }, true,
+			new EditorArguments(null)),
 
 	DOOR(Door.class, "textures/wood.png", new String[] { "Width", "Height" },
 			new char[] { '|' }, new String[] { "30", "10" }, new String[] {
-					"Vector", "Vector" }, false),
+					"Vector", "Vector" }, false, new EditorArguments(null)),
 
 	GROUND(Ground.class, "textures/stone.png",
 			new String[] { "Width", "Height" }, new char[] { '|' },
 			new String[] { "30", "10" }, new String[] { "Vector", "Vector" },
-			false),
+			false, new EditorArguments(
+					new EditorArgument[] { new RectangleDimension(30, 10) })),
 
 	ELEVATOR(Elevator.class, "textures/aluminium.png", new String[] { "Width",
 			"Height", "DownEnd", "UpEnd" }, new char[] { '|', ',', ',' },
 			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
-					"Vector", "Vector", "Float", "Float" }, false),
+					"Vector", "Vector", "Float", "Float" }, false,
+			new EditorArguments(new EditorArgument[] {
+					new RectangleDimension(30, 10),
+					new RelativePositionMarker(PositionMarker.MODUS_Y,
+							Vector.UP.mul(10), Color.green),
+					new RelativePositionMarker(PositionMarker.MODUS_Y,
+							Vector.DOWN.mul(10), Color.green) })),
 
 	SLIDING_PLATTFORM(SlidingPlattform.class, "textures/aluminium.png",
 			new String[] { "Width", "Height", "DownEnd", "UpEnd" }, new char[] {
 					'|', ',', ',' },
 			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
-					"Vector", "Vector", "Float", "Float" }, false),
+					"Vector", "Vector", "Float", "Float" }, false,
+			new EditorArguments(null)),
 
 	FLUID(Fluid.class, "textures/water.png", new String[] { "Width", "Height",
 			"MaximumVelocity" }, new char[] { '|', ',' }, new String[] { "30",
-			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false),
+			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false,
+			new EditorArguments(null)),
 
 	CANNON(Cannon.class, "object-pictures/cannon.png", new String[] {
 			"Activated", "ShotDirectionX", "ShotDirectionY" }, new char[] {
 			',', '|' }, new String[] { "true", "20", "-5" }, new String[] {
-			"Boolean", "Vector", "Vector" }, false),
+			"Boolean", "Vector", "Vector" }, false, new EditorArguments(null)),
 
 	SAVE_POINT(SavePoint.class, "textures/aluminium.png", false);
 	// FIXME: SavePoint braucht sein eigenes Icon (keine Textur)
@@ -93,16 +109,17 @@ public enum GameObjects implements InterfaceFunction {
 
 	private GameObjects(Class thisClass, String editorSkinFileName,
 			String[] contents, char[] hyphen, String[] initContents,
-			String[] kindOfContents, boolean hasActivatings) {
+			String[] kindOfContents, boolean hasActivatings,
+			EditorArguments requiredArguments) {
 		this.className = formatClassName(thisClass.toString());
-		EditorArguments init = null;
-		try {
-			init = (EditorArguments) thisClass.getMethod("getEditorArguments",
-					null).invoke(null, null);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		this.editorArguments = init;
+		// EditorArguments init = null;
+		// try {
+		// init = (EditorArguments) thisClass.getMethod("getEditorArguments",
+		// null).invoke(null, null);
+		// } catch (Throwable e) {
+		// e.printStackTrace();
+		// }
+		this.editorArguments = requiredArguments;
 		this.editorSkinFileName = editorSkinFileName;
 		this.contents = contents;
 		this.hyphen = hyphen;
@@ -119,7 +136,8 @@ public enum GameObjects implements InterfaceFunction {
 	private GameObjects(Class thisClass, String editorSkinFileName,
 			boolean hasActivatings) {
 		this(thisClass, editorSkinFileName, new String[] { "" }, new char[0],
-				new String[] { "" }, new String[] { "" }, hasActivatings);
+				new String[] { "" }, new String[] { "" }, hasActivatings,
+				new EditorArguments(null));
 	}
 
 	private static String formatClassName(String className) {

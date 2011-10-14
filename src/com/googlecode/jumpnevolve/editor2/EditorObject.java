@@ -18,7 +18,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class EditorObject implements Pollable, Drawable {
 
-	private PositionMarker position;
+	PositionMarker position;
 	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
 
 	public final Editor2 parent;
@@ -32,12 +32,14 @@ public class EditorObject implements Pollable, Drawable {
 		this.parent = parent;
 		this.objectName = objectName;
 		this.className = className;
-		this.position = new PositionMarker(this, PositionMarker.MODUS_BOTH,
+		this.position = new PositionMarker(PositionMarker.MODUS_BOTH,
 				startPosition, Color.red);
+		this.position.setParent(this);
 	}
 
 	public void addArgument(EditorArgument toAdd) {
 		if (!this.arguments.contains(toAdd)) {
+			toAdd.setParent(this);
 			this.arguments.add(toAdd);
 		}
 	}

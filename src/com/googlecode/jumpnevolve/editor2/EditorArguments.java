@@ -13,7 +13,12 @@ public class EditorArguments {
 
 	private ArrayList<EditorArgument> args = new ArrayList<EditorArgument>();
 
-	public EditorArguments() {
+	public EditorArguments(EditorArgument args[]) {
+		if (args != null) {
+			for (EditorArgument arg : args) {
+				this.addArgument(arg);
+			}
+		}
 	}
 
 	public void addArgument(EditorArgument arg) {

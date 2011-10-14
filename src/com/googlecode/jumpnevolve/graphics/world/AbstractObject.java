@@ -136,15 +136,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.collision = new NextCollision(this.isMoveable());
 	}
 
-	/**
-	 * Liefert ein Einstellungsobjekt für den Editor
-	 * 
-	 * Sollte in den Subklassen überschrieben werden
-	 */
-	public static EditorArguments getEditorArguments() {
-		return new EditorArguments();
-	}
-
 	// Simulationsablauf
 
 	/**

@@ -1,5 +1,6 @@
 package com.googlecode.jumpnevolve.editor2;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -15,37 +16,49 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class RectangleDimension extends EditorArgument {
 
 	private static final float WANTED_DIST = 5.0f;
+	private static final float MIN_DIST = 2.0f;
 
 	private int width, height;
-	private NextShape normalRect, littleRect, bigRect, horizontalRect,
-			verticalRect;
+	private NextShape markCircle1, markCircle2, markCircle3, markCircle4;
+	private Vector lastPosition = Vector.ZERO;
 
-	public RectangleDimension(EditorObject parent, int startWidth,
-			int startHeight) {
-		super(parent);
+	private boolean wasChanged;
+
+	public RectangleDimension(int startWidth, int startHeight) {
+		super();
 		this.width = startWidth;
 		this.height = startHeight;
-		this.changeDimensions(startWidth, startHeight);
+		this.updateCircles();
 	}
 
-	private void changeDimensions(int width, int height) {
-		float distWidth = WANTED_DIST, distHeight = WANTED_DIST;
-		while (width - distWidth < 1) {
-			distWidth = distWidth / 2;
+	private void changeDimensions(Vector translatedMousePos) {
+		this.width = (int) Math.max(
+				Math.abs(this.getPosition().x - translatedMousePos.x) * 2, 2);
+		this.height = (int) Math
+				.max(Math.abs(this.parent.getPosition().y
+						- translatedMousePos.y) * 2, 2);
+	}
+
+	private void updateCircles() {
+		float dist = WANTED_DIST;
+		this.markCircle1 = ShapeFactory.createCircle(
+				this.getPosition().add(this.width / 2, this.height / 2), dist);
+		this.markCircle2 = ShapeFactory.createCircle(
+				this.getPosition().add(-this.width / 2, this.height / 2), dist);
+		this.markCircle3 = ShapeFactory
+				.createCircle(
+						this.getPosition().add(-this.width / 2,
+								-this.height / 2), dist);
+		this.markCircle4 = ShapeFactory.createCircle(
+				this.getPosition().add(this.width / 2, -this.height / 2), dist);
+	}
+
+	private Vector getPosition() {
+		if (this.parent != null) {
+			return this.parent.getPosition();
+		} else {
+			return Vector.ZERO;
 		}
-		while (height - distHeight < 1) {
-			distHeight = distHeight / 2;
-		}
-		this.normalRect = ShapeFactory.createRectangle(this.parent
-				.getPosition(), width, height);
-		this.littleRect = ShapeFactory.createRectangle(this.parent
-				.getPosition(), width - distWidth, height - distHeight);
-		this.bigRect = ShapeFactory.createRectangle(this.parent.getPosition(),
-				width + distWidth, height + distHeight);
-		this.horizontalRect = ShapeFactory.createRectangle(this.parent
-				.getPosition(), width + distWidth, height - distHeight);
-		this.verticalRect = ShapeFactory.createRectangle(this.parent
-				.getPosition(), width - distWidth, height + distHeight);
 	}
 
 	@Override
@@ -55,36 +68,46 @@ public class RectangleDimension extends EditorArgument {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			Vector mousePos = this.parent.parent.translateMousePos(input
-					.getMouseX(), input.getMouseY());
-			if (!this.littleRect.isPointIn(mousePos)
-					&& this.bigRect.isPointIn(mousePos)) {
-				if (this.horizontalRect.isPointIn(mousePos)) {
-					this.width = (int) Math.abs(this.parent.getPosition().x
-							- mousePos.x);
-				} else if (this.verticalRect.isPointIn(mousePos)) {
-					this.height = (int) Math.abs(this.parent.getPosition().y
-							- mousePos.y);
+		if (!this.getPosition().equals(this.lastPosition)) {
+			this.updateCircles();
+		} else {
+			Vector translatedMousePos = this.parent.parent.translateMousePos(
+					input.getMouseX(), input.getMouseY());
+			if (this.wasChanged) {
+				this.changeDimensions(translatedMousePos);
+				this.updateCircles();
+			}
+			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
+					&& !this.parent.position.isMoving()) {
+				if (this.markCircle1.isPointIn(translatedMousePos)
+						|| this.markCircle2.isPointIn(translatedMousePos)
+						|| this.markCircle3.isPointIn(translatedMousePos)
+						|| this.markCircle4.isPointIn(translatedMousePos)) {
+					this.wasChanged = true;
 				} else {
-					this.width = (int) Math.abs(this.parent.getPosition().x
-							- mousePos.x);
-					this.height = (int) Math.abs(this.parent.getPosition().y
-							- mousePos.y);
+					this.wasChanged = false;
 				}
-				this.changeDimensions(width, height);
+			} else {
+				this.wasChanged = false;
 			}
 		}
+		// }
+		this.lastPosition = this.getPosition();
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		GraphicUtils.draw(g, this.normalRect);
+		GraphicUtils.draw(g, this.markCircle1, Color.blue);
+		GraphicUtils.draw(g, this.markCircle2, Color.blue);
+		GraphicUtils.draw(g, this.markCircle3, Color.blue);
+		GraphicUtils.draw(g, this.markCircle4, Color.blue);
 	}
 
 	@Override
 	public EditorArgument clone() {
-		return new RectangleDimension(this.parent, this.width, this.height);
+		EditorArgument re = new RectangleDimension(this.width, this.height);
+		re.setParent(this.parent);
+		return re;
 	}
 
 }

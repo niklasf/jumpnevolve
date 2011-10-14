@@ -9,13 +9,20 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
  */
 public abstract class EditorArgument implements Pollable, Drawable {
 
-	public final EditorObject parent;
+	protected EditorObject parent;
 
 	public abstract String getArgumentPart();
 
 	public abstract EditorArgument clone();
 
-	public EditorArgument(EditorObject parent) {
+	public EditorArgument() {
+	}
+
+	public EditorObject getParent() {
+		return this.parent;
+	}
+
+	public void setParent(EditorObject parent) {
 		this.parent = parent;
 	}
 

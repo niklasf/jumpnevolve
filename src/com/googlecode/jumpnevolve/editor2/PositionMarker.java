@@ -21,22 +21,21 @@ public class PositionMarker extends EditorArgument {
 
 	private static final float radius = 3.0f;
 
-	private final int modus;
-	private final Color color;
-	private Vector position;
+	protected final int modus;
+	protected final Color color;
+	protected Vector position;
 	private NextShape circle;
 	private boolean wasInCircle = false;
 
 	/**
 	 * @param parent
 	 */
-	public PositionMarker(EditorObject parent, int modus, Vector startPosition,
-			Color color) {
-		super(parent);
+	public PositionMarker(int modus, Vector startPosition, Color color) {
+		super();
 		this.modus = modus;
 		this.position = startPosition;
 		this.color = color;
-		this.circle = ShapeFactory.createCircle(this.position, radius);
+		this.circle = ShapeFactory.createCircle(this.getPosition(), radius);
 	}
 
 	@Override
@@ -54,12 +53,17 @@ public class PositionMarker extends EditorArgument {
 	}
 
 	public Vector getPosition() {
+		System.out.println("P");
 		return this.position;
+	}
+
+	public boolean isMoving() {
+		return this.wasInCircle;
 	}
 
 	private void changePosition(Vector newPosition) {
 		this.position = newPosition;
-		this.circle = this.circle.modifyCenter(newPosition);
+		this.circle = this.circle.modifyCenter(this.getPosition());
 	}
 
 	@Override
@@ -84,8 +88,10 @@ public class PositionMarker extends EditorArgument {
 
 	@Override
 	public EditorArgument clone() {
-		return new PositionMarker(this.parent, this.modus, this.position,
+		EditorArgument re = new PositionMarker(this.modus, this.position,
 				this.color);
+		re.setParent(this.parent);
+		return re;
 	}
 
 }

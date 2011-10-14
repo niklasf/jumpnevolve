@@ -49,10 +49,6 @@ public abstract class InterfaceObject implements InterfacePart {
 	private ArrayList<Informable> informed = new ArrayList<Informable>();
 
 	/**
-	 * @param parent
-	 *            Das Interfaceable, das dieses Objekt beinhaltet
-	 * @param shape
-	 *            Das Shape, welches dieses Objekt in seiner Form beschreibt
 	 * @param function
 	 *            Die Funktion dieses Objekts (ein Enum aus
 	 *            {@link InterfaceFunctions})
