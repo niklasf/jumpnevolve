@@ -185,6 +185,11 @@ public class Player implements Pollable, Interfaceable {
 		// Vorerst nichts tun
 	}
 
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		// Nichts tun
+	}
+
 	public Vector getLastSave() {
 		return this.save;
 	}

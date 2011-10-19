@@ -22,7 +22,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import com.googlecode.jumpnevolve.math.Circle;
+import com.googlecode.jumpnevolve.math.Line;
 import com.googlecode.jumpnevolve.math.NextShape;
+import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -101,6 +103,23 @@ public class GraphicUtils {
 		Color c = g.getColor();
 		g.setColor(color);
 		g.draw(shape.toSlickShape());
+		g.setColor(c);
+	}
+
+	/**
+	 * Zeichnet eine Punktlinie in einer bestimmten Farbe
+	 * 
+	 * @param g
+	 *            Der Grafikkontext
+	 * @param line
+	 *            Die Punktline
+	 * @param color
+	 *            Die Farbe
+	 */
+	public static void draw(Graphics g, PointLine line, Color color) {
+		Color c = g.getColor();
+		g.setColor(color);
+		g.drawLine(line.p1.x, line.p1.y, line.p2.x, line.p2.y);
 		g.setColor(c);
 	}
 

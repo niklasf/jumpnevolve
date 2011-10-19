@@ -1,6 +1,5 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.UnicodeFont;

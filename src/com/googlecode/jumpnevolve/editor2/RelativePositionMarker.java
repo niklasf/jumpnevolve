@@ -1,18 +1,15 @@
 package com.googlecode.jumpnevolve.editor2;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Ein Positionsmarker, der eine relative Koordinate angibt
+ * Ein Positionsmarker, der eine Koordinate angibt, die geändert wird, wenn sich
+ * die Position des "Parents" ändert
  * 
- * {@link getPosition} Gibt nicht die relative Koordinate, sondern die
- * Koordinate für die Zeichenfläche zurück
- * 
- * {@link getRelativePosition} Gibt die relative Koordinate zurück
- * 
- * {@link getArgumentPart} Gibt die realtive Koordinate zurück
+ * Reagiert nicht, während sich die Position des "Parents" ändert
  * 
  * @author e.wagner
  * 
@@ -21,24 +18,26 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class RelativePositionMarker extends PositionMarker {
 
+	private Vector lastParentPosition = Vector.ZERO;
+
 	public RelativePositionMarker(int modus, Vector startPosition, Color color) {
 		super(modus, startPosition, color);
 	}
 
-	@Override
-	public Vector getPosition() {
-		if (this.getParent() != null) {
-			System.out.println("Position: "
-					+ this.getParent().getPosition().add(super.getPosition()));
-			return this.getParent().getPosition().add(super.getPosition());
-		} else {
-			System.out.println("No Parent");
-			return super.getPosition();
-		}
+	private void addToPosition(Vector toAdd) {
+		this.changePosition(this.getPosition().add(toAdd));
 	}
 
-	public Vector getRelativePosition() {
-		return super.getPosition();
+	@Override
+	public void poll(Input input, float secounds) {
+		Vector parentPosition = this.parent.getPosition();
+		Vector diff = parentPosition.sub(this.lastParentPosition);
+		this.addToPosition(diff);
+		if (!diff.equals(Vector.ZERO)) {
+			this.wasInCircle = false;
+		}
+		super.poll(input, secounds);
+		this.lastParentPosition = parentPosition;
 	}
 
 	@Override

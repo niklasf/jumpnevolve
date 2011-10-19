@@ -12,14 +12,23 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class InterfaceNumberSelection extends GridContainer implements
 		Informable, Contentable {
 
-	private InterfaceLabel label = new InterfaceLabel("0", 12);
-	private int curNumber = 0;
-	private final int min, max;
+	private static final int DEFAULT_STEP = 1;
 
-	public InterfaceNumberSelection(int min, int max) {
+	private InterfaceTextField textField = new InterfaceTextField(
+			InterfaceFunctions.INTERFACE_TEXTFIELD);
+	private int curNumber;
+	private final int min, max, step;
+
+	public InterfaceNumberSelection(int min, int max, int start, int step) {
 		super(1, 3);
 		this.min = min;
 		this.max = max;
+		if (step > 0) { // Keine negativen Steps und nicht 0
+			this.step = step;
+		} else {
+			this.step = DEFAULT_STEP;
+		}
+		this.curNumber = start;
 		InterfaceButton a = new InterfaceButton(
 				InterfaceFunctions.INTERFACE_NUMBER_SELECTION_BACK,
 				"interface-icons/back-arrow.png");
@@ -28,41 +37,50 @@ public class InterfaceNumberSelection extends GridContainer implements
 				"interface-icons/forth-arrow.png");
 		a.addInformable(this);
 		b.addInformable(this);
+		this.textField.addInformable(this);
 		this.add(a, 0, 0, MODUS_X_LEFT, MODUS_DEFAULT);
 		this.add(b, 0, 2, MODUS_X_RIGHT, MODUS_DEFAULT);
-		this.add(this.label, 0, 1);
+		this.add(this.textField, 0, 1);
+		this.updateTextField();
+	}
+
+	public InterfaceNumberSelection(int min, int max) {
+		this(min, max, min, DEFAULT_STEP);
 	}
 
 	private void moveBack() {
-		if (this.curNumber > min) {
-			this.curNumber--;
-			this.updateLabel();
+		if (this.curNumber > this.min) {
+			this.curNumber = this.curNumber - this.step;
+			this.updateTextField();
 		}
 	}
 
 	private void moveForth() {
-		if (this.curNumber < max) {
-			this.curNumber++;
-			this.updateLabel();
+		if (this.curNumber < this.max) {
+			this.curNumber = this.curNumber + this.step;
+			this.updateTextField();
 		}
 	}
 
-	private void updateLabel() {
-		this.label.setText("" + this.curNumber);
+	private void updateTextField() {
+		this.textField.setContent("" + this.curNumber);
 	}
 
-	// @Override
-	// public void draw(Graphics g) {
-	// Rectangle rect = (Rectangle) this.getNeededSize();
-	// Vector center = this.parentContainer.getTransformedPositionFor(this)
-	// .modifyX(rect.width / 2).modifyY(rect.height / 2);
-	// Color c = g.getColor();
-	// // TODO: fill-Methode in GraphicsUtils auslagern
-	// g.setColor(Color.green);
-	// g.fill(rect.modifyCenter(center).toSlickShape());
-	// g.setColor(c);
-	// super.draw(g);
-	// }
+	private void transmitTextFieldContent(InterfaceObject object) {
+		String content = this.textField.getContent();
+		int number = 0;
+		if (content.length() > 0) {
+			try {
+				number = Integer.parseInt(content);
+			} catch (NumberFormatException e) {
+				// Nichts tun
+			}
+		}
+		if (number >= this.min && number <= this.max) {
+			this.curNumber = number;
+		}
+		this.updateTextField();
+	}
 
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
@@ -73,18 +91,30 @@ public class InterfaceNumberSelection extends GridContainer implements
 				this.moveBack();
 			}
 		}
+		if (object.getFunction() == InterfaceFunctions.INTERFACE_TEXTFIELD) {
+			this.transmitTextFieldContent(object);
+		}
 	}
 
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
-		// Nichts tun
+		if (object.getFunction() == InterfaceFunctions.INTERFACE_TEXTFIELD) {
+			this.transmitTextFieldContent(object);
+		}
+	}
+
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		if (object.getFunction() == InterfaceFunctions.INTERFACE_TEXTFIELD) {
+			this.transmitTextFieldContent(object);
+		}
 	}
 
 	@Override
 	public Shape getNeededSize() {
 		return new Rectangle(Vector.ZERO, InterfaceButton.BUTTON_DIMENSION * 2
-				+ this.label.getNeededSize().getXRange(),
-				InterfaceButton.BUTTON_DIMENSION);
+				+ this.textField.getNeededSize().getXRange(),
+				InterfaceButton.BUTTON_DIMENSION + 10);
 	}
 
 	@Override
@@ -95,5 +125,6 @@ public class InterfaceNumberSelection extends GridContainer implements
 	@Override
 	public void setContent(String newContent) {
 		this.curNumber = (int) (Float.parseFloat(newContent.trim()));
+		this.updateTextField();
 	}
 }

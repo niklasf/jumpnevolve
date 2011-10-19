@@ -1,12 +1,12 @@
 package com.googlecode.jumpnevolve.game;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.newdawn.slick.Color;
 
 import com.googlecode.jumpnevolve.editor.Arguments;
+import com.googlecode.jumpnevolve.editor2.Checkbox;
 import com.googlecode.jumpnevolve.editor2.EditorArgument;
 import com.googlecode.jumpnevolve.editor2.EditorArguments;
+import com.googlecode.jumpnevolve.editor2.NumberSelection;
 import com.googlecode.jumpnevolve.editor2.PositionMarker;
 import com.googlecode.jumpnevolve.editor2.RectangleDimension;
 import com.googlecode.jumpnevolve.editor2.RelativePositionMarker;
@@ -52,21 +52,27 @@ public enum GameObjects implements InterfaceFunction {
 	GREEN_SLIME_WORM(GreenSlimeWorm.class,
 			"object-pictures/green-slime-worm.png", false),
 
+	// Fertig
 	BUTTON(Button.class, "textures/aluminium.png",
 			new String[] { "Active Time" }, new char[0],
 			new String[] { "10.0" }, new String[] { "Float" }, true,
-			new EditorArguments(null)),
+			new EditorArguments(new EditorArgument[] { new NumberSelection(
+					"Active Time", 1, 100, 10, 1) })),
 
+	// Ferig
 	DOOR(Door.class, "textures/wood.png", new String[] { "Width", "Height" },
 			new char[] { '|' }, new String[] { "30", "10" }, new String[] {
-					"Vector", "Vector" }, false, new EditorArguments(null)),
+					"Vector", "Vector" }, false, new EditorArguments(
+					new EditorArgument[] { new RectangleDimension(30, 10) })),
 
+	// Fertig
 	GROUND(Ground.class, "textures/stone.png",
 			new String[] { "Width", "Height" }, new char[] { '|' },
 			new String[] { "30", "10" }, new String[] { "Vector", "Vector" },
 			false, new EditorArguments(
 					new EditorArgument[] { new RectangleDimension(30, 10) })),
 
+	// Fertig
 	ELEVATOR(Elevator.class, "textures/aluminium.png", new String[] { "Width",
 			"Height", "DownEnd", "UpEnd" }, new char[] { '|', ',', ',' },
 			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
@@ -78,22 +84,35 @@ public enum GameObjects implements InterfaceFunction {
 					new RelativePositionMarker(PositionMarker.MODUS_Y,
 							Vector.DOWN.mul(10), Color.green) })),
 
+	// Fertig
 	SLIDING_PLATTFORM(SlidingPlattform.class, "textures/aluminium.png",
-			new String[] { "Width", "Height", "DownEnd", "UpEnd" }, new char[] {
-					'|', ',', ',' },
-			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
-					"Vector", "Vector", "Float", "Float" }, false,
-			new EditorArguments(null)),
+			new String[] { "Width", "Height", "RightEnd", "LeftEnd" },
+			new char[] { '|', ',', ',' }, new String[] { "30", "10", "20.0",
+					"0.0" }, new String[] { "Vector", "Vector", "Float",
+					"Float" }, false, new EditorArguments(new EditorArgument[] {
+					new RectangleDimension(30, 10),
+					new RelativePositionMarker(PositionMarker.MODUS_X,
+							Vector.RIGHT.mul(30), Color.green),
+					new RelativePositionMarker(PositionMarker.MODUS_X,
+							Vector.LEFT.mul(30), Color.green) })),
 
+	// Fertig
 	FLUID(Fluid.class, "textures/water.png", new String[] { "Width", "Height",
 			"MaximumVelocity" }, new char[] { '|', ',' }, new String[] { "30",
 			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false,
-			new EditorArguments(null)),
+			new EditorArguments(new EditorArgument[] {
+					new RectangleDimension(30, 10),
+					new NumberSelection("MaximumVelocity", 1, 100, 20, 1) })),
 
+	// Fertig
 	CANNON(Cannon.class, "object-pictures/cannon.png", new String[] {
 			"Activated", "ShotDirectionX", "ShotDirectionY" }, new char[] {
 			',', '|' }, new String[] { "true", "20", "-5" }, new String[] {
-			"Boolean", "Vector", "Vector" }, false, new EditorArguments(null)),
+			"Boolean", "Vector", "Vector" }, false, new EditorArguments(
+			new EditorArgument[] {
+					new Checkbox("Activated", false),
+					new RelativePositionMarker(PositionMarker.MODUS_BOTH,
+							Vector.UP_RIGHT, Color.yellow) })),
 
 	SAVE_POINT(SavePoint.class, "textures/aluminium.png", false);
 	// FIXME: SavePoint braucht sein eigenes Icon (keine Textur)

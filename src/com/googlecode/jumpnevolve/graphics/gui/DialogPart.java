@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
-class DialogPart {
+public class DialogPart {
 
 	public final String name;
 	public final Contentable part;

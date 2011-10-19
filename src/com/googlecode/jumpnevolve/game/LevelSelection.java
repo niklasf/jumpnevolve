@@ -161,4 +161,8 @@ public class LevelSelection extends AbstractState implements Interfaceable {
 		}
 	}
 
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		//Nichts tun
+	}
 }

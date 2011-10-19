@@ -54,7 +54,6 @@ public abstract class Line {
 				&& !(this.a * other.b == this.b * other.a);
 		if (canCross) {
 			Vector crossPoint = this.getCrossingPoint(other);
-			System.out.println("CP: " + crossPoint);
 			return this.canPointBeOnLine(crossPoint)
 					&& other.canPointBeOnLine(crossPoint);
 		} else {
@@ -73,7 +72,6 @@ public abstract class Line {
 	 */
 	public Vector getCrossingPoint(Line other) {
 		if (!(this.a * other.b == other.a * this.b)) {
-			System.out.println("Neues Verfahren");
 			float q = this.a * other.b - other.a * this.b;
 			float x = (this.b * other.c - this.c * other.b) / q;
 			float y = (this.c * other.a - this.a * other.c) / q;

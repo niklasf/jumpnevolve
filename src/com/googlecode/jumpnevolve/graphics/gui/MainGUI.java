@@ -20,13 +20,16 @@ public class MainGUI extends InterfaceContainer {
 	public MainGUI(Interfaceable parent) {
 		super();
 		this.setParentInterfaceable(parent);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setMainContainer(InterfaceContainer con) {
 		this.remove(mainContainer);
 		this.add(con, Vector.ZERO);
 		this.mainContainer = con;
+	}
+
+	public InterfaceContainer getMainContainer() {
+		return this.mainContainer;
 	}
 
 	@Override

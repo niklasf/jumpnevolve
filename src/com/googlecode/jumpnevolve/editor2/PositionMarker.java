@@ -6,6 +6,7 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.NextShape;
+import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -15,27 +16,66 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class PositionMarker extends EditorArgument {
 
+	/**
+	 * Konstante für eine Positionsmarkierung mit beiden Koordinaten
+	 */
 	public static final int MODUS_BOTH = 0;
+
+	/**
+	 * Konstante für eine Positionsmarkierung nur mit der X-Koordinate
+	 */
 	public static final int MODUS_X = 1;
+
+	/**
+	 * Konstante für eine Positionsmarkierung nur mit der Y-Koordinate
+	 */
 	public static final int MODUS_Y = 2;
 
-	private static final float radius = 3.0f;
+	/**
+	 * Die Größendimension der Markierungen
+	 */
+	private static final float DIMENSION = 5.0f;
 
 	protected final int modus;
 	protected final Color color;
 	protected Vector position;
-	private NextShape circle;
-	private boolean wasInCircle = false;
+	private NextShape shape;
+	protected boolean wasInCircle = false;
 
 	/**
-	 * @param parent
+	 * Erstellt einen Positionsmarker, der eine Stelle im Editor markiert
+	 * 
+	 * @param modus
+	 *            Die Art des Positionsmarkers {@link #MODUS_BOTH} ,
+	 *            {@link #MODUS_X}, {@link #MODUS_Y}
+	 * @param startPosition
+	 *            Die Startpositions des Markers
+	 * @param color
+	 *            Die Farbe, mit der der Marker gezeichnet werden soll
 	 */
 	public PositionMarker(int modus, Vector startPosition, Color color) {
 		super();
 		this.modus = modus;
 		this.position = startPosition;
 		this.color = color;
-		this.circle = ShapeFactory.createCircle(this.getPosition(), radius);
+		switch (this.modus) {
+		case MODUS_BOTH:
+			this.shape = ShapeFactory.createCircle(this.getPosition(),
+					DIMENSION);
+			break;
+		case MODUS_X:
+			this.shape = ShapeFactory.createRectangle(this.getPosition(),
+					DIMENSION, DIMENSION * 3);
+			break;
+		case MODUS_Y:
+			this.shape = ShapeFactory.createRectangle(this.getPosition(),
+					DIMENSION * 3, DIMENSION);
+			break;
+		default:
+			this.shape = ShapeFactory.createCircle(this.getPosition(),
+					DIMENSION);
+			break;
+		}
 	}
 
 	@Override
@@ -53,7 +93,6 @@ public class PositionMarker extends EditorArgument {
 	}
 
 	public Vector getPosition() {
-		System.out.println("P");
 		return this.position;
 	}
 
@@ -61,9 +100,9 @@ public class PositionMarker extends EditorArgument {
 		return this.wasInCircle;
 	}
 
-	private void changePosition(Vector newPosition) {
+	protected void changePosition(Vector newPosition) {
 		this.position = newPosition;
-		this.circle = this.circle.modifyCenter(this.getPosition());
+		this.shape = this.shape.modifyCenter(this.getPosition());
 	}
 
 	@Override
@@ -73,7 +112,7 @@ public class PositionMarker extends EditorArgument {
 		if (this.wasInCircle) {
 			this.changePosition(mousePos);
 		}
-		if (this.circle.isPointIn(mousePos)
+		if (this.shape.isPointIn(mousePos)
 				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 			this.wasInCircle = true;
 		} else {
@@ -83,7 +122,7 @@ public class PositionMarker extends EditorArgument {
 
 	@Override
 	public void draw(Graphics g) {
-		GraphicUtils.draw(g, this.circle, this.color);
+		GraphicUtils.draw(g, this.shape, this.color);
 	}
 
 	@Override

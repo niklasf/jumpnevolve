@@ -467,7 +467,7 @@ public class Vector implements Cloneable, Serializable {
 
 	@Override
 	public String toString() {
-		return "(" + this.x + ", " + this.y + ")";
+		return "(" + this.x + "| " + this.y + ")";
 	}
 
 	private static Pattern vectorPattern = Pattern
@@ -483,8 +483,8 @@ public class Vector implements Cloneable, Serializable {
 	public static Vector parseVector(String s) {
 		Matcher matcher = vectorPattern.matcher(s);
 		if (matcher.matches()) {
-			return new Vector(Float.parseFloat(matcher.group(1)), Float
-					.parseFloat(matcher.group(3)));
+			return new Vector(Float.parseFloat(matcher.group(1)),
+					Float.parseFloat(matcher.group(3)));
 		} else {
 			throw new NumberFormatException("Input is no vector: " + s);
 		}

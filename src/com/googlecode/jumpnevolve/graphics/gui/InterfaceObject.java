@@ -46,7 +46,9 @@ public abstract class InterfaceObject implements InterfacePart {
 	private int status;
 	private boolean wasClicked = false, interfaceableAdded = false;
 
-	private ArrayList<Informable> informed = new ArrayList<Informable>();
+	protected ArrayList<Informable> toInform = new ArrayList<Informable>();
+
+	private static InterfaceObject LastSelected = null;
 
 	/**
 	 * @param function
@@ -60,7 +62,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	public void setParentContainer(InterfaceContainer parent) {
 		if (parent.contains(this)) {
 			if (this.parent != null && this.parent.getInterfaceable() != null) {
-				this.informed.remove(this.parent.getInterfaceable());
+				this.toInform.remove(this.parent.getInterfaceable());
 			}
 			this.parent = parent;
 			if (this.parent.getInterfaceable() != null) {
@@ -84,7 +86,7 @@ public abstract class InterfaceObject implements InterfacePart {
 				.modifyCenter(this.getCenterVector())
 				.isPointInThis(new Vector(input.getMouseX(), input.getMouseY()))) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				Object[] infos = this.informed.toArray();
+				Object[] infos = this.toInform.toArray();
 				for (Object informable : infos) {
 					((Informable) informable).mouseClickedAction(this);
 				}
@@ -94,8 +96,9 @@ public abstract class InterfaceObject implements InterfacePart {
 					this.status = STATUS_PRESSED;
 				}
 				this.wasClicked = true;
+				LastSelected = this;
 			} else {
-				Object[] infos = this.informed.toArray();
+				Object[] infos = this.toInform.toArray();
 				for (Object informable : infos) {
 					((Informable) informable).mouseOverAction(this);
 				}
@@ -105,6 +108,12 @@ public abstract class InterfaceObject implements InterfacePart {
 		} else {
 			this.status = STATUS_NOTHING;
 			this.wasClicked = false;
+		}
+		if (this.isSelected()) {
+			Object[] infos = this.toInform.toArray();
+			for (Object informable : infos) {
+				((Informable) informable).objectIsSelected(this);
+			}
 		}
 	}
 
@@ -116,8 +125,8 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            Das Informable-Objekt
 	 */
 	public void addInformable(Informable object) {
-		if (this.informed.contains(object) == false && object != null) {
-			this.informed.add(object);
+		if (this.toInform.contains(object) == false && object != null) {
+			this.toInform.add(object);
 		}
 	}
 
@@ -158,5 +167,15 @@ public abstract class InterfaceObject implements InterfacePart {
 						.sub(new Vector(this.parent.getInterfaceable()
 								.getWidth() / 2, this.parent.getInterfaceable()
 								.getHeight() / 2)));
+	}
+
+	/**
+	 * @param object
+	 *            Das zu prüfende Objekt
+	 * @return <code>true</code>, wenn als letztes auf dieses Objekt geklickt
+	 *         wurde
+	 */
+	public boolean isSelected() {
+		return this.equals(LastSelected);
 	}
 }

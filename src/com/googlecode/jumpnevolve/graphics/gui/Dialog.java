@@ -5,6 +5,7 @@ package com.googlecode.jumpnevolve.graphics.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -25,10 +26,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class Dialog extends InterfaceContainer implements Informable {
 
+	private static ArrayList<Dialog> Instances = new ArrayList<Dialog>();
+
 	private GridContainer curCon;
 	private ArrayList<DialogPart> contents = new ArrayList<DialogPart>();
 	private boolean shown = false;
 	private InterfaceTextButton closeButton;
+	private Rectangle dimensions = new Rectangle(Vector.ZERO, Vector.DOWN_LEFT);
 
 	/**
 	 * 
@@ -41,6 +45,24 @@ public class Dialog extends InterfaceContainer implements Informable {
 		gridContainer.add(closeButton, 0, 0);
 		this.add(gridContainer, Vector.ZERO);
 		this.curCon = gridContainer;
+		Dialog.Instances.add(this);
+	}
+
+	public static boolean isAnyDialogActive() {
+		for (Dialog obj : Dialog.Instances) {
+			if (obj.isActive()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @return Gibt zurück, ob der Dialog aktiv ist (entspricht, ob er angezeigt
+	 *         ist)
+	 */
+	public boolean isActive() {
+		return this.shown;
 	}
 
 	public void show() {
@@ -51,8 +73,20 @@ public class Dialog extends InterfaceContainer implements Informable {
 		this.setShown(false);
 	}
 
+	public void switchStatus() {
+		this.setShown(!this.shown);
+	}
+
 	public void setShown(boolean shown) {
-		this.shown = shown;
+		if (this.getNumberOfParts() > 0) {
+			this.shown = shown;
+		} else {
+			this.shown = false;
+		}
+	}
+
+	public int getNumberOfParts() {
+		return this.contents.size();
 	}
 
 	/**
@@ -74,7 +108,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 		this.curCon = gridContainer;
 	}
 
-	private void addPart(DialogPart dialogPart) {
+	public void addPart(DialogPart dialogPart) {
 		this.contents.add(dialogPart);
 		GridContainer con = new GridContainer(contents.size() + 1, 2);
 		for (int i = 0; i < this.contents.size(); i++) {
@@ -84,7 +118,40 @@ public class Dialog extends InterfaceContainer implements Informable {
 					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 		}
 		con.add(this.closeButton, this.contents.size(), 1);
+		this.calculateDimensions();
 		this.changeCon(con);
+	}
+
+	private void calculateDimensions() {
+		// TODO: Noch fehlerhaft, wenn als Parts nur Textfelder verwendet werden
+		// und die Labels lang sind --> new InterfaceLabel(part.name,
+		// 12).getNeededSize().getXRange() liefert noch ein falsches Ergebnis,
+		// aufgrund einer falschen Schriftart --> Behebung durch
+		// Implementierungen eigener Schriftarten, die korrekt angezeigt werden
+		float widthParts = 0, widthLabels = 0, height = 0;
+		for (DialogPart part : this.contents) {
+			widthParts = Math.max(part.part.getNeededSize().getXRange(),
+					widthParts);
+			widthLabels = Math.max(new InterfaceLabel(part.name, 12)
+					.getNeededSize().getXRange(), widthLabels);
+			height = Math.max(part.part.getNeededSize().getYRange(), height);
+		}
+		height = Math.max(this.closeButton.getNeededSize().getYRange(), height);
+		float width = Math.max(widthParts, widthLabels);
+		this.dimensions = new Rectangle(Vector.ZERO, width * 2, height
+				* this.contents.size());
+	}
+
+	/**
+	 * Fügt dem Dialog ein Contentable hinzu
+	 * 
+	 * @param part
+	 *            Das Contentable
+	 * @param name
+	 *            Die Bezeichnung, unter der das Contentable abgelegt wird
+	 */
+	public void addContentable(Contentable part, String name) {
+		this.addPart(new DialogPart(part, name));
 	}
 
 	/**
@@ -110,7 +177,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 	 */
 	public void addTextField(String name) {
 		this.addPart(new DialogPart(new InterfaceTextField(
-				InterfaceFunctions.ERROR), name));
+				InterfaceFunctions.INTERFACE_TEXTFIELD), name));
 	}
 
 	@Override
@@ -130,7 +197,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 					center.y + rect.height / 2);
 			Color c = g.getColor();
 			// TODO: fill-Methode in GraphicsUtils auslagern
-			g.setColor(Color.red);
+			g.setColor(Color.darkGray);
 			g.fill(rect.modifyCenter(center).toSlickShape());
 			g.setColor(c);
 			super.draw(g);
@@ -139,13 +206,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 
 	@Override
 	public Shape getNeededSize() {
-		float width = 0, height = 0;
-		for (DialogPart part : this.contents) {
-			width = Math.max(part.part.getNeededSize().getXRange(), width);
-			height += part.part.getNeededSize().getYRange();
-		}
-		// return new Rectangle(Vector.ZERO, width * 2, height);
-		return new Rectangle(Vector.ZERO, 400, 400);
+		return this.dimensions;
 	}
 
 	/**
@@ -154,7 +215,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 	 * @return <code>null</code>, wenn es kein Objekt mit dem Namen gibt
 	 */
 	@SuppressWarnings("unchecked")
-	public Contentable get(String name) {
+	public Contentable getContentable(String name) {
 		for (DialogPart part : (ArrayList<DialogPart>) this.contents.clone()) {
 			if (part.name.equals(name)) {
 				return part.part;
@@ -174,6 +235,19 @@ public class Dialog extends InterfaceContainer implements Informable {
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
 		// Nichts tun
+	}
+
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		// Nichts tun
+	}
+
+	public Rectangle getPlaceFor(InterfacePart object) {
+		if (object == this.curCon) {
+			return (Rectangle) this.getNeededSize();
+		} else {
+			return super.getPlaceFor(object);
+		}
 	}
 
 }

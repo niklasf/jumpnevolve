@@ -131,6 +131,11 @@ public class ButtonList extends InterfaceContainer implements Informable {
 		// Nichts tun
 	}
 
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		// Nichts tun
+	}
+
 	private void moveBack() {
 		if (this.curPos > 0) {
 			this.curPos--;

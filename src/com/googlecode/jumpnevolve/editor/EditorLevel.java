@@ -111,12 +111,12 @@ public class EditorLevel extends Level implements Interfaceable {
 		if (this.selected != null
 				&& this.selectedActionMode != ACTION_NOT_IDENTIFIED) {
 			if (this.selectedActionMode == ACTION_MOVE) {
-				Vector mousePos = this.parent.translateMouseClick(input
-						.getMouseX(), input.getMouseY());
+				Vector mousePos = this.parent.translateMouseClick(
+						input.getMouseX(), input.getMouseY());
 				this.selected.setPosition(mousePos.x, mousePos.y);
 			} else if (this.selectedActionMode == ACTION_PULL_UP) {
-				Vector mousePos = this.parent.translateMouseClick(input
-						.getMouseX(), input.getMouseY());
+				Vector mousePos = this.parent.translateMouseClick(
+						input.getMouseX(), input.getMouseY());
 				Vector pos = this.selected.getObjectPosition();
 				Vector vec = mousePos.sub(pos);
 				if (vec.x == 0) {
@@ -148,16 +148,16 @@ public class EditorLevel extends Level implements Interfaceable {
 				if (this.selected != null
 						&& this.selectedActionMode != ACTION_NOT_IDENTIFIED) {
 					if (this.selectedActionMode == ACTION_MOVE) {
-						if (this.selected.isMoveSelectedWithMouse(input
-								.getMouseX(), input.getMouseY(), false) == false) {
+						if (this.selected.isMoveSelectedWithMouse(
+								input.getMouseX(), input.getMouseY(), false) == false) {
 							this.selected = null;
 							this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 						} else {
 							this.setSelectedActionMode(ACTION_MOVE);
 						}
 					} else if (this.selectedActionMode == ACTION_PULL_UP) {
-						if (this.selected.isPullUpSelectedWithMouse(input
-								.getMouseX(), input.getMouseY(), false) == false) {
+						if (this.selected.isPullUpSelectedWithMouse(
+								input.getMouseX(), input.getMouseY(), false) == false) {
 							this.selected = null;
 							this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 						} else {
@@ -176,8 +176,7 @@ public class EditorLevel extends Level implements Interfaceable {
 								this.selected = obj;
 								this.setSelectedActionMode(ACTION_MOVE);
 							} else {
-								this
-										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+								this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 							}
 						}
 						if (obj.isPullUpSelectedWithMouse(input.getMouseX(),
@@ -186,24 +185,24 @@ public class EditorLevel extends Level implements Interfaceable {
 								this.selected = obj;
 								this.setSelectedActionMode(ACTION_PULL_UP);
 							} else {
-								this
-										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+								this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 							}
 						}
 					}
 				}
 				if (this.selected == null) {
 					for (ObjectSettings obj : abbild) {
-						if (obj.getObject().getShape().isPointIn(
-								this.parent.translateMouseClick(input
-										.getMouseX(), input.getMouseY()))) {
+						if (obj.getObject()
+								.getShape()
+								.isPointIn(
+										this.parent.translateMouseClick(
+												input.getMouseX(),
+												input.getMouseY()))) {
 							if (this.selected == null) {
 								this.selected = obj;
-								this
-										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+								this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 							} else {
-								this
-										.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
+								this.setSelectedActionMode(ACTION_NOT_IDENTIFIED);
 							}
 						}
 					}
@@ -293,8 +292,8 @@ public class EditorLevel extends Level implements Interfaceable {
 						ObjectSettings.SELECT_DISTANCE));
 			}
 			g.setColor(c);
-			GraphicUtils.drawString(g, obj.getObjectPosition(), obj
-					.getObjectName());
+			GraphicUtils.drawString(g, obj.getObjectPosition(),
+					obj.getObjectName());
 		}
 		// Spieler zeichnen
 		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
@@ -332,5 +331,10 @@ public class EditorLevel extends Level implements Interfaceable {
 	public void mouseOverAction(InterfaceObject object) {
 		this.interfaceActionThisRound = true;
 		this.setSelectedActionMode(ACTION_INTERFACE_MOUSE_OVER);
+	}
+
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		// Nichts tun
 	}
 }

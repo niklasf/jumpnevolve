@@ -137,8 +137,8 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		float height = (InterfaceTextButton.getSize() + this.distanceBetweenButtons)
 				* (this.numberOfButtonsDisplayed + 2)
 				- this.distanceBetweenButtons;
-		return new Rectangle(Vector.ZERO, this.parentContainer
-				.getPlaceFor(this).width, height);
+		return new Rectangle(Vector.ZERO,
+				this.parentContainer.getPlaceFor(this).width, height);
 	}
 
 	@Override
@@ -154,6 +154,12 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
+		// Nichts tun
+	}
+
+	@Override
+	public void objectIsSelected(InterfaceObject object) {
+		// Nichts tun
 	}
 
 }

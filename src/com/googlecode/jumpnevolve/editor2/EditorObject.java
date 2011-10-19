@@ -9,6 +9,7 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -20,6 +21,7 @@ public class EditorObject implements Pollable, Drawable {
 
 	PositionMarker position;
 	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
+	public Dialog settings = new Dialog();
 
 	public final Editor2 parent;
 	public final String objectName, className;
@@ -38,6 +40,10 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	public void addArgument(EditorArgument toAdd) {
+		if (toAdd instanceof ArgumentForDialog) {
+			this.settings.addPart(((ArgumentForDialog) toAdd)
+					.getInterfacePart());
+		}
 		if (!this.arguments.contains(toAdd)) {
 			toAdd.setParent(this);
 			this.arguments.add(toAdd);
@@ -45,9 +51,6 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	public boolean isPointIn(Vector point) {
-		System.out.println("Point: " + point + " Shape: "
-				+ this.getObject().getShape() + " isPointIn: "
-				+ this.getObject().getShape().isPointIn(point));
 		return this.getObject().getShape().isPointIn(point);
 	}
 
@@ -64,6 +67,18 @@ public class EditorObject implements Pollable, Drawable {
 		return this.className + "_" + this.getPosition() + "_"
 				+ this.objectName + "_" + this.getActivatings() + "_"
 				+ this.getArgumentString();
+	}
+
+	public void showDialog() {
+		this.settings.show();
+	}
+
+	public void hideDialog() {
+		this.settings.hide();
+	}
+
+	public void switchDialogStatus() {
+		this.settings.switchStatus();
 	}
 
 	private String getArgumentString() {
@@ -92,11 +107,13 @@ public class EditorObject implements Pollable, Drawable {
 			arg.poll(input, secounds);
 		}
 		this.position.poll(input, secounds);
+		this.settings.poll(input, secounds);
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		this.getObject().draw(g);
+		this.settings.draw(g);
 	}
 
 	@SuppressWarnings("unchecked")

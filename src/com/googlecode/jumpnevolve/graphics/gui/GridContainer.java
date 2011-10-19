@@ -219,7 +219,19 @@ public class GridContainer extends InterfaceContainer {
 
 	@Override
 	public Shape getNeededSize() {
-		return this.parentContainer.getPlaceFor(this);
+		return this.getAdvancedNeededSize();
+		// return this.parentContainer.getPlaceFor(this);
+	}
+
+	private Shape getAdvancedNeededSize() {
+		Object[] objectsCopy = objects.keySet().toArray();
+		float width = 1, height = 1;
+		for (Object object : objectsCopy) {
+			Shape size = ((InterfacePart) object).getNeededSize();
+			width = Math.max(width, size.getXRange());
+			height = Math.max(height, size.getYRange());
+		}
+		return new Rectangle(Vector.ZERO, width * this.cols, height * this.rows);
 	}
 
 	@Override
