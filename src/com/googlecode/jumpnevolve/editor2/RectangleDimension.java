@@ -110,4 +110,9 @@ public class RectangleDimension extends EditorArgument {
 		return re;
 	}
 
+	@Override
+	public void initialize(String value) {
+		this.changeDimensions(this.getPosition().add(Vector.parseVector(value)));
+	}
+
 }

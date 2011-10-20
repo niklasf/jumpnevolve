@@ -32,6 +32,11 @@ public abstract class ArgumentForDialog extends EditorArgument {
 		return this.part.getContent();
 	}
 
+	@Override
+	public void initialize(String value) {
+		this.part.setContent(value);
+	}
+
 	public DialogPart getInterfacePart() {
 		return new DialogPart(this.part, this.name);
 	}

@@ -13,6 +13,8 @@ public abstract class EditorArgument implements Pollable, Drawable {
 
 	public abstract String getArgumentPart();
 
+	public abstract void initialize(String value);
+
 	public abstract EditorArgument clone();
 
 	public EditorArgument() {

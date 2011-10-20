@@ -102,7 +102,6 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 				}
 			} else if (input.isKeyDown(Input.KEY_LEFT)) {
 				if (!this.input_timer.isRunning()) {
-					System.out.println("Back");
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content1.length() >= 1) {
 						this.content2 = this.content1.charAt(this.content1
@@ -113,7 +112,6 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 				}
 			} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 				if (!this.input_timer.isRunning()) {
-					System.out.println("Next");
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content2.length() >= 1) {
 						this.content1 = this.content1 + this.content2.charAt(0);
@@ -131,6 +129,10 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 							} else {
 								if (keyName.equals("period")) {
 									this.content1 += ".";
+									this.input_timer.start(DELAY_LENGTH);
+								}
+								if (keyName.equals("minus")) {
+									this.content1 += "-";
 									this.input_timer.start(DELAY_LENGTH);
 								}
 							}

@@ -13,12 +13,14 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
+import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.HeadlineContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
@@ -50,7 +52,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private InterfaceFunction lastFunction;
 	private int curGuiMode = GUI_MODE_NONE;
 	private int lastGuiMode = GUI_MODE_NONE;
-	private Dialog settingsDialog, playerDialog, saveDialog;
+	private Dialog settingsDialog, playerDialog, dataDialog;
 	private GridContainer objectSettingsPlace = new GridContainer(1, 1);
 
 	/**
@@ -83,6 +85,14 @@ public class Editor2 extends Level implements Interfaceable {
 		this.playerDialog.addTextField("Startvektor");
 		this.playerDialog.addTextField("Savevektoren");
 
+		// Save-Dialog erstellen
+		this.dataDialog = new Dialog();
+		this.dataDialog.addTextField("Level laden");
+		this.dataDialog.addTextField("Level speichern");
+		this.dataDialog.addTextButton(InterfaceFunctions.EDITOR_LOAD, "Laden");
+		this.dataDialog.addTextButton(InterfaceFunctions.EDITOR_SAVE,
+				"Speichern");
+
 		GridContainer topGrid = new GridContainer(1, 5,
 				GridContainer.MODUS_DEFAULT, GridContainer.MODUS_Y_UP);
 		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_EXIT,
@@ -93,8 +103,8 @@ public class Editor2 extends Level implements Interfaceable {
 				"Player"), 0, 2);
 		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_CURRENT,
 				"Current"), 0, 3);
-		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_SAVE,
-				"Save"), 0, 4);
+		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_DATA,
+				"Data"), 0, 4);
 
 		InterfaceButton deleteButton = new InterfaceButton(
 				InterfaceFunctions.EDITOR_DELETE, "interface-icons/delete.png");
@@ -110,9 +120,12 @@ public class Editor2 extends Level implements Interfaceable {
 		border.add(this.settingsDialog, BorderContainer.POSITION_MIDDLE);
 		border.add(this.playerDialog, BorderContainer.POSITION_MIDDLE);
 		border.add(this.objectSettingsPlace, BorderContainer.POSITION_MIDDLE);
-		border.add(topGrid, BorderContainer.POSITION_HIGH);
+		border.add(this.dataDialog, BorderContainer.POSITION_MIDDLE);
+		// border.add(topGrid, BorderContainer.POSITION_HIGH);
 		border.add(deleteButton, BorderContainer.POSITION_LOW_RIGHT);
-		this.gui.setMainContainer(border);
+
+		HeadlineContainer headCon = new HeadlineContainer(topGrid, border);
+		this.gui.setMainContainer(headCon);
 
 		this.setCamera(new EditorCamera(this));
 		this.setZoom(1);
@@ -127,6 +140,10 @@ public class Editor2 extends Level implements Interfaceable {
 		String className = function.getClassNameForEditor();
 		EditorObject obj = new EditorObject(this,
 				this.getObjectName(className), className, position);
+		this.addNewObject(obj, function);
+	}
+
+	private void addNewObject(EditorObject obj, GameObjects function) {
 		function.editorArguments.initObject(obj);
 		this.objects.add(obj);
 		this.objectSettingsPlace.add(obj.settings, 0, 0);
@@ -286,6 +303,7 @@ public class Editor2 extends Level implements Interfaceable {
 	public void mouseClickedAction(InterfaceObject object) {
 		this.guiAction = true;
 		if (!Dialog.isAnyDialogActive()) {
+			// Aktionen, wenn kein Dialog aktiv ist
 			InterfaceFunction function = object.getFunction();
 			if (function instanceof GameObjects) {
 				this.setGuiMode(GUI_MODE_OBJECT);
@@ -305,14 +323,35 @@ public class Editor2 extends Level implements Interfaceable {
 						this.selected.showDialog();
 					}
 				}
-				if (object.getFunction() == InterfaceFunctions.EDITOR_SAVE) {
-					this.saveDialog.show();
+				if (object.getFunction() == InterfaceFunctions.EDITOR_DATA) {
+					this.dataDialog.show();
 				}
 				if (object.getFunction() == InterfaceFunctions.EDITOR_EXIT) {
 					this.exit();
 				}
 			}
 			this.lastFunction = function;
+		} else {
+			// Aktionen aus den Dialogen
+			if (object.getFunction() == InterfaceFunctions.EDITOR_SAVE) {
+				try {
+					this.saveLevel(this.transformToPath(this.dataDialog
+							.getContentable("Level speichern").getContent()));
+				} catch (IOException e) {
+					// TODO Fehlermeldung im Editor ausgeben
+					e.printStackTrace();
+				}
+			}
+			if (object.getFunction() == InterfaceFunctions.EDITOR_LOAD) {
+				try {
+					this.loadLevel(this.transformToPath(this.dataDialog
+							.getContentable("Level laden").getContent()));
+					this.loadWithNewSettings();
+				} catch (IOException e) {
+					// TODO Fehlermeldung im Editor ausgeben
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -328,6 +367,7 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	public void loadLevel(String path) throws IOException {
+		System.out.println("Try loading: " + path);
 		BufferedReader levelFile = new BufferedReader(new FileReader(path));
 
 		// Die ersten drei Zeilen laden
@@ -373,6 +413,8 @@ public class Editor2 extends Level implements Interfaceable {
 			this.settingsDialog.getContentable("Hintergrund").setContent(
 					settingsLineSplit[3]);
 
+			this.setBackground(settingsLineSplit[3]);
+
 			// Playerline verarbeiten
 			this.playerDialog.getContentable("Startfigur").setContent(
 					playerLineSplit[1]);
@@ -401,9 +443,9 @@ public class Editor2 extends Level implements Interfaceable {
 						"Fehler im Aufbau der Leveldatei (Objektzeile: "
 								+ current + " )");
 			} else {
-				EditorObject cur = new EditorObject(this,
-						current.split("_")[2], current.split("_")[0],
-						Vector.parseVector(current.split("_")[1]));
+				String[] currentSplit = current.split("_");
+				EditorObject cur = new EditorObject(this, currentSplit[2],
+						currentSplit[0], Vector.parseVector(currentSplit[1]));
 				try {
 					int id = Integer.parseInt(cur.objectName.split("-")[0]);
 					if (id > highestID) {
@@ -411,8 +453,9 @@ public class Editor2 extends Level implements Interfaceable {
 					}
 				} catch (NumberFormatException e) {
 				}
-				this.objects.add(cur);
-
+				this.addNewObject(cur,
+						GameObjects.getGameObject(currentSplit[0]));
+				cur.initialize(currentSplit[4]);
 			}
 			current = levelFile.readLine();
 		}
@@ -444,8 +487,46 @@ public class Editor2 extends Level implements Interfaceable {
 		stream.close();
 	}
 
+	private void loadWithNewSettings() throws IOException {
+		Dialog.disableAll();
+		this.saveLevel("resources/levels/reload-save.txt");
+		AbstractEngine engine = Engine.getInstance();
+		engine.switchState(new Editor2(new Levelloader(
+				"resources/levels/reload-save.txt"), Integer
+				.parseInt(this.settingsDialog.getContentable("Breite")
+						.getContent()), Integer.parseInt(this.settingsDialog
+				.getContentable("Höhe").getContent()), Integer
+				.parseInt(this.settingsDialog.getContentable("Subarea-Breite")
+						.getContent())));
+	}
+
+	/**
+	 * Formt den String so um, dass das Level in "resources/levels/" abgelegt
+	 * wird und die Endung ".txt" hat
+	 * 
+	 * Pfad-Angaben werden ignoriert, Inhalt hinter "." wird entfernt und durch
+	 * ".txt" ersetzt
+	 * 
+	 * @param content
+	 *            Der String, der umgeformt werden soll
+	 * @return Der umgeformte String
+	 */
+	private String transformToPath(String content) {
+		int lastPoint = content.indexOf(".");
+		if (lastPoint != -1) {
+			content = content.substring(0, lastPoint);
+		}
+		content += ".txt";
+		String[] parts = content.split("/");
+		switch (parts.length) {
+		case 1:
+			return "resources/levels/" + content;
+		default:
+			return "resources/levels/" + parts[parts.length - 1];
+		}
+	}
+
 	private String getPlayerLine() {
-		// TODO Auto-generated method stub
 		HashMap<String, String> map = this.playerDialog.getContents();
 		return "Player_" + map.get("Startfigur") + "_"
 				+ map.get("Verfügbare Figuren") + "_" + map.get("Startvektor")

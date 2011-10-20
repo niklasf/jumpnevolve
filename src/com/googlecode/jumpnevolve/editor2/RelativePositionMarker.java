@@ -47,4 +47,39 @@ public class RelativePositionMarker extends PositionMarker {
 		re.setParent(this.parent);
 		return re;
 	}
+
+	@Override
+	public String getArgumentPart() {
+		switch (this.modus) {
+		case MODUS_BOTH:
+			return this.position.add(this.parent.getPosition()).toString();
+		case MODUS_X:
+			return "" + this.position.add(this.parent.getPosition()).x;
+		case MODUS_Y:
+			return "" + this.position.add(this.parent.getPosition()).y;
+		default:
+			return this.position.toString();
+		}
+	}
+
+	@Override
+	public void initialize(String value) {
+		switch (this.modus) {
+		case MODUS_X:
+			this.changePosition(Vector.parseVector(
+					value + "|" + this.parent.getPosition().y).sub(
+					this.parent.getPosition()));
+			break;
+		case MODUS_Y:
+			this.changePosition(Vector.parseVector(
+					this.parent.getPosition().x + "|" + value).sub(
+					this.parent.getPosition()));
+			break;
+		case MODUS_BOTH:
+		default:
+			this.changePosition(Vector.parseVector(value).sub(
+					this.parent.getPosition()));
+			break;
+		}
+	}
 }

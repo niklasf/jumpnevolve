@@ -30,21 +30,19 @@ public class Dialog extends InterfaceContainer implements Informable {
 
 	private GridContainer curCon;
 	private ArrayList<DialogPart> contents = new ArrayList<DialogPart>();
+	private ArrayList<InterfaceTextButton> buttons = new ArrayList<InterfaceTextButton>();
 	private boolean shown = false;
-	private InterfaceTextButton closeButton;
 	private Rectangle dimensions = new Rectangle(Vector.ZERO, Vector.DOWN_LEFT);
 
 	/**
 	 * 
 	 */
 	public Dialog() {
-		this.closeButton = new InterfaceTextButton(
+		InterfaceTextButton closeButton = new InterfaceTextButton(
 				InterfaceFunctions.DIALOG_CLOSE, "Dialog schließen");
-		this.closeButton.addInformable(this);
-		GridContainer gridContainer = new GridContainer(1, 1);
-		gridContainer.add(closeButton, 0, 0);
-		this.add(gridContainer, Vector.ZERO);
-		this.curCon = gridContainer;
+		closeButton.addInformable(this);
+		this.buttons.add(closeButton);
+		this.updateCon();
 		Dialog.Instances.add(this);
 	}
 
@@ -102,24 +100,35 @@ public class Dialog extends InterfaceContainer implements Informable {
 		return re;
 	}
 
-	private void changeCon(GridContainer gridContainer) {
-		this.remove(curCon);
-		this.add(gridContainer, Vector.ZERO);
-		this.curCon = gridContainer;
-	}
-
 	public void addPart(DialogPart dialogPart) {
 		this.contents.add(dialogPart);
-		GridContainer con = new GridContainer(contents.size() + 1, 2);
+		this.updateCon();
+	}
+
+	private void updateCon() {
+		GridContainer con = new GridContainer(this.contents.size()
+				+ this.buttons.size(), 2);
 		for (int i = 0; i < this.contents.size(); i++) {
 			con.add(new InterfaceLabel(this.contents.get(i).name, 12), i, 0,
 					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 			con.add(this.contents.get(i).part, i, 1,
 					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
 		}
-		con.add(this.closeButton, this.contents.size(), 1);
+		for (int i = 0; i < this.buttons.size() - 1; i++) {
+			con.add(this.buttons.get(i), i + this.contents.size(), 0,
+					GridContainer.MODUS_X_LEFT, GridContainer.MODUS_DEFAULT);
+		}
+		con.add(this.buttons.get(this.buttons.size() - 1), this.buttons.size()
+				+ this.contents.size() - 1, 1, GridContainer.MODUS_X_LEFT,
+				GridContainer.MODUS_DEFAULT);
 		this.calculateDimensions();
 		this.changeCon(con);
+	}
+
+	private void changeCon(GridContainer gridContainer) {
+		this.remove(curCon);
+		this.add(gridContainer, Vector.ZERO);
+		this.curCon = gridContainer;
 	}
 
 	private void calculateDimensions() {
@@ -128,18 +137,19 @@ public class Dialog extends InterfaceContainer implements Informable {
 		// 12).getNeededSize().getXRange() liefert noch ein falsches Ergebnis,
 		// aufgrund einer falschen Schriftart --> Behebung durch
 		// Implementierungen eigener Schriftarten, die korrekt angezeigt werden
-		float widthParts = 0, widthLabels = 0, height = 0;
+		float height = 0, width = 0;
 		for (DialogPart part : this.contents) {
-			widthParts = Math.max(part.part.getNeededSize().getXRange(),
-					widthParts);
-			widthLabels = Math.max(new InterfaceLabel(part.name, 12)
-					.getNeededSize().getXRange(), widthLabels);
+			width = Math.max(part.part.getNeededSize().getXRange(), width);
+			width = Math.max(new InterfaceLabel(part.name, 12).getNeededSize()
+					.getXRange(), width);
 			height = Math.max(part.part.getNeededSize().getYRange(), height);
 		}
-		height = Math.max(this.closeButton.getNeededSize().getYRange(), height);
-		float width = Math.max(widthParts, widthLabels);
+		for (InterfaceTextButton button : this.buttons) {
+			width = Math.max(button.getNeededSize().getXRange(), width);
+			height = Math.max(button.getNeededSize().getYRange(), height);
+		}
 		this.dimensions = new Rectangle(Vector.ZERO, width * 2, height
-				* this.contents.size());
+				* (this.contents.size() + this.buttons.size()));
 	}
 
 	/**
@@ -178,6 +188,12 @@ public class Dialog extends InterfaceContainer implements Informable {
 	public void addTextField(String name) {
 		this.addPart(new DialogPart(new InterfaceTextField(
 				InterfaceFunctions.INTERFACE_TEXTFIELD), name));
+	}
+
+	public void addTextButton(InterfaceFunction function, String text) {
+		this.buttons.add(this.buttons.size() - 1, new InterfaceTextButton(
+				function, text));
+		this.updateCon();
 	}
 
 	@Override
@@ -247,6 +263,15 @@ public class Dialog extends InterfaceContainer implements Informable {
 			return (Rectangle) this.getNeededSize();
 		} else {
 			return super.getPlaceFor(object);
+		}
+	}
+
+	/**
+	 * Deaktiviert alle Dialog (blendet sie aus)
+	 */
+	public static void disableAll() {
+		for (Dialog dialog : Instances) {
+			dialog.hide();
 		}
 	}
 

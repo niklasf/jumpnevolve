@@ -133,4 +133,25 @@ public class PositionMarker extends EditorArgument {
 		return re;
 	}
 
+	@Override
+	public void initialize(String value) {
+		switch (this.modus) {
+		case MODUS_BOTH:
+			this.changePosition(Vector.parseVector(value));
+			break;
+		case MODUS_X:
+			this.changePosition(Vector.parseVector(value + "|"
+					+ this.parent.getPosition().y));
+			break;
+		case MODUS_Y:
+			System.out.println(this.parent.getPosition().x + "|" + value);
+			this.changePosition(Vector.parseVector(this.parent.getPosition().x
+					+ "|" + value));
+			break;
+		default:
+			System.out.println("MODUS: " + this.modus);
+			this.changePosition(Vector.parseVector(value));
+			break;
+		}
+	}
 }

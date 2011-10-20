@@ -39,6 +39,13 @@ public class EditorObject implements Pollable, Drawable {
 		this.position.setParent(this);
 	}
 
+	public void initialize(String argumentString) {
+		String[] split = argumentString.split(",");
+		for (int i = 0; i < this.arguments.size(); i++) {
+			this.arguments.get(i).initialize(split[i]);
+		}
+	}
+
 	public void addArgument(EditorArgument toAdd) {
 		if (toAdd instanceof ArgumentForDialog) {
 			this.settings.addPart(((ArgumentForDialog) toAdd)

@@ -22,7 +22,9 @@ public enum InterfaceFunctions implements InterfaceFunction {
 
 	DIALOG_CLOSE(),
 
-	EDITOR_EXIT(), EDITOR_SETTINGS(), EDITOR_PLAYER(), EDITOR_CURRENT(), EDITOR_SAVE(), EDITOR_DELETE();
+	EDITOR_EXIT(), EDITOR_SETTINGS(), EDITOR_PLAYER(), EDITOR_CURRENT(), EDITOR_DATA(),
+
+	EDITOR_DELETE(), EDITOR_LOAD(), EDITOR_SAVE();
 
 	private InterfaceFunctions() {
 	}
