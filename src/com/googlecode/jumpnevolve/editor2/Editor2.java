@@ -84,6 +84,8 @@ public class Editor2 extends Level implements Interfaceable {
 		this.playerDialog.addTextField("Verfügbare Figuren");
 		this.playerDialog.addTextField("Startvektor");
 		this.playerDialog.addTextField("Savevektoren");
+		// TODO: Player muss noch dargestellt werden und seine Start-Position
+		// per Drag'n'Drop festlegbar sein
 
 		// Save-Dialog erstellen
 		this.dataDialog = new Dialog();

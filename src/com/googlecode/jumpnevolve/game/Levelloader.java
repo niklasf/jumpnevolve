@@ -38,6 +38,8 @@ public class Levelloader {
 			levelFile = new FileInputStream(this.source);
 
 			if (this.source.toLowerCase().endsWith(".txt")) {
+				// TODO: ".txt" soll in ".lvl" geändert werden
+
 				// Neues Level aus Textdatei erstellen
 				BufferedReader levelFileReader = new BufferedReader(
 						new InputStreamReader(levelFile));
@@ -45,42 +47,66 @@ public class Levelloader {
 				// Level durch Kopfzeile erstellen --> Größenordnungen
 				String firstLine = levelFileReader.readLine();
 				String[] firstLineSplit = firstLine.split("_");
-				if (firstLineSplit[0].equals("Leveldimensionen") == false) {
-					// FIXME: Fehlermeldung ausgeben und abbrechen
+				if (firstLineSplit[0].equals("Leveldimensionen") == false
+						|| firstLineSplit.length != 4) {
+					throw new IOException(
+							"Erste Zeile enthält nicht die Leveldimensionen");
 				}
-				this.level = new Level(this, Integer
-						.parseInt(firstLineSplit[1]), Integer
-						.parseInt(firstLineSplit[2]), Integer
-						.parseInt(firstLineSplit[3]));
+				this.level = new Level(this,
+						Integer.parseInt(firstLineSplit[1]),
+						Integer.parseInt(firstLineSplit[2]),
+						Integer.parseInt(firstLineSplit[3]));
 				// Einstellungen vornehmen
 				String secondLine = levelFileReader.readLine();
 				String[] secondLineSplit = secondLine.split("_");
 				if (secondLineSplit[0].equals("Leveleinstellungen") == false) {
-					// FIXME: Fehlermeldung ausgeben und abbrechen
+					throw new IOException(
+							"Zweite Zeile enthält nicht die Leveleinstellungen");
 				}
 				// Zoomeinstellungen
 				String[] zoom = secondLineSplit[1].split(",");
 				if (zoom.length == 1) {
-					this.level.setZoom(this.toFloat(zoom[0]));
+					try {
+						this.level.setZoom(this.toFloat(zoom[0]));
+					} catch (IOException e) {
+						throw new IOException(
+								"Fehler beim Laden des Zooms (1 Zoom-Argument)",
+								e);
+					}
 				} else if (zoom.length == 2) {
-					this.level.setZoom(this.toFloat(zoom[0]), this
-							.toFloat(zoom[1]));
+					try {
+						this.level.setZoom(this.toFloat(zoom[0]),
+								this.toFloat(zoom[1]));
+					} catch (IOException e) {
+						throw new IOException(
+								"Fehler beim Laden des Zooms (2 Zoom-Argumente)",
+								e);
+					}
 				} else {
-					// FIXME: Fehlermeldung
+					throw new IOException("Die Zoomangaben sind unzulässig");
 				}
 				// Hintergrund setzen
 				this.level
 						.setBackground(secondLineSplit[secondLineSplit.length - 1]);
+
 				// FIXME: Einstellungen für das Level vornehmen
+				// TODO: Timer für das Level hinzufügen
+
 				// Beispiele: verfügbare Charaktere, Timer etc.
 				String thirdLine = levelFileReader.readLine();
 				String[] thirdLineSplit = thirdLine.split("_");
 				if (thirdLineSplit[0].equals("Player") == false) {
-					// FIXME: Fehlermeldung ausgeben und abbrechen
+					throw new IOException(
+							"Dritte Zeile enthält nicht die Playerangaben");
 				}
-				this.level.addPlayer(this.toVector(thirdLineSplit[3]),
-						thirdLineSplit[2], thirdLineSplit[1], thirdLineSplit[4]
-								.split(","));
+				try {
+					this.level.addPlayer(this.toVector(thirdLineSplit[3]),
+							thirdLineSplit[2], thirdLineSplit[1],
+							thirdLineSplit[4].split(","));
+				} catch (IOException e) {
+					throw new IOException(
+							"Fehler beim Erstellen des Player-Objekts", e);
+				}
 
 				// HashMaps für Objekte zum Zwischenspeichern erstellen
 				HashMap<String, Activable> activableObjects = new HashMap<String, Activable>();
@@ -153,18 +179,16 @@ public class Levelloader {
 						this.level = (Level) object;
 					}
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
-				// Ausgabe: Fehler beim Laden des Levels
-				// FIXME: Möglich durch throw new IOException()?
-				// FIXME: try catch finally throw etwas überarbeiten.
+				// Fehler beim Laden des Levels
+				throw new IOException("Nicht-verarbeitbare Dateiendung");
 			}
 		} catch (IOException e) {
-			// Ausgabe: Fehler beim Laden des Levels
-		} catch (DataInputException e) {
-
+			System.out.println("Fehler beim Laden des Levels:\n"
+					+ e.getMessage());
+			e.printStackTrace();
 		} finally {
 			if (levelFile != null) {
 				try {
@@ -186,40 +210,24 @@ public class Levelloader {
 		return loader.getLevel();
 	}
 
-	private Vector toVector(String koordinate) throws DataInputException {
-		// TODO: Vector.parseVector könnte auch direkt verwendet werden.
+	/*
+	 * toVector() und toFloat() werden benutzt, um die Fehlerquellen genauer
+	 * eingrenzen zu können
+	 */
+
+	private Vector toVector(String koordinate) throws IOException {
 		try {
 			return Vector.parseVector(koordinate);
 		} catch (NumberFormatException e) {
-			throw new DataInputException(koordinate);
+			throw new IOException("Inkorrekter Vektor: " + koordinate);
 		}
 	}
 
-	private float toFloat(String argument) throws DataInputException {
-		// TODO: Eigentlich könnte man auch direkt NumberFormatException
-		// werfen bzw. nicht extra abfangen
-		// bzw. Float.parseFloat direkt im Code verwenden.
+	private float toFloat(String argument) throws IOException {
 		try {
 			return Float.parseFloat(argument);
 		} catch (NumberFormatException e) {
-			throw new DataInputException(argument);
+			throw new IOException("Inkorrektes Float-Argument: " + argument);
 		}
-	}
-}
-
-// TODO: Wenn diese Klasse weiter nützlich ist, sollte sie eine
-// eigene Klassendatei bekommen.
-class DataInputException extends Exception {
-
-	private static final long serialVersionUID = 8875770146455595015L;
-
-	private final String wrongInput;
-
-	public DataInputException(String wrongInput) {
-		this.wrongInput = wrongInput;
-	}
-
-	public String getWrongInput() {
-		return this.wrongInput;
 	}
 }

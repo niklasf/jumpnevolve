@@ -48,7 +48,7 @@ public class KillingMachine extends EnemyTemplate implements GravityActing,
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.isAlive() == false) {
-			this.getWorld().removeFromAllLists(this);
+			this.getWorld().removeFromWorld(this);
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
 		}
 	}

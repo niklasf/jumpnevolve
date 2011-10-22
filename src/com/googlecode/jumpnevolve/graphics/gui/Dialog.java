@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -132,11 +133,6 @@ public class Dialog extends InterfaceContainer implements Informable {
 	}
 
 	private void calculateDimensions() {
-		// TODO: Noch fehlerhaft, wenn als Parts nur Textfelder verwendet werden
-		// und die Labels lang sind --> new InterfaceLabel(part.name,
-		// 12).getNeededSize().getXRange() liefert noch ein falsches Ergebnis,
-		// aufgrund einer falschen Schriftart --> Behebung durch
-		// Implementierungen eigener Schriftarten, die korrekt angezeigt werden
 		float height = 0, width = 0;
 		for (DialogPart part : this.contents) {
 			width = Math.max(part.part.getNeededSize().getXRange(), width);
@@ -211,11 +207,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 					.getTransformedPositionFor(this);
 			center = center.modifyX(center.x + rect.width / 2).modifyY(
 					center.y + rect.height / 2);
-			Color c = g.getColor();
-			// TODO: fill-Methode in GraphicsUtils auslagern
-			g.setColor(Color.darkGray);
-			g.fill(rect.modifyCenter(center).toSlickShape());
-			g.setColor(c);
+			GraphicUtils.fill(g, rect.modifyCenter(center), Color.darkGray);
 			super.draw(g);
 		}
 	}

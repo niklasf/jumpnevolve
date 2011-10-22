@@ -7,6 +7,8 @@ import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Eine Kamera für den Editor, die sich ihre Position von ihrem Parent holt
+ * 
  * @author Erik Wagner
  * 
  */
@@ -14,13 +16,8 @@ public class EditorCamera implements Camera {
 
 	private final Editor parent;
 
-	/**
-	 * 
-	 * @param parent
-	 */
 	public EditorCamera(Editor parent) {
 		this.parent = parent;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

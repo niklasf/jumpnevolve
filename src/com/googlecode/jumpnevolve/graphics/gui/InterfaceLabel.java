@@ -1,7 +1,9 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
@@ -16,34 +18,55 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class InterfaceLabel extends InterfaceObject {
 
 	private String text;
-	private Font curFont;
 
 	/**
-	 * @param function
+	 * Die verwendete Schriftart
+	 */
+	private static Font Font;
+
+	/**
+	 * Erzeugt ein neues InterfaceLabel
+	 * 
+	 * @param text
+	 *            Der Text des Labels
+	 * @param size
+	 *            Die Größe des Textes TODO: size hat zur Zeit keine Funktion
+	 * 
+	 *            <p>
+	 *            TODO: Andere Schriftarten sollten möglich sein
+	 *            </p>
 	 */
 	public InterfaceLabel(String text, int size) {
-		super(InterfaceFunctions.ERROR);
+		super(InterfaceFunctions.INTERFACE_LABEL);
 		this.text = text;
-		this.curFont = new UnicodeFont(new java.awt.Font("Cambria",
-				java.awt.Font.PLAIN, size), size, false, false);
 	}
 
+	/**
+	 * Setzt den Text des Labels neu
+	 * 
+	 * @param text
+	 *            Der neue Text
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
 	@Override
 	public Shape getNeededSize() {
-		return new Rectangle(Vector.ZERO, this.curFont.getWidth(text),
-				this.curFont.getHeight(text));
+		if (Font == null) {
+			return new Rectangle(Vector.ZERO, this.text.length() * 10, 12);
+		} else {
+			return new Rectangle(Vector.ZERO, Font.getWidth(text),
+					Font.getHeight(text));
+		}
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		// TODO: Font-Änderung sollte möglich sein
-		// this.curFont = g.getFont();
+		if (Font == null) {
+			Font = g.getFont();
+		}
 		GraphicUtils.drawString(g, this.parent.getTransformedPositionFor(this),
 				this.text);
 	}
-
 }

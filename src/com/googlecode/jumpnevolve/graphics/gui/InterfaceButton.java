@@ -65,7 +65,6 @@ public class InterfaceButton extends InterfaceObject {
 		GraphicUtils.drawScaled(g, actShape, this.parent.getInterfaceable()
 				.getZoomX());
 		g.setColor(c);
-		// TODO: Beenden
 	}
 
 	@Override

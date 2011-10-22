@@ -2,10 +2,18 @@ package com.googlecode.jumpnevolve.game.objects;
 
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.NextShape;
 
+/**
+ * 
+ * @author Erik Wagner
+ * 
+ *         TODO: Objekt spezifizieren und entsprechende Verknüpfungen in
+ *         {@link GameObjects} erstellen
+ */
 public class Waterpit extends ObjectTemplate {
 
 	private static final long serialVersionUID = -6308218436976045606L;

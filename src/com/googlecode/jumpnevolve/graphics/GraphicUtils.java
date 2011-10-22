@@ -174,6 +174,66 @@ public class GraphicUtils {
 	}
 
 	/**
+	 * Zeichnet eine gefüllte Fläche anhand eines Shapes
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Das zuzeichnende Shape
+	 */
+	public static void fill(Graphics g, Shape shape) {
+		g.fill(shape.toSlickShape());
+	}
+
+	/**
+	 * Zeichnet eine gefüllte Fläche anhand eines Shapes in einer bestimmten
+	 * Farbe
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Shape
+	 * @param c
+	 *            Die Farbe mit der das Shape gefüllt wird
+	 */
+	public static void fill(Graphics g, Shape shape, Color c) {
+		Color cur = g.getColor();
+		g.setColor(c);
+		g.fill(shape.toSlickShape());
+		g.setColor(cur);
+	}
+
+	/**
+	 * Zeichnet eine gefüllte Fläche anhand eines Shapes
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Das zuzeichnende Shape
+	 */
+	public static void fill(Graphics g, NextShape shape) {
+		g.fill(shape.toSlickShape());
+	}
+
+	/**
+	 * Zeichnet eine gefüllte Fläche anhand eines Shapes in einer bestimmten
+	 * Farbe
+	 * 
+	 * @param g
+	 *            Grafikkontext
+	 * @param shape
+	 *            Shape
+	 * @param c
+	 *            Die Farbe mit der das Shape gefüllt wird
+	 */
+	public static void fill(Graphics g, NextShape shape, Color c) {
+		Color cur = g.getColor();
+		g.setColor(c);
+		g.fill(shape.toSlickShape());
+		g.setColor(cur);
+	}
+
+	/**
 	 * Zeichnet eine Textur
 	 */
 	public static void texture(Graphics g, Shape shape, Image image, boolean fit) {

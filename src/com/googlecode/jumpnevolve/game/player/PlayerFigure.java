@@ -54,11 +54,11 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 
 			this.setAlive(true); // Wiederbeleben
 
+			// TODO: Punkte abziehen o.Ä.
 		}
 		if (this.isWayBlocked(Shape.DOWN) == false) {
 			this.jumps = false;
 		}
-		// TODO: Tod verarbeiten
 	}
 
 	public boolean isLiving() {

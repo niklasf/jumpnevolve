@@ -150,36 +150,58 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public final void startRound(Input input) {
 		this.allreadyDone.clear();
 		this.addDone(this);
+
+		// Kraft zurücksetzen
 		this.force = Vector.ZERO;
+
+		// spezifische Objekteinstellungen am Anfang jeder Runde
 		this.specialSettingsPerRound(input);
+
+		// Ereignisse für verschiedene Objekttypen
 		if (this instanceof Moving) {
+			// Gewünschte Bewegunsrichtung
 			Vector direction = ((Moving) this).getMovingDirection();
+
+			// Aktuelle Geschwindigkeit in die Bewegungsrichtung
 			float vel = 0.0f;
+
+			// Gewünschte Geschwindigkeit in die Bewegunsrichtung
 			float move = ((Moving) this).getMovingSpeed();
 			if (direction.equals(0, 0)) {
 				move = 0.0f;
 				direction = this.getVelocity().neg();
 				vel = -1.0f;
 			} else if (this.getVelocity().equals(0, 0) == false) {
+				// Anteil der aktuellen Bewegung in die Bewegunsrichtung
 				vel = (float) (Math.cos(this.getVelocity().ang(direction)) * this
 						.getVelocity().abs());
 			}
+
+			// Multiplikator für die Kraft
 			float mul = 1.0f;
 			if (direction.x * direction.y != 0) {
 				mul = 0.707f;
 			}
+
+			// Kraft hinzufügen, die in die gewünschte Bewegunsrichtung zeigt
+			// und entsprechend des Unterschieds zwischen Bewegung und Wunsch
+			// skaliert ist
 			this.applyForce(direction.mul(mul * (move - vel) * 1.5f
 					* this.getMass()));
 		}
 		if (this instanceof Jumping) {
 			if (this.isWayBlocked(Shape.DOWN)) {
+				// Geschwindigkeit anhand der Sprunghöhe verändern
 				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
 						* ((Jumping) this).getJumpingHeight() * GRAVITY));
 			}
 		}
 		if (this instanceof GravityActing) {
+			// Schwerkraft wirken lassen
 			this.applyGravity();
 		}
+
+		// Kollision zurücksetzen
 		this.collision = new NextCollision(this.isMoveable());
 	}
 
@@ -211,10 +233,15 @@ public abstract class AbstractObject implements Pollable, Drawable,
 							.getShape(),
 							this.velocity.sub(other.velocity).mul(secounds),
 							this.isMoveable(), other.isMoveable());
+
+					// Kollision verarbeiten, wenn beide Objekte Blockables sind
 					if (this instanceof Blockable && other instanceof Blockable) {
 						other.blockWay((Blockable) this, colResult.invert());
 						this.blockWay((Blockable) other, colResult);
 					}
+
+					// Wenn sich die Objekte bereits überschneiden onCrash() für
+					// beide Objekte aufrufen
 					if (colResult.isIntersecting()) {
 						onCrash(other, colResult);
 						other.onCrash(this, colResult.invert());
@@ -222,6 +249,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				}
 			}
 
+			// Zeit seit dem letzten Frame hinterlegen
 			this.oldStep = secounds;
 		}
 	}
@@ -271,7 +299,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 			this.shape = newShape;
 
 			// Welt informieren
-			// TODO: Automatisch alle n Runden machen
 			this.world.changedPosition(this);
 		}
 	}
@@ -317,6 +344,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 *            Das blockende Objekt
 	 */
 	public void blockWay(Blockable blocker, CollisionResult colResult) {
+		// Kollision hinzufügen, wenn das andere Objekt, dieses Objekt
+		// blockieren will und dieses Objekt vom anderen Objekt blockiert
+		// werden kann
 		if (blocker.wantBlock((Blockable) this)
 				&& ((Blockable) this).canBeBlockedBy(blocker)) {
 			this.collision.addCollisionResult(colResult);

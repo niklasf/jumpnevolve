@@ -33,8 +33,10 @@ import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * TODO: Klassenbeschreibung TODO: Dokumentation TODO: Hinzufügen und entfernen
- * von Objekten prüfen
+ * Eine grundlegende World für die Engine. Sie enthält alle Objekte, die auf dem
+ * Bildschirm dargestellt werden sollen.
+ * 
+ * TODO: Hinzufügen und Entfernen von Objekten prüfen
  * 
  * @author Erik Wagner und Niklas Fiekas
  */
@@ -101,14 +103,35 @@ public class World extends AbstractState {
 		this.polling = false;
 	}
 
+	/**
+	 * Setzt die Kamera für das World-Objekt
+	 * 
+	 * @param camera
+	 *            Die neue Kamera
+	 */
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
 
+	/**
+	 * @return Die Kamera, die aktuell verwendet wird
+	 */
 	public Camera getCamera() {
 		return this.camera;
 	}
 
+	/**
+	 * Fügt der World ein neues Objekt hinzu. Während gerade die poll-Methode
+	 * aller Objekte aufgerufen wird, werden die Objekte zwischen gespeichert
+	 * und am Anfang des nächsten poll-Aufrufes des World-Objekts hinzugefügt.
+	 * Die Objekte werden nach {@link Pollable}, {@link Drawable} und
+	 * {@link AbstractObject} sortiert, für die jeweilige Art werden bei jedem
+	 * Frame die entsprechenden Methoden aufgerufen (poll(), draw(),
+	 * startRound() und endRound()).
+	 * 
+	 * @param object
+	 *            Das neue Objekt
+	 */
 	public void add(Object object) {
 		if (polling == false) {
 			if (object != null) {
@@ -142,11 +165,17 @@ public class World extends AbstractState {
 		}
 	}
 
+	/**
+	 * Wird aufgerufen, wenn ein Objekt seine Position verändert hat
+	 * 
+	 * @param object
+	 *            Das Objekt, dessen Position sich verändert hat
+	 */
 	public void changedPosition(AbstractObject object) {
 		int start = object.getStartSubarea(subareaWidth, objectList.size() - 1);
 		int end = object.getEndSubarea(subareaWidth, objectList.size() - 1);
-		int oldStart = object.getOldStartSubarea(subareaWidth, objectList
-				.size() - 1);
+		int oldStart = object.getOldStartSubarea(subareaWidth,
+				objectList.size() - 1);
 		int oldEnd = object.getOldEndSubarea(subareaWidth,
 				objectList.size() - 1);
 		if (start < oldStart) {
@@ -171,7 +200,14 @@ public class World extends AbstractState {
 		}
 	}
 
-	public void removeFromAllLists(AbstractObject object) {
+	/**
+	 * Entfernt das Objekt beim nächsten poll-Aufruf für das World-Objekt aus
+	 * diesem
+	 * 
+	 * @param object
+	 *            Das Objekt, das entfernt werden soll
+	 */
+	public void removeFromWorld(AbstractObject object) {
 		this.deletedObjects.add(object);
 	}
 
@@ -200,6 +236,14 @@ public class World extends AbstractState {
 		}
 	}
 
+	/**
+	 * Ermittelt alle Objekte die wenigstens eine Subarea mit dem Objekt teilen
+	 * (Nachbarn)
+	 * 
+	 * @param object
+	 *            Das Objekt, für das die Nachbarn gesucht werden
+	 * @return Die Nachbarn des Objekts
+	 */
 	public ArrayList<LinkedList<AbstractObject>> getNeighbours(
 			AbstractObject object) {
 		int start = object.getStartSubarea(subareaWidth, objectList.size() - 1);
@@ -211,7 +255,14 @@ public class World extends AbstractState {
 		return returns;
 	}
 
-	public void configScreen(Graphics g) {
+	/**
+	 * Bereitet den Grafikkontext für das Zeichnen vor (Kameraeinstellungen,
+	 * Zoom)
+	 * 
+	 * @param g
+	 *            Der Grafikkontext
+	 */
+	protected void configScreen(Graphics g) {
 		// TODO: Zoom und Kameraeinstellungen prüfen
 		g.scale(zoomX, zoomY);
 
@@ -241,7 +292,7 @@ public class World extends AbstractState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-
+		// Zur Zeit nicht benötigt
 	}
 
 }

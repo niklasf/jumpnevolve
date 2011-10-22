@@ -42,7 +42,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.livingTime.didFinish()) {
-			this.getWorld().removeFromAllLists(this);
+			this.getWorld().removeFromWorld(this);
 		}
 	}
 

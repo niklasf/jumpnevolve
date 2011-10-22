@@ -48,10 +48,10 @@ public class Level extends World {
 			save.writeObject(this);
 			save.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Fehler beim Speichern des Levels\n");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Fehler beim Speichern des Levels\n");
 			e.printStackTrace();
 		}
 	}

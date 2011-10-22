@@ -16,9 +16,6 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  * @author Erik Wagner
  * 
- *         TODO: Content-String in zwei Teile aufteilen und so das Einfügen in
- *         der Mitte des Textes ermöglichen
- * 
  */
 public class InterfaceTextField extends InterfaceObject implements Contentable {
 
@@ -43,12 +40,8 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	public void draw(Graphics g) {
 		Rectangle rect = (Rectangle) this.getNeededSize();
 		Vector center = this.getTransformedCenterVector();
-		Color cc = g.getColor();
 
-		// TODO: fill-Methode in GraphicsUtils auslagern
-		g.setColor(Color.blue);
-		g.fill(rect.modifyCenter(center).toSlickShape());
-		g.setColor(cc);
+		GraphicUtils.fill(g, rect.modifyCenter(center), Color.blue);
 
 		Vector pos = this.parent.getTransformedPositionFor(this);
 		GraphicUtils.drawString(g, pos.add(2, 0), this.content1);

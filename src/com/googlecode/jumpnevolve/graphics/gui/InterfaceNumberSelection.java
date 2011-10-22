@@ -5,9 +5,9 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author e.wagner
+ * Eine Zahlenauswahl für Dialoge u.Ä.
  * 
- *         TODO: Maximum und Minimum für curNumber sollten eingefügt werden
+ * @author e.wagner
  */
 public class InterfaceNumberSelection extends GridContainer implements
 		Informable, Contentable {

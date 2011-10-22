@@ -8,6 +8,14 @@ import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
+/**
+ * Ein RollingBall, den der Spieler spielen kann
+ * 
+ * @author Erik Wagner
+ * 
+ *         TODO: Werte anpassen
+ * 
+ */
 public class RollingBall implements Playable {
 
 	private final PlayerFigure parent;
@@ -18,38 +26,35 @@ public class RollingBall implements Playable {
 
 	@Override
 	public float getJumpingHeight() {
-		// TODO Auto-generated method stub
 		return 60.0f;
 	}
 
 	@Override
 	public float getWalkingSpeed() {
-		// TODO Auto-generated method stub
 		return 100;
 	}
 
 	@Override
 	public boolean isBlockable() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isDamageable() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isLiving() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		GraphicUtils.drawImage(g, this.parent.getShape(), ResourceManager
-				.getInstance().getImage(
+		GraphicUtils.drawImage(
+				g,
+				this.parent.getShape(),
+				ResourceManager.getInstance().getImage(
 						"object-pictures/figure-rolling-ball.png"));
 	}
 

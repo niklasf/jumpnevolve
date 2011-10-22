@@ -41,7 +41,6 @@ public class Player implements Pollable, Interfaceable {
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
 			String startFigure, String[] savePositions, boolean cameraOnPlayer) {
-		// TODO Auto-generated constructor stub
 		this.parent = parent;
 		this.gui = new MainGUI(this);
 
@@ -123,8 +122,8 @@ public class Player implements Pollable, Interfaceable {
 		if (number == InterfaceFunctions.FIGURE_ROLLING_BALL) {
 			return new RollingBall(this.figure);
 		} else if (number == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
-			return new Basic(this.figure); // TODO: JumpingCross erstellen und
-			// zurückgeben
+			return new Basic(this.figure);
+			// TODO: JumpingCross erstellen und zurückgeben
 		} else if (number == InterfaceFunctions.ERROR) {
 			return new Basic(this.figure); // TODO: Fehlermeldung ausgeben
 		} else {

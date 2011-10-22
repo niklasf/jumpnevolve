@@ -13,8 +13,9 @@ import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
-//FIXME: Mit dieser Klasse wird Dataable und alle abhängigen Methoden überflüssig
 public class ObjectSettings extends JPanel {
+
+	private static final long serialVersionUID = 5735420015903771895L;
 
 	public static final float SELECT_DISTANCE = 5.0f;
 	private JTextField activatings = new JTextField(),
@@ -141,7 +142,6 @@ public class ObjectSettings extends JPanel {
 	 *         ObjectSettings festgelegt wurden
 	 */
 	public AbstractObject getObject() {
-		// TODO: parseFloat und parseVector ändern
 		return GameObjects.loadObject(this.getDataLine(), this.editorWorld);
 	}
 

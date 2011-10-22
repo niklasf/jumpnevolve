@@ -62,7 +62,7 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.isAlive() == false) {
-			this.getWorld().removeFromAllLists(this);
+			this.getWorld().removeFromWorld(this);
 			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
 		}
 		if (this.isWayBlocked(Shape.RIGHT)) {

@@ -9,18 +9,19 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Eine Kamera die auf ein Objekt fokusiert ist, gleichzeitig aber keine
+ * Bereiche außerhalb der Welt zeigt
+ * 
  * @author Erik Wagner
  * 
  */
 public class LimitedObjectFocusingCamera extends ObjectFocusingCamera implements
 		LimitedCamera {
 
-	/**
-	 * @param object
-	 */
+	private static final long serialVersionUID = -4863095708326682508L;
+
 	public LimitedObjectFocusingCamera(AbstractObject object) {
 		super(object);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*

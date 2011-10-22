@@ -21,6 +21,7 @@ public class InterfaceTextButton extends InterfaceObject {
 	private static int size = 20;
 	private final String buttonText;
 	private Rectangle curShape = new Rectangle(Vector.ZERO, 1, 1);
+	private static Font Font;
 
 	/**
 	 * 
@@ -54,18 +55,12 @@ public class InterfaceTextButton extends InterfaceObject {
 
 	@Override
 	public void draw(Graphics g) {
+		if (Font == null) {
+			Font = g.getFont();
+		}
 		Vector pos = this.getTransformedCenterVector();
-		Font font = g.getFont();
-		Font newFont = new UnicodeFont(new java.awt.Font("Cambria",
-				java.awt.Font.PLAIN, size), size, false, false);
-		newFont = font;
-		/*
-		 * FIXME: Die Zeile 55 (newFont = font) soll entfernt werden, zur Zeit
-		 * wird dann aber kein Text dargestellt
-		 */
-		g.setFont(newFont);
-		int width = newFont.getWidth(this.buttonText);
-		int height = newFont.getHeight(this.buttonText);
+		int width = Font.getWidth(this.buttonText);
+		int height = Font.getHeight(this.buttonText);
 		this.curShape = new Rectangle(pos, width, height);
 		Color c = g.getColor();
 		switch (this.getStatus()) {
@@ -84,6 +79,5 @@ public class InterfaceTextButton extends InterfaceObject {
 		GraphicUtils.drawString(g, this.curShape.getHighLeftCorner(),
 				this.buttonText);
 		g.setColor(c);
-		g.setFont(font);
 	}
 }

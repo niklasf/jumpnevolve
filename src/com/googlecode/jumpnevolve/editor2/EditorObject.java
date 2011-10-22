@@ -16,6 +16,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * @author Erik Wagner
  * 
+ *         TODO: Im Dialog sollten die Vektor exakt einstellbar sein
  */
 public class EditorObject implements Pollable, Drawable {
 

@@ -8,6 +8,13 @@ import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
+/**
+ * Eine Basis Figur für den Spieler
+ * 
+ * @author Erik Wagner
+ * 
+ *         TODO: Werte anpassen
+ */
 public class Basic implements Playable {
 
 	private final PlayerFigure parent;
@@ -18,42 +25,37 @@ public class Basic implements Playable {
 
 	@Override
 	public float getJumpingHeight() {
-		// TODO Auto-generated method stub
 		return 100.0f;
 	}
 
 	@Override
 	public float getWalkingSpeed() {
-		// TODO Auto-generated method stub
 		return 50;
 	}
 
 	@Override
 	public NextShape getShape() {
-		// TODO Auto-generated method stub
 		return ShapeFactory.createRectangle(Vector.ZERO, 20, 20);
 	}
 
 	@Override
 	public boolean isBlockable() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isDamageable() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isLiving() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		// TODO: Bild ändern
 		GraphicUtils.drawImage(g, this.parent.getShape(), ResourceManager
 				.getInstance().getImage("object-pictures/figure-cross.png"));
 	}

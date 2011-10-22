@@ -6,6 +6,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * @author Erik Wagner
  * 
+ *         TODO: boolean canMove() hinzufügen (beispielsweise nur bewegen, wenn
+ *         das Objekt auf dem Boden steht)
+ * 
  */
 public interface Moving {
 
