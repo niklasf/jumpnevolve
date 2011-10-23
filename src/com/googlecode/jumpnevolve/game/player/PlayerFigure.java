@@ -29,6 +29,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class PlayerFigure extends AbstractObject implements Fighting,
 		Activating, GravityActing, Moving, Jumping, Blockable {
 
+	private static final long serialVersionUID = -861952852028764393L;
+
 	private final Player parent;
 
 	private Vector curDirection = Vector.ZERO;
@@ -76,45 +78,21 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 
 	public void jump() {
 		this.jumps = true;
-		/*
-		 * if (this.wasWayBlocked(Shape.DOWN)) {
-		 * this.setVelocity(this.getVelocity().modifyY(
-		 * -this.parent.getCurPlayable().getJumpingHeight() * 98.1f
-		 * this.getMass())); }
-		 */
 	}
 
 	public void run(int direction) {
 		switch (direction) {
 		case Playable.DIRECTION_LEFT:
-			/*
-			 * this.setVelocity(this.getVelocity().modifyX(
-			 * -this.parent.getCurPlayable().getRunningSpeed()));
-			 */
-			/*
-			 * this.applyForce(Vector.ZERO.modifyX((-this.parent.getCurPlayable()
-			 * .getWalkingSpeed() - this.getVelocity().x) 1.5f *
-			 * this.getMass()));
-			 */
 			// Nach links laufen
 			this.curDirection = Vector.LEFT;
 			break;
 		case Playable.DIRECTION_RIGHT:
-			/*
-			 * this.setVelocity(this.getVelocity().modifyX(
-			 * this.parent.getCurPlayable().getRunningSpeed()));
-			 */
-			/*
-			 * this.applyForce(Vector.ZERO.modifyX((+this.parent.getCurPlayable()
-			 * .getWalkingSpeed() - this.getVelocity().x) 1.5f *
-			 * this.getMass()));
-			 */
 			// Nach rechts laufen
 			this.curDirection = Vector.RIGHT;
 			break;
 		case Playable.STAY:
+			// Stehen bleiben
 			this.curDirection = Vector.ZERO;
-			// this.setVelocity(this.getVelocity().modifyX(0));
 		default:
 			break;
 		}

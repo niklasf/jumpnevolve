@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.editor2.EditorArguments;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -159,39 +158,50 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 		// Ereignisse für verschiedene Objekttypen
 		if (this instanceof Moving) {
+
 			// Gewünschte Bewegunsrichtung
 			Vector direction = ((Moving) this).getMovingDirection();
 
-			// Aktuelle Geschwindigkeit in die Bewegungsrichtung
-			float vel = 0.0f;
-
-			// Gewünschte Geschwindigkeit in die Bewegunsrichtung
-			float move = ((Moving) this).getMovingSpeed();
 			if (direction.equals(0, 0)) {
-				move = 0.0f;
-				direction = this.getVelocity().neg();
-				vel = -1.0f;
+				// Nichts tun
+
+				/*
+				 * move = 0.0f; direction = this.getVelocity().neg(); vel =
+				 * 0.0f;
+				 */
 			} else if (this.getVelocity().equals(0, 0) == false) {
+				// Aktuelle Geschwindigkeit in die Bewegungsrichtung
+				float vel = 0.0f;
+
 				// Anteil der aktuellen Bewegung in die Bewegunsrichtung
 				vel = (float) (Math.cos(this.getVelocity().ang(direction)) * this
 						.getVelocity().abs());
+
+				// Gewünschte Geschwindigkeit in die Bewegunsrichtung
+				float move = ((Moving) this).getMovingSpeed();
+
+				// Multiplikator für die Kraft
+				float mul = 1.0f;
+				if (direction.x * direction.y != 0) {
+					mul = 0.707f;
+				}
+
+				// Kraft hinzufügen, die in die gewünschte Bewegunsrichtung
+				// zeigt
+				// und entsprechend des Unterschieds zwischen Bewegung und
+				// Wunsch
+				// skaliert ist
+				this.applyForce(direction.mul(mul * (move - vel) * 1.5f
+						* this.getMass()));
 			}
 
-			// Multiplikator für die Kraft
-			float mul = 1.0f;
-			if (direction.x * direction.y != 0) {
-				mul = 0.707f;
-			}
-
-			// Kraft hinzufügen, die in die gewünschte Bewegunsrichtung zeigt
-			// und entsprechend des Unterschieds zwischen Bewegung und Wunsch
-			// skaliert ist
-			this.applyForce(direction.mul(mul * (move - vel) * 1.5f
-					* this.getMass()));
 		}
 		if (this instanceof Jumping) {
 			if (this.isWayBlocked(Shape.DOWN)) {
 				// Geschwindigkeit anhand der Sprunghöhe verändern
+				// FIXME: Formel funktioniert korrekt, wenn man sich der Spieler
+				// gleichzeitig noch seitlich bewegt, ansonsten springt er
+				// weniger hoch
 				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
 						* ((Jumping) this).getJumpingHeight() * GRAVITY));
 			}

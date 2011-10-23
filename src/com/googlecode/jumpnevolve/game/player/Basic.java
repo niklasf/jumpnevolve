@@ -25,7 +25,7 @@ public class Basic implements Playable {
 
 	@Override
 	public float getJumpingHeight() {
-		return 100.0f;
+		return 200.0f;
 	}
 
 	@Override

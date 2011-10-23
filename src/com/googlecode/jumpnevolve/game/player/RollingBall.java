@@ -60,7 +60,7 @@ public class RollingBall implements Playable {
 
 	@Override
 	public NextShape getShape() {
-		return ShapeFactory.createCircle(Vector.ZERO, 20.0f);
+		return ShapeFactory.createCircle(Vector.ZERO, 10.0f);
 	}
 
 }
