@@ -3,7 +3,6 @@ package com.googlecode.jumpnevolve.graphics.gui;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.UnicodeFont;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
@@ -24,10 +23,12 @@ public class InterfaceTextButton extends InterfaceObject {
 	private static Font Font;
 
 	/**
+	 * Erzeugt einen TextButton für das Interface
 	 * 
 	 * @param function
+	 *            Die {@link InterfaceFunction}
 	 * @param buttonText
-	 * @param size
+	 *            Der Text des Button
 	 */
 	public InterfaceTextButton(InterfaceFunction function, String buttonText) {
 		super(function);

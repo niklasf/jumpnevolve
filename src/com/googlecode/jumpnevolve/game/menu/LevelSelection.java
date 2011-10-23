@@ -1,24 +1,22 @@
-package com.googlecode.jumpnevolve.game;
+package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
 
-import com.googlecode.jumpnevolve.graphics.AbstractState;
+import com.googlecode.jumpnevolve.game.Level;
+import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
+import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
-import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
 import com.googlecode.jumpnevolve.graphics.gui.TextButtonList;
-import com.googlecode.jumpnevolve.graphics.world.Camera;
+import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -27,12 +25,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class LevelSelection extends AbstractState implements Interfaceable {
+public class LevelSelection extends SubMenu {
 
+	private static int number = 0;
 	private ArrayList<File> levels;
-	private MainGUI gui;
 	private String currentClicked, currentOver, lastClicked;
 	private boolean interfaceClicked, interfaceOver, lastRoundClicked;
+	private TextButtonList selectList = new TextButtonList(6, 10);
 
 	/**
 	 * Erstellt ein neues Menü zum Auswählen eines Levels
@@ -41,18 +40,25 @@ public class LevelSelection extends AbstractState implements Interfaceable {
 	 *            Der Ordner, in dem sich die Level befinden, es werden auch die
 	 *            Unterordner durchsucht
 	 */
-	public LevelSelection(String levelPath) {
+	public LevelSelection(Menu parent, String levelPath) {
+		super(parent, new GridContainer(1, 1), "LevelSelection"
+				+ getNextNumber());
 		this.levels = this.searchFiles(new File(levelPath), ".txt");
 		this.levels.addAll(this.searchFiles(new File(levelPath), ".lvl"));
-		this.gui = new MainGUI(this);
-		TextButtonList selectList = new TextButtonList(6, 10);
-		BorderContainer border = new BorderContainer();
-		border.add(selectList, BorderContainer.POSITION_MIDDLE);
-		for (File file : levels) {
-			selectList.addTextButton(new InterfaceTextButton(
-					InterfaceFunctions.LEVELSELECTION, file.getName()));
+		for (File file : this.levels) {
+			InterfaceTextButton button = new InterfaceTextButton(
+					InterfaceFunctions.LEVELSELECTION, file.getName());
+			button.addInformable(this);
+			this.selectList.addTextButton(button);
 		}
-		gui.setMainContainer(border);
+		GridContainer grid = new GridContainer(1, 1);
+		grid.add(this.selectList, 0, 0);
+		this.setMainContainer(grid);
+	}
+
+	private static String getNextNumber() {
+		number++;
+		return "" + number;
 	}
 
 	private ArrayList<File> searchFiles(File dir, String find) {
@@ -85,7 +91,7 @@ public class LevelSelection extends AbstractState implements Interfaceable {
 		currentClicked = "";
 		interfaceClicked = false;
 		interfaceOver = false;
-		this.gui.poll(input, secounds);
+		super.poll(input, secounds);
 		if (lastRoundClicked && interfaceOver
 				&& currentOver.equals(lastClicked)) {
 			String load = this.getFileName(currentOver);
@@ -105,46 +111,9 @@ public class LevelSelection extends AbstractState implements Interfaceable {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.jumpnevolve.graphics.Drawable#draw(org.newdawn.slick.Graphics
-	 * )
-	 */
-	@Override
-	public void draw(Graphics g) {
-		this.gui.draw(g);
-	}
-
-	@Override
-	public void init(GameContainer container, StateBasedGame game)
-			throws SlickException {
-	}
-
-	@Override
-	public Camera getCamera() {
-		return new Camera() {
-			@Override
-			public Vector getPosition() {
-				return new Vector(Engine.getInstance().getWidth() / 2.0f,
-						Engine.getInstance().getHeight() / 2.0f);
-			}
-		};
-	}
-
-	@Override
-	public int getHeight() {
-		return Engine.getInstance().getHeight();
-	}
-
-	@Override
-	public int getWidth() {
-		return Engine.getInstance().getWidth();
-	}
-
 	@Override
 	public void mouseClickedAction(InterfaceObject object) {
+		super.mouseClickedAction(object);
 		if (object.getFunction() == InterfaceFunctions.LEVELSELECTION
 				&& object instanceof InterfaceTextButton) {
 			this.currentClicked = ((InterfaceTextButton) object).getText();
@@ -163,6 +132,11 @@ public class LevelSelection extends AbstractState implements Interfaceable {
 
 	@Override
 	public void objectIsSelected(InterfaceObject object) {
-		//Nichts tun
+		// Nichts tun
+	}
+
+	@Override
+	public Shape getNeededSize() {
+		return this.selectList.getNeededSize();
 	}
 }

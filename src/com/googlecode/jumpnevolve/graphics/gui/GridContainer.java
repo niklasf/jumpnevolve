@@ -219,11 +219,6 @@ public class GridContainer extends InterfaceContainer {
 
 	@Override
 	public Shape getNeededSize() {
-		return this.getAdvancedNeededSize();
-		// return this.parentContainer.getPlaceFor(this);
-	}
-
-	private Shape getAdvancedNeededSize() {
 		Object[] objectsCopy = objects.keySet().toArray();
 		float width = 1, height = 1;
 		for (Object object : objectsCopy) {

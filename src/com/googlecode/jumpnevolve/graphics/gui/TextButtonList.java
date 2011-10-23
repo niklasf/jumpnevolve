@@ -24,6 +24,7 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	private int next = 0;
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
+	private float maxWidth = 0;
 
 	private static final int DOWN_POS = -2;
 	private static final int UP_POS = -1;
@@ -53,6 +54,8 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		this.invertList.put(button, this.next);
 		this.next = next + 1;
 		this.add(button, Vector.ZERO);
+		this.maxWidth = Math.max(this.maxWidth, button.getNeededSize()
+				.getXRange());
 	}
 
 	public void poll(Input input, float secounds) {
@@ -137,8 +140,7 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		float height = (InterfaceTextButton.getSize() + this.distanceBetweenButtons)
 				* (this.numberOfButtonsDisplayed + 2)
 				- this.distanceBetweenButtons;
-		return new Rectangle(Vector.ZERO,
-				this.parentContainer.getPlaceFor(this).width, height);
+		return new Rectangle(Vector.ZERO, this.maxWidth, height);
 	}
 
 	@Override
