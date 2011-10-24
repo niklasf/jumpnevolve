@@ -102,19 +102,16 @@ public abstract class InterfaceContainer implements InterfacePart {
 	 *         Objekt nicht in diesem Container enthalten ist
 	 */
 	public Vector getPositionFor(InterfacePart object) {
-		if (this.parentInterfaceable == null) {
-			if (this.objects.containsKey(object)) {
+		if (this.objects.containsKey(object)) {
+			if (this.parentInterfaceable == null
+					&& this.parentContainer != null) {
 				return this.objects.get(object).add(
 						this.parentContainer.getPositionFor(this));
 			} else {
-				return null;
+				return this.objects.get(object);
 			}
 		} else {
-			if (this.objects.containsKey(object)) {
-				return this.objects.get(object);
-			} else {
-				return null;
-			}
+			return null;
 		}
 	}
 
@@ -128,13 +125,12 @@ public abstract class InterfaceContainer implements InterfacePart {
 	public Vector getTransformedPositionFor(InterfacePart object) {
 		Vector pos = this.getPositionFor(object);
 		if (pos != null) {
-			return this.getPositionFor(object).add(
-					this.getInterfaceable()
-							.getCamera()
-							.getPosition()
-							.sub(new Vector(
-									this.getInterfaceable().getWidth() / 2,
-									this.getInterfaceable().getHeight() / 2)));
+			return pos.add(this
+					.getInterfaceable()
+					.getCamera()
+					.getPosition()
+					.sub(new Vector(this.getInterfaceable().getWidth() / 2,
+							this.getInterfaceable().getHeight() / 2)));
 		} else {
 			return null;
 		}
@@ -147,10 +143,15 @@ public abstract class InterfaceContainer implements InterfacePart {
 	 */
 	public Rectangle getPlaceFor(InterfacePart object) {
 		Vector pos = Vector.ZERO;
-		if (this.parentContainer != null) {
-			pos = this.parentContainer.getPositionFor(this);
+		if (pos != null) {
+			if (this.parentContainer != null) {
+				pos = this.parentContainer.getPositionFor(this);
+			}
+			return new Rectangle(Vector.ZERO, this.getInterfaceable()
+					.getWidth() - pos.x, this.getInterfaceable().getHeight()
+					- pos.y);
+		} else {
+			return null;
 		}
-		return new Rectangle(Vector.ZERO, this.getInterfaceable().getWidth()
-				- pos.x, this.getInterfaceable().getHeight() - pos.y);
 	}
 }

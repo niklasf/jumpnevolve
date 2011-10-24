@@ -24,7 +24,7 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	private int next = 0;
 	private int curPos = 0;
 	private final int numberOfButtonsDisplayed;
-	private float maxWidth = 0;
+	private float maxWidth = 1;
 
 	private static final int DOWN_POS = -2;
 	private static final int UP_POS = -1;
@@ -47,6 +47,9 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		this.add(down, Vector.ZERO);
 		up.addInformable(this);
 		down.addInformable(this);
+		// TODO: Up- und Down-Button sollten für maxWidth betrachtet werden,
+		// dies kann jedoch nicht hier geschehen, da sonst deren Größe aufgrund
+		// der fehlenden Font noch nicht initialisiert ist
 	}
 
 	public void addTextButton(InterfaceTextButton button) {
@@ -54,8 +57,6 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		this.invertList.put(button, this.next);
 		this.next = next + 1;
 		this.add(button, Vector.ZERO);
-		this.maxWidth = Math.max(this.maxWidth, button.getNeededSize()
-				.getXRange());
 	}
 
 	public void poll(Input input, float secounds) {
@@ -80,10 +81,16 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 		if (this.isUpMoveable()) {
 			this.list.get(abbild[1]).draw(g);
 		}
+		if (this.maxWidth == 1) {
+			for (InterfaceTextButton button : this.list.values()) {
+				this.maxWidth = Math.max(this.maxWidth, button.getNeededSize()
+						.getXRange());
+			}
+		}
 	}
 
 	public Vector getPositionFor(InterfacePart object) {
-		if (object instanceof InterfaceTextButton) {
+		if (this.invertList.containsKey(object)) {
 			int listPos = this.invertList.get(object);
 			if (listPos != DOWN_POS && listPos != UP_POS) {
 				if (listPos < this.curPos) {

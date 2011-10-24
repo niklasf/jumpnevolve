@@ -166,8 +166,8 @@ public class GridContainer extends InterfaceContainer {
 
 	@Override
 	public Vector getPositionFor(InterfacePart object) {
-		Rectangle place = this.parentContainer.getPlaceFor(this);
 		if (this.objects.containsKey(object)) {
+			Rectangle place = this.parentContainer.getPlaceFor(this);
 			Vector cell = this.objects.get(object);
 			Shape shape = object.getNeededSize();
 			int x = (int) (this.getXPosInCell((int) cell.x, (int) cell.y,

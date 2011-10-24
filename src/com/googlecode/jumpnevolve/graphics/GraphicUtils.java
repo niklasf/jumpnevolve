@@ -102,7 +102,24 @@ public class GraphicUtils {
 	public static void draw(Graphics g, NextShape shape, Color color) {
 		Color c = g.getColor();
 		g.setColor(color);
-		g.draw(shape.toSlickShape());
+		draw(g, shape);
+		g.setColor(c);
+	}
+
+	/**
+	 * Zeichnet eine Figur in einer bestimmten Farbe;
+	 * 
+	 * @param g
+	 *            Der Grafikkontext
+	 * @param shape
+	 *            Die Figur
+	 * @param color
+	 *            Die Farbe
+	 */
+	public static void draw(Graphics g, Shape shape, Color color) {
+		Color c = g.getColor();
+		g.setColor(color);
+		draw(g, shape);
 		g.setColor(c);
 	}
 
@@ -199,7 +216,7 @@ public class GraphicUtils {
 	public static void fill(Graphics g, Shape shape, Color c) {
 		Color cur = g.getColor();
 		g.setColor(c);
-		g.fill(shape.toSlickShape());
+		fill(g, shape);
 		g.setColor(cur);
 	}
 
@@ -229,7 +246,7 @@ public class GraphicUtils {
 	public static void fill(Graphics g, NextShape shape, Color c) {
 		Color cur = g.getColor();
 		g.setColor(c);
-		g.fill(shape.toSlickShape());
+		fill(g, shape);
 		g.setColor(cur);
 	}
 

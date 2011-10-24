@@ -1,10 +1,10 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -12,8 +12,11 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 
 	private static final float SIZE = 20.0f;
+	private static final float INPUT_DELAY = 1.0f;
 
 	private boolean value = false;
+	private Shape shape = new Rectangle(Vector.ZERO, SIZE, SIZE);
+	private Timer inputTimer = new Timer(INPUT_DELAY);
 
 	public InterfaceCheckbox(InterfaceFunction function, boolean startValue) {
 		super(function);
@@ -22,35 +25,32 @@ public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 
 	@Override
 	public Shape getNeededSize() {
-		return new Rectangle(Vector.ZERO, SIZE, SIZE);
+		return this.shape;
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		if (value) {
-			g.fill(this.getNeededSize().modifyCenter(this.getCenterVector())
-					.toSlickShape());
+			GraphicUtils.fill(g,
+					this.shape.modifyCenter(this.getTransformedCenterVector()));
 		} else {
 			GraphicUtils.draw(g,
-					this.getNeededSize().modifyCenter(this.getCenterVector()));
+					this.shape.modifyCenter(this.getTransformedCenterVector()));
 		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
-		if (this.getStatus() == STATUS_PRESSED) {
+		if (this.getStatus() == STATUS_PRESSED && !this.inputTimer.isRunning()) {
 			this.value = !this.value;
+			this.inputTimer.start(INPUT_DELAY);
 		}
 	}
 
 	@Override
 	public String getContent() {
-		if (this.value) {
-			return "true";
-		} else {
-			return "false";
-		}
+		return "" + this.value;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -22,6 +23,7 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	private static final float DELAY_LENGTH = 0.15f;
 	private Timer input_timer = new Timer(DELAY_LENGTH);
 	private String content1 = "", content2 = "";
+	private static Font font;
 
 	public InterfaceTextField(InterfaceFunction function) {
 		super(function);
@@ -29,15 +31,23 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 
 	@Override
 	public Shape getNeededSize() {
-		float width = this.getContent().length() * 10;
-		if (width < 50) {
-			width = 50;
+		if (font == null) {
+			float width = this.getContent().length() * 10;
+			if (width < 50) {
+				width = 50;
+			}
+			return new Rectangle(Vector.ZERO, width, 20);
+		} else {
+			return new Rectangle(Vector.ZERO, font.getWidth(this.getContent()),
+					font.getLineHeight());
 		}
-		return new Rectangle(Vector.ZERO, width, 20);
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		if (font == null) {
+			font = g.getFont();
+		}
 		Rectangle rect = (Rectangle) this.getNeededSize();
 		Vector center = this.getTransformedCenterVector();
 
@@ -45,17 +55,16 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 
 		Vector pos = this.parent.getTransformedPositionFor(this);
 		GraphicUtils.drawString(g, pos.add(2, 0), this.content1);
+
 		float xModifier = g.getFont().getWidth(this.content1);
 		GraphicUtils.drawString(g, pos.add(xModifier + 5, 0), this.content2);
 		GraphicUtils.draw(
 				g,
 				new PointLine(pos.add(xModifier + 3, 3), pos.add(xModifier + 3,
 						15)), Color.white);
-		Color c = g.getColor();
-		g.setColor(Color.white);
+
 		GraphicUtils.draw(g, this.getNeededSize().getBoundingRect()
-				.modifyCenter(center));
-		g.setColor(c);
+				.modifyCenter(center), Color.white);
 	}
 
 	@Override

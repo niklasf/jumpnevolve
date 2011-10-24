@@ -17,9 +17,14 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class InterfaceTextButton extends InterfaceObject {
 
+	/**
+	 * size stellt die Texthöhe aller Textbuttons dar.
+	 * 
+	 * TODO: size hat zur Zeit keine Funktion
+	 */
 	private static int size = 20;
 	private final String buttonText;
-	private Rectangle curShape = new Rectangle(Vector.ZERO, 1, 1);
+	private Rectangle shape = new Rectangle(Vector.ZERO, 1, 1);
 	private static Font Font;
 
 	/**
@@ -51,19 +56,26 @@ public class InterfaceTextButton extends InterfaceObject {
 
 	@Override
 	public Shape getNeededSize() {
-		return this.curShape;
+		return this.shape;
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		if (Font == null) {
 			Font = g.getFont();
+			setTextHeight(Font.getLineHeight());
+		}
+		if (this.shape.equals(new Rectangle(Vector.ZERO, 1, 1))) {
+			int width = Font.getWidth(this.buttonText);
+			int height = Font.getHeight(this.buttonText);
+			this.shape = new Rectangle(Vector.ZERO, width, height);
 		}
 		Vector pos = this.getTransformedCenterVector();
-		int width = Font.getWidth(this.buttonText);
-		int height = Font.getHeight(this.buttonText);
-		this.curShape = new Rectangle(pos, width, height);
+		this.shape = (Rectangle) this.shape.modifyCenter(pos);
 		Color c = g.getColor();
+		if (this.buttonText.equals("LevelSelection1")) {
+			System.out.println(this.shape + " status " + this.getStatus());
+		}
 		switch (this.getStatus()) {
 		case STATUS_MOUSE_OVER:
 			g.setColor(Color.yellow);
@@ -77,7 +89,7 @@ public class InterfaceTextButton extends InterfaceObject {
 			g.setColor(Color.white);
 			break;
 		}
-		GraphicUtils.drawString(g, this.curShape.getHighLeftCorner(),
+		GraphicUtils.drawString(g, this.shape.getHighLeftCorner(),
 				this.buttonText);
 		g.setColor(c);
 	}

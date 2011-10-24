@@ -134,9 +134,4 @@ public class LevelSelection extends SubMenu {
 	public void objectIsSelected(InterfaceObject object) {
 		// Nichts tun
 	}
-
-	@Override
-	public Shape getNeededSize() {
-		return this.selectList.getNeededSize();
-	}
 }

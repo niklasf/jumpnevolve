@@ -88,6 +88,6 @@ public class BorderContainer extends InterfaceContainer {
 
 	@Override
 	public Shape getNeededSize() {
-		return this.parentContainer.getPlaceFor(this);
+		return this.container.getNeededSize();
 	}
 }
