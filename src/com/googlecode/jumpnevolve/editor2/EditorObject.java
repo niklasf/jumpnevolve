@@ -8,6 +8,7 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.graphics.Drawable;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
@@ -20,10 +21,12 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class EditorObject implements Pollable, Drawable {
 
-	PositionMarker position;
+	private PositionMarker position;
 	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
-	public Dialog settings = new Dialog();
+	private AbstractObject object = null;
+	private String lastDataLine = "";
 
+	public Dialog settings = new Dialog();
 	public final Editor2 parent;
 	public final String objectName, className;
 
@@ -38,6 +41,12 @@ public class EditorObject implements Pollable, Drawable {
 		this.position = new PositionMarker(PositionMarker.MODUS_BOTH,
 				startPosition, Color.red);
 		this.position.setParent(this);
+		if (GameObjects.getGameObject(className).hasActivatings) {
+			// TODO: Activatings sollten auch über den Editor direkt ausgewählt
+			// werden können --> Button, der gedrückt wird, danach legt
+			// Rechtsklick Activating fest
+			this.settings.addTextField("Activatings");
+		}
 	}
 
 	public void initialize(String argumentString) {
@@ -66,9 +75,17 @@ public class EditorObject implements Pollable, Drawable {
 		return position.getPosition();
 	}
 
-	public AbstractObject getObject() {
-		return GameObjects.loadObject(this.getDataLine(), this.parent);
+	public boolean isMoving() {
+		return this.position.isMoving();
+	}
 
+	public AbstractObject getObject() {
+		String line = this.getDataLine();
+		if (!this.lastDataLine.equals(line)) {
+			this.object = GameObjects.loadObject(line, this.parent);
+			this.lastDataLine = line;
+		}
+		return this.object;
 	}
 
 	public String getDataLine() {
@@ -89,6 +106,10 @@ public class EditorObject implements Pollable, Drawable {
 		this.settings.switchStatus();
 	}
 
+	public boolean hasActivatins() {
+		return GameObjects.getGameObject(this.className).hasActivatings;
+	}
+
 	private String getArgumentString() {
 		if (this.arguments.size() > 0) {
 			String re = "";
@@ -104,7 +125,11 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	private String getActivatings() {
-		return "none";
+		if (this.hasActivatins()) {
+			return this.settings.getContentable("Activatings").getContent();
+		} else {
+			return "none";
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -126,6 +151,9 @@ public class EditorObject implements Pollable, Drawable {
 
 	@SuppressWarnings("unchecked")
 	public void drawInterface(Graphics g) {
+		// TODO: Auswahlmöglichkeit, wann der Name angezeigt werden soll (immer
+		// oder nur zusammen mit dem Interface)
+		GraphicUtils.drawString(g, this.getPosition(), this.objectName);
 		for (EditorArgument arg : (ArrayList<EditorArgument>) this.arguments
 				.clone()) {
 			arg.draw(g);

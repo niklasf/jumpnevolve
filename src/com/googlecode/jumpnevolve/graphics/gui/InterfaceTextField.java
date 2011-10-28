@@ -38,7 +38,7 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 			}
 			return new Rectangle(Vector.ZERO, width, 20);
 		} else {
-			return new Rectangle(Vector.ZERO, font.getWidth(this.getContent()),
+			return new Rectangle(Vector.ZERO, font.getWidth(this.getContent() + 10),
 					font.getLineHeight());
 		}
 	}

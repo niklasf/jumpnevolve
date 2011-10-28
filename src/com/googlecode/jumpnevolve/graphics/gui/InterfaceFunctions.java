@@ -26,7 +26,9 @@ public enum InterfaceFunctions implements InterfaceFunction {
 
 	EDITOR_DELETE(), EDITOR_LOAD(), EDITOR_SAVE(),
 
-	MENU_BACKTOMAINMENU();
+	MENU_BACKTOMAINMENU(), 
+	
+	LEVEL_EXIT();
 
 	private InterfaceFunctions() {
 	}

@@ -95,14 +95,13 @@ public class Levelloader {
 				// Beispiele: verfügbare Charaktere, Timer etc.
 				String thirdLine = levelFileReader.readLine();
 				String[] thirdLineSplit = thirdLine.split("_");
-				if (thirdLineSplit[0].equals("Player") == false) {
+				if (thirdLineSplit[0].equals("Player") == false || thirdLineSplit.length != 4) {
 					throw new IOException(
 							"Dritte Zeile enthält nicht die Playerangaben");
 				}
 				try {
 					this.level.addPlayer(this.toVector(thirdLineSplit[3]),
-							thirdLineSplit[2], thirdLineSplit[1],
-							thirdLineSplit[4].split(","));
+							thirdLineSplit[2], thirdLineSplit[1]);
 				} catch (IOException e) {
 					throw new IOException(
 							"Fehler beim Erstellen des Player-Objekts", e);

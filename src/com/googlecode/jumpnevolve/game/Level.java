@@ -9,9 +9,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.player.Player;
+import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
+import com.googlecode.jumpnevolve.graphics.effects.FireEmitterFactory;
+import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -30,6 +33,8 @@ public class Level extends World {
 	private Player player;
 	private Levelloader loader;
 	private String background = "landscape-photo.png";
+	private boolean finished = false;
+	private ParticleEffect finishedEffect;
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
@@ -80,9 +85,9 @@ public class Level extends World {
 	}
 
 	public void addPlayer(Vector position, String avaiableFigures,
-			String startFigure, String[] savePositions) {
+			String startFigure) {
 		this.player = new Player(this, position, avaiableFigures, startFigure,
-				savePositions, true);
+				true);
 		this.add(this.player);
 	}
 
@@ -103,14 +108,27 @@ public class Level extends World {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		super.poll(input, secounds);
-		this.timer.poll(input, secounds);
-		if (this.timer.didFinish()) {
-			this.reload();
+		// Nicht weitersimulieren, wenn das Ziel erreicht wurde
+		if (!this.finished) {
+			super.poll(input, secounds);
+			this.timer.poll(input, secounds);
+			if (this.timer.didFinish()) {
+				this.reload();
+			}
+		} else {
+			// Nur der Spieler bewegt sich noch und springt ständig
+			this.player.poll(input, secounds);
+			this.player.getFigure().startRound(input);
+			this.player.getFigure().jump();
+			this.player.getFigure().poll(input, secounds);
+			this.player.getFigure().endRound();
+			if (this.finishedEffect != null) {
+				this.finishedEffect.poll(input, secounds);
+			}
 		}
 	}
 
-	public void drawBackground(Graphics g) {
+	private void drawBackground(Graphics g) {
 		GraphicUtils.drawImage(g, ShapeFactory
 				.createRectangle(new Vector(this.width / 2.0f,
 						this.height / 2.0f), this.width, this.height),
@@ -118,10 +136,37 @@ public class Level extends World {
 						.getImage(this.getBackgroundFile()));
 	}
 
+	private void drawFinishedScreen(Graphics g) {
+		if (this.finishedEffect != null) {
+			this.finishedEffect.draw(g);
+		}
+		GraphicUtils.drawString(
+				g,
+				this.getCamera()
+						.getPosition()
+						.sub(new Vector(Engine.getInstance().getWidth(), Engine
+								.getInstance().getHeight()).div(4.0f)),
+				"Level erfolgreich beendet");
+	}
+
 	@Override
 	public void draw(Graphics g) {
 		super.configScreen(g);
 		this.drawBackground(g);
 		super.draw(g);
+		if (this.finished) {
+			this.drawFinishedScreen(g);
+		}
+	}
+
+	public void finish() {
+		this.finished = true;
+		this.player.onFinish();
+		this.finishedEffect = new ParticleEffect(
+				this.getCamera().getPosition(), new FireEmitterFactory());
+	}
+
+	public boolean isFinished() {
+		return this.finished;
 	}
 }

@@ -1,6 +1,10 @@
 Leveldimensionen_1000_100_1
 Leveleinstellungen_1,1_1000_default
-Player_RollingBall_RollingBall,JumpingCross_100|0_0|0,100|0
-Elevator_0|0_2-Elevator_none_2|10,20.0,0.0
-Soldier_0|0_1-Soldier_none_none
-Ground_0|0_3-Ground_none_2|10
+Player_RollingBall_RollingBall,JumpingCross_100|0
+Cannon_(-184.0| 41.0)_0001-Cannon_none_true,(-368.0| 48.0)
+SavePoint_(-116.0| 29.0)_0002-SavePoint_none_none
+SavePoint_(-86.0| -102.0)_0003-SavePoint_none_none
+SavePoint_(29.0| -162.0)_0004-SavePoint_none_none
+SavePoint_(74.0| -88.0)_0005-SavePoint_none_none
+Fluid_(-145.0| 162.0)_0006-Fluid_none_15|5,20
+Fluid_(-272.0| 180.0)_0007-Fluid_none_15|5,20

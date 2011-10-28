@@ -12,11 +12,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 
 	private static final float SIZE = 20.0f;
-	private static final float INPUT_DELAY = 1.0f;
 
 	private boolean value = false;
 	private Shape shape = new Rectangle(Vector.ZERO, SIZE, SIZE);
-	private Timer inputTimer = new Timer(INPUT_DELAY);
 
 	public InterfaceCheckbox(InterfaceFunction function, boolean startValue) {
 		super(function);
@@ -30,7 +28,7 @@ public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 
 	@Override
 	public void draw(Graphics g) {
-		if (value) {
+		if (this.value) {
 			GraphicUtils.fill(g,
 					this.shape.modifyCenter(this.getTransformedCenterVector()));
 		} else {
@@ -42,9 +40,8 @@ public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 	@Override
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
-		if (this.getStatus() == STATUS_PRESSED && !this.inputTimer.isRunning()) {
+		if (this.getStatus() == STATUS_PRESSED) {
 			this.value = !this.value;
-			this.inputTimer.start(INPUT_DELAY);
 		}
 	}
 

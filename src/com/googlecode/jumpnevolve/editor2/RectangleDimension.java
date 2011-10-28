@@ -78,7 +78,7 @@ public class RectangleDimension extends EditorArgument {
 				this.updateCircles();
 			}
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
-					&& !this.parent.position.isMoving()) {
+					&& !this.parent.isMoving()) {
 				if (this.markCircle1.isPointIn(translatedMousePos)
 						|| this.markCircle2.isPointIn(translatedMousePos)
 						|| this.markCircle3.isPointIn(translatedMousePos)

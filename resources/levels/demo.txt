@@ -1,6 +1,10 @@
 Leveldimensionen_3000_1000_100
 Leveleinstellungen_1_500_landscape-photo.png
-Player_RollingBall_RollingBall_1500|300_1000|300,1500|300,2000|300,2500|300
+Player_RollingBall_RollingBall_1500|300
+SavePoint_(1000|300)_0005-SavePoint_none_none
+SavePoint_(1500|300)_0005-SavePoint_none_none
+SavePoint_(2000|300)_0005-SavePoint_none_none
+SavePoint_(2500|300)_0005-SavePoint_none_none
 Ground_250|400_none_none_250|20
 Ground_1000|400_none_none_100|20
 Ground_1500|350_none_none_200|10

@@ -35,6 +35,8 @@ public class Dialog extends InterfaceContainer implements Informable {
 	private boolean shown = false;
 	private Rectangle dimensions = new Rectangle(Vector.ZERO, Vector.DOWN_LEFT);
 
+	private boolean recalculated = false;
+
 	/**
 	 * 
 	 */
@@ -85,7 +87,8 @@ public class Dialog extends InterfaceContainer implements Informable {
 	}
 
 	public int getNumberOfParts() {
-		return this.contents.size();
+		//Zusammengezählte Zahl aus Contentables und Buttons abzüglich des closeButtons
+		return this.contents.size() + this.buttons.size() - 1;
 	}
 
 	/**
@@ -209,6 +212,10 @@ public class Dialog extends InterfaceContainer implements Informable {
 					center.y + rect.height / 2);
 			GraphicUtils.fill(g, rect.modifyCenter(center), Color.darkGray);
 			super.draw(g);
+			if (!this.recalculated) {
+				this.calculateDimensions();
+				this.recalculated = true;
+			}
 		}
 	}
 

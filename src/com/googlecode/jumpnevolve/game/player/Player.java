@@ -10,6 +10,7 @@ import com.googlecode.jumpnevolve.game.LimitedObjectFocusingCamera;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
@@ -38,54 +39,60 @@ public class Player implements Pollable, Interfaceable {
 	private final Level parent;
 	private final MainGUI gui;
 	private Vector save;
+	private Dialog finishDialog;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
-			String startFigure, String[] savePositions, boolean cameraOnPlayer) {
+			String startFigure, boolean cameraOnPlayer) {
 		this.parent = parent;
 		this.gui = new MainGUI(this);
 
-		GridContainer grid = new GridContainer(3, 3);
+		// Liste mit Spielfiguren erstellen
 		ButtonList selectList = new ButtonList(2, 10);
-		grid.add(selectList, 0, 2, GridContainer.MODUS_X_RIGHT,
-				GridContainer.MODUS_Y_UP);
 		selectList.addButton(new InterfaceButton(
 				InterfaceFunctions.FIGURE_ROLLING_BALL,
 				"object-pictures/figure-rolling-ball.png"));
 		selectList.addButton(new InterfaceButton(
 				InterfaceFunctions.FIGURE_JUMPING_CROSS,
 				"object-pictures/figure-cross.png"));
-		gui.setMainContainer(grid);
+
+		// Finish-Dialog erstellen
+		this.finishDialog = new Dialog();
+		this.finishDialog.addTextButton(InterfaceFunctions.LEVEL_EXIT,
+				"Level beenden");
+
+		// GridContainer für das Interface erstellen und setzen
+		GridContainer grid = new GridContainer(3, 3);
+		grid.add(selectList, 0, 2, GridContainer.MODUS_X_RIGHT,
+				GridContainer.MODUS_Y_UP);
+		grid.add(this.finishDialog, 1, 1);
+		this.gui.setMainContainer(grid);
 
 		this.figure = new PlayerFigure(parent, startPosition, this);
-		setFigures(avaiableFigures, startFigure);
+		this.setFigures(avaiableFigures, startFigure);
 		this.setActivSavepoint(this.figure.getPosition());
 		this.parent.add(this.figure);
 		if (cameraOnPlayer) {
 			this.parent.setCamera(new LimitedObjectFocusingCamera(this.figure));
 		}
-		for (String string : savePositions) {
-			this.parent.add(new SavePoint(this.parent, Vector
-					.parseVector(string), this));
-		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
-		gui.poll(input, secounds);
+		this.gui.poll(input, secounds);
 		if (this.figure.getShape().getUpperEnd() > this.parent.height) {
 			this.figure.setPosition(this.getLastSave());
 			this.figure.stopMoving();
 		}
 		if (input.isKeyDown(Input.KEY_UP)) {
-			figure.jump();
+			this.figure.jump();
 		}
 		if (input.isKeyDown(Input.KEY_RIGHT)
 				&& input.isKeyDown(Input.KEY_LEFT) == false) {
-			figure.run(Playable.DIRECTION_RIGHT);
+			this.figure.run(Playable.DIRECTION_RIGHT);
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			figure.run(Playable.DIRECTION_LEFT);
+			this.figure.run(Playable.DIRECTION_LEFT);
 		} else {
-			figure.run(Playable.STAY);
+			this.figure.run(Playable.STAY);
 		}
 	}
 
@@ -167,7 +174,7 @@ public class Player implements Pollable, Interfaceable {
 
 	@Override
 	public void draw(Graphics g) {
-		gui.draw(g);
+		this.gui.draw(g);
 	}
 
 	@Override
@@ -176,6 +183,8 @@ public class Player implements Pollable, Interfaceable {
 		if (function == InterfaceFunctions.FIGURE_ROLLING_BALL
 				|| function == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
 			this.changeFigure((InterfaceFunctions) function);
+		} else if (function == InterfaceFunctions.LEVEL_EXIT) {
+			// TODO: Hauptmenü anzeigen
 		}
 	}
 
@@ -195,5 +204,9 @@ public class Player implements Pollable, Interfaceable {
 
 	void setActivSavepoint(Vector position) {
 		this.save = position;
+	}
+
+	public void onFinish() {
+		this.finishDialog.show();
 	}
 }

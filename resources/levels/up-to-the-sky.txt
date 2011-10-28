@@ -1,6 +1,12 @@
 Leveldimensionen_10000_2000_1
 Leveleinstellungen_1,1_1000_bg-up-to-the-sky.png
-Player_RollingBall_RollingBall,JumpingCross_100.0|1800.0_0|1700,100|1700,200|1700,300|1700,400|1700,500|1700
+Player_RollingBall_RollingBall,JumpingCross_100.0|1800.0
+SavePoint_(0|1700)_0005-SavePoint_none_none
+SavePoint_(100|1700)_0150-SavePoint_none_none
+SavePoint_(200|1700)_0151-SavePoint_none_none
+SavePoint_(300|1700)_0152-SavePoint_none_none
+SavePoint_(400|1700)_0153-SavePoint_none_none
+SavePoint_(500|1700)_0154-SavePoint_none_none
 Ground_9961.0|476.0_0109-Ground_none_39.0|16.0
 WalkingSoldier_2132.0|1607.0_0024-WalkingSoldier_none_none
 Ground_1146.0|1906.0_0008-Ground_none_24.0|9.0

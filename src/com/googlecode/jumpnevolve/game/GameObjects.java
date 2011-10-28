@@ -15,6 +15,7 @@ import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
 import com.googlecode.jumpnevolve.game.objects.Fluid;
+import com.googlecode.jumpnevolve.game.objects.Goal;
 import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
@@ -114,8 +115,10 @@ public enum GameObjects implements InterfaceFunction {
 					new RelativePositionMarker(PositionMarker.MODUS_BOTH,
 							Vector.UP_RIGHT, Color.yellow) })),
 
-	SAVE_POINT(SavePoint.class, "textures/aluminium.png", false);
+	SAVE_POINT(SavePoint.class, "textures/aluminium.png", false),
 	// FIXME: SavePoint braucht sein eigenes Icon (keine Textur)
+	
+	GOAL(Goal.class, "textures/wood.png", false);
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -207,6 +210,8 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new Cannon(level, position, arguments);
 		} else if (className.equals(SAVE_POINT.className)) {
 			newObject = new SavePoint(level, position, level.getPlayer());
+		}else if (className.equals(GOAL.className)) {
+			newObject = new Goal(level, position);
 		}
 		return newObject;
 	}
