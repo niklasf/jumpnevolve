@@ -23,7 +23,7 @@ class Cannonball extends Shot {
 	 */
 	public Cannonball(World world, Vector position, Vector shotDirection) {
 		super(world, ShapeFactory.createCircle(position, 10), 10.0f,
-				shotDirection, 500.0f);
+				shotDirection, 200.0f);
 	}
 
 	public Cannonball(World world, Vector position, String arguments) {

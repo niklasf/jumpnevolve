@@ -11,6 +11,8 @@ public abstract class EditorArgument implements Pollable, Drawable {
 
 	protected EditorObject parent;
 
+	protected Editor2 editor;
+
 	public abstract String getArgumentPart();
 
 	public abstract void initialize(String value);
@@ -26,6 +28,22 @@ public abstract class EditorArgument implements Pollable, Drawable {
 
 	public void setParent(EditorObject parent) {
 		this.parent = parent;
+	}
+
+	public void setEditor(Editor2 editor) {
+		this.editor = editor;
+	}
+
+	public Editor2 getEditor() {
+		if (this.editor != null) {
+			return this.editor;
+		} else {
+			if (this.parent != null) {
+				return this.parent.parent;
+			} else {
+				return null;
+			}
+		}
 	}
 
 	@Override

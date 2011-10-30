@@ -9,7 +9,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -159,7 +158,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getWantedSize() {
 		int z = 1;
 		if (this.isForthMoveable()) {
 			z++;

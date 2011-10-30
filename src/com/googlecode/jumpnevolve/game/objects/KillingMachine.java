@@ -34,15 +34,13 @@ import com.googlecode.jumpnevolve.math.Vector;
  * @author Erik Wagner
  * 
  */
-public class KillingMachine extends EnemyTemplate implements GravityActing,
-		Blockable {
+public abstract class KillingMachine extends EnemyTemplate implements
+		GravityActing, Blockable {
 
 	private static final long serialVersionUID = -5724600752326575341L;
 
 	public KillingMachine(World world, Vector position) {
-		super(world,
-				ShapeFactory.createRectangle(position, new Vector(28, 28)),
-				20.0f);
+		super(world, ShapeFactory.createCircle(position, 15.0f), 20.0f);
 	}
 
 	@Override
@@ -103,7 +101,4 @@ public class KillingMachine extends EnemyTemplate implements GravityActing,
 	public boolean wantBlock(Blockable other) {
 		return true;
 	}
-
-	// TODO: draw-Methode einfügen
-
 }

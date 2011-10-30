@@ -7,15 +7,19 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.LimitedObjectFocusingCamera;
+import com.googlecode.jumpnevolve.game.menu.Menu;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.Dialog;
 import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceButton;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
 import com.googlecode.jumpnevolve.graphics.world.Camera;
@@ -34,17 +38,20 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class Player implements Pollable, Interfaceable {
 
 	private PlayerFigure figure;
-	private Playable cur;
+	private Playable curPlayable;
 	private HashMap<InterfaceFunction, Playable> figureList = new HashMap<InterfaceFunction, Playable>();
 	private final Level parent;
 	private final MainGUI gui;
 	private Vector save;
 	private Dialog finishDialog;
+	private Menu parentMenu = null;
+	private boolean menuButtonCreated = false;
 
 	public Player(Level parent, Vector startPosition, String avaiableFigures,
 			String startFigure, boolean cameraOnPlayer) {
 		this.parent = parent;
 		this.gui = new MainGUI(this);
+		this.gui.maximizeSize();
 
 		// Liste mit Spielfiguren erstellen
 		ButtonList selectList = new ButtonList(2, 10);
@@ -64,7 +71,8 @@ public class Player implements Pollable, Interfaceable {
 		GridContainer grid = new GridContainer(3, 3);
 		grid.add(selectList, 0, 2, GridContainer.MODUS_X_RIGHT,
 				GridContainer.MODUS_Y_UP);
-		grid.add(this.finishDialog, 1, 1);
+		grid.add(this.finishDialog, 2, 1);
+		grid.maximizeSize();
 		this.gui.setMainContainer(grid);
 
 		this.figure = new PlayerFigure(parent, startPosition, this);
@@ -74,6 +82,13 @@ public class Player implements Pollable, Interfaceable {
 		if (cameraOnPlayer) {
 			this.parent.setCamera(new LimitedObjectFocusingCamera(this.figure));
 		}
+	}
+
+	public Player(Menu menu, Level parent, Vector startPosition,
+			String avaiableFigures, String startFigure, boolean cameraOnPlayer) {
+		this(parent, startPosition, avaiableFigures, startFigure,
+				cameraOnPlayer);
+		this.parentMenu = menu;
 	}
 
 	@Override
@@ -101,7 +116,28 @@ public class Player implements Pollable, Interfaceable {
 	}
 
 	public Playable getCurPlayable() {
-		return this.cur;
+		return this.curPlayable;
+	}
+
+	public void setParentMenu(Menu parent2) {
+		this.parentMenu = parent2;
+		this.createMenuButton();
+	}
+
+	private void createMenuButton() {
+		if (!this.menuButtonCreated) {
+			InterfaceContainer mainCon = this.gui.getMainContainer();
+			if (mainCon instanceof GridContainer) {
+				((GridContainer) mainCon).add(new InterfaceTextButton(
+						InterfaceFunctions.LEVEL_EXIT, "Hauptmenü"), 0, 1,
+						GridContainer.MODUS_DEFAULT, GridContainer.MODUS_Y_UP);
+			} else if (mainCon instanceof BorderContainer) {
+				((BorderContainer) mainCon).add(new InterfaceTextButton(
+						InterfaceFunctions.LEVEL_EXIT, "Hauptmenü"),
+						BorderContainer.POSITION_HIGH);
+			}
+			this.menuButtonCreated = true;
+		}
 	}
 
 	private void setFigures(String avaiableFigures, String startFigure) {
@@ -121,8 +157,8 @@ public class Player implements Pollable, Interfaceable {
 		} else if (startFigure.equals("JumpingCross")) {
 			curNum = InterfaceFunctions.FIGURE_JUMPING_CROSS;
 		}
-		this.cur = this.figureList.get(curNum);
-		this.figure.setShape(this.cur.getShape());
+		this.curPlayable = this.figureList.get(curNum);
+		this.figure.setShape(this.curPlayable.getShape());
 	}
 
 	private Playable getNewFigure(InterfaceFunction number) {
@@ -139,12 +175,12 @@ public class Player implements Pollable, Interfaceable {
 	}
 
 	public void changeFigure(InterfaceFunctions newFigure) {
-		this.cur = this.figureList.get(newFigure);
-		this.figure.setShape(this.cur.getShape());
+		this.curPlayable = this.figureList.get(newFigure);
+		this.figure.setShape(this.curPlayable.getShape());
 	}
 
 	public void activateSkill(int skill) {
-		// TODO: Methode füllen
+		// TODO: Methode füllen (activateSkill)
 	}
 
 	@Override
@@ -184,7 +220,16 @@ public class Player implements Pollable, Interfaceable {
 				|| function == InterfaceFunctions.FIGURE_JUMPING_CROSS) {
 			this.changeFigure((InterfaceFunctions) function);
 		} else if (function == InterfaceFunctions.LEVEL_EXIT) {
-			// TODO: Hauptmenü anzeigen
+			this.exitLevel();
+		}
+	}
+
+	private void exitLevel() {
+		if (this.parentMenu != null) {
+			this.parentMenu.switchBackToMainState();
+			Engine.getInstance().switchState(this.parentMenu);
+		} else {
+			// TODO: Programm direkt beenden
 		}
 	}
 
@@ -202,7 +247,7 @@ public class Player implements Pollable, Interfaceable {
 		return this.save;
 	}
 
-	void setActivSavepoint(Vector position) {
+	public void setActivSavepoint(Vector position) {
 		this.save = position;
 	}
 

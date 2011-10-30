@@ -1,7 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -33,7 +32,7 @@ public class MainGUI extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getWantedSize() {
 		return new Rectangle(Vector.ZERO, this.parentInterfaceable.getWidth(),
 				this.parentInterfaceable.getHeight());
 	}

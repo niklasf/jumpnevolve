@@ -7,14 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
+import com.googlecode.jumpnevolve.game.menu.MainMenu;
 import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.ButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.Dialog;
@@ -27,7 +30,9 @@ import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
+import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
@@ -39,6 +44,8 @@ public class Editor2 extends Level implements Interfaceable {
 	private static final int GUI_MODE_OBJECT = 1;
 	private static final int GUI_MODE_OTHER = 2;
 	private static final int GUI_MODE_DIALOG = 3;
+	private static final String DEFAULT_LEVEL = Parameter.EDITOR_EDITOR_DEFAULTLEVEL;
+
 	private ArrayList<EditorObject> objects = new ArrayList<EditorObject>();
 	private EditorObject selected;
 	private Vector cameraPos = Vector.ZERO, oldCameraPos = Vector.ZERO;
@@ -52,17 +59,33 @@ public class Editor2 extends Level implements Interfaceable {
 	private int lastGuiMode = GUI_MODE_NONE;
 	private Dialog settingsDialog, playerDialog, dataDialog;
 	private GridContainer objectSettingsPlace = new GridContainer(1, 1);
+	private PositionMarker playerPosition;
+	private MainMenu parentMenu;
 
 	/**
-	 * @param loader
+	 * Erzeugt einen Editor mit einem bestimmten Level als Starteinstellung
+	 * 
+	 * @param parent
+	 *            Das MainMenu, das den Editor geöffnet hat
+	 * @param source
+	 *            Das Level das als Starteinstellung geladen werden soll
 	 * @param width
+	 *            Die Breite des Editors
 	 * @param height
+	 *            Die Höhe des Editors
 	 * @param subareaWidth
+	 *            Die Subarea-Breite
 	 * @throws IOException
 	 */
-	public Editor2(Levelloader loader, int width, int height, int subareaWidth)
-			throws IOException {
-		super(loader, width, height, subareaWidth);
+	public Editor2(MainMenu parent, String source, int width, int height,
+			int subareaWidth) throws IOException {
+		super(new Levelloader(source), width, height, subareaWidth);
+
+		this.parentMenu = parent;
+
+		this.playerPosition = new PositionMarker(PositionMarker.MODUS_BOTH,
+				Vector.ZERO, Color.cyan);
+		this.playerPosition.setEditor(this);
 
 		// Settings-Dialog erstellen
 		this.settingsDialog = new Dialog();
@@ -74,15 +97,14 @@ public class Editor2 extends Level implements Interfaceable {
 		this.settingsDialog.addNumberSelection("Zoom X", 1, 100);
 		this.settingsDialog.addNumberSelection("Zoom Y", 1, 100);
 		this.settingsDialog.addNumberSelection("Subarea-Breite", 1, 1000);
+		this.settingsDialog.addTextButton(InterfaceFunctions.EDITOR_RELOAD,
+				"Einstellungen übernehmen");
 		// TODO: Maxima so in Ordnung?
 
 		// Player-Dialog erstellen
 		this.playerDialog = new Dialog();
 		this.playerDialog.addTextField("Startfigur");
 		this.playerDialog.addTextField("Verfügbare Figuren");
-		this.playerDialog.addTextField("Startvektor");
-		// TODO: Player muss noch dargestellt werden und seine Start-Position
-		// per Drag'n'Drop festlegbar sein
 
 		// Save-Dialog erstellen
 		this.dataDialog = new Dialog();
@@ -95,6 +117,7 @@ public class Editor2 extends Level implements Interfaceable {
 		// Kopfzeile mit Buttons erstellen
 		GridContainer topGrid = new GridContainer(1, 5,
 				GridContainer.MODUS_DEFAULT, GridContainer.MODUS_Y_UP);
+		topGrid.maximizeXRange();
 		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_EXIT,
 				"Exit"), 0, 0);
 		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_SETTINGS,
@@ -119,6 +142,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 		// BorderContainer für die Oberfläche erstellen und befüllen
 		BorderContainer border = new BorderContainer();
+		border.maximizeSize();
 
 		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
 		border.add(this.settingsDialog, BorderContainer.POSITION_MIDDLE);
@@ -137,16 +161,39 @@ public class Editor2 extends Level implements Interfaceable {
 
 		// Kamera setzen
 		this.setCamera(new EditorCamera(this));
+		this.setCameraPosition(new Vector(this.getWidth(), this.getHeight())
+				.div(2.0f));
 
 		// Zoom auf 1 setzen, damit das Interface richtig dargestellt wird
 		this.setZoom(1);
 
-		// Start-Level laden
-		// TODO: default-Level ohne Inhalt erstellen
-		this.loadLevel(loader.source);
+		// Default-Level laden
+		this.loadLevel(this.transformToPath(source));
+	}
 
-		// Data-Dialog zeigen, damit man ein Level zum Laden auswählen kann
-		this.dataDialog.show();
+	/**
+	 * Erzeugt einen Editor mit dem Default-Level als Starteinstellung
+	 * 
+	 * @param width
+	 *            Die Breite des Editors
+	 * @param height
+	 *            Die Höhe des Editors
+	 * @param subareaWidth
+	 *            Die Subarea-Breite
+	 * @throws IOException
+	 */
+	public Editor2(int width, int height, int subareaWidth) throws IOException {
+		this(null, DEFAULT_LEVEL, width, height, subareaWidth);
+	}
+
+	public Editor2(MainMenu parent, int width, int height, int subareaWidth)
+			throws IOException {
+		this(parent, DEFAULT_LEVEL, width, height, subareaWidth);
+	}
+
+	public Editor2(String source, int width, int height, int subareaWidth)
+			throws IOException {
+		this(null, source, width, height, subareaWidth);
 	}
 
 	private void addNewObject(GameObjects function, Vector position) {
@@ -207,8 +254,14 @@ public class Editor2 extends Level implements Interfaceable {
 	private void exit() {
 		// Nachfragen, ob das Programm wirklich beendet werden soll
 		// TODO: Dialog erstellen
-		// Bei "Ja" Programm beenden
-		// TODO: Programm beenden
+		// Bei "Ja" Editor beenden
+		if (this.parentMenu != null) {
+			System.out.println("Exit!");
+			this.parentMenu.switchBackToMainState();
+			Engine.getInstance().switchState(this.parentMenu);
+		} else {
+			// TODO: Programm direkt beenden
+		}
 	}
 
 	public Vector translateMousePos(Vector mousePos) {
@@ -244,8 +297,11 @@ public class Editor2 extends Level implements Interfaceable {
 			if (this.selected != null) {
 				this.selected.poll(input, secounds);
 			} else {
-				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				this.playerPosition.poll(input, secounds);
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
+						&& !this.playerPosition.isMoving()) {
 					if (!this.guiAction) {
+						// Kamera verschieben
 						if (!this.cameraMove) {
 							this.oldClick = mousePos;
 						}
@@ -297,7 +353,15 @@ public class Editor2 extends Level implements Interfaceable {
 		if (this.selected != null) {
 			this.selected.drawInterface(g);
 		}
+		this.drawPlayer(g);
 		this.gui.draw(g);
+	}
+
+	private void drawPlayer(Graphics g) {
+		GraphicUtils.fill(g, new Circle(this.playerPosition.getPosition(),
+				10.0f), Color.blue);
+		this.playerPosition.draw(g);
+		GraphicUtils.drawString(g, this.playerPosition.getPosition(), "Player");
 	}
 
 	@Override
@@ -348,6 +412,7 @@ public class Editor2 extends Level implements Interfaceable {
 				try {
 					this.saveLevel(this.transformToPath(this.dataDialog
 							.getContentable("Level speichern").getContent()));
+					this.dataDialog.hide();
 				} catch (IOException e) {
 					// TODO Fehlermeldung im Editor ausgeben
 					e.printStackTrace();
@@ -357,6 +422,14 @@ public class Editor2 extends Level implements Interfaceable {
 				try {
 					this.loadLevel(this.transformToPath(this.dataDialog
 							.getContentable("Level laden").getContent()));
+					this.loadWithNewSettings();
+				} catch (IOException e) {
+					// TODO Fehlermeldung im Editor ausgeben
+					e.printStackTrace();
+				}
+			}
+			if (function == InterfaceFunctions.EDITOR_RELOAD) {
+				try {
 					this.loadWithNewSettings();
 				} catch (IOException e) {
 					// TODO Fehlermeldung im Editor ausgeben
@@ -432,8 +505,8 @@ public class Editor2 extends Level implements Interfaceable {
 					playerLineSplit[1]);
 			this.playerDialog.getContentable("Verfügbare Figuren").setContent(
 					playerLineSplit[2]);
-			this.playerDialog.getContentable("Startvektor").setContent(
-					playerLineSplit[3]);
+			this.playerPosition.changePosition(Vector
+					.parseVector(playerLineSplit[3]));
 
 		} else {
 			throw new IOException(
@@ -465,7 +538,7 @@ public class Editor2 extends Level implements Interfaceable {
 				}
 				this.addNewObject(cur,
 						GameObjects.getGameObject(currentSplit[0]));
-				cur.initialize(currentSplit[4]);
+				cur.initialize(currentSplit[3], currentSplit[4]);
 			}
 			current = levelFile.readLine();
 		}
@@ -474,6 +547,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	@SuppressWarnings("unchecked")
 	public void saveLevel(String path) throws IOException {
+		System.out.println("Saving current level at: " + path);
 		FileOutputStream stream = new FileOutputStream(path);
 		String firstLine = this.getDimensionsLine();
 		String secondLine = "\n" + this.getSettingsLine();
@@ -508,10 +582,10 @@ public class Editor2 extends Level implements Interfaceable {
 
 	private void loadWithNewSettings() throws IOException {
 		Dialog.disableAll();
-		this.saveLevel("resources/levels/reload-save.txt");
+		this.saveLevel(this.transformToPath("reload-save.txt"));
 		AbstractEngine engine = Engine.getInstance();
-		engine.switchState(new Editor2(new Levelloader(
-				"resources/levels/reload-save.txt"), Integer
+		engine.switchState(new Editor2(this.parentMenu, this
+				.transformToPath("reload-save.txt"), Integer
 				.parseInt(this.settingsDialog.getContentable("Breite")
 						.getContent()), Integer.parseInt(this.settingsDialog
 				.getContentable("Höhe").getContent()), Integer
@@ -548,7 +622,8 @@ public class Editor2 extends Level implements Interfaceable {
 	private String getPlayerLine() {
 		HashMap<String, String> map = this.playerDialog.getContents();
 		return "Player_" + map.get("Startfigur") + "_"
-				+ map.get("Verfügbare Figuren") + "_" + map.get("Startvektor");
+				+ map.get("Verfügbare Figuren") + "_"
+				+ this.playerPosition.getArgumentPart();
 	}
 
 	private String getSettingsLine() {

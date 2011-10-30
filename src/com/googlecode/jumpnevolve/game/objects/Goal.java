@@ -1,9 +1,12 @@
 package com.googlecode.jumpnevolve.game.objects;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
@@ -17,7 +20,8 @@ public class Goal extends ObjectTemplate implements Activable {
 	private final Level parent;
 
 	public Goal(Level level, Vector position) {
-		super(level, ShapeFactory.createCircle(position, 15.0f), 0.0f);
+		super(level, ShapeFactory.createRectangle(position, 60.0f, 63.75f),
+				0.0f);
 		this.parent = level;
 	}
 
@@ -49,6 +53,12 @@ public class Goal extends ObjectTemplate implements Activable {
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		// Nichts tun
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
+				.getInstance().getImage("object-pictures/goal.png"));
 	}
 
 }

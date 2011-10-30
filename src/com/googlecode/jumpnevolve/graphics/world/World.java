@@ -29,7 +29,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.googlecode.jumpnevolve.graphics.AbstractState;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -65,6 +68,8 @@ public class World extends AbstractState {
 	private boolean polling;
 
 	private ArrayList<Object> addings = new ArrayList<Object>();
+
+	private String background = "landscape-photo.png";
 
 	public World(int width, int height, int subareaWidth) {
 		this.subareaWidth = subareaWidth;
@@ -255,6 +260,28 @@ public class World extends AbstractState {
 		return returns;
 	}
 
+	public void setBackground(String imageFile) {
+		if (imageFile.equals("default")) {
+			imageFile = "landscape.png";
+		}
+		this.background = imageFile;
+	}
+
+	/**
+	 * @return Der gesamte Dateipfad aus dem das Hintergrundbild geladen wird
+	 */
+	public String getBackgroundFile() {
+		return "backgrounds/" + background;
+	}
+
+	private void drawBackground(Graphics g) {
+		GraphicUtils.drawImage(g, ShapeFactory
+				.createRectangle(new Vector(this.width / 2.0f,
+						this.height / 2.0f), this.width, this.height),
+				ResourceManager.getInstance()
+						.getImage(this.getBackgroundFile()));
+	}
+
 	/**
 	 * Bereitet den Grafikkontext für das Zeichnen vor (Kameraeinstellungen,
 	 * Zoom)
@@ -273,12 +300,13 @@ public class World extends AbstractState {
 					- cameraPosition.x, Engine.getInstance().getHeight()
 					/ zoomY / 2.0f - cameraPosition.y);
 		}
+		this.drawBackground(g);
 		screenAlreadyConfigured = true;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		if (screenAlreadyConfigured == false) {
+		if (!screenAlreadyConfigured) {
 			this.configScreen(g);
 		}
 

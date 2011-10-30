@@ -49,7 +49,10 @@ public class EditorObject implements Pollable, Drawable {
 		}
 	}
 
-	public void initialize(String argumentString) {
+	public void initialize(String activatings, String argumentString) {
+		if (GameObjects.getGameObject(className).hasActivatings) {
+			this.settings.getContentable("Activatings").setContent(activatings);
+		}
 		String[] split = argumentString.split(",");
 		for (int i = 0; i < this.arguments.size(); i++) {
 			this.arguments.get(i).initialize(split[i]);

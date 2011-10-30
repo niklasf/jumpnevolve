@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
-import com.googlecode.jumpnevolve.math.Shape;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -31,6 +31,7 @@ public class BorderContainer extends InterfaceContainer {
 	 */
 	public BorderContainer() {
 		this.container = new GridContainer(3, 3);
+		this.container.maximizeSize();
 		this.add(this.container, Vector.ZERO);
 	}
 
@@ -87,7 +88,7 @@ public class BorderContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getWantedSize() {
 		return this.container.getNeededSize();
 	}
 }

@@ -8,7 +8,6 @@ import org.newdawn.slick.UnicodeFont;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -52,7 +51,7 @@ public class InterfaceLabel extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getNeededSize() {
 		if (Font == null) {
 			return new Rectangle(Vector.ZERO, this.text.length() * 10, 12);
 		} else {

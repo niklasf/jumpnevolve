@@ -8,15 +8,17 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
+ * TODO: Benötigt in jedem Fall ein EditorObject als parent
+ * 
  * @author e.wagner
  * 
  */
 public class RectangleDimension extends EditorArgument {
 
-	private static final float WANTED_DIST = 5.0f;
-	private static final float MIN_DIST = 2.0f;
+	private static final float RADIUS = Parameter.EDITOR_RECTANGLEDIMENSION_RADIUS;
 
 	private int width, height;
 	private NextShape markCircle1, markCircle2, markCircle3, markCircle4;
@@ -40,7 +42,7 @@ public class RectangleDimension extends EditorArgument {
 	}
 
 	private void updateCircles() {
-		float dist = WANTED_DIST;
+		float dist = RADIUS;
 		this.markCircle1 = ShapeFactory.createCircle(
 				this.getPosition().add(this.width / 2, this.height / 2), dist);
 		this.markCircle2 = ShapeFactory.createCircle(
@@ -71,7 +73,7 @@ public class RectangleDimension extends EditorArgument {
 		if (!this.getPosition().equals(this.lastPosition)) {
 			this.updateCircles();
 		} else {
-			Vector translatedMousePos = this.parent.parent.translateMousePos(
+			Vector translatedMousePos = this.getEditor().translateMousePos(
 					input.getMouseX(), input.getMouseY());
 			if (this.wasChanged) {
 				this.changeDimensions(translatedMousePos);
@@ -107,6 +109,7 @@ public class RectangleDimension extends EditorArgument {
 	public EditorArgument clone() {
 		EditorArgument re = new RectangleDimension(this.width, this.height);
 		re.setParent(this.parent);
+		re.setEditor(this.editor);
 		return re;
 	}
 

@@ -17,7 +17,6 @@
 
 package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.game.menu.LevelSelection;
 import com.googlecode.jumpnevolve.game.menu.MainMenu;
 import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;

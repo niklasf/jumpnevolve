@@ -3,6 +3,8 @@
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import java.util.Collection;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -149,25 +151,9 @@ public class GridContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		Object[] containerCopy = objects.keySet().toArray();
-		for (Object interfacePart : containerCopy) {
-			((InterfacePart) interfacePart).draw(g);
-		}
-	}
-
-	@Override
-	public void poll(Input input, float secounds) {
-		Object[] containerCopy = objects.keySet().toArray();
-		for (Object interfacePart : containerCopy) {
-			((InterfacePart) interfacePart).poll(input, secounds);
-		}
-	}
-
-	@Override
 	public Vector getPositionFor(InterfacePart object) {
 		if (this.objects.containsKey(object)) {
-			Rectangle place = this.parentContainer.getPlaceFor(this);
+			Rectangle place = (Rectangle) this.getNeededSize();
 			Vector cell = this.objects.get(object);
 			Shape shape = object.getNeededSize();
 			int x = (int) (this.getXPosInCell((int) cell.x, (int) cell.y,
@@ -218,7 +204,66 @@ public class GridContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getWantedSize() {
+		// try {
+		// if (this.objects.size() > 0) {
+		// Object[] parts = this.objects.keySet().toArray();
+		// Vector highLeft, downRight;
+		// highLeft = this.getPositionFor((InterfacePart) parts[0]);
+		// downRight = ((InterfacePart) parts[0]).getNeededSize()
+		// .getBoundingRect().getLowRightCorner();
+		// for (int i = 1; i < parts.length; i++) {
+		// Vector position = this
+		// .getPositionFor((InterfacePart) parts[i]);
+		// Vector lowRightCorner = ((InterfacePart) parts[i])
+		// .getNeededSize().getBoundingRect()
+		// .getLowRightCorner();
+		// if (position.x < highLeft.x) {
+		// highLeft = highLeft.modifyX(position.x);
+		// }
+		// if (position.y < downRight.y) {
+		// downRight = downRight.modifyY(position.y);
+		// }
+		// if (lowRightCorner.x > downRight.x) {
+		// downRight = downRight.modifyX(lowRightCorner.x);
+		// }
+		// if (lowRightCorner.y > downRight.y) {
+		// downRight = downRight.modifyY(lowRightCorner.y);
+		// }
+		// }
+		// if (this.cols == 5 && this.rows == 1) {
+		// System.out.println("NeededSize: "
+		// + new Rectangle(Vector.ZERO, highLeft
+		// .sub(downRight).div(2.0f)));
+		// }
+		// return new Rectangle(Vector.ZERO, highLeft.sub(downRight).div(
+		// 2.0f));
+		// } else {
+		// return new Rectangle(Vector.ZERO, 1, 1);
+		// }
+		// } catch (NullPointerException e) {
+		// return new Rectangle(Vector.ZERO, 1, 1);
+		// }
+
+		// Object[] vecs = (Object[]) (this.objects.values().toArray());
+		// Vector highLeft, downRight;
+		// highLeft = (Vector) vecs[0];
+		// downRight = ((Vector) vecs[0]).add(Vector.DOWN_RIGHT);
+		// for (int i = 1; i < vecs.length; i++) {
+		// if (((Vector) vecs[i]).x < highLeft.x) {
+		// highLeft = highLeft.modifyX(((Vector) vecs[i]).x);
+		// }
+		// if (((Vector) vecs[i]).x > downRight.x) {
+		// downRight = downRight.modifyX(((Vector) vecs[i]).x);
+		// }
+		// if (((Vector) vecs[i]).y < highLeft.y) {
+		// highLeft = highLeft.modifyY(((Vector) vecs[i]).y);
+		// }
+		// if (((Vector) vecs[i]).y > downRight.y) {
+		// downRight = downRight.modifyY(((Vector) vecs[i]).y);
+		// }
+		// }
+
 		Object[] objectsCopy = objects.keySet().toArray();
 		float width = 1, height = 1;
 		for (Object object : objectsCopy) {
@@ -227,13 +272,5 @@ public class GridContainer extends InterfaceContainer {
 			height = Math.max(height, size.getYRange());
 		}
 		return new Rectangle(Vector.ZERO, width * this.cols, height * this.rows);
-	}
-
-	@Override
-	public Rectangle getPlaceFor(InterfacePart object) {
-		// Die Größe einer Zelle
-		Rectangle place = this.parentContainer.getPlaceFor(this);
-		return new Rectangle(Vector.ZERO, place.width / cols, place.height
-				/ rows);
 	}
 }

@@ -51,22 +51,10 @@ public class HeadlineContainer extends InterfaceContainer {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getWantedSize() {
 		Shape head = this.headlineCon.getNeededSize(), main = this.mainCon
 				.getNeededSize();
 		return new Rectangle(Vector.ZERO, Math.max(head.getXRange(),
 				main.getXRange()), head.getYRange() + main.getYRange());
-	}
-
-	public Rectangle getPlaceFor(InterfacePart object) {
-		if (object == this.headlineCon) {
-			return super.getPlaceFor(object);
-		} else if (object == this.mainCon) {
-			Rectangle place = super.getPlaceFor(object);
-			return new Rectangle(Vector.ZERO, place.width, place.height
-					- this.headlineCon.getNeededSize().getYRange());
-		} else {
-			return super.getPlaceFor(object);
-		}
 	}
 }

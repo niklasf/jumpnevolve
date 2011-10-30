@@ -6,9 +6,6 @@ import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
-import com.googlecode.jumpnevolve.graphics.gui.TextButtonList;
-import com.googlecode.jumpnevolve.math.Shape;
-import com.googlecode.jumpnevolve.math.Vector;
 
 public class SimpleSubMenu extends SubMenu {
 
@@ -23,6 +20,7 @@ public class SimpleSubMenu extends SubMenu {
 		for (int i = 0; i < this.entrys.size(); i++) {
 			con.add(this.entrys.get(i), i, 0);
 		}
+		con.maximizeSize();
 		this.setMainContainer(con);
 	}
 

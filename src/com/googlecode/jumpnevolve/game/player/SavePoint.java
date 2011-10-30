@@ -3,8 +3,11 @@
  */
 package com.googlecode.jumpnevolve.game.player;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
@@ -26,7 +29,7 @@ public class SavePoint extends AbstractObject implements Activable {
 	 * @param shape
 	 */
 	public SavePoint(World world, Vector position, Player parent) {
-		super(world, ShapeFactory.createRectangle(position, 30.0f, 50.0f));
+		super(world, ShapeFactory.createRectangle(position, 30.0f, 45.0f));
 		this.parent = parent;
 	}
 
@@ -64,6 +67,25 @@ public class SavePoint extends AbstractObject implements Activable {
 	@Override
 	public int getCompany() {
 		return COMPANY_OBJECT;
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		if (this.activated) {
+			GraphicUtils
+					.drawImage(
+							g,
+							this.getShape(),
+							ResourceManager.getInstance().getImage(
+									"object-pictures/savePoint-active.png"));
+		} else {
+			GraphicUtils.drawImage(
+					g,
+					this.getShape(),
+					ResourceManager.getInstance().getImage(
+							"object-pictures/savePoint-not-active.png"));
+
+		}
 	}
 
 }

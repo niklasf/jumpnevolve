@@ -11,6 +11,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
@@ -18,10 +19,10 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class InterfaceButton extends InterfaceObject {
 
-	public static final float BUTTON_DIMENSION = 50.0f;
+	public static final float BUTTON_DIMENSION = Parameter.GUI_BUTTON_DIMENSION;
 
 	private final String icon;
-	private final Shape shape;
+	private final Rectangle shape;
 
 	/**
 	 * Erzeigt einen neuen Button für das Interface
@@ -68,7 +69,7 @@ public class InterfaceButton extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getNeededSize() {
 		return this.shape;
 	}
 }

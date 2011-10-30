@@ -1,8 +1,8 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Eine Zahlenauswahl für Dialoge u.Ä.
@@ -12,7 +12,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class InterfaceNumberSelection extends GridContainer implements
 		Informable, Contentable {
 
-	private static final int DEFAULT_STEP = 1;
+	private static final int DEFAULT_STEP = Parameter.GUI_NUMBERSELECTION_DEFAULTSTEP;
 
 	private InterfaceTextField textField = new InterfaceTextField(
 			InterfaceFunctions.INTERFACE_TEXTFIELD);
@@ -111,7 +111,7 @@ public class InterfaceNumberSelection extends GridContainer implements
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getNeededSize() {
 		return new Rectangle(Vector.ZERO, InterfaceButton.BUTTON_DIMENSION * 2
 				+ this.textField.getNeededSize().getXRange(),
 				InterfaceButton.BUTTON_DIMENSION + 10);

@@ -21,7 +21,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public abstract class SubMenu extends HeadlineContainer implements Informable,
 		InterfaceFunction {
 
-	private final Menu parent;
+	public final Menu parent;
 	public final String name;
 
 	public SubMenu(Menu parent, InterfaceContainer mainCon, String name) {
@@ -31,9 +31,10 @@ public abstract class SubMenu extends HeadlineContainer implements Informable,
 		this.name = name;
 		InterfaceTextButton b = new InterfaceTextButton(
 				InterfaceFunctions.MENU_BACKTOMAINMENU, "Hauptmenü");
-		System.out.println("Button b erstellt" + b);
 		b.addInformable(this);
 		((GridContainer) this.getHeadlineContainer()).add(b, 0, 0);
+		mainCon.maximizeSize();
+		this.getHeadlineContainer().maximizeXRange();
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -41,6 +40,8 @@ public class Dialog extends InterfaceContainer implements Informable {
 	 * 
 	 */
 	public Dialog() {
+		this.enableBackground();
+		this.setBackgroundColor(Color.darkGray);
 		InterfaceTextButton closeButton = new InterfaceTextButton(
 				InterfaceFunctions.DIALOG_CLOSE, "Dialog schließen");
 		closeButton.addInformable(this);
@@ -87,7 +88,8 @@ public class Dialog extends InterfaceContainer implements Informable {
 	}
 
 	public int getNumberOfParts() {
-		//Zusammengezählte Zahl aus Contentables und Buttons abzüglich des closeButtons
+		// Zusammengezählte Zahl aus Contentables und Buttons abzüglich des
+		// closeButtons
 		return this.contents.size() + this.buttons.size() - 1;
 	}
 
@@ -205,23 +207,12 @@ public class Dialog extends InterfaceContainer implements Informable {
 	@Override
 	public void draw(Graphics g) {
 		if (this.shown) {
-			Rectangle rect = (Rectangle) this.getNeededSize();
-			Vector center = this.parentContainer
-					.getTransformedPositionFor(this);
-			center = center.modifyX(center.x + rect.width / 2).modifyY(
-					center.y + rect.height / 2);
-			GraphicUtils.fill(g, rect.modifyCenter(center), Color.darkGray);
 			super.draw(g);
 			if (!this.recalculated) {
 				this.calculateDimensions();
 				this.recalculated = true;
 			}
 		}
-	}
-
-	@Override
-	public Shape getNeededSize() {
-		return this.dimensions;
 	}
 
 	/**
@@ -257,14 +248,6 @@ public class Dialog extends InterfaceContainer implements Informable {
 		// Nichts tun
 	}
 
-	public Rectangle getPlaceFor(InterfacePart object) {
-		if (object == this.curCon) {
-			return (Rectangle) this.getNeededSize();
-		} else {
-			return super.getPlaceFor(object);
-		}
-	}
-
 	/**
 	 * Deaktiviert alle Dialog (blendet sie aus)
 	 */
@@ -272,6 +255,11 @@ public class Dialog extends InterfaceContainer implements Informable {
 		for (Dialog dialog : Instances) {
 			dialog.hide();
 		}
+	}
+
+	@Override
+	public Rectangle getWantedSize() {
+		return this.dimensions;
 	}
 
 }

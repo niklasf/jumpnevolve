@@ -25,11 +25,11 @@ public abstract class Shooter extends ObjectTemplate implements Activable,
 	protected abstract void shot();
 
 	/**
+	 * 
 	 * @param world
 	 * @param shape
-	 * @param mass
-	 * @param blockable
-	 * @param pushable
+	 * @param shotInterval
+	 * @param activated
 	 */
 	public Shooter(World world, NextShape shape, float shotInterval,
 			boolean activated) {

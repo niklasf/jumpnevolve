@@ -97,6 +97,7 @@ public class LevelSelection extends SubMenu {
 			String load = this.getFileName(currentOver);
 			if (load != null) {
 				Level newLevel = Levelloader.asyncLoadLevel(load);
+				newLevel.getPlayer().setParentMenu(this.parent);
 				Engine.getInstance().switchState(newLevel);
 			}
 		}

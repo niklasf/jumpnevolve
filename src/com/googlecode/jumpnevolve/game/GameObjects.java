@@ -11,6 +11,7 @@ import com.googlecode.jumpnevolve.editor2.PositionMarker;
 import com.googlecode.jumpnevolve.editor2.RectangleDimension;
 import com.googlecode.jumpnevolve.editor2.RelativePositionMarker;
 import com.googlecode.jumpnevolve.game.objects.Button;
+import com.googlecode.jumpnevolve.game.objects.Cactus;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
@@ -19,7 +20,6 @@ import com.googlecode.jumpnevolve.game.objects.Goal;
 import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
-import com.googlecode.jumpnevolve.game.objects.KillingMachine;
 import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
 import com.googlecode.jumpnevolve.game.objects.SpringingSoldier;
@@ -27,7 +27,6 @@ import com.googlecode.jumpnevolve.game.objects.WalkingSoldier;
 import com.googlecode.jumpnevolve.game.player.SavePoint;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
-import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -47,8 +46,7 @@ public enum GameObjects implements InterfaceFunction {
 	SPRINGING_SOLDIER(SpringingSoldier.class,
 			"object-pictures/simple-foot-soldier.png", false),
 
-	KILLING_MACHINE(KillingMachine.class,
-			"object-pictures/simple-foot-soldier.png", false),
+	CACTUS(Cactus.class, "object-pictures/cactus.png", false),
 
 	GREEN_SLIME_WORM(GreenSlimeWorm.class,
 			"object-pictures/green-slime-worm.png", false),
@@ -81,8 +79,10 @@ public enum GameObjects implements InterfaceFunction {
 			new EditorArguments(new EditorArgument[] {
 					new RectangleDimension(30, 10),
 					new RelativePositionMarker(PositionMarker.MODUS_Y,
+							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
 							Vector.UP.mul(10), Color.green),
 					new RelativePositionMarker(PositionMarker.MODUS_Y,
+							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
 							Vector.DOWN.mul(10), Color.green) })),
 
 	// Fertig
@@ -93,8 +93,10 @@ public enum GameObjects implements InterfaceFunction {
 					"Float" }, false, new EditorArguments(new EditorArgument[] {
 					new RectangleDimension(30, 10),
 					new RelativePositionMarker(PositionMarker.MODUS_X,
+							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
 							Vector.RIGHT.mul(30), Color.green),
 					new RelativePositionMarker(PositionMarker.MODUS_X,
+							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
 							Vector.LEFT.mul(30), Color.green) })),
 
 	// Fertig
@@ -113,12 +115,13 @@ public enum GameObjects implements InterfaceFunction {
 			new EditorArgument[] {
 					new Checkbox("Activated", false),
 					new RelativePositionMarker(PositionMarker.MODUS_BOTH,
+							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
 							Vector.UP_RIGHT, Color.yellow) })),
 
-	SAVE_POINT(SavePoint.class, "textures/aluminium.png", false),
+	SAVE_POINT(SavePoint.class, "object-pictures/savePoint-active.png", false),
 	// FIXME: SavePoint braucht sein eigenes Icon (keine Textur)
-	
-	GOAL(Goal.class, "textures/wood.png", false);
+
+	GOAL(Goal.class, "object-pictures/goal.png", false);
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -129,7 +132,7 @@ public enum GameObjects implements InterfaceFunction {
 	public final boolean hasActivatings;
 	public final EditorArguments editorArguments;
 
-	private GameObjects(Class thisClass, String editorSkinFileName,
+	private GameObjects(Class<?> thisClass, String editorSkinFileName,
 			String[] contents, char[] hyphen, String[] initContents,
 			String[] kindOfContents, boolean hasActivatings,
 			EditorArguments requiredArguments) {
@@ -190,8 +193,8 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new SpringingSoldier(level, position);
 		} else if (className.equals(SOLDIER.className)) {
 			newObject = new Soldier(level, position);
-		} else if (className.equals(KILLING_MACHINE.className)) {
-			newObject = new KillingMachine(level, position);
+		} else if (className.equals(CACTUS.className)) {
+			newObject = new Cactus(level, position);
 		} else if (className.equals(BUTTON.className)) {
 			newObject = new Button(level, position, arguments);
 		} else if (className.equals(DOOR.className)) {
@@ -210,7 +213,7 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new Cannon(level, position, arguments);
 		} else if (className.equals(SAVE_POINT.className)) {
 			newObject = new SavePoint(level, position, level.getPlayer());
-		}else if (className.equals(GOAL.className)) {
+		} else if (className.equals(GOAL.className)) {
 			newObject = new Goal(level, position);
 		}
 		return newObject;

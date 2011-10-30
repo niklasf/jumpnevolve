@@ -69,7 +69,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
-				// FIXME: Beenden des Programms hier durchführe (Engine beenden
+				// FIXME: Beenden des Programms hier durchführen (Engine beenden
 				// etc.)
 			}
 		});
@@ -439,8 +439,8 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 
 	public void addNewObject(String className) {
 		this.addObject(new ObjectSettings(this, className, this
-				.getTransformedId(this.nextObjectId)
-				+ "-" + className, this.previewLevel));
+				.getTransformedId(this.nextObjectId) + "-" + className,
+				this.previewLevel));
 		this.nextObjectId++;
 	}
 
@@ -587,9 +587,7 @@ public class Editor extends JFrame implements ActionListener, ItemListener {
 					this.currentSettings.add(this.playerSettings);
 					this.pack();
 				} else {
-					this
-							.setCurrentSettings(this.objects.get(picked
-									.toString()));
+					this.setCurrentSettings(this.objects.get(picked.toString()));
 				}
 				this.waitForMouseClick("nothing");
 			}

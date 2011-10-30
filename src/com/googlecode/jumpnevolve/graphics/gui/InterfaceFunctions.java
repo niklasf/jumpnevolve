@@ -24,10 +24,10 @@ public enum InterfaceFunctions implements InterfaceFunction {
 
 	EDITOR_EXIT(), EDITOR_SETTINGS(), EDITOR_PLAYER(), EDITOR_CURRENT(), EDITOR_DATA(),
 
-	EDITOR_DELETE(), EDITOR_LOAD(), EDITOR_SAVE(),
+	EDITOR_DELETE(), EDITOR_LOAD(), EDITOR_SAVE(), EDITOR_RELOAD(),
 
-	MENU_BACKTOMAINMENU(), 
-	
+	MENU_BACKTOMAINMENU(), MENU_EDITOR(),
+
 	LEVEL_EXIT();
 
 	private InterfaceFunctions() {

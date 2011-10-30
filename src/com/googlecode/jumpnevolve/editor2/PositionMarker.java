@@ -9,6 +9,7 @@ import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author e.wagner
@@ -34,7 +35,7 @@ public class PositionMarker extends EditorArgument {
 	/**
 	 * Die Größendimension der Markierungen
 	 */
-	private static final float DIMENSION = 5.0f;
+	private static final float DIMENSION = Parameter.EDITOR_POSITIONMARKER_DIMENSION;
 
 	protected final int modus;
 	protected final Color color;
@@ -107,8 +108,8 @@ public class PositionMarker extends EditorArgument {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		Vector mousePos = this.parent.parent.translateMousePos(
-				input.getMouseX(), input.getMouseY());
+		Vector mousePos = this.getEditor().translateMousePos(input.getMouseX(),
+				input.getMouseY());
 		if (this.wasInCircle) {
 			this.changePosition(mousePos);
 		}
@@ -130,6 +131,7 @@ public class PositionMarker extends EditorArgument {
 		EditorArgument re = new PositionMarker(this.modus, this.position,
 				this.color);
 		re.setParent(this.parent);
+		re.setEditor(this.editor);
 		return re;
 	}
 

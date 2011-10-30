@@ -1,5 +1,3 @@
-Leveldimensionen_1000_100_1
+Leveldimensionen_1000_1000_1
 Leveleinstellungen_1,1_1000_default
 Player_RollingBall_RollingBall,JumpingCross_100|0
-SavePoint_(0|0)_0005-SavePoint_none_none
-SavePoint_(100|0)_0005-SavePoint_none_none

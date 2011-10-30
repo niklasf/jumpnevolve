@@ -9,7 +9,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -143,14 +142,6 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	}
 
 	@Override
-	public Shape getNeededSize() {
-		float height = (InterfaceTextButton.getSize() + this.distanceBetweenButtons)
-				* (this.numberOfButtonsDisplayed + 2)
-				- this.distanceBetweenButtons;
-		return new Rectangle(Vector.ZERO, this.maxWidth, height);
-	}
-
-	@Override
 	public void mouseClickedAction(InterfaceObject object) {
 		if (object.getStatus() == InterfaceObject.STATUS_PRESSED) {
 			if (object.getFunction() == InterfaceFunctions.INTERFACE_TEXTBUTTONLIST_DOWN) {
@@ -169,6 +160,14 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	@Override
 	public void objectIsSelected(InterfaceObject object) {
 		// Nichts tun
+	}
+
+	@Override
+	public Rectangle getWantedSize() {
+		float height = (InterfaceTextButton.getSize() + this.distanceBetweenButtons)
+				* (this.numberOfButtonsDisplayed + 2)
+				- this.distanceBetweenButtons;
+		return new Rectangle(Vector.ZERO, this.maxWidth, height);
 	}
 
 }

@@ -1,0 +1,20 @@
+Leveldimensionen_5760_1080_10
+Leveleinstellungen_1,1_1000_bg-up-to-the-sky-lower-definition.png
+Player_RollingBall_RollingBall,JumpingCross_(26.0| 822.0)
+SavePoint_(28.0| 891.0)_0005-SavePoint_none_none
+SavePoint_(788.0| 916.0)_0005-SavePoint_none_none
+Ground_(65.0| 1044.0)_0006-Ground_none_62|5
+Ground_(351.0| 1045.0)_0007-Ground_none_103|5
+Ground_(350.0| 938.0)_0009-Ground_none_6|113
+SpringingSoldier_(299.0| 843.0)_0012-SpringingSoldier_none_none
+Button_(364.0| 672.0)_0013-Button_0019-door_10
+Ground_(488.0| 982.0)_0014-Ground_none_82|4
+Ground_(403.0| 681.0)_0015-Ground_none_8|304
+Ground_(304.0| 555.0)_0016-Ground_none_94|6
+Soldier_(233.0| 528.0)_0017-Soldier_none_none
+Soldier_(353.0| 527.0)_0018-Soldier_none_none
+Door_(375.0| 975.0)_0019-Door_none_21|7
+Ground_(758.0| 1046.0)_0020-Ground_none_257|6
+Goal_(985.0| 1008.0)_0021-Goal_none_none
+Elevator_(185.0| 1045.0)_0024-Elevator_none_27|4,902.0,1055.0
+Elevator_(607.0| 1006.0)_0030-Elevator_none_36|35,895.0,1006.0

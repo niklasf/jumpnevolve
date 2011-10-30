@@ -9,8 +9,8 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Ein Textfeld für das Interface
@@ -20,7 +20,7 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class InterfaceTextField extends InterfaceObject implements Contentable {
 
-	private static final float DELAY_LENGTH = 0.15f;
+	private static final float DELAY_LENGTH = Parameter.GUI_TEXTFIELD_DELAY;
 	private Timer input_timer = new Timer(DELAY_LENGTH);
 	private String content1 = "", content2 = "";
 	private static Font font;
@@ -30,7 +30,7 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getNeededSize() {
 		if (font == null) {
 			float width = this.getContent().length() * 10;
 			if (width < 50) {
@@ -38,8 +38,8 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 			}
 			return new Rectangle(Vector.ZERO, width, 20);
 		} else {
-			return new Rectangle(Vector.ZERO, font.getWidth(this.getContent() + 10),
-					font.getLineHeight());
+			return new Rectangle(Vector.ZERO,
+					font.getWidth(this.getContent() + 10), font.getLineHeight());
 		}
 	}
 

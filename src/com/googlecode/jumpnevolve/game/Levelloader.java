@@ -95,7 +95,8 @@ public class Levelloader {
 				// Beispiele: verfügbare Charaktere, Timer etc.
 				String thirdLine = levelFileReader.readLine();
 				String[] thirdLineSplit = thirdLine.split("_");
-				if (thirdLineSplit[0].equals("Player") == false || thirdLineSplit.length != 4) {
+				if (thirdLineSplit[0].equals("Player") == false
+						|| thirdLineSplit.length != 4) {
 					throw new IOException(
 							"Dritte Zeile enthält nicht die Playerangaben");
 				}
@@ -134,7 +135,8 @@ public class Levelloader {
 							alreadyPutted = true;
 						}
 						if (newObject instanceof Activable) {
-							activableObjects.put(name, (Activable) newObject);
+							activableObjects.put(name.toLowerCase(),
+									(Activable) newObject);
 							alreadyPutted = true;
 						}
 						if (alreadyPutted == false) {
@@ -151,7 +153,7 @@ public class Levelloader {
 								.get(argumtensForActivating.get(i)[j]) != null) {
 							activatingObjects.get(i).addActivable(
 									activableObjects.get(argumtensForActivating
-											.get(i)[j]));
+											.get(i)[j].toLowerCase()));
 						}
 					}
 				}

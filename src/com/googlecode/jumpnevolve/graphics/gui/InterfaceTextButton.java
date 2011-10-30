@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.Rectangle;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
@@ -55,7 +54,7 @@ public class InterfaceTextButton extends InterfaceObject {
 	}
 
 	@Override
-	public Shape getNeededSize() {
+	public Rectangle getNeededSize() {
 		return this.shape;
 	}
 
@@ -73,9 +72,6 @@ public class InterfaceTextButton extends InterfaceObject {
 		Vector pos = this.getTransformedCenterVector();
 		this.shape = (Rectangle) this.shape.modifyCenter(pos);
 		Color c = g.getColor();
-		if (this.buttonText.equals("LevelSelection1")) {
-			System.out.println(this.shape + " status " + this.getStatus());
-		}
 		switch (this.getStatus()) {
 		case STATUS_MOUSE_OVER:
 			g.setColor(Color.yellow);

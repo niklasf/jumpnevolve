@@ -32,6 +32,7 @@ import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * <p>
@@ -55,9 +56,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Konstante für die maximale Geschwindigkeit in einer Richtung (x bzw. y)
 	 */
-	private static final float MAXIMUM_VELOCITY_ONE_WAY = 300;
+	private static final float MAXIMUM_VELOCITY_ONE_WAY = Parameter.GAME_ABSTRACTOBJECT_MAXVELOCITY;
 
-	public static final float GRAVITY = 98.1f;
+	public static final float GRAVITY = Parameter.GAME_ABSTRACTOBJECT_GRAVITY;
 
 	private NextShape shape;
 
@@ -169,13 +170,16 @@ public abstract class AbstractObject implements Pollable, Drawable,
 				 * move = 0.0f; direction = this.getVelocity().neg(); vel =
 				 * 0.0f;
 				 */
-			} else if (this.getVelocity().equals(0, 0) == false) {
-				// Aktuelle Geschwindigkeit in die Bewegungsrichtung
+			} else {
+				// Aktuelle Geschwindigkeit in die Bewegungsrichtung,
+				// grundsätzlich ertmal 0
 				float vel = 0.0f;
 
-				// Anteil der aktuellen Bewegung in die Bewegunsrichtung
-				vel = (float) (Math.cos(this.getVelocity().ang(direction)) * this
-						.getVelocity().abs());
+				if (!this.getVelocity().equals(0, 0)) {
+					// Anteil der aktuellen Bewegung in die Bewegunsrichtung
+					vel = (float) (Math.cos(this.getVelocity().ang(direction)) * this
+							.getVelocity().abs());
+				}
 
 				// Gewünschte Geschwindigkeit in die Bewegunsrichtung
 				float move = ((Moving) this).getMovingSpeed();
