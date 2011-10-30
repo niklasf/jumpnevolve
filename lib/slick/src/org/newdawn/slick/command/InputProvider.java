@@ -14,7 +14,7 @@ import org.newdawn.slick.util.InputAdapter;
  * defined by the developer. Registering a control against an command with this
  * class will cause the provider to produce an event for the command when the
  * input is pressed and released.
- * 
+ *
  * @author joverton
  */
 public class InputProvider {
@@ -36,7 +36,7 @@ public class InputProvider {
 	/**
 	 * Create a new input proider which will provide abstract input descriptions
 	 * based on the input from the supplied context.
-	 * 
+	 *
 	 * @param input
 	 *            The input from which this provider will receive events
 	 */
@@ -50,7 +50,7 @@ public class InputProvider {
 	/**
 	 * Get the list of commands that have been registered with the provider,
 	 * i.e. the commands that can be issued to the listeners
-	 * 
+	 *
 	 * @return The list of commands (@see Command) that can be issued from this
 	 *         provider
 	 */
@@ -71,7 +71,7 @@ public class InputProvider {
 	/**
 	 * Get a list of the registered controls (@see Control) that can cause a
 	 * particular command to be invoked
-	 * 
+	 *
 	 * @param command
 	 *            The command to be invoked
 	 * @return The list of controls that can cause the command (@see Control)
@@ -93,7 +93,7 @@ public class InputProvider {
 
 	/**
 	 * Indicate whether this provider should be sending events
-	 * 
+	 *
 	 * @param active
 	 *            True if this provider should be sending events
 	 */
@@ -103,7 +103,7 @@ public class InputProvider {
 
 	/**
 	 * Check if this provider should be sending events
-	 * 
+	 *
 	 * @return True if this provider should be sending events
 	 */
 	public boolean isActive() {
@@ -113,7 +113,7 @@ public class InputProvider {
 	/**
 	 * Add a listener to the provider. This listener will be notified of
 	 * commands detected from the input.
-	 * 
+	 *
 	 * @param listener
 	 *            The listener to be added
 	 */
@@ -124,7 +124,7 @@ public class InputProvider {
 	/**
 	 * Remove a listener from this provider. The listener will no longer be
 	 * provided with notification of commands performe.
-	 * 
+	 *
 	 * @param listener
 	 *            The listener to be removed
 	 */
@@ -134,7 +134,7 @@ public class InputProvider {
 
 	/**
 	 * Bind an command to a control.
-	 * 
+	 *
 	 * @param command
 	 *            The command to bind to
 	 * @param control
@@ -150,7 +150,7 @@ public class InputProvider {
 
 	/**
 	 * Clear all the controls that have been configured for a given command
-	 * 
+	 *
 	 * @param command The command whose controls should be unbound
 	 */
 	public void clearCommand(Command command) {
@@ -163,7 +163,7 @@ public class InputProvider {
 	
 	/**
 	 * Unbinds the command associated with this control
-	 * 
+	 *
 	 * @param control
 	 *            The control to remove
 	 */
@@ -178,7 +178,7 @@ public class InputProvider {
 
 	/**
 	 * Get the recorded state for a given command
-	 * 
+	 *
 	 * @param command
 	 *            The command to get the state for
 	 * @return The given command state
@@ -190,7 +190,7 @@ public class InputProvider {
 	/**
 	 * Check if the last control event we recieved related to the given command
 	 * indicated that a control was down
-	 * 
+	 *
 	 * @param command
 	 *            The command to check
 	 * @return True if the last event indicated a button down
@@ -202,7 +202,7 @@ public class InputProvider {
 	/**
 	 * Check if one of the controls related to the command specified has been
 	 * pressed since we last called this method
-	 * 
+	 *
 	 * @param command
 	 *            The command to check
 	 * @return True if one of the controls has been pressed
@@ -214,7 +214,7 @@ public class InputProvider {
 	/**
 	 * Fire notification to any interested listeners that a control has been
 	 * pressed indication an particular command
-	 * 
+	 *
 	 * @param command
 	 *            The command that has been pressed
 	 */
@@ -234,7 +234,7 @@ public class InputProvider {
 	/**
 	 * Fire notification to any interested listeners that a control has been
 	 * released indication an particular command should be stopped
-	 * 
+	 *
 	 * @param command
 	 *            The command that has been pressed
 	 */
@@ -253,7 +253,7 @@ public class InputProvider {
 	/**
 	 * A token representing the state of all the controls causing an command to
 	 * be invoked
-	 * 
+	 *
 	 * @author kevin
 	 */
 	private class CommandState {
@@ -265,7 +265,7 @@ public class InputProvider {
 
 		/**
 		 * Check if a control for the command has been pressed since last call.
-		 * 
+		 *
 		 * @return True if the command has been pressed
 		 */
 		public boolean isPressed() {
@@ -279,7 +279,7 @@ public class InputProvider {
 
 		/**
 		 * Check if the last event we had indicated the control was pressed
-		 * 
+		 *
 		 * @return True if the control was pressed
 		 */
 		public boolean isDown() {
@@ -289,7 +289,7 @@ public class InputProvider {
 
 	/**
 	 * A simple listener to respond to input and look up any required commands
-	 * 
+	 *
 	 * @author kevin
 	 */
 	private class InputListenerImpl extends InputAdapter {

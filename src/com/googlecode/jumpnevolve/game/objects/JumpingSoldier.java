@@ -5,25 +5,25 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Ein Soldat der springt
- * 
+ *
  * Spezifikationen: siehe Soldier
- * 
+ *
  * Bewegungen: siehe Soldier; springt, wenn er den Boden berührt
- * 
+ *
  * Aggressivitäten: siehe Soldier
- * 
+ *
  * Immunitäten: siehe Soldier
- * 
+ *
  * Aktivierung: keine
- * 
+ *
  * Deaktivierung: keine
- * 
+ *
  * Besonderheiten: keine
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class JumpingSoldier extends Soldier implements Jumping {
 

@@ -10,15 +10,15 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Button, der aus Text besteht
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class InterfaceTextButton extends InterfaceObject {
 
 	/**
 	 * size stellt die Texthöhe aller Textbuttons dar.
-	 * 
+	 *
 	 * TODO: size hat zur Zeit keine Funktion
 	 */
 	private static int size = 20;
@@ -28,7 +28,7 @@ public class InterfaceTextButton extends InterfaceObject {
 
 	/**
 	 * Erzeugt einen TextButton für das Interface
-	 * 
+	 *
 	 * @param function
 	 *            Die {@link InterfaceFunction}
 	 * @param buttonText

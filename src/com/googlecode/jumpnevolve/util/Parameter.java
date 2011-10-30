@@ -17,9 +17,9 @@ package com.googlecode.jumpnevolve.util;
  * <p>
  * Zum besseren Verständnis sollten die Konstanten mit einem kurzen Hinweis über
  * ihre Funktion beschrieben werden.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Parameter {
 

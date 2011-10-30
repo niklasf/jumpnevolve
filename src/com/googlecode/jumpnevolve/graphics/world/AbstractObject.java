@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,13 +39,13 @@ import com.googlecode.jumpnevolve.util.Parameter;
  * Ein abstraktes Objekt in einer physikalisch simulierten Welt mit Figur und
  * Masse.
  * </p>
- * 
+ *
  * <p>
  * Callbacks können überschrieben werden, haben aber eine
  * Standartimplementierung die in den meisten Fällen auch aufgerufen werden
  * sollte.
  * </p>
- * 
+ *
  * @author Erik Wagner
  */
 public abstract class AbstractObject implements Pollable, Drawable,
@@ -94,7 +94,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Erzeugt ein neues, bewegliches Objekt.
-	 * 
+	 *
 	 * @param world
 	 *            Die Welt, zu der das Objekt gehört.
 	 * @param shape
@@ -111,7 +111,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Erzeugt ein neues, bewegliches Objekt mit einer Startgeschwindigkeit
-	 * 
+	 *
 	 * @see #AbstractObject(World, Shape, float, boolean)
 	 * @param velocity
 	 *            Die Start-Geschwindigkeit des Objekts
@@ -124,7 +124,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Erzeugt ein neues, nicht bewegliches Objekt.
-	 * 
+	 *
 	 * @param world
 	 *            Die Welt, zu der das Objekt gehört.
 	 * @param shape
@@ -141,9 +141,9 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Bereitet eine Simulationsrunde vor, indem die Werte der letzten Runde
 	 * aufgeräumt werden.
-	 * 
+	 *
 	 * Auch werden Objekt spezifische Einstellungen vorgenommen.
-	 * 
+	 *
 	 * @param input
 	 *            Das Input-Objekt für die aktuelle Runde
 	 */
@@ -271,7 +271,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Schließt eine Simulationsrunde ab, indem die Kraft auf das Objekt
 	 * angewendet wird und es bewegt wird.
-	 * 
+	 *
 	 * Dabei wird darauf geachtet, nicht in geblockte Seiten zu laufen.
 	 */
 	public void endRound() {
@@ -338,7 +338,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Fügt eine Kraft hinzu, die auf das Objekt wirkt.
-	 * 
+	 *
 	 * @param force
 	 *            Die Kraft
 	 */
@@ -353,7 +353,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Setzt die Richtung zum "Blocker" als blockiert Wird in
 	 * {@link #endRound()} beim Setzen der neuen Position ausgewertet
-	 * 
+	 *
 	 * @param blocker
 	 *            Das blockende Objekt
 	 */
@@ -392,7 +392,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt <b>beginnt</b>
-	 * 
+	 *
 	 * @param subareaWidth
 	 *            Die Breite einer Subarea
 	 * @param maxSubarea
@@ -414,7 +414,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt <b>endet</b>
-	 * 
+	 *
 	 * @param subareaWidth
 	 *            Die Breite einer Subarea
 	 * @param maxSubarea
@@ -437,7 +437,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt letzte Runde
 	 * <b>begann</b>
-	 * 
+	 *
 	 * @param subareaWidth
 	 *            Die Breite einer Subarea
 	 * @param maxSubarea
@@ -460,7 +460,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * Gibt die Nummer der Subarea zurück, in der dieses Objekt letzte Runde
 	 * <b>endete</b>
-	 * 
+	 *
 	 * @param subareaWidth
 	 *            Die Breite einer Subarea
 	 * @param maxSubarea
@@ -581,7 +581,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Ändert die Gestalt des Objekts, nicht aber seine Position
-	 * 
+	 *
 	 * @param newShape
 	 *            Das Shape, dessen Form übernommen wird
 	 */
@@ -617,7 +617,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	/**
 	 * Wird aufgerufen wenn eine Kollision vorliegt.
-	 * 
+	 *
 	 * @param other
 	 *            Der Kollisionspartner
 	 */

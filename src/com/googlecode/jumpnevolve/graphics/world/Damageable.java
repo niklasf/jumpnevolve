@@ -3,9 +3,9 @@ package com.googlecode.jumpnevolve.graphics.world;
 import com.googlecode.jumpnevolve.math.NextCollision;
 
 /**
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public interface Damageable extends Accompanying {
 
@@ -28,7 +28,7 @@ public interface Damageable extends Accompanying {
 
 	/**
 	 * Gibt zurück, ob dieses Objekt einem anderen Objekt Schaden zufügen will
-	 * 
+	 *
 	 * @param object
 	 *            Das andere Objekt
 	 * @return <code>true</code>, wenn dieses Objekt dem anderen Objekt Schaden
@@ -38,7 +38,7 @@ public interface Damageable extends Accompanying {
 
 	/**
 	 * Gibt zurück, ob dieses Objekt einem anderen Objekt Schaden zufügen kann
-	 * 
+	 *
 	 * @param col
 	 *            Die Kollision der beiden Objekte, ausgehend von diesem Objekt
 	 * @return <code>true</code>, wenn dieses Objekt dem anderen Objekt Schaden

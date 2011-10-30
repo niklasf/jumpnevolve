@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 /**
  * Hilft, eine Datei zeilenweise zu lesen und anhand eines regulären Ausdrucks
  * zu zerlegen.
- * 
- * 
+ *
+ *
  * @author Niklas Fiekas
  */
 public class LineParser {
@@ -25,7 +25,7 @@ public class LineParser {
 
 	/**
 	 * Erzeugt einen neuen Zeilenparser.
-	 * 
+	 *
 	 * @param regex
 	 *            Ausdruck, nach dem die einzelnen Zeilen geparst werden.
 	 */
@@ -35,7 +35,7 @@ public class LineParser {
 
 	/**
 	 * Erzeugt einen neuen Zeilenparser.
-	 * 
+	 *
 	 * @param regex
 	 *            Ausdruck, nach dem die einzelnen Zeilen geparst werden.
 	 * @param lineListener
@@ -49,7 +49,7 @@ public class LineParser {
 	/**
 	 * Parst die Eingaben von einem Reader. Die Ergebnisse werden an den
 	 * Standart {@link LineListener} gesendet.
-	 * 
+	 *
 	 * @param reader
 	 *            Reader.
 	 * @throws IOException
@@ -61,7 +61,7 @@ public class LineParser {
 
 	/**
 	 * Parst die Eingaben von einem Reader.
-	 * 
+	 *
 	 * @param reader
 	 *            Reader.
 	 * @param listener

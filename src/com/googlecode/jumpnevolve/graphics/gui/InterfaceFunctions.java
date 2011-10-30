@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.graphics.gui;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public enum InterfaceFunctions implements InterfaceFunction {
 

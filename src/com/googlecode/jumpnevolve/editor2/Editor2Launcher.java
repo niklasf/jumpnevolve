@@ -10,7 +10,7 @@ public class Editor2Launcher {
 
 	/**
 	 * Startet den neuen Editor.
-	 * 
+	 *
 	 * @param args
 	 *            Kommandozeilenargumente
 	 * @throws IOException

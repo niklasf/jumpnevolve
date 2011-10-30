@@ -15,24 +15,24 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Eine Plattform, die sich rauf und runter bewegt
- * 
+ *
  * Spezifikationen: blockbar, nicht schiebbar
- * 
+ *
  * Bewegungen: Masse = 1; vertikal in einem bestimmten Bereich --> 50 Pixel pro
  * Sekunde
- * 
+ *
  * Aggressivitäten: keine
- * 
+ *
  * Immunitäten: keine
- * 
+ *
  * Aktivierung: keine
- * 
+ *
  * Besonderheiten: keine
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Elevator extends ObjectTemplate implements Moving, Blockable {
 

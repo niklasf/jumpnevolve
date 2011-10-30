@@ -8,9 +8,9 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  *         TODO: Objekt spezifizieren und entsprechende Verknüpfungen in
  *         {@link GameObjects} erstellen
  */

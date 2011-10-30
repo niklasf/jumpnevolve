@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
@@ -15,7 +15,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class InterfaceButton extends InterfaceObject {
 
@@ -26,7 +26,7 @@ public class InterfaceButton extends InterfaceObject {
 
 	/**
 	 * Erzeigt einen neuen Button für das Interface
-	 * 
+	 *
 	 * @param function
 	 *            Die Funktion des Buttons (Ein Enum aus
 	 *            {@link InterfaceFunctions});

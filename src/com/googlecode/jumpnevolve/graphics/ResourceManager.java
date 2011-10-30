@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ import org.newdawn.slick.Sound;
  * Der ResourceManager läd Ressourcen wie Bilder oder Sounds vom Dateisystem.
  * Wenn mehrmals nach einer Ressource gefragt wird, kann sie jederzeit aus dem
  * Cache geholt werden.
- * 
+ *
  * @author Niklas Fiekas
  */
 public class ResourceManager {
@@ -58,7 +58,7 @@ public class ResourceManager {
 	/**
 	 * FÃ¼gt Ressourcen in die Wartschleife ein, sodass sie geladen werden,
 	 * sobald die MÃ¶glichkeit besteht.
-	 * 
+	 *
 	 * @param identifier
 	 *            Pfad zur Ressource.
 	 */
@@ -92,7 +92,7 @@ public class ResourceManager {
 
 	/**
 	 * Läd die gewünschte Bildressource vom Dateisystem oder aus dem Cache.
-	 * 
+	 *
 	 * @param id
 	 *            Pfad zur Bildressource.
 	 * @return Das Bild.
@@ -112,7 +112,7 @@ public class ResourceManager {
 	/**
 	 * Erzeugt ein Bild das in X-Richtung umgedreht wurde oder holt es aus dem
 	 * Cache.
-	 * 
+	 *
 	 * @param id
 	 *            Pfad zur Bildressource.
 	 * @return Das umgedrehte Bild.
@@ -131,7 +131,7 @@ public class ResourceManager {
 
 	/**
 	 * Läd eine Sounddatei vom Dateisystem oder aus dem Cache.
-	 * 
+	 *
 	 * @param id
 	 *            Pfad zur Soundresource.
 	 * @return Die Sounddatei.

@@ -11,25 +11,25 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Normaler Boden, zum Gestalten der Landschaft
- * 
+ *
  * Spezifikationen: blockbar, nicht schiebbar
- * 
+ *
  * Bewegungen: keine
- * 
+ *
  * Aggressivitäten: keine
- * 
+ *
  * Immunitäten: keine
- * 
+ *
  * Aktivierung: keine
- * 
+ *
  * Deaktivierung: keine
- * 
+ *
  * Besonderheiten: beliebige Größe anhand eines Vektors
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Ground extends GroundTemplate {
 

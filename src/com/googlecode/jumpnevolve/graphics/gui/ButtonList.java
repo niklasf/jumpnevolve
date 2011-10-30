@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
@@ -13,7 +13,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class ButtonList extends InterfaceContainer implements Informable {
 
@@ -27,7 +27,7 @@ public class ButtonList extends InterfaceContainer implements Informable {
 	private static final int FORTH_POS = -1;
 
 	/**
-	 * 
+	 *
 	 * @param parent
 	 * @param numberOfButtonDisplayed
 	 *            Anzahl der Buttons, die angezeigt werden sollen

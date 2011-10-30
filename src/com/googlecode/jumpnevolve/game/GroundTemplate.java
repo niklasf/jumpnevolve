@@ -7,13 +7,13 @@ import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * Die Vorlage für jede Art von Landschaft.
- * 
+ *
  * Landschaft ziechnet sich dadurch aus, dass sie sich niemals verändert
  * (unbeweglich, tot, nicht tötungsfähig und nicht aktivierbar). Sie sind jedoch
  * blockbar, was bedeutet, dass sie andere Objekte blkockieren können.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class GroundTemplate extends AbstractObject implements
 		Blockable {

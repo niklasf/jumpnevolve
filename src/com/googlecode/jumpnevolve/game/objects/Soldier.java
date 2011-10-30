@@ -17,25 +17,25 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Ein Soldat der steht
- * 
+ *
  * Spezifikationen: blockbar, nicht schiebbar
- * 
+ *
  * Bewegungen: Masse = 5; grundsätzlich keine Bewegung; Schwerkraft wirkt
- * 
+ *
  * Aggressivitäten: nur gegen den Spieler, wenn der nicht von oben kommt
- * 
+ *
  * Immunitäten: Wird nicht von anderen Soldaten getötet
- * 
+ *
  * Aktivierung: keine
- * 
+ *
  * Deaktivierung: keine
- * 
+ *
  * Besonderheiten: kann als Vorlage für andere Gegner benutzt werden
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 

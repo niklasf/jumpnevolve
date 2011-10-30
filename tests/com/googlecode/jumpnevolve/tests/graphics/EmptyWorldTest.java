@@ -7,11 +7,11 @@ import com.googlecode.jumpnevolve.graphics.world.World;
  * <p>
  * Testfall für die Grafikengine.
  * <p>
- * 
+ *
  * <p>
  * Erwartetes Verhalten ist das Anzeigen eines leeren Fensters.
  * </p>
- * 
+ *
  * @author Niklas Fiekas
  */
 public class EmptyWorldTest {

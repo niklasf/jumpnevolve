@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.player;
 
@@ -17,7 +17,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class SavePoint extends AbstractObject implements Activable {
 

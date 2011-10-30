@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class NextCollision {
 
@@ -140,7 +140,7 @@ public class NextCollision {
 
 	/**
 	 * Korrigiert die Position eines Shapes nach dieser Kollision
-	 * 
+	 *
 	 * @param toCorrect
 	 *            Das Shape, dessen Position korrigiert werden soll
 	 * @return Das korrigierte Shape
@@ -161,7 +161,7 @@ public class NextCollision {
 
 	/**
 	 * Korrigiert die Richtung (und Länge) eines Vektors gemäß dieser Kollision
-	 * 
+	 *
 	 * @param toCorrect
 	 *            Der Vektor, der korrigiert werden soll
 	 * @return Der korrigierte Vektor
@@ -185,7 +185,7 @@ public class NextCollision {
 
 	/**
 	 * Korrigiert die Richtung (und Länge) eines Vektors gemäß dieser Kollision
-	 * 
+	 *
 	 * @param toCorrect
 	 *            Der Vektor, der korrigiert werden soll
 	 * @return Der korrigierte Vektor
@@ -214,9 +214,9 @@ public class NextCollision {
 
 	/**
 	 * Invertiert diese Kollision, d.h. die Overlaps werden umgedreht
-	 * 
+	 *
 	 * Sollte nur bei einfachen Kollisionen verwendet werden
-	 * 
+	 *
 	 * @param otherMoveable
 	 *            Der Beweglichkeit-Status des Objekts, dem die invertierte
 	 *            Kollision zugeordnet wird

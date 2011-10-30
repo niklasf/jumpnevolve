@@ -30,7 +30,7 @@ public class ObjectSettings extends JPanel {
 	/**
 	 * Erstellt ein ObjectSettings-Objekt aus entsprechend einer Datenzeile
 	 * einer Leveldatei
-	 * 
+	 *
 	 * @param parent
 	 *            Der Editor, dem dieses Objekt zugeordnet ist
 	 * @param editorWorld
@@ -55,7 +55,7 @@ public class ObjectSettings extends JPanel {
 
 	/**
 	 * Erzeugt ein neues ObjectSettings-Objekt
-	 * 
+	 *
 	 * @param parent
 	 *            Der Editor, dem dieses Objekt zugeordnet ist
 	 * @param className
@@ -212,7 +212,7 @@ public class ObjectSettings extends JPanel {
 
 	/**
 	 * Ändert die Position des Objekts
-	 * 
+	 *
 	 * @param x
 	 *            Die X-Koordinate
 	 * @param y

@@ -21,9 +21,9 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class Menu extends AbstractState implements Interfaceable {
 

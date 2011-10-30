@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.objects;
 
@@ -18,7 +18,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class Shot extends ObjectTemplate implements Damageable,
 		GravityActing, Blockable {

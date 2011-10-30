@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Shape;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 class NextCircle implements ConvexShape {
 
@@ -15,7 +15,7 @@ class NextCircle implements ConvexShape {
 	public final Vector center;
 
 	/**
-	 * 
+	 *
 	 */
 	public NextCircle(Vector center, float radius) {
 		this.center = center;

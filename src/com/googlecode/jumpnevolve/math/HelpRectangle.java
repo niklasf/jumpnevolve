@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.math;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class HelpRectangle {
 
@@ -27,7 +27,7 @@ public class HelpRectangle {
 	public final float height;
 
 	/**
-	 * 
+	 *
 	 */
 	public HelpRectangle(float left, float right, float up, float down) {
 		this.x = left;

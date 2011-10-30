@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,13 +55,13 @@ public class Rectangle implements Shape {
 	 * <p>
 	 * Erzeugt ein neues Rechteck.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Wird eine negative Breite oder Höhe übergeben, werden die Parameter so
 	 * neu bestimmt, dass x|y die obere linke Ecke bleibt und Breite und Höhe
 	 * positiv sind.
 	 * </p>
-	 * 
+	 *
 	 * @param x
 	 *            Die X-Koordinate der oberen linken Ecke
 	 * @param y
@@ -70,7 +70,7 @@ public class Rectangle implements Shape {
 	 *            Die Breite
 	 * @param height
 	 *            Die Höhe
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             Wenn Breite oder Höhe {@code 0} sind.
 	 */
@@ -94,19 +94,19 @@ public class Rectangle implements Shape {
 	 * <p>
 	 * Erzeugt ein neues Rechteck.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Zwischen positiven und negativen Breiten- und Höhenangaben wird nicht
 	 * unterschieden.
 	 * </p>
-	 * 
+	 *
 	 * @param center
 	 *            Ortsvektor des Mittelpunktes
 	 * @param width
 	 *            Breite
 	 * @param height
 	 *            Höhe
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             Wenn Breite oder Höhe {@code 0} sind.
 	 */
@@ -122,7 +122,7 @@ public class Rectangle implements Shape {
 
 	/**
 	 * @see #Rectangle(Vector, float, float)
-	 * 
+	 *
 	 * @param center
 	 *            Ortsvektor des Mittelpunkts
 	 * @param centerToCorner

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.objects;
 
@@ -13,7 +13,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class Cannon extends Shooter {
 

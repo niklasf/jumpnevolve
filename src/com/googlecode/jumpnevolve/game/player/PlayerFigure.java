@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.player;
 
@@ -24,7 +24,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class PlayerFigure extends AbstractObject implements Fighting,
 		Activating, GravityActing, Moving, Jumping, Blockable {
@@ -38,7 +38,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	private boolean jumps;
 
 	/**
-	 * 
+	 *
 	 * @param world
 	 * @param position
 	 * @param parent

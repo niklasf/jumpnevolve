@@ -36,7 +36,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class Editor2 extends Level implements Interfaceable {
 
@@ -64,7 +64,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	/**
 	 * Erzeugt einen Editor mit einem bestimmten Level als Starteinstellung
-	 * 
+	 *
 	 * @param parent
 	 *            Das MainMenu, das den Editor geöffnet hat
 	 * @param source
@@ -173,7 +173,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	/**
 	 * Erzeugt einen Editor mit dem Default-Level als Starteinstellung
-	 * 
+	 *
 	 * @param width
 	 *            Die Breite des Editors
 	 * @param height
@@ -596,10 +596,10 @@ public class Editor2 extends Level implements Interfaceable {
 	/**
 	 * Formt den String so um, dass das Level in "resources/levels/" abgelegt
 	 * wird und die Endung ".txt" hat
-	 * 
+	 *
 	 * Pfad-Angaben werden ignoriert, Inhalt hinter "." wird entfernt und durch
 	 * ".txt" ersetzt
-	 * 
+	 *
 	 * @param content
 	 *            Der String, der umgeformt werden soll
 	 * @return Der umgeformte String

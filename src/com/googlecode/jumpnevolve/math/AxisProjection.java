@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.math;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class AxisProjection {
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
@@ -14,9 +14,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * Eine Superklasse für Objekte im Interface. Gibt die Ereignisse an sein
  * "Parent" weiter und außerdem an {@link Informable}, wenn diese mit
  * {@link addInformable} hinzugefügt wurden
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class InterfaceObject implements InterfacePart {
 
@@ -120,7 +120,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	/**
 	 * Fügt ein Informable hinzu, welches von nun an über Aktionen dieses
 	 * Objekts informiert wird
-	 * 
+	 *
 	 * @param object
 	 *            Das Informable-Objekt
 	 */

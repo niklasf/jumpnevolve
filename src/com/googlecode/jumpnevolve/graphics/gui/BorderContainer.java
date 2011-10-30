@@ -8,9 +8,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * Mitten der Kanten, Mitte der gesamten Fläche). Dabei schiebt er die Objekte
  * jeweils an den Rand sofern dieser direkt an die Stelle angrenzt, ansonsten
  * wird das Objekt in der jeweiligen Richtung in der Mitte platziert.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class BorderContainer extends InterfaceContainer {
 
@@ -37,7 +37,7 @@ public class BorderContainer extends InterfaceContainer {
 
 	/**
 	 * Fügt ein InterfacePart an der entsprechenden Position hinzu
-	 * 
+	 *
 	 * @param adding
 	 *            Das hinzuzufügende InterfacePart
 	 * @param position

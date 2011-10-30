@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Shape;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 class NextPolygon implements ConvexShape {
 
@@ -23,7 +23,7 @@ class NextPolygon implements ConvexShape {
 	private HelpRectangle boundingRect;
 
 	/**
-	 * 
+	 *
 	 */
 	public NextPolygon(Vector center, ArrayList<Vector> relativePoints) {
 		this(center, (Vector[]) relativePoints.toArray());

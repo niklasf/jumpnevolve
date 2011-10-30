@@ -13,24 +13,24 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Ein Knopf der durch den Spieler bei Berührung aktiviert wird
- * 
+ *
  * Spezifikationen: nicht blockbar, nicht schiebbar
- * 
+ *
  * Bewegungen: keine
- * 
+ *
  * Aggressivitäten: keine
- * 
+ *
  * Immunitäten: keine
- * 
+ *
  * Aktivierung: Aktiviert eine beliebige Anzahl von Objekten für eine gewisse
  * Zeit oder wahlweise auch für immer
- * 
+ *
  * Besonderheiten: keine
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Button extends ActivatingObject implements Activable {
 

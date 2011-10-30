@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,9 +38,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Eine grundlegende World für die Engine. Sie enthält alle Objekte, die auf dem
  * Bildschirm dargestellt werden sollen.
- * 
+ *
  * TODO: Hinzufügen und Entfernen von Objekten prüfen
- * 
+ *
  * @author Erik Wagner und Niklas Fiekas
  */
 public class World extends AbstractState {
@@ -110,7 +110,7 @@ public class World extends AbstractState {
 
 	/**
 	 * Setzt die Kamera für das World-Objekt
-	 * 
+	 *
 	 * @param camera
 	 *            Die neue Kamera
 	 */
@@ -133,7 +133,7 @@ public class World extends AbstractState {
 	 * {@link AbstractObject} sortiert, für die jeweilige Art werden bei jedem
 	 * Frame die entsprechenden Methoden aufgerufen (poll(), draw(),
 	 * startRound() und endRound()).
-	 * 
+	 *
 	 * @param object
 	 *            Das neue Objekt
 	 */
@@ -172,7 +172,7 @@ public class World extends AbstractState {
 
 	/**
 	 * Wird aufgerufen, wenn ein Objekt seine Position verändert hat
-	 * 
+	 *
 	 * @param object
 	 *            Das Objekt, dessen Position sich verändert hat
 	 */
@@ -208,7 +208,7 @@ public class World extends AbstractState {
 	/**
 	 * Entfernt das Objekt beim nächsten poll-Aufruf für das World-Objekt aus
 	 * diesem
-	 * 
+	 *
 	 * @param object
 	 *            Das Objekt, das entfernt werden soll
 	 */
@@ -227,7 +227,7 @@ public class World extends AbstractState {
 		 * object.getClass().getName()); start = 0; } if (end < 0) {
 		 * System.out.println("Korrektur 0" + object.getClass().getName()); end
 		 * = 0; }
-		 * 
+		 *
 		 * if (start > objectList.size()) { System.out.println("Korrektur high"
 		 * + object.getClass().getName()); start = objectList.size(); } if (end
 		 * > objectList.size()) { System.out.println("Korrektur high" +
@@ -244,7 +244,7 @@ public class World extends AbstractState {
 	/**
 	 * Ermittelt alle Objekte die wenigstens eine Subarea mit dem Objekt teilen
 	 * (Nachbarn)
-	 * 
+	 *
 	 * @param object
 	 *            Das Objekt, für das die Nachbarn gesucht werden
 	 * @return Die Nachbarn des Objekts
@@ -285,7 +285,7 @@ public class World extends AbstractState {
 	/**
 	 * Bereitet den Grafikkontext für das Zeichnen vor (Kameraeinstellungen,
 	 * Zoom)
-	 * 
+	 *
 	 * @param g
 	 *            Der Grafikkontext
 	 */

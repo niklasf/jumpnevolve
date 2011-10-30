@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.editor2;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class EditorArguments {
 

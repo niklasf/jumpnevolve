@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.editor;
 
@@ -8,9 +8,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine Kamera für den Editor, die sich ihre Position von ihrem Parent holt
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class EditorCamera implements Camera {
 

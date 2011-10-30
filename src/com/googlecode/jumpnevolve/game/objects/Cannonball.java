@@ -10,7 +10,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 class Cannonball extends Shot {
 

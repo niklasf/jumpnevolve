@@ -17,9 +17,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Zum Laden von Leveln.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Levelloader {
 

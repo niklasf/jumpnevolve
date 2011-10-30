@@ -21,9 +21,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Ein Level, dass einer Welt entspricht, enthält zusätzlich Punktezähler und
  * ähnliches.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class Level extends World {
 

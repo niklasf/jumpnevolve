@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 /**
  * Allgemeine Klasse für eine geometrische Figur.
- * 
+ *
  * @author Niklas Fiekas
  */
 public interface Shape extends Serializable {
@@ -30,7 +30,7 @@ public interface Shape extends Serializable {
 	 * Prüft, ob sich die geometrische Figuren überlappen. Eine Berührung ist
 	 * keine Kollision.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * Anforderungen an die Funktion:
 	 * </p>
@@ -40,7 +40,7 @@ public interface Shape extends Serializable {
 	 * <li>Sollte möglichst viele andere Figuren kennen. Falls nicht, steht noch
 	 * {@link #getBestCircle()} für eine Näherung zur Verfügung.</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param other
 	 *            Die andere Figur
 	 */
@@ -48,7 +48,7 @@ public interface Shape extends Serializable {
 
 	/**
 	 * Prüft, ob die Linie durch die geometrische Figur verläuft
-	 * 
+	 *
 	 * @param line
 	 *            Die Linie, die überprüft werden soll
 	 */
@@ -115,7 +115,7 @@ public interface Shape extends Serializable {
 	/**
 	 * Ermittelt die Überlappung dieser geometrischen Figur zu der Linie einer
 	 * anderen geometrischen Figur
-	 * 
+	 *
 	 * @param line
 	 *            Die zu überprüfende Punkt-zu-Punkt-Linie
 	 * @param pointInOtherShape
@@ -128,7 +128,7 @@ public interface Shape extends Serializable {
 	public Vector getOverlap(PointLine line, Vector pointInOtherShape);
 
 	/**
-	 * 
+	 *
 	 * @param p
 	 *            Der Punkt in Form eines Ortvektors.
 	 * @return {@code true}, wenn der Punkt sich in der Figur befindet.
@@ -162,7 +162,7 @@ public interface Shape extends Serializable {
 
 	/*
 	 * Konstanten, die die Seiten bezeichnen TODO: Enums oder Vektoren verwenden
-	 * 
+	 *
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Seite
 	 * bezeichnet
 	 */
@@ -185,7 +185,7 @@ public interface Shape extends Serializable {
 
 	/*
 	 * Konstanten, die die Ecken bezeichnen TODO: Enums oder Vektoren verwenden
-	 * 
+	 *
 	 * So beschrieben, dass der negierte Wert die gegenüberliegende Ecke
 	 * bezeichnet
 	 */

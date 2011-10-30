@@ -2,11 +2,11 @@ package com.googlecode.jumpnevolve.math;
 
 /**
  * Ein einfache Punktlinie zwischen zwei Punkten.
- * 
+ *
  * Die Punkte sind Bestandteil der Linie.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class Line {
 
@@ -15,7 +15,7 @@ public abstract class Line {
 	/**
 	 * Prüft, ob der Punkt auf der Linie liegen kann (ob er in passender x- bzw.
 	 * y-Region liegt)
-	 * 
+	 *
 	 * @param point
 	 *            Der Ortsvektor des Punktes
 	 * @return <code>true</code>, wenn der Punkt auf der Linie liegen könnte
@@ -24,7 +24,7 @@ public abstract class Line {
 
 	/**
 	 * Erzeugt eine neue Linie, die durch die beiden Punkte verläuft
-	 * 
+	 *
 	 * @param p1
 	 *            Der erste Punkt
 	 * @param p2
@@ -38,7 +38,7 @@ public abstract class Line {
 
 	/**
 	 * Prüft, ob sich die beiden Linie schneiden
-	 * 
+	 *
 	 * @param other
 	 *            Die andere Gerade
 	 * @return <code>true</code>, wenn sich die Geraden schneiden;
@@ -63,9 +63,9 @@ public abstract class Line {
 
 	/**
 	 * Ermittelt den Schnittpunkt der beiden Geraden
-	 * 
+	 *
 	 * Es sollte vorher {@link #crosses(Line)} aufgerufen werden
-	 * 
+	 *
 	 * @param other
 	 *            Die andere Gerade
 	 * @return Der Schnittpunkt der Geraden
@@ -93,7 +93,7 @@ public abstract class Line {
 
 	/**
 	 * Prüft, ob der Punkt auf der Linie liegt
-	 * 
+	 *
 	 * @param point
 	 *            Der Ortsvektor des Punktes
 	 * @return <code>true</code>, wenn der Punkt auf der Linie liegt

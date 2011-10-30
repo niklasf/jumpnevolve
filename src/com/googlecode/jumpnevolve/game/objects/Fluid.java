@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.objects;
 
@@ -19,11 +19,11 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Eine Flüssigkeit, die die Geschwindigkeit der Objekte darin bis zu einer
  * gegebenen maximalen Geschwindigkeit vermindert
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  *         FIXME: Effekte sollen angezeigt werden (auf ganzer Breite des Fluid)
- * 
+ *
  *         FIXME: Objekte werden nicht richtig gebremst
  */
 public class Fluid extends ObjectTemplate {

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.objects;
 
@@ -11,9 +11,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Soldat, der immer wieder so hoch springt, wie er vor dem Fallen war
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class SpringingSoldier extends Soldier implements Jumping {
 

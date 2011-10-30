@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.editor;
 
@@ -31,9 +31,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Ein Level, das in seiner poll-Methode die Ereignisverarbeitung übernimmt,
  * speziell für den Editor
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class EditorLevel extends Level implements Interfaceable {
 

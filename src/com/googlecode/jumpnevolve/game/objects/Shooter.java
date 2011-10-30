@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.objects;
 
@@ -15,7 +15,7 @@ import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class Shooter extends ObjectTemplate implements Activable,
 		Blockable {
@@ -25,7 +25,7 @@ public abstract class Shooter extends ObjectTemplate implements Activable,
 	protected abstract void shot();
 
 	/**
-	 * 
+	 *
 	 * @param world
 	 * @param shape
 	 * @param shotInterval

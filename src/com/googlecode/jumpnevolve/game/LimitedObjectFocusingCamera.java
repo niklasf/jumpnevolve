@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game;
 
@@ -11,9 +11,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Eine Kamera die auf ein Objekt fokusiert ist, gleichzeitig aber keine
  * Bereiche außerhalb der Welt zeigt
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class LimitedObjectFocusingCamera extends ObjectFocusingCamera implements
 		LimitedCamera {
@@ -26,7 +26,7 @@ public class LimitedObjectFocusingCamera extends ObjectFocusingCamera implements
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.googlecode.jumpnevolve.game.LimitedCamera#limitPosition(com.googlecode
 	 * .jumpnevolve.math.Vector,

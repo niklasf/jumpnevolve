@@ -2,9 +2,9 @@ package com.googlecode.jumpnevolve.graphics.gui;
 
 /**
  * Eine Funktion, die einem Interface-Objekt zugeordnet wird
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public interface InterfaceFunction {
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.game.player;
 
@@ -8,7 +8,7 @@ import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public interface Playable extends Drawable {
 

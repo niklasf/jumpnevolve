@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.math;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class Ray extends Line {
 
@@ -10,7 +10,7 @@ public class Ray extends Line {
 
 	/**
 	 * Erzeugt einen neuen Strahl /Halbgerade
-	 * 
+	 *
 	 * @param p1
 	 *            Der Ausgangspunkt des Strahls (ein Ortsvektor)
 	 * @param p2

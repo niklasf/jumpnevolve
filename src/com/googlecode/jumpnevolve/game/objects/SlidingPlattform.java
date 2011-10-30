@@ -15,9 +15,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine sich in horizontaler Richtung bewegende Plattform.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public class SlidingPlattform extends ObjectTemplate implements Moving,
 		Blockable {
@@ -27,7 +27,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 
 	/**
 	 * Erzeugt eine neue Plattform, die sich nach rechts und links bewegt
-	 * 
+	 *
 	 * @param world
 	 *            Die Welt in die dieses Objekt geaddet wird
 	 * @param position

@@ -16,7 +16,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  *         TODO: Im Dialog sollten die Vektor exakt einstellbar sein
  */
 public class EditorObject implements Pollable, Drawable {
@@ -31,7 +31,7 @@ public class EditorObject implements Pollable, Drawable {
 	public final String objectName, className;
 
 	/**
-	 * 
+	 *
 	 */
 	public EditorObject(Editor2 parent, String objectName, String className,
 			Vector startPosition) {

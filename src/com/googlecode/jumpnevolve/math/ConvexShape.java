@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Neue allgemeine Klasse für geometrische Figuren
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 interface ConvexShape extends NextShape {
 
@@ -14,9 +14,9 @@ interface ConvexShape extends NextShape {
 
 	/**
 	 * Ein Array mit den Achsen, die bei der Kollision überprüft werden müssen
-	 * 
+	 *
 	 * WICHTIG: Die Achsen müssen normiert sein
-	 * 
+	 *
 	 * @param other
 	 * @return
 	 */

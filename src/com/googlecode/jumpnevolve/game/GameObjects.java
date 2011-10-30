@@ -31,7 +31,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public enum GameObjects implements InterfaceFunction {
 

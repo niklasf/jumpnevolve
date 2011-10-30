@@ -8,13 +8,13 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Die Vorlage für alle Objekte jeder Art.
- * 
+ *
  * Objekte zeichnen sich dadurch aus, dass sie sich nicht selbst bewegen und tot
  * sind. Sie können schiebbar, blockbar und auch aktivierbar und in der Lage
  * sein zu töten.
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class ObjectTemplate extends AbstractObject implements
 		Accompanying {

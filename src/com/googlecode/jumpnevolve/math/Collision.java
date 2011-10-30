@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class Collision {
 
@@ -63,7 +63,7 @@ public class Collision {
 	 * Fügt dieser Kollision eine weitere Kollision hinzu. Dabei wird der
 	 * Beweglichkeits-Status der hinzuzufügenden Kollision ignoriert und nur der
 	 * Beweglichkeits-Status dieser Kollision berücksichtigt
-	 * 
+	 *
 	 * @param toAdd
 	 *            Die hinzuzufügende Kollision
 	 */
@@ -137,7 +137,7 @@ public class Collision {
 
 	/**
 	 * Korrigiert die Position eines Shapes nach dieser Kollision
-	 * 
+	 *
 	 * @param toCorrect
 	 *            Das Shape, dessen Position korrigiert werden soll
 	 * @return Das korrigierte Shape
@@ -153,7 +153,7 @@ public class Collision {
 
 	/**
 	 * Korrigiert die Richtung (und Länge) eines Vektors gemäß dieser Kollision
-	 * 
+	 *
 	 * @param toCorrect
 	 *            Der Vektor, der korrigiert werden soll
 	 * @return Der korrigierte Vektor
@@ -175,9 +175,9 @@ public class Collision {
 
 	/**
 	 * Invertiert diese Kollision, d.h. die Overlaps werden umgedreht
-	 * 
+	 *
 	 * Sollte nur bei einfachen Kollisionen verwendet werden
-	 * 
+	 *
 	 * @param otherMoveable
 	 *            Der Beweglichkeit-Status des Objekts, dem die invertierte
 	 *            Kollision zugeordnet wird

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
@@ -13,7 +13,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- * 
+ *
  */
 public class TextButtonList extends InterfaceContainer implements Informable {
 
@@ -29,7 +29,7 @@ public class TextButtonList extends InterfaceContainer implements Informable {
 	private static final int UP_POS = -1;
 
 	/**
-	 * 
+	 *
 	 */
 	public TextButtonList(int numberOfButtonsDisplayed,
 			int distanceBetweenButtons) {

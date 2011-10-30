@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Erik Wagner and Niklas Fiekas
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,14 +31,14 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Zeichnet Objekte in einen OpenGL Grafikkontext.
- * 
+ *
  * @author Niklas Fiekas
  */
 public class GraphicUtils {
 
 	/**
 	 * Zeichnet einen Kreis.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param circle
@@ -51,7 +51,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet ein Rechteck.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param rect
@@ -63,7 +63,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine Figur.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -79,7 +79,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine Figur.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -91,7 +91,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine Figur in einer bestimmten Farbe;
-	 * 
+	 *
 	 * @param g
 	 *            Der Grafikkontext
 	 * @param shape
@@ -108,7 +108,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine Figur in einer bestimmten Farbe;
-	 * 
+	 *
 	 * @param g
 	 *            Der Grafikkontext
 	 * @param shape
@@ -125,7 +125,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine Punktlinie in einer bestimmten Farbe
-	 * 
+	 *
 	 * @param g
 	 *            Der Grafikkontext
 	 * @param line
@@ -165,7 +165,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet einen Vektor ausgehend vom Ursprung.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param vector
@@ -177,7 +177,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet einen Vektor ausgehend von einem Orsvektor.
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param position
@@ -192,7 +192,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine gefüllte Fläche anhand eines Shapes
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -205,7 +205,7 @@ public class GraphicUtils {
 	/**
 	 * Zeichnet eine gefüllte Fläche anhand eines Shapes in einer bestimmten
 	 * Farbe
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -222,7 +222,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet eine gefüllte Fläche anhand eines Shapes
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -235,7 +235,7 @@ public class GraphicUtils {
 	/**
 	 * Zeichnet eine gefüllte Fläche anhand eines Shapes in einer bestimmten
 	 * Farbe
-	 * 
+	 *
 	 * @param g
 	 *            Grafikkontext
 	 * @param shape
@@ -267,7 +267,7 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet einen String
-	 * 
+	 *
 	 * @param position
 	 *            Obere linke Ecke des Textes
 	 */
@@ -277,11 +277,11 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet ein Bild in ein Shape
-	 * 
+	 *
 	 * ACHTUNG: Das Bild wird bei einem unpassenden Shape verzerrt (z.B.
 	 * quadratisches Bild in einem länglichen Rechteck) bzw. über die Grenzen
 	 * hinaus gezeichnet (z.B. rechteckiges Bild in einem Kreis)
-	 * 
+	 *
 	 * @param shape
 	 *            Das Shape
 	 * @param image
@@ -295,11 +295,11 @@ public class GraphicUtils {
 
 	/**
 	 * Zeichnet ein Bild in ein Shape
-	 * 
+	 *
 	 * ACHTUNG: Das Bild wird bei einem unpassenden Shape verzerrt (z.B.
 	 * quadratisches Bild in einem länglichen Rechteck) bzw. über die Grenzen
 	 * hinaus gezeichnet (z.B. rechteckiges Bild in einem Kreis)
-	 * 
+	 *
 	 * @param shape
 	 *            Das Shape
 	 * @param image
@@ -313,7 +313,7 @@ public class GraphicUtils {
 
 	/**
 	 * Markiert eine Position durch ein Kreuz
-	 * 
+	 *
 	 * @param g
 	 *            Der Grafikkontext
 	 * @param position

@@ -8,15 +8,15 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Ein Positionsmarker, der eine Koordinate angibt, die geändert wird, wenn sich
  * die Position des "Parents" ändert
- * 
+ *
  * Reagiert nicht, während sich die Position des "Parents" ändert
- * 
+ *
  * TODO: Benötigt in jedem Fall ein EditorObject als parent
- * 
+ *
  * @author e.wagner
- * 
+ *
  *         FIXME: Noch fehlerhaft
- * 
+ *
  */
 public class RelativePositionMarker extends PositionMarker {
 

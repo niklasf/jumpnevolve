@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.googlecode.jumpnevolve.graphics.gui;
 
@@ -16,9 +16,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Container für InterfaceObjects und andere InterfaceContainer
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class InterfaceContainer implements InterfacePart {
 
@@ -55,7 +55,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	/**
 	 * Setzt die Größe dieses Containers auf einen festen Wert
-	 * 
+	 *
 	 * @param size
 	 *            Die Größe des Containers
 	 */
@@ -66,7 +66,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * Maximiert die Größe des Containers anhand der ihm zugewiesenen Position
 	 * und der Größe des Interfaceables
-	 * 
+	 *
 	 * Es wird das Rechteck zwischen Position und unterer rechter Ecke des
 	 * Interfaceables als Size gesetzt
 	 */
@@ -87,7 +87,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * Maximiert die Größe des Containers auf der X-Achse anhand der ihm
 	 * zugewiesenen Position und der Größe des Interfaceables
-	 * 
+	 *
 	 * Es wird die maximal verfügbare Breite gewählt und die Höhe über
 	 * getWantedSize() ermittelt
 	 */
@@ -108,7 +108,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * Maximiert die Größe des Containers auf der Y-Achse anhand der ihm
 	 * zugewiesenen Position und der Größe des Interfaceables
-	 * 
+	 *
 	 * Es wird die maximal verfügbare Höhe gewählt und die Breite über
 	 * getWantedSize() ermittelt
 	 */
@@ -167,7 +167,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	/**
 	 * Fügt ein InterfacePart diesem Container hinzu
-	 * 
+	 *
 	 * @param adding
 	 *            Das hinzuzufügende Objekt
 	 * @param relativePositionOnScreen

@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.util;
 
 /**
  * Kann geworfen werden, wenn ein Fehler beim Parsen einer Zeile auftritt.
- * 
+ *
  * @author Niklas Fiekas
  */
 public class LineFailedException extends RuntimeException {
@@ -11,7 +11,7 @@ public class LineFailedException extends RuntimeException {
 
 	/**
 	 * Erzeugt eine Instanz dieses Ausnahmetyps.
-	 * 
+	 *
 	 * @param line
 	 *            Der Inhalt der Zeile, die den Fehler verursacht.
 	 */

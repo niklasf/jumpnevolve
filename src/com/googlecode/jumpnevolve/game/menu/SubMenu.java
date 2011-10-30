@@ -13,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  *         TODO: Einträge in ein SubMenu ermöglichen (TextButtonList)
  */
 public abstract class SubMenu extends HeadlineContainer implements Informable,

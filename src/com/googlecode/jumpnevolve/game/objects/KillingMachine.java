@@ -14,25 +14,25 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * 
+ *
  * Beschreibung: Eine Killermaschine, die alles tötet, was sie berührt
- * 
+ *
  * Spezifikationen: blockbar, nicht schiebbar
- * 
+ *
  * Bewegungen: Masse = 20; grundsätzlich keine Bewegung; Schwerkraft wirkt
- * 
+ *
  * Aggressivitäten: nur gegen alles, wenn das nicht von oben kommt
- * 
+ *
  * Immunitäten: keine
- * 
+ *
  * Aktivierung: keine
- * 
+ *
  * Deaktivierung: keine
- * 
+ *
  * Besonderheiten: kann als Vorlage für andere Killermaschinen benutzt werden
- * 
+ *
  * @author Erik Wagner
- * 
+ *
  */
 public abstract class KillingMachine extends EnemyTemplate implements
 		GravityActing, Blockable {
