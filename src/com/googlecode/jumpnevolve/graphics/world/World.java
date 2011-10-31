@@ -27,8 +27,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.googlecode.jumpnevolve.graphics.AbstractState;
+import com.googlecode.jumpnevolve.graphics.BackgroundDrawable;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.graphics.ForegroundDrawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
@@ -38,9 +40,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Eine grundlegende World für die Engine. Sie enthält alle Objekte, die auf dem
  * Bildschirm dargestellt werden sollen.
- *
+ * 
  * TODO: Hinzufügen und Entfernen von Objekten prüfen
- *
+ * 
  * @author Erik Wagner und Niklas Fiekas
  */
 public class World extends AbstractState {
@@ -56,6 +58,10 @@ public class World extends AbstractState {
 	private ArrayList<Pollable> pollables = new ArrayList<Pollable>();
 
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+
+	private ArrayList<ForegroundDrawable> foregroundDrawables = new ArrayList<ForegroundDrawable>();
+
+	private ArrayList<BackgroundDrawable> backgroundDrawables = new ArrayList<BackgroundDrawable>();
 
 	private ArrayList<AbstractObject> objects = new ArrayList<AbstractObject>();
 
@@ -110,7 +116,7 @@ public class World extends AbstractState {
 
 	/**
 	 * Setzt die Kamera für das World-Objekt
-	 *
+	 * 
 	 * @param camera
 	 *            Die neue Kamera
 	 */
@@ -133,7 +139,7 @@ public class World extends AbstractState {
 	 * {@link AbstractObject} sortiert, für die jeweilige Art werden bei jedem
 	 * Frame die entsprechenden Methoden aufgerufen (poll(), draw(),
 	 * startRound() und endRound()).
-	 *
+	 * 
 	 * @param object
 	 *            Das neue Objekt
 	 */
@@ -146,8 +152,20 @@ public class World extends AbstractState {
 					}
 				}
 				if (object instanceof Drawable) {
-					if (!this.drawables.contains(object)) {
-						this.drawables.add((Drawable) object);
+					if (object instanceof BackgroundDrawable) {
+						if (!this.backgroundDrawables.contains(object)) {
+							this.backgroundDrawables
+									.add((BackgroundDrawable) object);
+						}
+					} else if (object instanceof ForegroundDrawable) {
+						if (!this.foregroundDrawables.contains(object)) {
+							this.foregroundDrawables
+									.add((ForegroundDrawable) object);
+						}
+					} else {
+						if (!this.drawables.contains(object)) {
+							this.drawables.add((Drawable) object);
+						}
 					}
 				}
 				if (object instanceof AbstractObject) {
@@ -172,7 +190,7 @@ public class World extends AbstractState {
 
 	/**
 	 * Wird aufgerufen, wenn ein Objekt seine Position verändert hat
-	 *
+	 * 
 	 * @param object
 	 *            Das Objekt, dessen Position sich verändert hat
 	 */
@@ -208,7 +226,7 @@ public class World extends AbstractState {
 	/**
 	 * Entfernt das Objekt beim nächsten poll-Aufruf für das World-Objekt aus
 	 * diesem
-	 *
+	 * 
 	 * @param object
 	 *            Das Objekt, das entfernt werden soll
 	 */
@@ -218,7 +236,9 @@ public class World extends AbstractState {
 
 	private void removeObject(AbstractObject object) {
 		this.pollables.remove(object);
+		this.foregroundDrawables.remove(object);
 		this.drawables.remove(object);
+		this.backgroundDrawables.remove(object);
 		this.objects.remove(object);
 		/*
 		 * int start = (int) (object.getHorizontalStart()) / this.subareaWidth;
@@ -227,7 +247,7 @@ public class World extends AbstractState {
 		 * object.getClass().getName()); start = 0; } if (end < 0) {
 		 * System.out.println("Korrektur 0" + object.getClass().getName()); end
 		 * = 0; }
-		 *
+		 * 
 		 * if (start > objectList.size()) { System.out.println("Korrektur high"
 		 * + object.getClass().getName()); start = objectList.size(); } if (end
 		 * > objectList.size()) { System.out.println("Korrektur high" +
@@ -244,7 +264,7 @@ public class World extends AbstractState {
 	/**
 	 * Ermittelt alle Objekte die wenigstens eine Subarea mit dem Objekt teilen
 	 * (Nachbarn)
-	 *
+	 * 
 	 * @param object
 	 *            Das Objekt, für das die Nachbarn gesucht werden
 	 * @return Die Nachbarn des Objekts
@@ -284,8 +304,8 @@ public class World extends AbstractState {
 
 	/**
 	 * Bereitet den Grafikkontext für das Zeichnen vor (Kameraeinstellungen,
-	 * Zoom)
-	 *
+	 * Zoom, Hintergrund)
+	 * 
 	 * @param g
 	 *            Der Grafikkontext
 	 */
@@ -311,7 +331,13 @@ public class World extends AbstractState {
 		}
 
 		// Andere Objekte zeichnen
+		for (BackgroundDrawable drawable : this.backgroundDrawables) {
+			drawable.draw(g);
+		}
 		for (Drawable drawable : this.drawables) {
+			drawable.draw(g);
+		}
+		for (ForegroundDrawable drawable : this.foregroundDrawables) {
 			drawable.draw(g);
 		}
 		screenAlreadyConfigured = false;

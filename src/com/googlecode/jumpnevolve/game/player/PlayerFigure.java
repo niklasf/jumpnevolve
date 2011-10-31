@@ -6,6 +6,7 @@ package com.googlecode.jumpnevolve.game.player;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.ForegroundDrawable;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
@@ -23,11 +24,16 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
+ * Eine Spielerfigur nimmt die Eigenschaften eines {@link Playable} an.
+ * <p>
+ * Sie wird stets im Vordergrund gezeichnet.
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class PlayerFigure extends AbstractObject implements Fighting,
-		Activating, GravityActing, Moving, Jumping, Blockable {
+		Activating, GravityActing, Moving, Jumping, Blockable,
+		ForegroundDrawable {
 
 	private static final long serialVersionUID = -861952852028764393L;
 
@@ -38,7 +44,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	private boolean jumps;
 
 	/**
-	 *
+	 * 
 	 * @param world
 	 * @param position
 	 * @param parent

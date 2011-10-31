@@ -6,6 +6,7 @@ package com.googlecode.jumpnevolve.game.objects;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.ForegroundDrawable;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
@@ -21,8 +22,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  *
  */
 public abstract class Shot extends ObjectTemplate implements Damageable,
-		GravityActing, Blockable {
+		GravityActing, Blockable, ForegroundDrawable {
 
+	private static final long serialVersionUID = 4190924434159617029L;
 	private final Timer livingTime;
 
 	/**
