@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.graphics.gui;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public enum InterfaceFunctions implements InterfaceFunction {
 
@@ -22,9 +22,11 @@ public enum InterfaceFunctions implements InterfaceFunction {
 
 	DIALOG_CLOSE(),
 
-	EDITOR_EXIT(), EDITOR_SETTINGS(), EDITOR_PLAYER(), EDITOR_CURRENT(), EDITOR_DATA(),
+	EDITOR_SETTINGS(), EDITOR_PLAYER(), EDITOR_CURRENT(), EDITOR_DATA(),
 
 	EDITOR_DELETE(), EDITOR_LOAD(), EDITOR_SAVE(), EDITOR_RELOAD(),
+
+	EDITOR_SAVE_AND_EXIT(), EDITOR_EXIT_WITHOUT_SAVE(), EDITOR_EXIT(),
 
 	MENU_BACKTOMAINMENU(), MENU_EDITOR(),
 

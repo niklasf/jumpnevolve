@@ -16,9 +16,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Container für InterfaceObjects und andere InterfaceContainer
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public abstract class InterfaceContainer implements InterfacePart {
 
@@ -32,7 +32,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 	protected InterfaceContainer parentContainer;
 	private boolean backgroundState = false;
 	private Color backgroundColor = Color.black;
-	protected Rectangle size = null;
+	protected float sizeX = Float.NaN, sizeY = Float.NaN;
 
 	private int toMaximize = MAXIME_NOTHING;
 
@@ -55,31 +55,32 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	/**
 	 * Setzt die Größe dieses Containers auf einen festen Wert
-	 *
+	 * 
 	 * @param size
 	 *            Die Größe des Containers
 	 */
 	public void setSize(Rectangle size) {
-		this.size = size;
+		this.sizeX = size.width;
+		this.sizeY = size.height;
 	}
 
 	/**
 	 * Maximiert die Größe des Containers anhand der ihm zugewiesenen Position
 	 * und der Größe des Interfaceables
-	 *
+	 * 
 	 * Es wird das Rechteck zwischen Position und unterer rechter Ecke des
 	 * Interfaceables als Size gesetzt
 	 */
 	public void maximizeSize() {
 		this.toMaximize = MAXIME_BOTH;
 		Vector pos = Vector.ZERO;
-		if (this.parentContainer != null) {
-			pos = this.parentContainer.getPositionFor(this);
-		}
 		Interfaceable inter = this.getInterfaceable();
 		if (inter != null) {
-			this.size = new Rectangle(Vector.ZERO, inter.getWidth() - pos.x,
-					inter.getHeight() - pos.y);
+			if (this.parentContainer != null) {
+				pos = this.parentContainer.getPositionFor(this);
+			}
+			this.sizeX = inter.getWidth() - pos.x;
+			this.sizeY = inter.getHeight() - pos.y;
 			this.toMaximize = MAXIME_NOTHING;
 		}
 	}
@@ -87,20 +88,20 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * Maximiert die Größe des Containers auf der X-Achse anhand der ihm
 	 * zugewiesenen Position und der Größe des Interfaceables
-	 *
+	 * 
 	 * Es wird die maximal verfügbare Breite gewählt und die Höhe über
 	 * getWantedSize() ermittelt
 	 */
 	public void maximizeXRange() {
 		this.toMaximize = MAXIME_X;
 		Vector pos = Vector.ZERO;
-		if (this.parentContainer != null) {
-			pos = this.parentContainer.getPositionFor(this);
-		}
 		Interfaceable inter = this.getInterfaceable();
 		if (inter != null) {
-			this.size = new Rectangle(Vector.ZERO, inter.getWidth() - pos.x,
-					this.getWantedSize().height);
+			if (this.parentContainer != null) {
+				pos = this.parentContainer.getPositionFor(this);
+			}
+			this.sizeX = inter.getWidth() - pos.x + 1;
+			this.sizeY = Float.NaN;
 			this.toMaximize = MAXIME_NOTHING;
 		}
 	}
@@ -108,20 +109,20 @@ public abstract class InterfaceContainer implements InterfacePart {
 	/**
 	 * Maximiert die Größe des Containers auf der Y-Achse anhand der ihm
 	 * zugewiesenen Position und der Größe des Interfaceables
-	 *
+	 * 
 	 * Es wird die maximal verfügbare Höhe gewählt und die Breite über
 	 * getWantedSize() ermittelt
 	 */
 	public void maximizeYRange() {
 		this.toMaximize = MAXIME_Y;
 		Vector pos = Vector.ZERO;
-		if (this.parentContainer != null) {
-			pos = this.parentContainer.getPositionFor(this);
-		}
 		Interfaceable inter = this.getInterfaceable();
 		if (inter != null) {
-			this.size = new Rectangle(Vector.ZERO, this.getWantedSize().width,
-					inter.getHeight() - pos.y);
+			if (this.parentContainer != null) {
+				pos = this.parentContainer.getPositionFor(this);
+			}
+			this.sizeX = Float.NaN;
+			this.sizeY = inter.getHeight() - pos.y + 1;
 			this.toMaximize = MAXIME_NOTHING;
 		}
 	}
@@ -167,7 +168,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	/**
 	 * Fügt ein InterfacePart diesem Container hinzu
-	 *
+	 * 
 	 * @param adding
 	 *            Das hinzuzufügende Objekt
 	 * @param relativePositionOnScreen
@@ -182,8 +183,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 		this.objects.remove(removing);
 	}
 
-	@Override
-	public void draw(Graphics g) {
+	private void checkMaximizing() {
 		switch (this.toMaximize) {
 		case MAXIME_BOTH:
 			this.maximizeSize();
@@ -197,18 +197,31 @@ public abstract class InterfaceContainer implements InterfacePart {
 		default:
 			break;
 		}
-		if (this.backgroundState) {
-			// TODO: Background funktioniert noch nicht für GridContainer (und
-			// andere?)
-			if (this.parentContainer != null) {
-				Shape shape = this.getNeededSize();
-				shape = shape.modifyCenter(this.parentContainer
-						.getTransformedPositionFor(this)
-						.add(new Vector(shape.getXRange(), shape.getYRange())
-								.div(2.0f)));
-				GraphicUtils.fill(g, shape, this.backgroundColor);
-			}
+	}
+
+	private void drawBackground(Graphics g) {
+		if (this.parentContainer != null) {
+			Shape shape = this.getNeededSize();
+			shape = shape.modifyCenter(this.parentContainer
+					.getTransformedPositionFor(this).add(
+							new Vector(shape.getXRange(), shape.getYRange())
+									.div(2.0f)));
+			GraphicUtils.fill(g, shape, this.backgroundColor);
 		}
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		// Container auf ausstehende Maximierungen überprüfen
+		this.checkMaximizing();
+
+		// Hintergrund einfärben, wenn gewünscht
+		if (this.backgroundState) {
+			this.drawBackground(g);
+
+		}
+
+		// Im Container enthaltene Objekte zeichnen
 		Object[] objectsCopy = objects.keySet().toArray();
 		for (Object object : objectsCopy) {
 			((InterfacePart) object).draw(g);
@@ -217,6 +230,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	@Override
 	public void poll(Input input, float secounds) {
+		// Im Container enthaltene Objekte pollen
 		Object[] containerCopy = objects.keySet().toArray();
 		for (Object interfacePart : containerCopy) {
 			((InterfacePart) interfacePart).poll(input, secounds);
@@ -225,11 +239,19 @@ public abstract class InterfaceContainer implements InterfacePart {
 
 	@Override
 	public Rectangle getNeededSize() {
-		if (this.size != null) {
-			return this.size;
-		} else {
-			return this.getWantedSize();
+		float width = this.sizeX, height = this.sizeY;
+		// Doppelte Abfrage ob eine Variable gleich NaN ist, ist schneller als
+		// in jedem Fall getWantedSize() aufzurufen
+		if (Float.isNaN(width) || Float.isNaN(height)) {
+			Rectangle wanted = this.getWantedSize();
+			if (Float.isNaN(width)) {
+				width = wanted.width;
+			}
+			if (Float.isNaN(height)) {
+				height = wanted.height;
+			}
 		}
+		return new Rectangle(Vector.ZERO, width, height);
 	}
 
 	/**

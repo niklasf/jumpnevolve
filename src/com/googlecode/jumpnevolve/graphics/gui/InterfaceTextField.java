@@ -23,10 +23,20 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	private static final float DELAY_LENGTH = Parameter.GUI_TEXTFIELD_DELAY;
 	private Timer input_timer = new Timer(DELAY_LENGTH);
 	private String content1 = "", content2 = "";
+	private boolean writeable;
 	private static Font font;
 
-	public InterfaceTextField(InterfaceFunction function) {
+	public InterfaceTextField(InterfaceFunction function, boolean writeable) {
 		super(function);
+		this.writeable = writeable;
+	}
+
+	public InterfaceTextField(InterfaceFunction function) {
+		this(function, true);
+	}
+
+	public void setWriteable(boolean status) {
+		this.writeable = status;
 	}
 
 	@Override
@@ -86,7 +96,7 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	@Override
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
-		if (this.isSelected()) {
+		if (this.isSelected() && this.writeable) {
 			if (input.isKeyDown(Input.KEY_BACK)) {
 				if (!this.input_timer.isRunning()) {
 					this.input_timer.start(DELAY_LENGTH);
@@ -126,6 +136,10 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 						if (input.isKeyDown(i)) {
 							String keyName = Input.getKeyName(i).toLowerCase();
 							if (keyName.length() == 1) {
+								if (input.isKeyDown(Input.KEY_LSHIFT)
+										|| input.isKeyDown(Input.KEY_RSHIFT)) {
+									keyName = keyName.toUpperCase();
+								}
 								this.content1 += keyName;
 								this.input_timer.start(DELAY_LENGTH);
 							} else {

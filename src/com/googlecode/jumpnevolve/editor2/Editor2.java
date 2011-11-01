@@ -36,7 +36,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class Editor2 extends Level implements Interfaceable {
 
@@ -57,14 +57,14 @@ public class Editor2 extends Level implements Interfaceable {
 	private InterfaceFunction lastFunction;
 	private int curGuiMode = GUI_MODE_NONE;
 	private int lastGuiMode = GUI_MODE_NONE;
-	private Dialog settingsDialog, playerDialog, dataDialog;
+	private Dialog settingsDialog, playerDialog, dataDialog, exitDialog;
 	private GridContainer objectSettingsPlace = new GridContainer(1, 1);
 	private PositionMarker playerPosition;
 	private MainMenu parentMenu;
 
 	/**
 	 * Erzeugt einen Editor mit einem bestimmten Level als Starteinstellung
-	 *
+	 * 
 	 * @param parent
 	 *            Das MainMenu, das den Editor geöffnet hat
 	 * @param source
@@ -114,6 +114,15 @@ public class Editor2 extends Level implements Interfaceable {
 		this.dataDialog.addTextButton(InterfaceFunctions.EDITOR_SAVE,
 				"Speichern");
 
+		// Exit-Dialog erstellen
+		this.exitDialog = new Dialog();
+		this.exitDialog.addTextField("Speichern als");
+		this.exitDialog.addTextButton(InterfaceFunctions.EDITOR_SAVE_AND_EXIT,
+				"Speichern und beenden");
+		this.exitDialog.addTextButton(
+				InterfaceFunctions.EDITOR_EXIT_WITHOUT_SAVE,
+				"Ohne Speichern beenden");
+
 		// Kopfzeile mit Buttons erstellen
 		GridContainer topGrid = new GridContainer(1, 5,
 				GridContainer.MODUS_DEFAULT, GridContainer.MODUS_Y_UP);
@@ -128,6 +137,7 @@ public class Editor2 extends Level implements Interfaceable {
 				"Current"), 0, 3);
 		topGrid.add(new InterfaceTextButton(InterfaceFunctions.EDITOR_DATA,
 				"Data"), 0, 4);
+		topGrid.enableBackground();
 
 		// Löschen-Button erstellen
 		InterfaceButton deleteButton = new InterfaceButton(
@@ -149,10 +159,11 @@ public class Editor2 extends Level implements Interfaceable {
 		border.add(this.playerDialog, BorderContainer.POSITION_MIDDLE);
 		border.add(this.objectSettingsPlace, BorderContainer.POSITION_MIDDLE);
 		border.add(this.dataDialog, BorderContainer.POSITION_MIDDLE);
+		border.add(this.exitDialog, BorderContainer.POSITION_MIDDLE);
 		border.add(deleteButton, BorderContainer.POSITION_LOW_RIGHT);
 
 		// HeadlineContainer als übergeordneten Container erstellen, beinhaltet
-		// Kopfzeile und borderContainer
+		// die Kopfzeile und borderContainer
 		HeadlineContainer headCon = new HeadlineContainer(topGrid, border);
 
 		// MainGUI erstellen, MainContainer ist der HeadlineContainer
@@ -173,7 +184,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	/**
 	 * Erzeugt einen Editor mit dem Default-Level als Starteinstellung
-	 *
+	 * 
 	 * @param width
 	 *            Die Breite des Editors
 	 * @param height
@@ -253,7 +264,6 @@ public class Editor2 extends Level implements Interfaceable {
 
 	private void exit() {
 		// Nachfragen, ob das Programm wirklich beendet werden soll
-		// TODO: Dialog erstellen
 		// Bei "Ja" Editor beenden
 		if (this.parentMenu != null) {
 			System.out.println("Exit!");
@@ -402,7 +412,7 @@ public class Editor2 extends Level implements Interfaceable {
 					this.dataDialog.show();
 				}
 				if (function == InterfaceFunctions.EDITOR_EXIT) {
-					this.exit();
+					this.exitDialog.show();
 				}
 			}
 		} else {
@@ -435,6 +445,20 @@ public class Editor2 extends Level implements Interfaceable {
 					// TODO Fehlermeldung im Editor ausgeben
 					e.printStackTrace();
 				}
+			}
+			if (function == InterfaceFunctions.EDITOR_SAVE_AND_EXIT) {
+				try {
+					this.saveLevel(this.transformToPath(this.exitDialog
+							.getContentable("Speichern als").getContent()));
+					this.dataDialog.hide();
+					this.exit();
+				} catch (IOException e) {
+					// TODO Fehlermeldung im Editor ausgeben
+					e.printStackTrace();
+				}
+			}
+			if (function == InterfaceFunctions.EDITOR_EXIT_WITHOUT_SAVE) {
+				this.exit();
 			}
 		}
 		this.lastFunction = function;
@@ -596,10 +620,10 @@ public class Editor2 extends Level implements Interfaceable {
 	/**
 	 * Formt den String so um, dass das Level in "resources/levels/" abgelegt
 	 * wird und die Endung ".txt" hat
-	 *
+	 * 
 	 * Pfad-Angaben werden ignoriert, Inhalt hinter "." wird entfernt und durch
 	 * ".txt" ersetzt
-	 *
+	 * 
 	 * @param content
 	 *            Der String, der umgeformt werden soll
 	 * @return Der umgeformte String
