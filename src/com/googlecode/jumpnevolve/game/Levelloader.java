@@ -17,9 +17,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Zum Laden von Leveln.
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Levelloader {
 
@@ -59,7 +59,8 @@ public class Levelloader {
 				// Einstellungen vornehmen
 				String secondLine = levelFileReader.readLine();
 				String[] secondLineSplit = secondLine.split("_");
-				if (secondLineSplit[0].equals("Leveleinstellungen") == false) {
+				if (secondLineSplit[0].equals("Leveleinstellungen") == false
+						|| secondLineSplit.length != 4) {
 					throw new IOException(
 							"Zweite Zeile enthält nicht die Leveleinstellungen");
 				}
@@ -86,8 +87,10 @@ public class Levelloader {
 					throw new IOException("Die Zoomangaben sind unzulässig");
 				}
 				// Hintergrund setzen
-				this.level
-						.setBackground(secondLineSplit[secondLineSplit.length - 1]);
+				this.level.setBackground(secondLineSplit[3]);
+
+				// Timer einstellen
+				this.level.setTime(Float.parseFloat(secondLineSplit[2]));
 
 				// FIXME: Einstellungen für das Level vornehmen
 				// TODO: Timer für das Level hinzufügen

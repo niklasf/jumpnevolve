@@ -14,9 +14,11 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.effects.FireEmitterFactory;
+import com.googlecode.jumpnevolve.graphics.effects.FogEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Ein Level, dass einer Welt entspricht, enthält zusätzlich Punktezähler und
@@ -27,21 +29,40 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class Level extends World {
 
+	private static final float RELOAD_DELAY = Parameter.GAME_LEVEL_RELOADDELAY;
+
 	private int points;
 	private Timer timer = new Timer();
 	private Player player;
 	private Levelloader loader;
 	private boolean finished = false;
 	private ParticleEffect finishedEffect;
+	private boolean failed = false;
+	private ParticleEffect failedEffect;
 
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
 		this.loader = loader;
 	}
 
+	/**
+	 * Setzt die für das Level verfügbare Zeit. Nach Ablauf der Zeit wird das
+	 * Level neugestartet.
+	 * <p>
+	 * Eine verfügbare Zeit von <strong>0 Sekunden</strong> bedeutet, dass
+	 * unendlich viel Zeit zur Verfügung steht.
+	 * 
+	 * @param time
+	 *            Die verfügbare Zeit in Sekunden
+	 */
 	public void setTime(float time) {
 		this.timer.setTime(time);
-		this.timer.start();
+		if (time != 0) {
+			this.timer.start();
+		} else {
+			// Sicherstellen das der Timer nicht läuft
+			this.timer.stop();
+		}
 	}
 
 	public void save(String path) {
@@ -91,7 +112,10 @@ public class Level extends World {
 	}
 
 	private void reload() {
-		// TODO: Level neu laden
+		System.out.println("Reload Level");
+		Level newLevel = Levelloader.asyncLoadLevel(this.loader.source);
+		newLevel.player.setParentMenu(this.player.getParentMenu());
+		Engine.getInstance().switchState(newLevel);
 	}
 
 	private void pollPlayer(Input input, float secounds) {
@@ -120,31 +144,86 @@ public class Level extends World {
 			this.pollPlayer(input, secounds);
 			this.timer.poll(input, secounds);
 			if (this.timer.didFinish()) {
-				this.reload();
+				if (!this.failed) {
+					this.failed();
+				} else {
+					this.reload();
+				}
 			}
 		} else {
 			// Nur der Spieler bewegt sich noch und springt ständig
 			this.pollPlayer(input, secounds);
-			if (this.finishedEffect != null) {
-				this.finishedEffect.poll(input, secounds);
-			}
+		}
+		if (this.finishedEffect != null) {
+			this.finishedEffect.poll(input, secounds);
+		}
+		if (this.failedEffect != null) {
+			this.failedEffect.poll(input, secounds);
 		}
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
+		if (this.failed) {
+			this.drawFailedScreen(g);
+		} else {
+			this.drawRemainingTime(g);
+		}
 		if (this.finished) {
 			this.drawFinishedScreen(g);
 		}
 		this.drawPlayer(g);
 	}
 
+	private void drawRemainingTime(Graphics g) {
+		GraphicUtils.drawString(
+				g,
+				this.getCamera()
+						.getPosition()
+						.sub(new Vector(Engine.getInstance().getWidth(), Engine
+								.getInstance().getHeight() * 1.5f).div(3.0f)),
+				"Verbleibende Zeit: " + (int) this.timer.getRemainingTime());
+	}
+
+	private void drawFailedScreen(Graphics g) {
+		this.createFailedScreen();
+		this.failedEffect.draw(g);
+		GraphicUtils.drawString(
+				g,
+				this.getCamera()
+						.getPosition()
+						.sub(new Vector(Engine.getInstance().getWidth(), Engine
+								.getInstance().getHeight()).div(4.0f)),
+				"Die Zeit ist abgelaufen: Das Level wird in "
+						+ (int) this.timer.getRemainingTime()
+						+ " Sekunden neugestartet");
+	}
+
+	private void createFailedScreen() {
+		if (this.failedEffect == null) {
+			this.failedEffect = new ParticleEffect(this.getCamera()
+					.getPosition(), new FogEmitterFactory());
+		}
+	}
+
+	// TODO: Statistik erstellen und anzeigen
+	/**
+	 * Setzt den Status des Levels als beendet. Es erscheint ein Beenden-Dialog,
+	 * durch den man zum Hauptmenü zurückkehren kann.
+	 */
 	public void finish() {
 		this.finished = true;
 		this.player.onFinish();
-		this.finishedEffect = new ParticleEffect(
-				this.getCamera().getPosition(), new FireEmitterFactory());
+	}
+
+	/**
+	 * Setzt den Status des Levels als verloren. Das Level wird daraufhin nach
+	 * einem zeitlichen Delay neugestartet.
+	 */
+	public void failed() {
+		this.failed = true;
+		this.timer.start(RELOAD_DELAY);
 	}
 
 	public boolean isFinished() {
@@ -152,9 +231,8 @@ public class Level extends World {
 	}
 
 	private void drawFinishedScreen(Graphics g) {
-		if (this.finishedEffect != null) {
-			this.finishedEffect.draw(g);
-		}
+		this.createFinishedScreen();
+		this.finishedEffect.draw(g);
 		GraphicUtils.drawString(
 				g,
 				this.getCamera()
@@ -162,5 +240,12 @@ public class Level extends World {
 						.sub(new Vector(Engine.getInstance().getWidth(), Engine
 								.getInstance().getHeight()).div(4.0f)),
 				"Level erfolgreich beendet");
+	}
+
+	private void createFinishedScreen() {
+		if (this.finishedEffect == null) {
+			this.finishedEffect = new ParticleEffect(this.getCamera()
+					.getPosition(), new FireEmitterFactory());
+		}
 	}
 }

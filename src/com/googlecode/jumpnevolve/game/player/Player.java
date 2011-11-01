@@ -28,12 +28,12 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Player liefert die Objekte (abgeleitet von FigureTemplate), die der Spieler
  * steuern kann und gibt diesen je nach Tastatur-Ereignissen "Anweisungen"
- *
+ * 
  * Außerdem bekommt Player die Ereignisse von Interface-Objekten und ruft die
  * entsprechenden Funktionen in den spielbaren Objekten auf
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Player implements Pollable, Interfaceable {
 
@@ -119,9 +119,13 @@ public class Player implements Pollable, Interfaceable {
 		return this.curPlayable;
 	}
 
-	public void setParentMenu(Menu parent2) {
-		this.parentMenu = parent2;
+	public void setParentMenu(Menu parentMenu) {
+		this.parentMenu = parentMenu;
 		this.createMenuButton();
+	}
+
+	public Menu getParentMenu() {
+		return this.parentMenu;
 	}
 
 	private void createMenuButton() {

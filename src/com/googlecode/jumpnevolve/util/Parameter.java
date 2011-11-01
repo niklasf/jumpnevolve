@@ -33,6 +33,11 @@ public class Parameter {
 	 * Wird verwendet um zu verhindern, dass Kollisionen nicht erkannt werden
 	 */
 	public static final float GAME_ABSTRACTOBJECT_MAXVELOCITY = 300.0f;
+	/**
+	 * Die Zeit, die nach dem Verlieren des Levels vergeht, bis das Level
+	 * neugeladen wird.
+	 */
+	public static final float GAME_LEVEL_RELOADDELAY = 10.0f;
 
 	/**
 	 * Die Größe der Positions-Marker im Editor
