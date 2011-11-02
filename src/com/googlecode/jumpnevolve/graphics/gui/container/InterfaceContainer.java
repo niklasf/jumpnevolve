@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.container;
 
 import java.util.HashMap;
 
@@ -10,6 +10,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
+import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -203,7 +205,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 		if (this.parentContainer != null) {
 			Shape shape = this.getNeededSize();
 			shape = shape.modifyCenter(this.parentContainer
-					.getTransformedPositionFor(this).add(
+					.getPositionFor(this).add(
 							new Vector(shape.getXRange(), shape.getYRange())
 									.div(2.0f)));
 			GraphicUtils.fill(g, shape, this.backgroundColor);
@@ -240,14 +242,17 @@ public abstract class InterfaceContainer implements InterfacePart {
 	@Override
 	public Rectangle getNeededSize() {
 		float width = this.sizeX, height = this.sizeY;
-		// Doppelte Abfrage ob eine Variable gleich NaN ist, ist schneller als
-		// in jedem Fall getWantedSize() aufzurufen
-		if (Float.isNaN(width) || Float.isNaN(height)) {
+		if (Float.isNaN(width)) {
 			Rectangle wanted = this.getWantedSize();
-			if (Float.isNaN(width)) {
+			if (Float.isNaN(height)) {
+				width = wanted.width;
+				height = wanted.height;
+			} else {
 				width = wanted.width;
 			}
+		} else {
 			if (Float.isNaN(height)) {
+				Rectangle wanted = this.getWantedSize();
 				height = wanted.height;
 			}
 		}
@@ -270,27 +275,6 @@ public abstract class InterfaceContainer implements InterfacePart {
 			} else {
 				return this.objects.get(object);
 			}
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * @param object
-	 *            Das Objekt, dessen Position angefragt wird
-	 * @return Position der oberen, linken Ecke des Objekts auf der
-	 *         Zeichenfläche (mit Translation durch die Kamera); {@code null},
-	 *         wenn das Objekt nicht in diesem Container enthalten ist
-	 */
-	public Vector getTransformedPositionFor(InterfacePart object) {
-		Vector pos = this.getPositionFor(object);
-		if (pos != null) {
-			return pos.add(this
-					.getInterfaceable()
-					.getCamera()
-					.getPosition()
-					.sub(new Vector(this.getInterfaceable().getWidth() / 2,
-							this.getInterfaceable().getHeight() / 2)));
 		} else {
 			return null;
 		}

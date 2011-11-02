@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.editor2;
 
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceNumberSelection;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceNumberSelection;
 
 public class NumberSelection extends ArgumentForDialog {
 

@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.container;
 
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;

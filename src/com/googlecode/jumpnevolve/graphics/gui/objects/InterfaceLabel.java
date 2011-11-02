@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
@@ -7,6 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -65,7 +66,6 @@ public class InterfaceLabel extends InterfaceObject {
 		if (Font == null) {
 			Font = g.getFont();
 		}
-		GraphicUtils.drawString(g, this.parent.getTransformedPositionFor(this),
-				this.text);
+		GraphicUtils.drawString(g, this.parent.getPositionFor(this), this.text);
 	}
 }

@@ -1,13 +1,14 @@
 /**
  *
  */
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.container;
 
 import java.util.Collection;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;

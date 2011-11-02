@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,16 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.gui.Contentable;
+import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
+import com.googlecode.jumpnevolve.graphics.gui.Informable;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceLabel;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceNumberSelection;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextField;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 

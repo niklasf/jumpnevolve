@@ -1,7 +1,7 @@
 package com.googlecode.jumpnevolve.editor2;
 
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceCheckbox;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceCheckbox;
 
 public class Checkbox extends ArgumentForDialog {
 

@@ -1,13 +1,15 @@
 /**
  *
  */
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -15,7 +17,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class InterfaceButton extends InterfaceObject {
 
@@ -26,7 +28,7 @@ public class InterfaceButton extends InterfaceObject {
 
 	/**
 	 * Erzeigt einen neuen Button für das Interface
-	 *
+	 * 
 	 * @param function
 	 *            Die Funktion des Buttons (Ein Enum aus
 	 *            {@link InterfaceFunctions});
@@ -43,7 +45,7 @@ public class InterfaceButton extends InterfaceObject {
 
 	@Override
 	public void draw(Graphics g) {
-		Vector pos = this.getTransformedCenterVector();
+		Vector pos = this.getCenterVector();
 		Shape actShape = this.shape.modifyCenter(pos);
 		GraphicUtils.drawImage(g, actShape, ResourceManager.getInstance()
 				.getImage(this.icon));

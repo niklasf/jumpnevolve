@@ -1,10 +1,11 @@
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -69,7 +70,7 @@ public class InterfaceTextButton extends InterfaceObject {
 			int height = Font.getHeight(this.buttonText);
 			this.shape = new Rectangle(Vector.ZERO, width, height);
 		}
-		Vector pos = this.getTransformedCenterVector();
+		Vector pos = this.getCenterVector();
 		this.shape = (Rectangle) this.shape.modifyCenter(pos);
 		Color c = g.getColor();
 		switch (this.getStatus()) {

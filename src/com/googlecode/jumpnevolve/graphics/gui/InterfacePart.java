@@ -5,6 +5,7 @@ package com.googlecode.jumpnevolve.graphics.gui;
 
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
+import com.googlecode.jumpnevolve.graphics.gui.container.InterfaceContainer;
 import com.googlecode.jumpnevolve.math.Rectangle;
 
 /**

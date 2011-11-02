@@ -1,5 +1,9 @@
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
+import com.googlecode.jumpnevolve.graphics.gui.Contentable;
+import com.googlecode.jumpnevolve.graphics.gui.Informable;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
+import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.Parameter;

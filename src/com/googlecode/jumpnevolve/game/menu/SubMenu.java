@@ -1,14 +1,14 @@
 package com.googlecode.jumpnevolve.game.menu;
 
-import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
-import com.googlecode.jumpnevolve.graphics.gui.HeadlineContainer;
 import com.googlecode.jumpnevolve.graphics.gui.Informable;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
+import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.container.HeadlineContainer;
+import com.googlecode.jumpnevolve.graphics.gui.container.InterfaceContainer;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 

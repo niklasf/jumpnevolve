@@ -6,7 +6,7 @@ import com.googlecode.jumpnevolve.editor2.Editor2;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 
 public class MainMenu extends Menu {
 

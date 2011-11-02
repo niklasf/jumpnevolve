@@ -9,13 +9,13 @@ import org.newdawn.slick.Input;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.Engine;
-import com.googlecode.jumpnevolve.graphics.gui.BorderContainer;
-import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
-import com.googlecode.jumpnevolve.graphics.gui.TextButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.container.BorderContainer;
+import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.container.TextButtonList;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 

@@ -1,12 +1,18 @@
 /**
  *
  */
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
 import java.util.ArrayList;
 
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.graphics.gui.Informable;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
+import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
+import com.googlecode.jumpnevolve.graphics.gui.container.InterfaceContainer;
+import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -14,9 +20,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * Eine Superklasse für Objekte im Interface. Gibt die Ereignisse an sein
  * "Parent" weiter und außerdem an {@link Informable}, wenn diese mit
  * {@link addInformable} hinzugefügt wurden
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public abstract class InterfaceObject implements InterfacePart {
 
@@ -120,7 +126,7 @@ public abstract class InterfaceObject implements InterfacePart {
 	/**
 	 * Fügt ein Informable hinzu, welches von nun an über Aktionen dieses
 	 * Objekts informiert wird
-	 *
+	 * 
 	 * @param object
 	 *            Das Informable-Objekt
 	 */
@@ -149,24 +155,10 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *         die Translation durch die Kamera
 	 */
 	public Vector getCenterVector() {
+		Rectangle size = this.getNeededSize();
 		return this.parent.getPositionFor(this).add(
-				new Vector(this.getNeededSize().getDistanceToSide(Shape.LEFT),
-						this.getNeededSize().getDistanceToSide(Shape.UP)));
-	}
-
-	/**
-	 * @return Die Position des Zentrum dieses Objekts auf der Zeichenfläche,
-	 *         inklusive der Translation durch die Kamera
-	 */
-	public Vector getTransformedCenterVector() {
-		return this.getCenterVector().add(
-				this.parent
-						.getInterfaceable()
-						.getCamera()
-						.getPosition()
-						.sub(new Vector(this.parent.getInterfaceable()
-								.getWidth() / 2, this.parent.getInterfaceable()
-								.getHeight() / 2)));
+				new Vector(size.getDistanceToSide(Shape.LEFT), size
+						.getDistanceToSide(Shape.UP)));
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.graphics.gui;
+package com.googlecode.jumpnevolve.graphics.gui.objects;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -7,6 +7,8 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Timer;
+import com.googlecode.jumpnevolve.graphics.gui.Contentable;
+import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -59,11 +61,11 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 			font = g.getFont();
 		}
 		Rectangle rect = (Rectangle) this.getNeededSize();
-		Vector center = this.getTransformedCenterVector();
+		Vector center = this.getCenterVector();
 
 		GraphicUtils.fill(g, rect.modifyCenter(center), Color.blue);
 
-		Vector pos = this.parent.getTransformedPositionFor(this);
+		Vector pos = this.parent.getPositionFor(this);
 		GraphicUtils.drawString(g, pos.add(2, 0), this.content1);
 
 		float xModifier = g.getFont().getWidth(this.content1);

@@ -2,10 +2,10 @@ package com.googlecode.jumpnevolve.game.menu;
 
 import java.util.ArrayList;
 
-import com.googlecode.jumpnevolve.graphics.gui.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceObject;
-import com.googlecode.jumpnevolve.graphics.gui.InterfaceTextButton;
+import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 
 public class SimpleSubMenu extends SubMenu {
 

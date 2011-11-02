@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+
 /**
  * Ein Informable kann über die Aktionen eines InterfaceObject informiert
  * werden. Dazu wird {@link InterfaceObject} verwendet.
