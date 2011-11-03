@@ -13,9 +13,11 @@ import com.googlecode.jumpnevolve.game.player.Player;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Timer;
+import com.googlecode.jumpnevolve.graphics.effects.AirFlowEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.FireEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.FogEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
+import com.googlecode.jumpnevolve.graphics.effects.SprayEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.Parameter;
@@ -245,7 +247,7 @@ public class Level extends World {
 	private void createFinishedScreen() {
 		if (this.finishedEffect == null) {
 			this.finishedEffect = new ParticleEffect(this.getCamera()
-					.getPosition(), new FireEmitterFactory());
+					.getPosition(), new SprayEmitterFactory());
 		}
 	}
 }

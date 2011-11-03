@@ -72,4 +72,9 @@ public class Parameter {
 	 * Das Interval für den Nebel-Partikeleffekt
 	 */
 	public static final int EFFECTS_FOG_INTERVAL = 50;
+
+	/**
+	 * Das Interval für die Spray-Partikel
+	 */
+	public static final int EFFECTS_SPRAY_INTERVAL = 30;
 }
