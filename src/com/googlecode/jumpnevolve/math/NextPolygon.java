@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Shape;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 class NextPolygon implements ConvexShape {
 
@@ -400,5 +400,16 @@ class NextPolygon implements ConvexShape {
 			this.buildBoundingRect();
 		}
 		return this.boundingRect;
+	}
+
+	@Override
+	public NextShape rotate(float ang) {
+		ArrayList<Vector> points = new ArrayList<Vector>();
+		for (Vector vec : this.relativePoints) {
+			points.add(vec.rotate(ang));
+		}
+		NextPolygon re = new NextPolygon(this.center, points);
+		re.finish();
+		return re;
 	}
 }

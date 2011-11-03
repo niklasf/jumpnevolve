@@ -10,16 +10,22 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 class Cannonball extends Shot {
 
+	private static final long serialVersionUID = -2667560387023995791L;
+
 	/**
+	 * Erzeugt eine neue Kanonenkugel
+	 * 
 	 * @param world
-	 * @param shape
-	 * @param livingTime
+	 *            Die Welt für das Objekt
+	 * @param position
+	 *            Die Position, an der die Kanonenkugel startet
 	 * @param shotDirection
-	 * @param shotSpeed
+	 *            Die Richtung, in die sich die Kanonenkugel anfänglich bewegt
+	 *            (--> wegen Schwerkraft)
 	 */
 	public Cannonball(World world, Vector position, Vector shotDirection) {
 		super(world, ShapeFactory.createCircle(position, 10), 10.0f,

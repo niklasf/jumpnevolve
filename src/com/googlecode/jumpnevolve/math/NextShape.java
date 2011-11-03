@@ -15,6 +15,14 @@ public interface NextShape {
 	public CollisionResult getCollision(NextShape other, Vector deltaVelocity,
 			boolean thisMoveable, boolean otherMoveable);
 
+	/**
+	 * Rotiert das Shape um einen Winkel im Uhrzeigersinn
+	 * 
+	 * @param ang
+	 * @return
+	 */
+	public NextShape rotate(float ang);
+
 	public boolean isPointIn(Vector point);
 
 	/**

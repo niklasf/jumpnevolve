@@ -172,6 +172,12 @@ public class World extends AbstractState {
 					if (!this.objects.contains(object)) {
 						this.objects.add((AbstractObject) object);
 						addToObjectList((AbstractObject) object);
+						if (object instanceof ObjectGroup) {
+							for (AbstractObject obj : ((ObjectGroup) object)
+									.getObjects()) {
+								this.add(obj);
+							}
+						}
 					}
 				}
 			}

@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Shape;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 class NextCircle implements ConvexShape {
 
@@ -138,7 +138,12 @@ class NextCircle implements ConvexShape {
 
 	@Override
 	public HelpRectangle getBoundingRect() {
-		return new HelpRectangle(this.getLeftEnd(), this.getRightEnd(), this
-				.getUpperEnd(), this.getLowerEnd());
+		return new HelpRectangle(this.getLeftEnd(), this.getRightEnd(),
+				this.getUpperEnd(), this.getLowerEnd());
+	}
+
+	@Override
+	public NextShape rotate(float ang) {
+		return this;
 	}
 }
