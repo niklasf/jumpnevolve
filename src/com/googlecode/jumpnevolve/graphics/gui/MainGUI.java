@@ -8,9 +8,18 @@ import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * @author Erik Wagner
+ * Die Hauptklasse für das User-Interface.
+ * <p>
+ * Es wird ein MainContainer gesetzt, in diesen können andere
+ * {@link InterfacePart} eingefügt werden.
+ * <p>
+ * poll() und draw() werden für das MainGUI aufgerufen und an die anderen
+ * Objekte weitergegeben.
+ * <p>
+ * draw(): es wird unabhängig von vorherigen Translationen/Sklierungen etc.
+ * gearbeitet, sodass das Interface immer gleich aussieht.
  * 
- *         FIXME: Interface wird bei Zoom != 1 nicht richtig angezeigt
+ * @author Erik Wagner
  * 
  */
 public class MainGUI extends InterfaceContainer {

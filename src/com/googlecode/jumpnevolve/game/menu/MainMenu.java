@@ -24,7 +24,6 @@ public class MainMenu extends Menu {
 	public void addSubMenu(SubMenu menu) {
 		this.mainState.addEntry(menu.name, menu);
 		super.addSubMenu(menu);
-		System.out.println();
 	}
 
 	public void addDirectButton(String name, InterfaceFunction function) {

@@ -10,9 +10,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
+import com.googlecode.jumpnevolve.game.OldGameObjects;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
@@ -31,9 +31,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Ein Level, das in seiner poll-Methode die Ereignisverarbeitung übernimmt,
  * speziell für den Editor
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class EditorLevel extends Level implements Interfaceable {
 
@@ -70,7 +70,7 @@ public class EditorLevel extends Level implements Interfaceable {
 		ButtonList selectList = new ButtonList(6, 10);
 		BorderContainer border = new BorderContainer();
 		border.add(selectList, BorderContainer.POSITION_LOW_LEFT);
-		for (GameObjects obj : GameObjects.values()) {
+		for (OldGameObjects obj : OldGameObjects.values()) {
 			selectList.addButton(new InterfaceButton(obj,
 					obj.editorSkinFileName));
 		}

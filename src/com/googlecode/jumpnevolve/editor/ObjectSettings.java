@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.googlecode.jumpnevolve.game.GameObjects;
+import com.googlecode.jumpnevolve.game.OldGameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -30,7 +30,7 @@ public class ObjectSettings extends JPanel {
 	/**
 	 * Erstellt ein ObjectSettings-Objekt aus entsprechend einer Datenzeile
 	 * einer Leveldatei
-	 *
+	 * 
 	 * @param parent
 	 *            Der Editor, dem dieses Objekt zugeordnet ist
 	 * @param editorWorld
@@ -55,7 +55,7 @@ public class ObjectSettings extends JPanel {
 
 	/**
 	 * Erzeugt ein neues ObjectSettings-Objekt
-	 *
+	 * 
 	 * @param parent
 	 *            Der Editor, dem dieses Objekt zugeordnet ist
 	 * @param className
@@ -112,7 +112,7 @@ public class ObjectSettings extends JPanel {
 
 	private void initialize() {
 		this.argumentPanel = new Arguments();
-		GameObjects gameObj = GameObjects.getGameObject(this.className);
+		OldGameObjects gameObj = OldGameObjects.getGameObject(this.className);
 		System.out.println("" + gameObj);
 		gameObj.initArgumentsObject(argumentPanel);
 		this.activatings.setText("none");
@@ -142,7 +142,7 @@ public class ObjectSettings extends JPanel {
 	 *         ObjectSettings festgelegt wurden
 	 */
 	public AbstractObject getObject() {
-		return GameObjects.loadObject(this.getDataLine(), this.editorWorld);
+		return OldGameObjects.loadObject(this.getDataLine(), this.editorWorld);
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class ObjectSettings extends JPanel {
 
 	/**
 	 * Ändert die Position des Objekts
-	 *
+	 * 
 	 * @param x
 	 *            Die X-Koordinate
 	 * @param y
@@ -271,12 +271,12 @@ public class ObjectSettings extends JPanel {
 	}
 
 	private boolean isPullUpAble() {
-		return this.className.equals(GameObjects.GROUND.className)
-				|| this.className.equals(GameObjects.ELEVATOR.className)
-				|| this.className.equals(GameObjects.DOOR.className)
+		return this.className.equals(OldGameObjects.GROUND.className)
+				|| this.className.equals(OldGameObjects.ELEVATOR.className)
+				|| this.className.equals(OldGameObjects.DOOR.className)
 				|| this.className
-						.equals(GameObjects.SLIDING_PLATTFORM.className)
-				|| this.className.equals(GameObjects.FLUID.className);
+						.equals(OldGameObjects.SLIDING_PLATTFORM.className)
+				|| this.className.equals(OldGameObjects.FLUID.className);
 	}
 
 	private boolean isPointNearPosition(Vector point, Vector other,

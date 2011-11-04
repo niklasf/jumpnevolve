@@ -1,16 +1,6 @@
 package com.googlecode.jumpnevolve.game;
 
-import org.newdawn.slick.Color;
-
 import com.googlecode.jumpnevolve.editor.Arguments;
-import com.googlecode.jumpnevolve.editor2.Checkbox;
-import com.googlecode.jumpnevolve.editor2.EditorArgument;
-import com.googlecode.jumpnevolve.editor2.EditorArguments;
-import com.googlecode.jumpnevolve.editor2.NumberSelection;
-import com.googlecode.jumpnevolve.editor2.PositionMarker;
-import com.googlecode.jumpnevolve.editor2.RectangleDimension;
-import com.googlecode.jumpnevolve.editor2.RelativePositionMarker;
-import com.googlecode.jumpnevolve.game.objects.AirFlow;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cactus;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
@@ -31,12 +21,12 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- * Eine Sammlung der GameObjects für den neuen Editor
+ * Eine Sammlung der GameObjects für den alten Editor
  * 
  * @author Erik Wagner
  * 
  */
-public enum GameObjects implements InterfaceFunction {
+public enum OldGameObjects implements InterfaceFunction {
 
 	SOLDIER(Soldier.class, "object-pictures/simple-foot-soldier.png", false),
 
@@ -54,84 +44,80 @@ public enum GameObjects implements InterfaceFunction {
 	GREEN_SLIME_WORM(GreenSlimeWorm.class,
 			"object-pictures/green-slime-worm.png", false),
 
-	BUTTON(Button.class, "textures/aluminium.png", true, new EditorArguments(
-			new EditorArgument[] { new NumberSelection("Active Time", 1, 100,
-					10, 1) })),
+	BUTTON(Button.class, "textures/aluminium.png",
+			new String[] { "Active Time" }, new char[0],
+			new String[] { "10.0" }, new String[] { "Float" }, true),
 
-	DOOR(Door.class, "textures/wood.png", false, new EditorArguments(
-			new EditorArgument[] { new RectangleDimension(30, 10) })),
+	DOOR(Door.class, "textures/wood.png", new String[] { "Width", "Height" },
+			new char[] { '|' }, new String[] { "30", "10" }, new String[] {
+					"Vector", "Vector" }, false),
 
-	GROUND(Ground.class, "textures/stone.png", false, new EditorArguments(
-			new EditorArgument[] { new RectangleDimension(30, 10) })),
+	GROUND(Ground.class, "textures/stone.png",
+			new String[] { "Width", "Height" }, new char[] { '|' },
+			new String[] { "30", "10" }, new String[] { "Vector", "Vector" },
+			false),
 
-	ELEVATOR(Elevator.class, "textures/aluminium.png", false,
-			new EditorArguments(new EditorArgument[] {
-					new RectangleDimension(30, 10),
-					new RelativePositionMarker(PositionMarker.MODUS_Y,
-							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.UP.mul(10), Color.green),
-					new RelativePositionMarker(PositionMarker.MODUS_Y,
-							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.DOWN.mul(10), Color.green) })),
+	ELEVATOR(Elevator.class, "textures/aluminium.png", new String[] { "Width",
+			"Height", "DownEnd", "UpEnd" }, new char[] { '|', ',', ',' },
+			new String[] { "30", "10", "20.0", "0.0" }, new String[] {
+					"Vector", "Vector", "Float", "Float" }, false),
 
-	SLIDING_PLATTFORM(SlidingPlattform.class, "textures/aluminium.png", false,
-			new EditorArguments(new EditorArgument[] {
-					new RectangleDimension(30, 10),
-					new RelativePositionMarker(PositionMarker.MODUS_X,
-							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.RIGHT.mul(30), Color.green),
-					new RelativePositionMarker(PositionMarker.MODUS_X,
-							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.LEFT.mul(30), Color.green) })),
+	SLIDING_PLATTFORM(SlidingPlattform.class, "textures/aluminium.png",
+			new String[] { "Width", "Height", "RightEnd", "LeftEnd" },
+			new char[] { '|', ',', ',' }, new String[] { "30", "10", "20.0",
+					"0.0" }, new String[] { "Vector", "Vector", "Float",
+					"Float" }, false),
 
-	FLUID(Fluid.class, "textures/water.png", false, new EditorArguments(
-			new EditorArgument[] { new RectangleDimension(30, 10),
-					new NumberSelection("MaximumVelocity", 1, 100, 20, 1) })),
+	FLUID(Fluid.class, "textures/water.png", new String[] { "Width", "Height",
+			"MaximumVelocity" }, new char[] { '|', ',' }, new String[] { "30",
+			"10", "20" }, new String[] { "Vector", "Vector", "Float" }, false),
 
-	CANNON(Cannon.class, "object-pictures/cannon.png", false,
-			new EditorArguments(new EditorArgument[] {
-					new Checkbox("Activated", false),
-					new RelativePositionMarker(PositionMarker.MODUS_BOTH,
-							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-							Vector.UP_RIGHT, Color.yellow) })),
+	CANNON(Cannon.class, "object-pictures/cannon.png", new String[] {
+			"Activated", "ShotDirectionX", "ShotDirectionY" }, new char[] {
+			',', '|' }, new String[] { "true", "20", "-5" }, new String[] {
+			"Boolean", "Vector", "Vector" }, false),
 
 	SAVE_POINT(SavePoint.class, "object-pictures/savePoint-active.png", false),
 
 	GOAL(Goal.class, "object-pictures/goal.png", false);
 
-	// TODO: Unfertig
-	// AIRFLOW(AirFlow.class, "textures/water.png", false,
-	// new EditorArguments(
-	// new EditorArgument[] { new RelativePositionMarker(
-	// PositionMarker.MODUS_X,
-	// RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-	// new Vector(30, 0), Color.cyan) }));
-
 	public final String className;
 	public final String editorSkinFileName;
+	public final String[] contents;
+	public final char[] hyphen;
+	public final String[] initContents;
+	public final String[] kindOfContents;
 	public final boolean hasActivatings;
-	public final EditorArguments editorArguments;
 
-	private GameObjects(Class<?> thisClass, String editorSkinFileName,
-			boolean hasActivatings, EditorArguments requiredArguments) {
+	private OldGameObjects(Class<?> thisClass, String editorSkinFileName,
+			String[] contents, char[] hyphen, String[] initContents,
+			String[] kindOfContents, boolean hasActivatings) {
 		this.className = formatClassName(thisClass.toString());
-		this.editorArguments = requiredArguments;
 		this.editorSkinFileName = editorSkinFileName;
+		this.contents = contents;
+		this.hyphen = hyphen;
+		this.initContents = initContents;
+		this.kindOfContents = kindOfContents;
 		this.hasActivatings = hasActivatings;
+		if (this.contents.length != this.initContents.length
+				|| this.contents.length != this.hyphen.length + 1
+				|| this.contents.length != this.kindOfContents.length) {
+			System.out.println("Fehler bei Erstellen des Enums: " + this);
+		}
 	}
 
-	private GameObjects(Class thisClass, String editorSkinFileName,
+	private OldGameObjects(Class<?> thisClass, String editorSkinFileName,
 			boolean hasActivatings) {
-		this(thisClass, editorSkinFileName, hasActivatings,
-				new EditorArguments(null));
+		this(thisClass, editorSkinFileName, new String[] { "" }, new char[0],
+				new String[] { "" }, new String[] { "" }, hasActivatings);
 	}
 
 	private static String formatClassName(String className) {
 		return className.substring(className.lastIndexOf('.') + 1);
 	}
 
-	public static GameObjects getGameObject(String className) {
-		for (GameObjects obj : GameObjects.values()) {
+	public static OldGameObjects getGameObject(String className) {
+		for (OldGameObjects obj : OldGameObjects.values()) {
 			if (className.equals(obj.className)) {
 				return obj;
 			}
@@ -176,6 +162,12 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new Goal(level, position);
 		}
 		return newObject;
+	}
+
+	public void initArgumentsObject(Arguments argus) {
+		if (this.contents.length > 0) {
+			argus.initArguments(contents, hyphen, initContents);
+		}
 	}
 
 	@Override

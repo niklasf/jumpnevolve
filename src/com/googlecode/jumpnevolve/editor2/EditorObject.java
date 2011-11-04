@@ -12,11 +12,12 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.container.Dialog;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.world.ObjectGroup;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- *
+ * 
  *         TODO: Im Dialog sollten die Vektor exakt einstellbar sein
  */
 public class EditorObject implements Pollable, Drawable {
@@ -148,8 +149,23 @@ public class EditorObject implements Pollable, Drawable {
 
 	@Override
 	public void draw(Graphics g) {
-		this.getObject().draw(g);
+		this.drawObject(g);
 		this.settings.draw(g);
+	}
+
+	private void drawObject(Graphics g) {
+		// Objekt erstellen
+		this.getObject();
+
+		// Objekt zeichnen
+		this.object.draw(g);
+
+		// Bei einer Objektgruppe auch alle anderen Objekte zeichnen
+		if (this.object instanceof ObjectGroup) {
+			for (AbstractObject obj : ((ObjectGroup) this.object).getObjects()) {
+				obj.draw(g);
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
