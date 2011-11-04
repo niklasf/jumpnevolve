@@ -1,0 +1,8 @@
+Leveldimensionen_1000_1000_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_(59.0| 333.0)
+Ground_(236.0| 417.0)_0001-Ground_none_208|15
+SlidingPlattform_(652.0| 401.0)_0002-SlidingPlattform_none_104|9,882.0,482.0
+Goal_(960.0| 339.0)_0003-Goal_none_none
+Ground_(966.0| 405.0)_0004-Ground_none_36|7
+GreenSlimeWorm_(273.0| 371.0)_0007-GreenSlimeWorm_none_none

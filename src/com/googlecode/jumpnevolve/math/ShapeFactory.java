@@ -6,13 +6,13 @@ package com.googlecode.jumpnevolve.math;
  */
 public class ShapeFactory {
 
-	public static NextPolygon createPolygon(Vector center, Vector[] points) {
+	public static NextShape createPolygon(Vector center, Vector[] points) {
 		NextPolygon poly = new NextPolygon(center, points);
 		poly.finish();
 		return poly;
 	}
 
-	public static NextPolygon createRectangle(Vector center, float width,
+	public static NextShape createRectangle(Vector center, float width,
 			float height) {
 		NextPolygon poly = new NextPolygon(center);
 		poly.addRelativePoint(new Vector(-width / 2, -height / 2));
@@ -23,11 +23,36 @@ public class ShapeFactory {
 		return poly;
 	}
 
-	public static NextPolygon createRectangle(Vector center, Vector dimension) {
+	public static NextShape createRectangle(Vector center, Vector dimension) {
 		return createRectangle(center, dimension.x * 2, dimension.y * 2);
 	}
 
-	public static NextCircle createCircle(Vector center, float radius) {
+	public static NextShape createRectangle(Vector center, Vector dimension,
+			float ang) {
+		return createRectangle(center, dimension.x * 2, dimension.y * 2, ang);
+	}
+
+	/**
+	 * Erzeugt ein gedrehtes Rechteck
+	 * 
+	 * @param center
+	 *            Das Zentrum des Rechtecks
+	 * @param width
+	 *            Die Breite des Rechtecks
+	 * @param height
+	 *            Die Höhe des Rechtecks
+	 * @param ang
+	 *            Der Winkel um den das Rechteck im Uhrzeigersinn gedreht werden
+	 *            soll
+	 * @return Das Rechteck
+	 */
+	public static NextShape createRectangle(Vector center, float width,
+			float height, float ang) {
+		return createRectangle(center, width, height).rotate(ang);
+	}
+
+	public static NextShape createCircle(Vector center, float radius) {
 		return new NextCircle(center, radius);
 	}
+
 }

@@ -71,6 +71,10 @@ public class EditorObject implements Pollable, Drawable {
 		}
 	}
 
+	public void addNewArgument(NewEditorArgument toAdd) {
+		// TODO: Füllen
+	}
+
 	public boolean isPointIn(Vector point) {
 		return this.getObject().getShape().isPointIn(point);
 	}

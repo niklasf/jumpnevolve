@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 /**
  * Klasse für Vektoren mit einfacher Gleitkommagenauigkeit.
- *
+ * 
  * @author Erik Wagner
  */
 public class Vector implements Cloneable, Serializable {
@@ -87,7 +87,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Erzeugt einen neuen Vektor.
-	 *
+	 * 
 	 * @param x
 	 *            X-Koordinate
 	 * @param y
@@ -107,7 +107,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Addiert zum Vektor einen anderen.
-	 *
+	 * 
 	 * @param vec
 	 *            Summand
 	 * @return Summe
@@ -118,7 +118,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * @see #add(Vector)
-	 *
+	 * 
 	 * @param vx
 	 *            Das erste Element des Summanden
 	 * @param vy
@@ -136,7 +136,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Dividiert den Vektor.
-	 *
+	 * 
 	 * @param scalar
 	 *            Divisor
 	 * @return Quotient
@@ -186,7 +186,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * @see #getDistance(Vector)
-	 *
+	 * 
 	 * @param ox
 	 *            Das erste Element des zweiten Ortsvektors
 	 * @param oy
@@ -215,7 +215,7 @@ public class Vector implements Cloneable, Serializable {
 	/**
 	 * Prüft, ob der Betrag des Vektors 0 ist. Für Vektoren mit dem Betrag 0 ist
 	 * keine Richtung definiert.
-	 *
+	 * 
 	 * @return {@code true}, wenn der Betrag 0 ist.
 	 */
 	public boolean isZero() {
@@ -224,7 +224,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Erzeugt einen neuen Vektor.
-	 *
+	 * 
 	 * @param x
 	 *            Nur der X-Wert wird verändert
 	 * @return Der neue Vektor
@@ -235,7 +235,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Erzeugt einen neuen Vektor.
-	 *
+	 * 
 	 * @param y
 	 *            Nur der Y-Wert wird verändert
 	 * @return Der neue Vektor
@@ -246,7 +246,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Multipliziert den Vektor.
-	 *
+	 * 
 	 * @param scalar
 	 *            Faktor
 	 * @return Produkt
@@ -257,7 +257,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Berechnet das Skalarprodukt mit einem Vektor.
-	 *
+	 * 
 	 * @param vec
 	 *            Zweiter Vektor
 	 * @return Skalarprodukt
@@ -268,7 +268,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * @see #mul(Vector)
-	 *
+	 * 
 	 * @param vx
 	 *            Das erste Element des zweiten Vektors
 	 * @param vy
@@ -281,11 +281,11 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Multipliziert zwei Vektoren wie Listen:
-	 *
+	 * 
 	 * <pre>
 	 * (a, b) # (c, d) => (a*c, b*d)
 	 * </pre>
-	 *
+	 * 
 	 * @param vector
 	 *            Zweiter Vektor
 	 * @return Listenprodukt
@@ -296,7 +296,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * @see #mulAsLists(Vector)
-	 *
+	 * 
 	 * @param vx
 	 *            Das erste Element des zweiten Vektors
 	 * @param vy
@@ -311,7 +311,7 @@ public class Vector implements Cloneable, Serializable {
 	 * Ein monotoner Hash-Wert für die Länge des Vektors, der effizienter
 	 * berechnet wird, als die Länge selbst. Eignet sich gut, um Längen zu
 	 * vergleichen.
-	 *
+	 * 
 	 * @return Das Quadrat der Länge des Vektors
 	 */
 	public float squareAbs() {
@@ -320,7 +320,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Subtrahiert vom Vektor einen anderen.
-	 *
+	 * 
 	 * @param vec
 	 *            Subtrahend
 	 * @return Differenz
@@ -331,7 +331,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * @see #sub(Vector)
-	 *
+	 * 
 	 * @param vx
 	 *            Das erste Element des Subtrahenten
 	 * @param vy
@@ -352,7 +352,7 @@ public class Vector implements Cloneable, Serializable {
 	/**
 	 * Gibt an, ob der Vektor <b>stärker</b> nach oben ({@link #UP}) zeigt, als
 	 * der andere. Dabei wird nur die Richtung, nicht der Betrag beachtet.
-	 *
+	 * 
 	 * @param other
 	 *            Der andere Vektor
 	 * @return true, wenn dieser Vektor mehr nach oben zeigt als der andere,
@@ -374,7 +374,7 @@ public class Vector implements Cloneable, Serializable {
 	/**
 	 * Der Innenwinkel im Bogenmaß zwischen dem Vektor und einem Vektor, der
 	 * nach oben zeigt.
-	 *
+	 * 
 	 * @see #UP
 	 * @see #ang(Vector)
 	 */
@@ -383,8 +383,20 @@ public class Vector implements Cloneable, Serializable {
 	}
 
 	/**
+	 * Der Winkel im Uhrzeigersinn vom Vektor, der nach oben zeigt, bis zu
+	 * diesem Vektor im Bogenmaß
+	 */
+	public float clockWiseAng() {
+		if (this.x >= 0) {
+			return this.ang();
+		} else {
+			return (float) (2 * Math.PI - this.ang());
+		}
+	}
+
+	/**
 	 * Lässt den Punkt, den dieser Ortsvektor darstellt, um einen Punkt rotieren
-	 *
+	 * 
 	 * @param phi
 	 *            Der Winkel, um den rotiert wird (im Uhrzeigersinn)
 	 * @param point
@@ -401,7 +413,7 @@ public class Vector implements Cloneable, Serializable {
 	/**
 	 * Lässt diesen Vektor um den Urspung um den Winkel Phi im Uhrzeigersinn
 	 * rotieren
-	 *
+	 * 
 	 * @param phi
 	 *            Der Winkel, um den der Vektor rotiert werden soll
 	 * @return Der rotierte Vektor
@@ -414,7 +426,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Dreht diesen Vektor um 90-Grad bzw. Pi-Halbe im Uhrzeigersinn
-	 *
+	 * 
 	 * @return Der gedrehte Vektor
 	 */
 	public Vector rotateQuarterClockwise() {
@@ -424,7 +436,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Dreht diesen Vektor um 90-Grad bzw. Pi-Halbe gegen den Uhrzeigersinn
-	 *
+	 * 
 	 * @return Der gedrehte Vektor
 	 */
 	public Vector rotateQuarterAnticlockwise() {
@@ -433,7 +445,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Vergleicht zwei Vektoren in ihrer Länge
-	 *
+	 * 
 	 * @param a
 	 *            Der eine Vektor
 	 * @param b
@@ -450,7 +462,7 @@ public class Vector implements Cloneable, Serializable {
 
 	/**
 	 * Vergleicht zwei Vektoren in ihrer Länge
-	 *
+	 * 
 	 * @param a
 	 *            Der eine Vektor
 	 * @param b
@@ -490,6 +502,12 @@ public class Vector implements Cloneable, Serializable {
 		}
 	}
 
+	/**
+	 * Konvertiert den Vektor anhand seiner Richtung in eine ShapeDirection um
+	 * 
+	 * @see Shape
+	 * @return Die ShapeDirection
+	 */
 	public byte toShapeDirection() {
 		if (x * y == 0) {
 			if (y == 0) {

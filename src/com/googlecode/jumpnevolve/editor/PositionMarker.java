@@ -6,7 +6,6 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.math.NextShape;
-import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.Parameter;
@@ -146,12 +145,11 @@ public class PositionMarker extends EditorArgument {
 					+ this.parent.getPosition().y));
 			break;
 		case MODUS_Y:
-			System.out.println(this.parent.getPosition().x + "|" + value);
 			this.changePosition(Vector.parseVector(this.parent.getPosition().x
 					+ "|" + value));
 			break;
 		default:
-			System.out.println("MODUS: " + this.modus);
+			System.out.println("UNKOWN-MODUS: " + this.modus);
 			this.changePosition(Vector.parseVector(value));
 			break;
 		}
