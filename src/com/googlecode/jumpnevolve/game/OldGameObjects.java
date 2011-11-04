@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.game;
 
-import com.googlecode.jumpnevolve.editor.Arguments;
+import com.googlecode.jumpnevolve.editor.old.Arguments;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cactus;
 import com.googlecode.jumpnevolve.game.objects.Cannon;

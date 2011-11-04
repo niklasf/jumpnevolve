@@ -2,14 +2,14 @@ package com.googlecode.jumpnevolve.game;
 
 import org.newdawn.slick.Color;
 
-import com.googlecode.jumpnevolve.editor.Arguments;
-import com.googlecode.jumpnevolve.editor2.Checkbox;
-import com.googlecode.jumpnevolve.editor2.EditorArgument;
-import com.googlecode.jumpnevolve.editor2.EditorArguments;
-import com.googlecode.jumpnevolve.editor2.NumberSelection;
-import com.googlecode.jumpnevolve.editor2.PositionMarker;
-import com.googlecode.jumpnevolve.editor2.RectangleDimension;
-import com.googlecode.jumpnevolve.editor2.RelativePositionMarker;
+import com.googlecode.jumpnevolve.editor.Checkbox;
+import com.googlecode.jumpnevolve.editor.EditorArgument;
+import com.googlecode.jumpnevolve.editor.EditorArguments;
+import com.googlecode.jumpnevolve.editor.NumberSelection;
+import com.googlecode.jumpnevolve.editor.PositionMarker;
+import com.googlecode.jumpnevolve.editor.RectangleDimension;
+import com.googlecode.jumpnevolve.editor.RelativePositionMarker;
+import com.googlecode.jumpnevolve.editor.old.Arguments;
 import com.googlecode.jumpnevolve.game.objects.AirFlow;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cactus;

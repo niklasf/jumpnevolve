@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.googlecode.jumpnevolve.editor2;
+package com.googlecode.jumpnevolve.editor;
 
 import java.util.ArrayList;
 

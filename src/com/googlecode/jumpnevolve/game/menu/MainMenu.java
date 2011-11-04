@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.IOException;
 
-import com.googlecode.jumpnevolve.editor2.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor2;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;

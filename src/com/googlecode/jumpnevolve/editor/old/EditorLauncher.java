@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.editor;
+package com.googlecode.jumpnevolve.editor.old;
 
 import javax.swing.UIManager;
 

@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.editor2;
+package com.googlecode.jumpnevolve.editor;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;

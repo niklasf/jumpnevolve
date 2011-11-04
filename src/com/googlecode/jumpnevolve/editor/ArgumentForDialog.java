@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.editor2;
+package com.googlecode.jumpnevolve.editor;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;

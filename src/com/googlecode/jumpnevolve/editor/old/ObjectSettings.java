@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.editor;
+package com.googlecode.jumpnevolve.editor.old;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

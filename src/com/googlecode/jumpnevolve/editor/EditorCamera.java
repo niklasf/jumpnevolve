@@ -1,28 +1,19 @@
-/**
- *
- */
 package com.googlecode.jumpnevolve.editor;
 
 import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.Vector;
 
-/**
- * Eine Kamera für den Editor, die sich ihre Position von ihrem Parent holt
- *
- * @author Erik Wagner
- *
- */
 public class EditorCamera implements Camera {
 
-	private final Editor parent;
+	private final Editor2 parent;
 
-	public EditorCamera(Editor parent) {
+	public EditorCamera(Editor2 parent) {
 		this.parent = parent;
 	}
 
 	@Override
 	public Vector getPosition() {
-		return parent.getCameraPosition();
+		return this.parent.getCameraPos();
 	}
 
 }

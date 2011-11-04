@@ -1,4 +1,4 @@
-package com.googlecode.jumpnevolve.editor;
+package com.googlecode.jumpnevolve.editor.old;
 
 import java.awt.Component;
 import java.awt.Dimension;
