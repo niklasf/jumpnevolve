@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.graphics.gui.objects;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
@@ -7,6 +9,7 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Timer;
+import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.math.PointLine;
@@ -27,6 +30,8 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 	private String content1 = "", content2 = "";
 	private boolean writeable;
 	private static Font font;
+
+	private ArrayList<ContentListener> listener = new ArrayList<ContentListener>();
 
 	public InterfaceTextField(InterfaceFunction function, boolean writeable) {
 		super(function);
@@ -103,33 +108,38 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 				if (!this.input_timer.isRunning()) {
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content1.length() >= 1) {
-						this.content1 = this.content1.substring(0,
-								this.content1.length() - 1);
+						this.changeContent(
+								this.content1.substring(0,
+										this.content1.length() - 1),
+								this.content2);
 					}
 				}
 			} else if (input.isKeyDown(Input.KEY_DELETE)) {
 				if (!this.input_timer.isRunning()) {
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content2.length() >= 1) {
-						this.content2 = this.content2.substring(1);
+						this.changeContent(this.content1,
+								this.content2.substring(1));
 					}
 				}
 			} else if (input.isKeyDown(Input.KEY_LEFT)) {
 				if (!this.input_timer.isRunning()) {
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content1.length() >= 1) {
-						this.content2 = this.content1.charAt(this.content1
-								.length() - 1) + this.content2;
-						this.content1 = this.content1.substring(0,
-								this.content1.length() - 1);
+						this.changeContent(
+								this.content1.substring(0,
+										this.content1.length() - 1),
+								this.content1.charAt(this.content1.length() - 1)
+										+ this.content2);
 					}
 				}
 			} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 				if (!this.input_timer.isRunning()) {
 					this.input_timer.start(DELAY_LENGTH);
 					if (this.content2.length() >= 1) {
-						this.content1 = this.content1 + this.content2.charAt(0);
-						this.content2 = this.content2.substring(1);
+						this.changeContent(
+								this.content1 + this.content2.charAt(0),
+								this.content2.substring(1));
 					}
 				}
 			} else {
@@ -142,15 +152,18 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 										|| input.isKeyDown(Input.KEY_RSHIFT)) {
 									keyName = keyName.toUpperCase();
 								}
-								this.content1 += keyName;
+								this.changeContent(this.content1 += keyName,
+										this.content2);
 								this.input_timer.start(DELAY_LENGTH);
 							} else {
 								if (keyName.equals("period")) {
-									this.content1 += ".";
+									this.changeContent(this.content1 += ".",
+											this.content2);
 									this.input_timer.start(DELAY_LENGTH);
 								}
 								if (keyName.equals("minus")) {
-									this.content1 += "-";
+									this.changeContent(this.content1 += "-",
+											this.content2);
 									this.input_timer.start(DELAY_LENGTH);
 								}
 							}
@@ -160,5 +173,18 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 			}
 		}
 		this.input_timer.poll(input, secounds);
+	}
+
+	private void changeContent(String c1, String c2) {
+		this.content1 = c1;
+		this.content2 = c2;
+		for (ContentListener cL : this.listener) {
+			cL.contentChanged(this);
+		}
+	}
+
+	@Override
+	public void addContentListener(ContentListener listener) {
+		this.listener.add(listener);
 	}
 }

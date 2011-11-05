@@ -1,5 +1,8 @@
 package com.googlecode.jumpnevolve.graphics.gui.objects;
 
+import java.util.ArrayList;
+
+import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.Informable;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
@@ -22,6 +25,8 @@ public class InterfaceNumberSelection extends GridContainer implements
 			InterfaceFunctions.INTERFACE_TEXTFIELD);
 	private int curNumber;
 	private final int min, max, step;
+
+	private ArrayList<ContentListener> listener = new ArrayList<ContentListener>();
 
 	public InterfaceNumberSelection(int min, int max, int start, int step) {
 		super(1, 3);
@@ -68,6 +73,9 @@ public class InterfaceNumberSelection extends GridContainer implements
 
 	private void updateTextField() {
 		this.textField.setContent("" + this.curNumber);
+		for (ContentListener cL : this.listener) {
+			cL.contentChanged(this);
+		}
 	}
 
 	private void transmitTextFieldContent(InterfaceObject object) {
@@ -130,5 +138,10 @@ public class InterfaceNumberSelection extends GridContainer implements
 	public void setContent(String newContent) {
 		this.curNumber = (int) (Float.parseFloat(newContent.trim()));
 		this.updateTextField();
+	}
+
+	@Override
+	public void addContentListener(ContentListener listener) {
+		this.listener.add(listener);
 	}
 }

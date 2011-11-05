@@ -15,4 +15,6 @@ public interface Contentable extends InterfacePart {
 	public String getContent();
 
 	public void setContent(String newContent);
+
+	public void addContentListener(ContentListener listener);
 }

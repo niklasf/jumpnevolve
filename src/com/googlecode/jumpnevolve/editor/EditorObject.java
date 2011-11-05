@@ -23,6 +23,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class EditorObject implements Pollable, Drawable {
 
 	private PositionMarker position;
+	private NewPositionMarker newPosition;
 	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
 	private AbstractObject object = null;
 	private String lastDataLine = "";
@@ -42,6 +43,8 @@ public class EditorObject implements Pollable, Drawable {
 		this.position = new PositionMarker(PositionMarker.MODUS_BOTH,
 				startPosition, Color.red);
 		this.position.setParent(this);
+		this.newPosition = new NewPositionMarker(parent, "Position",
+				NewPositionMarker.MODUS_BOTH, startPosition, Color.red);
 		if (GameObjects.getGameObject(className).hasActivatings) {
 			// TODO: Activatings sollten auch über den Editor direkt ausgewählt
 			// werden können --> Button, der gedrückt wird, danach legt
@@ -81,6 +84,10 @@ public class EditorObject implements Pollable, Drawable {
 
 	public Vector getPosition() {
 		return position.getPosition();
+	}
+
+	public NewEditorArgument getPositionMarker() {
+		return this.newPosition;
 	}
 
 	public boolean isMoving() {

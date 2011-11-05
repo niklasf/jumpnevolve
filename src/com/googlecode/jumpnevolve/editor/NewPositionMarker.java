@@ -1,11 +1,17 @@
 package com.googlecode.jumpnevolve.editor;
 
+import javax.swing.text.AbstractDocument.Content;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
+import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
+import com.googlecode.jumpnevolve.graphics.gui.Informable;
+import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceVectorTextfield;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
@@ -16,7 +22,8 @@ import com.googlecode.jumpnevolve.util.Parameter;
  * @author Erik Wagner
  * 
  */
-public class NewPositionMarker extends NewEditorArgument {
+public class NewPositionMarker extends NewEditorArgument implements
+		ContentListener {
 
 	/**
 	 * Konstante für eine Positionsmarkierung mit beiden Koordinaten
@@ -57,6 +64,7 @@ public class NewPositionMarker extends NewEditorArgument {
 		this.position = startPosition;
 		this.color = color;
 		this.dialogPart = new DialogPart(new InterfaceVectorTextfield(), name);
+		this.dialogPart.part.addContentListener(this);
 		this.createShape();
 	}
 
@@ -97,6 +105,11 @@ public class NewPositionMarker extends NewEditorArgument {
 
 	protected void updateDialogPart() {
 		this.dialogPart.part.setContent("" + this.position);
+	}
+
+	protected void updateFromDialogPart(String newContent) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -187,6 +200,11 @@ public class NewPositionMarker extends NewEditorArgument {
 	@Override
 	public DialogPart getDialogPart() {
 		return this.dialogPart;
+	}
+
+	@Override
+	public void contentChanged(Contentable object) {
+		this.updateFromDialogPart(object.getContent());
 	}
 
 }
