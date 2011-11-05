@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.editor.arguments.PositionMarker;
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
@@ -83,9 +84,8 @@ public class Editor2 extends Level implements Interfaceable {
 
 		this.parentMenu = parent;
 
-		this.playerPosition = new PositionMarker(PositionMarker.MODUS_BOTH,
-				Vector.ZERO, Color.cyan);
-		this.playerPosition.setEditor(this);
+		this.playerPosition = new PositionMarker(this, "Player",
+				PositionMarker.MODUS_BOTH, Vector.ZERO, Color.red);
 
 		// Settings-Dialog erstellen
 		this.settingsDialog = new Dialog();
@@ -103,6 +103,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 		// Player-Dialog erstellen
 		this.playerDialog = new Dialog();
+		this.playerDialog.addPart(this.playerPosition.getDialogPart());
 		this.playerDialog.addTextField("Startfigur");
 		this.playerDialog.addTextField("Verfügbare Figuren");
 
@@ -215,7 +216,6 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	private void addNewObject(EditorObject obj, GameObjects function) {
-		// function.editorArguments.initObject(obj);
 		function.args.initObject(obj);
 		this.objects.add(obj);
 		this.objectSettingsPlace.add(obj.settings, 0, 0);
@@ -530,8 +530,7 @@ public class Editor2 extends Level implements Interfaceable {
 					playerLineSplit[1]);
 			this.playerDialog.getContentable("Verfügbare Figuren").setContent(
 					playerLineSplit[2]);
-			this.playerPosition.changePosition(Vector
-					.parseVector(playerLineSplit[3]));
+			this.playerPosition.initialize(playerLineSplit[3]);
 
 		} else {
 			throw new IOException(

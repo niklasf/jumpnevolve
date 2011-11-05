@@ -6,6 +6,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.editor.arguments.EditorArgument;
+import com.googlecode.jumpnevolve.editor.arguments.PositionMarker;
 import com.googlecode.jumpnevolve.game.GameObjects;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
@@ -22,10 +24,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public class EditorObject implements Pollable, Drawable {
 
-	private PositionMarker position;
-	private NewPositionMarker newPosition;
-	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
-	private ArrayList<NewEditorArgument> newArguments = new ArrayList<NewEditorArgument>();
+	private PositionMarker newPosition;
+	private ArrayList<EditorArgument> newArguments = new ArrayList<EditorArgument>();
 	private AbstractObject object = null;
 	private String lastDataLine = "";
 
@@ -41,11 +41,8 @@ public class EditorObject implements Pollable, Drawable {
 		this.parent = parent;
 		this.objectName = objectName;
 		this.className = className;
-		this.position = new PositionMarker(PositionMarker.MODUS_BOTH,
-				startPosition, Color.red);
-		this.position.setParent(this);
-		this.newPosition = new NewPositionMarker(parent, "Position",
-				NewPositionMarker.MODUS_BOTH, startPosition, Color.red);
+		this.newPosition = new PositionMarker(parent, "Position",
+				PositionMarker.MODUS_BOTH, startPosition, Color.red);
 		this.settings.addPart(this.newPosition.getDialogPart());
 		if (GameObjects.getGameObject(className).hasActivatings) {
 			// TODO: Activatings sollten auch über den Editor direkt ausgewählt
@@ -60,24 +57,12 @@ public class EditorObject implements Pollable, Drawable {
 			this.settings.getContentable("Activatings").setContent(activatings);
 		}
 		String[] split = argumentString.split(",");
-		for (int i = 0; i < this.arguments.size(); i++) {
-			this.arguments.get(i).initialize(split[i]);
+		for (int i = 0; i < this.newArguments.size(); i++) {
+			this.newArguments.get(i).initialize(split[i]);
 		}
 	}
 
-	public void addArgument(EditorArgument toAdd) {
-		if (toAdd instanceof ArgumentForDialog) {
-			this.settings.addPart(((ArgumentForDialog) toAdd)
-					.getInterfacePart());
-		}
-		if (!this.arguments.contains(toAdd)) {
-			toAdd.setParent(this);
-			this.arguments.add(toAdd);
-		}
-	}
-
-	public void addNewArgument(NewEditorArgument toAdd) {
-		// TODO: Füllen
+	public void addNewArgument(EditorArgument toAdd) {
 		if (!this.newArguments.contains(toAdd)) {
 			this.newArguments.add(toAdd);
 			this.settings.addPart(toAdd.getDialogPart());
@@ -92,12 +77,8 @@ public class EditorObject implements Pollable, Drawable {
 		return this.newPosition.getPosition();
 	}
 
-	public NewEditorArgument getPositionMarker() {
+	public EditorArgument getPositionMarker() {
 		return this.newPosition;
-	}
-
-	public boolean isMoving() {
-		return this.position.isMoving();
 	}
 
 	public AbstractObject getObject() {
@@ -143,17 +124,6 @@ public class EditorObject implements Pollable, Drawable {
 		} else {
 			return "none";
 		}
-		// if (this.arguments.size() > 0) {
-		// String re = "";
-		// for (int i = 0; i < this.arguments.size() - 1; i++) {
-		// re += this.arguments.get(i).getArgumentPart() + ",";
-		// }
-		// re += this.arguments.get(this.arguments.size() - 1)
-		// .getArgumentPart();
-		// return re;
-		// } else {
-		// return "none";
-		// }
 	}
 
 	private String getActivatings() {
@@ -167,15 +137,10 @@ public class EditorObject implements Pollable, Drawable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void poll(Input input, float secounds) {
-		for (EditorArgument arg : (ArrayList<EditorArgument>) this.arguments
+		for (EditorArgument arg : (ArrayList<EditorArgument>) this.newArguments
 				.clone()) {
 			arg.poll(input, secounds);
 		}
-		for (NewEditorArgument arg : (ArrayList<NewEditorArgument>) this.newArguments
-				.clone()) {
-			arg.poll(input, secounds);
-		}
-		// this.position.poll(input, secounds);
 		this.settings.poll(input, secounds);
 		this.newPosition.poll(input, secounds);
 	}
@@ -183,7 +148,6 @@ public class EditorObject implements Pollable, Drawable {
 	@Override
 	public void draw(Graphics g) {
 		this.drawObject(g);
-		//this.settings.draw(g);
 	}
 
 	private void drawObject(Graphics g) {
@@ -206,15 +170,10 @@ public class EditorObject implements Pollable, Drawable {
 		// TODO: Auswahlmöglichkeit, wann der Name angezeigt werden soll (immer
 		// oder nur zusammen mit dem Interface)
 		GraphicUtils.drawString(g, this.getPosition(), this.objectName);
-		for (EditorArgument arg : (ArrayList<EditorArgument>) this.arguments
+		for (EditorArgument arg : (ArrayList<EditorArgument>) this.newArguments
 				.clone()) {
 			arg.draw(g);
 		}
-		for (NewEditorArgument arg : (ArrayList<NewEditorArgument>) this.newArguments
-				.clone()) {
-			arg.draw(g);
-		}
-		// this.position.draw(g);
 		this.newPosition.draw(g);
 	}
 }
