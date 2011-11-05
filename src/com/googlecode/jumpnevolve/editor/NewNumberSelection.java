@@ -15,8 +15,7 @@ public class NewNumberSelection extends NewArgumentForDialog {
 	}
 
 	@Override
-	public NewEditorArgument getClone(Editor2 editor,
-			NewEditorArgument[] parentArgs) {
+	public NewEditorArgument getClone(Editor2 editor) {
 		return new NewNumberSelection(editor, this.name, Integer.parseInt(this
 				.getArgumentPart()), this.min, this.max, this.step);
 	}

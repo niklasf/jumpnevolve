@@ -1,0 +1,10 @@
+Leveldimensionen_1000_1000_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_(63.0| 106.0)
+Ground_(139.0| 159.0)_0001-Ground_none_(94.0| -18.000004)
+Elevator_(406.0| 214.0)_0002-Elevator_none_(158.0| 13.999993),324.0,137.0
+Ground_(731.0| 333.0)_0005-Ground_none_(143.0| 11.999993)
+SavePoint_(216.0| 119.0)_0007-SavePoint_none_none
+Goal_(835.0| 291.0)_0008-Goal_none_none
+Cannon_(930.0| 180.0)_0011-Cannon_none_true,(-564.0| -104.0)
+Ground_(947.0| 216.0)_0013-Ground_none_(46.0| 11.999998)

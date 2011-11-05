@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.editor;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -31,42 +32,17 @@ public class NewRelativePositionMarker extends NewPositionMarker {
 		this.changePosition(this.getPosition().add(toAdd));
 	}
 
-	protected void updateDialogPart() {
-		switch (this.outputModus) {
-		case OUTPUT_MODUS_RELATIVE:
-			this.dialogPart.part.setContent(""
-					+ this.position.sub(this.getParentPosition()));
-			break;
-		case OUTPUT_MODUS_ABSOLUT:
-		default:
-			this.dialogPart.part.setContent("" + this.position);
-			break;
-		}
-	}
-
 	@Override
 	public void poll(Input input, float secounds) {
+		super.poll(input, secounds);
 		Vector parentPosition = this.getParentPosition();
 		Vector diff = parentPosition.sub(this.lastParentPosition);
 		this.addToPosition(diff);
-		if (!diff.equals(Vector.ZERO)) {
-			this.wasInCircle = false;
-		}
-		super.poll(input, secounds);
 		this.lastParentPosition = parentPosition;
 	}
 
 	@Override
-	public NewEditorArgument getClone(Editor2 editor,
-			NewEditorArgument parentArgs[]) {
-		if (parentArgs.length > 0) {
-			if (parentArgs[0] instanceof NewPositionMarker) {
-				return new NewRelativePositionMarker(editor,
-						(NewPositionMarker) parentArgs[0],
-						this.getDialogPart().name, this.modus,
-						this.outputModus, this.position, this.color);
-			}
-		}
+	public NewEditorArgument getClone(Editor2 editor) {
 		return new NewRelativePositionMarker(editor, this.getParent(),
 				this.getDialogPart().name, this.modus, this.outputModus,
 				this.position, this.color);
@@ -122,5 +98,12 @@ public class NewRelativePositionMarker extends NewPositionMarker {
 			this.addToPosition(this.getParentPosition());
 		}
 		this.lastParentPosition = this.getParentPosition();
+	}
+
+	@Override
+	public String toString() {
+		// Paketnamen abtrennen
+		String superString = super.toString();
+		return superString.substring(superString.lastIndexOf('.') + 1);
 	}
 }

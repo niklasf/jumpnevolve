@@ -15,25 +15,40 @@ public class NewEditorArguments {
 	}
 
 	public void initObject(EditorObject obj) {
+		ArrayList<NewEditorArgumentAllocation> clonedArgs = new ArrayList<NewEditorArgumentAllocation>();
+
 		for (NewEditorArgumentAllocation allo : this.args) {
-			obj.addNewArgument(allo.arg.getClone(obj.parent,
-					this.getArguments(allo.references, obj)));
+			clonedArgs.add(new NewEditorArgumentAllocation(allo.arg
+					.getClone(obj.parent), allo.references));
+		}
+		for (NewEditorArgumentAllocation allo : clonedArgs) {
+			allo.arg.setArguments(this.getArguments(allo.references, obj,
+					clonedArgs));
+		}
+		for (NewEditorArgumentAllocation allo : clonedArgs) {
+			obj.addNewArgument(allo.arg);
 		}
 	}
 
-	private NewEditorArgument[] getArguments(int[] references, EditorObject obj) {
-		NewEditorArgument[] re = new NewEditorArgument[references.length];
-		for (int i = 0; i < references.length; i++) {
-			re[i] = this.getArguments(i, obj);
+	private NewEditorArgument[] getArguments(int[] references,
+			EditorObject obj, ArrayList<NewEditorArgumentAllocation> args) {
+		if (references != null) {
+			NewEditorArgument[] re = new NewEditorArgument[references.length];
+			for (int i = 0; i < references.length; i++) {
+				re[i] = this.getArguments(references[i], obj, args);
+			}
+			return re;
+		} else {
+			return new NewEditorArgument[0];
 		}
-		return re;
 	}
 
-	private NewEditorArgument getArguments(int i, EditorObject obj) {
+	private NewEditorArgument getArguments(int i, EditorObject obj,
+			ArrayList<NewEditorArgumentAllocation> args) {
 		if (i < 0) {
 			return obj.getPositionMarker();
 		} else {
-			return this.args.get(Math.min(i, this.args.size() - 1)).arg;
+			return args.get(Math.min(i, args.size() - 1)).arg;
 		}
 	}
 }

@@ -25,6 +25,7 @@ public class EditorObject implements Pollable, Drawable {
 	private PositionMarker position;
 	private NewPositionMarker newPosition;
 	private ArrayList<EditorArgument> arguments = new ArrayList<EditorArgument>();
+	private ArrayList<NewEditorArgument> newArguments = new ArrayList<NewEditorArgument>();
 	private AbstractObject object = null;
 	private String lastDataLine = "";
 
@@ -45,6 +46,7 @@ public class EditorObject implements Pollable, Drawable {
 		this.position.setParent(this);
 		this.newPosition = new NewPositionMarker(parent, "Position",
 				NewPositionMarker.MODUS_BOTH, startPosition, Color.red);
+		this.settings.addPart(this.newPosition.getDialogPart());
 		if (GameObjects.getGameObject(className).hasActivatings) {
 			// TODO: Activatings sollten auch über den Editor direkt ausgewählt
 			// werden können --> Button, der gedrückt wird, danach legt
@@ -76,6 +78,10 @@ public class EditorObject implements Pollable, Drawable {
 
 	public void addNewArgument(NewEditorArgument toAdd) {
 		// TODO: Füllen
+		if (!this.newArguments.contains(toAdd)) {
+			this.newArguments.add(toAdd);
+			this.settings.addPart(toAdd.getDialogPart());
+		}
 	}
 
 	public boolean isPointIn(Vector point) {
@@ -83,7 +89,7 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	public Vector getPosition() {
-		return position.getPosition();
+		return this.newPosition.getPosition();
 	}
 
 	public NewEditorArgument getPositionMarker() {
@@ -126,17 +132,28 @@ public class EditorObject implements Pollable, Drawable {
 	}
 
 	private String getArgumentString() {
-		if (this.arguments.size() > 0) {
+		if (this.newArguments.size() > 0) {
 			String re = "";
-			for (int i = 0; i < this.arguments.size() - 1; i++) {
-				re += this.arguments.get(i).getArgumentPart() + ",";
+			for (int i = 0; i < this.newArguments.size() - 1; i++) {
+				re += this.newArguments.get(i).getArgumentPart() + ",";
 			}
-			re += this.arguments.get(this.arguments.size() - 1)
+			re += this.newArguments.get(this.newArguments.size() - 1)
 					.getArgumentPart();
 			return re;
 		} else {
 			return "none";
 		}
+		// if (this.arguments.size() > 0) {
+		// String re = "";
+		// for (int i = 0; i < this.arguments.size() - 1; i++) {
+		// re += this.arguments.get(i).getArgumentPart() + ",";
+		// }
+		// re += this.arguments.get(this.arguments.size() - 1)
+		// .getArgumentPart();
+		// return re;
+		// } else {
+		// return "none";
+		// }
 	}
 
 	private String getActivatings() {
@@ -154,14 +171,19 @@ public class EditorObject implements Pollable, Drawable {
 				.clone()) {
 			arg.poll(input, secounds);
 		}
-		this.position.poll(input, secounds);
+		for (NewEditorArgument arg : (ArrayList<NewEditorArgument>) this.newArguments
+				.clone()) {
+			arg.poll(input, secounds);
+		}
+		// this.position.poll(input, secounds);
 		this.settings.poll(input, secounds);
+		this.newPosition.poll(input, secounds);
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		this.drawObject(g);
-		this.settings.draw(g);
+		//this.settings.draw(g);
 	}
 
 	private void drawObject(Graphics g) {
@@ -188,6 +210,11 @@ public class EditorObject implements Pollable, Drawable {
 				.clone()) {
 			arg.draw(g);
 		}
-		this.position.draw(g);
+		for (NewEditorArgument arg : (ArrayList<NewEditorArgument>) this.newArguments
+				.clone()) {
+			arg.draw(g);
+		}
+		// this.position.draw(g);
+		this.newPosition.draw(g);
 	}
 }

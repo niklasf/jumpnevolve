@@ -27,25 +27,24 @@ public class AirFlow extends ObjectTemplate implements Activable {
 	private ParticleEffect effect;
 	private boolean active;
 
-	public AirFlow(World world, Vector position, float width, float length,
-			Vector direction, Vector force, boolean active) {
-		super(world, ShapeFactory.createRectangle(position, width, length,
+	public AirFlow(World world, Vector position, Vector dimension,
+			Vector direction, float force, boolean active) {
+		super(world, ShapeFactory.createRectangle(position, dimension,
 				direction.clockWiseAng()), 0.0f);
 		this.active = active;
-		this.force = force;
+		this.force = direction.getDirection().mul(force);
 
 		// Darstellungseffekt erstellen
-		this.effect = new ParticleEffect(
-				position.sub(direction.div(2.0f)),
-				new AirFlowEmitterFactory(direction, length, width, force.abs()));
+		this.effect = new ParticleEffect(position.sub(direction.div(2.0f)),
+				new AirFlowEmitterFactory(direction, dimension.x * 2,
+						dimension.y * 2, force));
 	}
 
 	public AirFlow(World world, Vector position, String arguments) {
-		this(world, position, Float.parseFloat(arguments.split(",")[0]), Float
-				.parseFloat(arguments.split(",")[1]), Vector
-				.parseVector(arguments.split(",")[2]), Vector
-				.parseVector(arguments.split(",")[3]), Boolean
-				.parseBoolean(arguments.split(",")[4]));
+		this(world, position, Vector.parseVector(arguments.split(",")[0]),
+				Vector.parseVector(arguments.split(",")[1]), Float
+						.parseFloat(arguments.split(",")[2]), Boolean
+						.parseBoolean(arguments.split(",")[3]));
 	}
 
 	@Override
@@ -91,8 +90,8 @@ public class AirFlow extends ObjectTemplate implements Activable {
 		super.poll(input, secounds);
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		this.effect.draw(g);
-	}
+	// @Override
+	// public void draw(Graphics g) {
+	// this.effect.draw(g);
+	// }
 }

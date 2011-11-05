@@ -26,7 +26,10 @@ class NextPolygon implements ConvexShape {
 	 *
 	 */
 	public NextPolygon(Vector center, ArrayList<Vector> relativePoints) {
-		this(center, (Vector[]) relativePoints.toArray());
+		for (Vector p : relativePoints) {
+			this.addRelativePoint(p);
+		}
+		this.center = center;
 	}
 
 	public NextPolygon(Vector center, Vector[] relativePoints) {

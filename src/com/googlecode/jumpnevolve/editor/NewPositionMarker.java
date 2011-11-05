@@ -5,6 +5,7 @@ import javax.swing.text.AbstractDocument.Content;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
@@ -53,6 +54,8 @@ public class NewPositionMarker extends NewEditorArgument implements
 	private NewPositionMarker parent;
 
 	protected final DialogPart dialogPart;
+
+	private static NewPositionMarker selected = null;
 
 	/**
 	 * @param editor
@@ -104,26 +107,33 @@ public class NewPositionMarker extends NewEditorArgument implements
 	}
 
 	protected void updateDialogPart() {
-		this.dialogPart.part.setContent("" + this.position);
+		this.dialogPart.part.setContent(this.getArgumentPart());
 	}
 
 	protected void updateFromDialogPart(String newContent) {
-		// TODO Auto-generated method stub
-
+		try {
+			this.initialize(newContent);
+		} catch (Exception e) {
+			Log.warn("Eingegebner Wert ist kein Vektor: " + newContent);
+		}
 	}
 
 	@Override
 	public void poll(Input input, float secounds) {
-		Vector mousePos = this.getEditor().translateMousePos(input.getMouseX(),
-				input.getMouseY());
-		if (this.wasInCircle) {
-			this.changePosition(mousePos);
-		}
-		if (this.shape.isPointIn(mousePos)
-				&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			this.wasInCircle = true;
-		} else {
-			this.wasInCircle = false;
+		if (selected == this || selected == null) {
+			Vector mousePos = this.getEditor().translateMousePos(
+					input.getMouseX(), input.getMouseY());
+			if (this.wasInCircle) {
+				this.changePosition(mousePos);
+			}
+			if (this.shape.isPointIn(mousePos)
+					&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				this.wasInCircle = true;
+				selected = this;
+			} else {
+				this.wasInCircle = false;
+				selected = null;
+			}
 		}
 	}
 
@@ -184,16 +194,10 @@ public class NewPositionMarker extends NewEditorArgument implements
 	}
 
 	@Override
-	public NewEditorArgument getClone(Editor2 editor,
-			NewEditorArgument parentArgs[]) {
+	public NewEditorArgument getClone(Editor2 editor) {
 		NewPositionMarker re = new NewPositionMarker(editor,
 				this.getDialogPart().name, this.modus, this.position,
 				this.color);
-		if (parentArgs.length > 0) {
-			if (parentArgs[0] instanceof NewPositionMarker) {
-				re.setParent((NewPositionMarker) parentArgs[0]);
-			}
-		}
 		return re;
 	}
 
@@ -207,4 +211,19 @@ public class NewPositionMarker extends NewEditorArgument implements
 		this.updateFromDialogPart(object.getContent());
 	}
 
+	@Override
+	public void setArguments(NewEditorArgument[] parentArgs) {
+		if (parentArgs.length > 0) {
+			if (parentArgs[0] instanceof NewPositionMarker) {
+				this.setParent((NewPositionMarker) parentArgs[0]);
+			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		// Paketnamen abtrennen
+		String superString = super.toString();
+		return superString.substring(superString.lastIndexOf('.') + 1);
+	}
 }

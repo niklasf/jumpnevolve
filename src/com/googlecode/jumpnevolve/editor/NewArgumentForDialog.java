@@ -42,4 +42,9 @@ public abstract class NewArgumentForDialog extends NewEditorArgument {
 		return new DialogPart(this.part, this.name);
 	}
 
+	@Override
+	public void setArguments(NewEditorArgument[] parentArgs) {
+		// Nichts tun, da keine Argumente benötigt werden
+	}
+
 }

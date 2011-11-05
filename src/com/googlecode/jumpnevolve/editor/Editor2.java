@@ -215,7 +215,8 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	private void addNewObject(EditorObject obj, GameObjects function) {
-		function.editorArguments.initObject(obj);
+		// function.editorArguments.initObject(obj);
+		function.args.initObject(obj);
 		this.objects.add(obj);
 		this.objectSettingsPlace.add(obj.settings, 0, 0);
 		this.selected = obj;

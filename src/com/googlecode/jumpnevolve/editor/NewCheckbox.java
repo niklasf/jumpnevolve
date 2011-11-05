@@ -11,8 +11,7 @@ public class NewCheckbox extends NewArgumentForDialog {
 	}
 
 	@Override
-	public NewEditorArgument getClone(Editor2 editor,
-			NewEditorArgument[] parentArgs) {
+	public NewEditorArgument getClone(Editor2 editor) {
 		return new NewCheckbox(editor, this.name, Boolean.parseBoolean(this
 				.getArgumentPart()));
 	}

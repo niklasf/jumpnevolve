@@ -17,9 +17,10 @@ public abstract class NewEditorArgument implements Pollable, Drawable {
 
 	public abstract void initialize(String value);
 
-	public abstract NewEditorArgument getClone(Editor2 editor,
-			NewEditorArgument parentArgs[]);
-	
+	public abstract NewEditorArgument getClone(Editor2 editor);
+
+	public abstract void setArguments(NewEditorArgument parentArgs[]);
+
 	public abstract DialogPart getDialogPart();
 
 	public NewEditorArgument(Editor2 editor) {

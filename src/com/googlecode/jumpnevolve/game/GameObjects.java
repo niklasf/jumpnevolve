@@ -5,6 +5,12 @@ import org.newdawn.slick.Color;
 import com.googlecode.jumpnevolve.editor.Checkbox;
 import com.googlecode.jumpnevolve.editor.EditorArgument;
 import com.googlecode.jumpnevolve.editor.EditorArguments;
+import com.googlecode.jumpnevolve.editor.NewCheckbox;
+import com.googlecode.jumpnevolve.editor.NewEditorArgumentAllocation;
+import com.googlecode.jumpnevolve.editor.NewEditorArguments;
+import com.googlecode.jumpnevolve.editor.NewNumberSelection;
+import com.googlecode.jumpnevolve.editor.NewRectangleDimension;
+import com.googlecode.jumpnevolve.editor.NewRelativePositionMarker;
 import com.googlecode.jumpnevolve.editor.NumberSelection;
 import com.googlecode.jumpnevolve.editor.PositionMarker;
 import com.googlecode.jumpnevolve.editor.RectangleDimension;
@@ -54,17 +60,45 @@ public enum GameObjects implements InterfaceFunction {
 	GREEN_SLIME_WORM(GreenSlimeWorm.class,
 			"object-pictures/green-slime-worm.png", false),
 
-	BUTTON(Button.class, "textures/aluminium.png", true, new EditorArguments(
-			new EditorArgument[] { new NumberSelection("Active Time", 1, 100,
-					10, 1) })),
+	BUTTON(
+			Button.class,
+			"textures/aluminium.png",
+			true,
+			new EditorArguments(new EditorArgument[] { new NumberSelection(
+					"Active Time", 1, 100, 10, 1) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] { new NewEditorArgumentAllocation(
+							new NewNumberSelection(null, "Active Time", 10, 1,
+									100, 1), null) })),
 
-	DOOR(Door.class, "textures/wood.png", false, new EditorArguments(
-			new EditorArgument[] { new RectangleDimension(30, 10) })),
+	DOOR(
+			Door.class,
+			"textures/wood.png",
+			false,
+			new EditorArguments(new EditorArgument[] { new RectangleDimension(
+					30, 10) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] { new NewEditorArgumentAllocation(
+							new NewRectangleDimension(null, null, "Maße",
+									new Vector(30, 10), Color.blue),
+							new int[] { -1 }) })),
 
-	GROUND(Ground.class, "textures/stone.png", false, new EditorArguments(
-			new EditorArgument[] { new RectangleDimension(30, 10) })),
+	GROUND(
+			Ground.class,
+			"textures/stone.png",
+			false,
+			new EditorArguments(new EditorArgument[] { new RectangleDimension(
+					30, 10) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] { new NewEditorArgumentAllocation(
+							new NewRectangleDimension(null, null, "Maße",
+									new Vector(30, 10), Color.blue),
+							new int[] { -1 }) })),
 
-	ELEVATOR(Elevator.class, "textures/aluminium.png", false,
+	ELEVATOR(
+			Elevator.class,
+			"textures/aluminium.png",
+			false,
 			new EditorArguments(new EditorArgument[] {
 					new RectangleDimension(30, 10),
 					new RelativePositionMarker(PositionMarker.MODUS_Y,
@@ -72,9 +106,36 @@ public enum GameObjects implements InterfaceFunction {
 							Vector.UP.mul(10), Color.green),
 					new RelativePositionMarker(PositionMarker.MODUS_Y,
 							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.DOWN.mul(10), Color.green) })),
+							Vector.DOWN.mul(10), Color.green) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] {
+							new NewEditorArgumentAllocation(
+									new NewRectangleDimension(null, null,
+											"Maße", new Vector(30, 10),
+											Color.blue), new int[] { -1 }),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Grenze 1",
+											NewRelativePositionMarker.MODUS_Y,
+											NewRelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
+											Vector.DOWN.mul(10), Color.green),
+									new int[] { -1 }),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Grenze 2",
+											NewRelativePositionMarker.MODUS_Y,
+											NewRelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
+											Vector.UP.mul(10), Color.green),
+									new int[] { -1 }) })),
 
-	SLIDING_PLATTFORM(SlidingPlattform.class, "textures/aluminium.png", false,
+	SLIDING_PLATTFORM(
+			SlidingPlattform.class,
+			"textures/aluminium.png",
+			false,
 			new EditorArguments(new EditorArgument[] {
 					new RectangleDimension(30, 10),
 					new RelativePositionMarker(PositionMarker.MODUS_X,
@@ -82,48 +143,121 @@ public enum GameObjects implements InterfaceFunction {
 							Vector.RIGHT.mul(30), Color.green),
 					new RelativePositionMarker(PositionMarker.MODUS_X,
 							RelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
-							Vector.LEFT.mul(30), Color.green) })),
+							Vector.LEFT.mul(30), Color.green) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] {
+							new NewEditorArgumentAllocation(
+									new NewRectangleDimension(null, null,
+											"Maße", new Vector(30, 10),
+											Color.blue), new int[] { -1 }),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Grenze 1",
+											NewRelativePositionMarker.MODUS_X,
+											NewRelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
+											Vector.RIGHT.mul(30), Color.green),
+									new int[] { -1 }),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Grenze 2",
+											NewRelativePositionMarker.MODUS_X,
+											NewRelativePositionMarker.OUTPUT_MODUS_ABSOLUT,
+											Vector.LEFT.mul(30), Color.green),
+									new int[] { -1 }) })),
 
 	FLUID(Fluid.class, "textures/water.png", false, new EditorArguments(
 			new EditorArgument[] { new RectangleDimension(30, 10),
-					new NumberSelection("MaximumVelocity", 1, 100, 20, 1) })),
+					new NumberSelection("MaximumVelocity", 1, 100, 20, 1) }),
+			new NewEditorArguments(new NewEditorArgumentAllocation[] {
+					new NewEditorArgumentAllocation(
+							new NewRectangleDimension(null, null, "Maße",
+									new Vector(30, 10), Color.blue),
+							new int[] { -1 }),
+					new NewEditorArgumentAllocation(new NewNumberSelection(
+							null, "MaximumVelocity", 20, 1, 100, 1), null) })),
 
-	CANNON(Cannon.class, "object-pictures/cannon.png", false,
+	CANNON(
+			Cannon.class,
+			"object-pictures/cannon.png",
+			false,
 			new EditorArguments(new EditorArgument[] {
 					new Checkbox("Activated", false),
 					new RelativePositionMarker(PositionMarker.MODUS_BOTH,
 							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-							Vector.UP_RIGHT, Color.yellow) })),
+							Vector.UP_RIGHT, Color.yellow) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] {
+							new NewEditorArgumentAllocation(new NewCheckbox(
+									null, "Activated", false), null),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Schussrichtung",
+											NewRelativePositionMarker.MODUS_BOTH,
+											NewRelativePositionMarker.OUTPUT_MODUS_RELATIVE,
+											Vector.UP_RIGHT, Color.yellow),
+									new int[] { -1 }) })),
 
 	SAVE_POINT(SavePoint.class, "object-pictures/savePoint-active.png", false),
 
-	GOAL(Goal.class, "object-pictures/goal.png", false);
+	GOAL(Goal.class, "object-pictures/goal.png", false),
 
 	// TODO: Unfertig
-	// AIRFLOW(AirFlow.class, "textures/water.png", false,
-	// new EditorArguments(
-	// new EditorArgument[] { new RelativePositionMarker(
-	// PositionMarker.MODUS_X,
-	// RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-	// new Vector(30, 0), Color.cyan) }));
+	AIRFLOW(
+			AirFlow.class,
+			"textures/water.png",
+			false,
+			new EditorArguments(
+					new EditorArgument[] { new RelativePositionMarker(
+							PositionMarker.MODUS_X,
+							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
+							new Vector(30, 0), Color.cyan) }),
+			new NewEditorArguments(
+					new NewEditorArgumentAllocation[] {
+							new NewEditorArgumentAllocation(
+									new NewRectangleDimension(null, null,
+											"Maße", new Vector(30, 10),
+											Color.blue), new int[] { -1, 1 }),
+							new NewEditorArgumentAllocation(
+									new NewRelativePositionMarker(
+											null,
+											null,
+											"Direction",
+											NewRelativePositionMarker.MODUS_BOTH,
+											NewRelativePositionMarker.OUTPUT_MODUS_RELATIVE,
+											Vector.RIGHT.mul(30), Color.yellow),
+									new int[] { -1 }),
+							new NewEditorArgumentAllocation(
+									new NewNumberSelection(null, "Force", 10,
+											1, 100, 1), null),
+							new NewEditorArgumentAllocation(new NewCheckbox(
+									null, "Activated", false), null), }));
 
 	public final String className;
 	public final String editorSkinFileName;
 	public final boolean hasActivatings;
 	public final EditorArguments editorArguments;
+	public final NewEditorArguments args;
 
 	private GameObjects(Class<?> thisClass, String editorSkinFileName,
-			boolean hasActivatings, EditorArguments requiredArguments) {
+			boolean hasActivatings, EditorArguments requiredArguments,
+			NewEditorArguments args) {
 		this.className = formatClassName(thisClass.toString());
 		this.editorArguments = requiredArguments;
 		this.editorSkinFileName = editorSkinFileName;
 		this.hasActivatings = hasActivatings;
+		this.args = args;
 	}
 
 	private GameObjects(Class thisClass, String editorSkinFileName,
 			boolean hasActivatings) {
 		this(thisClass, editorSkinFileName, hasActivatings,
-				new EditorArguments(null));
+				new EditorArguments(null), new NewEditorArguments(null));
 	}
 
 	private static String formatClassName(String className) {
@@ -174,6 +308,8 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new SavePoint(level, position, level.getPlayer());
 		} else if (className.equals(GOAL.className)) {
 			newObject = new Goal(level, position);
+		} else if (className.equals(AIRFLOW.className)) {
+			newObject = new AirFlow(level, position, arguments);
 		}
 		return newObject;
 	}
