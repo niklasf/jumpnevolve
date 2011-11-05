@@ -1,8 +1,8 @@
 Leveldimensionen_1000_1000_1
 Leveleinstellungen_1,1_1000_default
 Player_RollingBall_RollingBall,JumpingCross_(36.0| 505.0)
-Ground_(348.0| 581.0)_0001-Ground_none_343|12
-Cannon_(413.0| 536.0)_0002-Cannon_none_false,(-49.0| -48.0)
+Ground_(348.0| 581.0)_0001-Ground_none_(343.0| 12.0)
+Cannon_(413.0| 536.0)_0002-Cannon_none_false,(-73.0| -58.0)
 SavePoint_(351.0| 541.0)_0004-SavePoint_none_none
 Goal_(668.0| 553.0)_0005-Goal_none_none
 Button_(173.0| 533.0)_0006-Button_0002-cannon_10
