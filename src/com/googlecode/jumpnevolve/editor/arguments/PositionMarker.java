@@ -24,8 +24,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
  * @author Erik Wagner
  * 
  */
-public class PositionMarker extends EditorArgument implements
-		ContentListener {
+public class PositionMarker extends EditorArgument implements ContentListener {
 
 	/**
 	 * Konstante für eine Positionsmarkierung mit beiden Koordinaten
@@ -108,14 +107,47 @@ public class PositionMarker extends EditorArgument implements
 	}
 
 	protected void updateDialogPart() {
-		this.dialogPart.part.setContent(this.getArgumentPart());
+		this.dialogPart.part.setContent(this.formatForDialog(this
+				.getArgumentPart()));
+	}
+
+	private String formatForDialog(String argumentPart) {
+		switch (this.modus) {
+		case MODUS_BOTH:
+			return argumentPart;
+		case MODUS_X:
+			return argumentPart + "|0";
+		case MODUS_Y:
+			return "0|" + argumentPart;
+		default:
+			return argumentPart;
+		}
 	}
 
 	protected void updateFromDialogPart(String newContent) {
 		try {
-			this.initialize(newContent);
+			this.initialize(this.formatForInitialize(newContent));
 		} catch (Exception e) {
 			Log.warn("Eingegebner Wert ist kein Vektor: " + newContent);
+		}
+	}
+
+	private String formatForInitialize(String newContent) {
+		String[] split = newContent.replace('(', ' ').replace(')', ' ').trim()
+				.split("|");
+		switch (this.modus) {
+		case MODUS_BOTH:
+			return newContent;
+		case MODUS_X:
+			return split[0];
+		case MODUS_Y:
+			if (split.length > 1) {
+				return split[1];
+			} else {
+				return split[0];
+			}
+		default:
+			return newContent;
 		}
 	}
 
@@ -127,7 +159,7 @@ public class PositionMarker extends EditorArgument implements
 			if (this.wasInCircle) {
 				this.changePosition(mousePos);
 			}
-			if (this.shape.isPointIn(mousePos)
+			if ((this.shape.isPointIn(mousePos) || this.wasInCircle)
 					&& input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
 				this.wasInCircle = true;
 				selected = this;
@@ -226,5 +258,9 @@ public class PositionMarker extends EditorArgument implements
 		// Paketnamen abtrennen
 		String superString = super.toString();
 		return superString.substring(superString.lastIndexOf('.') + 1);
+	}
+
+	public static boolean isAnyMarkerSelected() {
+		return selected != null;
 	}
 }

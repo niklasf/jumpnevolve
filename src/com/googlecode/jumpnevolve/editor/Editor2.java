@@ -19,6 +19,7 @@ import com.googlecode.jumpnevolve.game.menu.MainMenu;
 import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
+import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
@@ -46,6 +47,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private static final int GUI_MODE_OTHER = 2;
 	private static final int GUI_MODE_DIALOG = 3;
 	private static final String DEFAULT_LEVEL = Parameter.EDITOR_EDITOR_DEFAULTLEVEL;
+	private static final float OBJECT_DELAY = Parameter.EDITOR_EDITOR_DELAY;
 
 	private ArrayList<EditorObject> objects = new ArrayList<EditorObject>();
 	private EditorObject selected;
@@ -62,6 +64,7 @@ public class Editor2 extends Level implements Interfaceable {
 	private GridContainer objectSettingsPlace = new GridContainer(1, 1);
 	private PositionMarker playerPosition;
 	private MainMenu parentMenu;
+	private Timer newObjectTimer = new Timer(OBJECT_DELAY);
 
 	/**
 	 * Erzeugt einen Editor mit einem bestimmten Level als Starteinstellung
@@ -294,20 +297,26 @@ public class Editor2 extends Level implements Interfaceable {
 	public void poll(Input input, float secounds) {
 		this.guiAction = false;
 		this.gui.poll(input, secounds);
+		if (this.selected != null) {
+			this.selected.poll(input, secounds);
+		}
+		if (!this.guiAction) {
+			this.guiAction = PositionMarker.isAnyMarkerSelected();
+		}
 		if (!Dialog.isAnyDialogActive()) {
 			Vector mousePos = new Vector(input.getMouseX(), input.getMouseY());
 			Vector translatedMousePos = this.translateMousePos(mousePos);
 			if (!guiAction) {
 				if (this.lastGuiMode == GUI_MODE_OBJECT
-						&& this.lastFunction instanceof GameObjects) {
+						&& this.lastFunction instanceof GameObjects
+						&& !this.newObjectTimer.isRunning()) {
 					this.addNewObject((GameObjects) this.lastFunction,
 							translatedMousePos);
+					this.newObjectTimer.start(OBJECT_DELAY);
 				}
 				this.lastGuiMode = GUI_MODE_NONE;
 			}
-			if (this.selected != null) {
-				this.selected.poll(input, secounds);
-			} else {
+			if (this.selected == null) {
 				this.playerPosition.poll(input, secounds);
 				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
 						&& !this.playerPosition.isMoving()) {
@@ -352,6 +361,7 @@ public class Editor2 extends Level implements Interfaceable {
 				this.deleteObject(this.selected);
 			}
 		}
+		this.newObjectTimer.poll(input, secounds);
 	}
 
 	@SuppressWarnings("unchecked")
