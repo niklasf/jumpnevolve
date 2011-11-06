@@ -155,7 +155,7 @@ public class EditorObject implements Pollable, Drawable {
 		this.getObject();
 
 		// Objekt zeichnen
-		this.object.draw(g);
+		this.object.drawForEditor(g);
 
 		// Bei einer Objektgruppe auch alle anderen Objekte zeichnen
 		if (this.object instanceof ObjectGroup) {

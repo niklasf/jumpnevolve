@@ -667,4 +667,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	public static void test() {
 
 	}
+
+	public void drawForEditor(Graphics g) {
+		this.draw(g);
+	}
 }

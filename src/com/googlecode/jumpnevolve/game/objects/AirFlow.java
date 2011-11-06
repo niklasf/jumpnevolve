@@ -11,7 +11,6 @@ import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
-import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -35,9 +34,9 @@ public class AirFlow extends ObjectTemplate implements Activable {
 		this.force = direction.getDirection().mul(force);
 
 		// Darstellungseffekt erstellen
-		this.effect = new ParticleEffect(position.sub(direction.div(2.0f)),
-				new AirFlowEmitterFactory(direction, dimension.x * 2,
-						dimension.y * 2, force));
+		this.effect = new ParticleEffect(position.sub(direction
+				.mul(dimension.x)), new AirFlowEmitterFactory(direction,
+				dimension.x * 2, dimension.y * 2, force));
 	}
 
 	public AirFlow(World world, Vector position, String arguments) {
@@ -90,8 +89,13 @@ public class AirFlow extends ObjectTemplate implements Activable {
 		super.poll(input, secounds);
 	}
 
-	// @Override
-	// public void draw(Graphics g) {
-	// this.effect.draw(g);
-	// }
+	@Override
+	public void draw(Graphics g) {
+		this.effect.draw(g);
+	}
+
+	 @Override
+	 public void drawForEditor(Graphics g) {
+	 super.draw(g);
+	 }
 }
