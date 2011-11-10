@@ -31,7 +31,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Partikelsystem, das verschiedene Effekte zeichnen und animieren kann.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class ParticleEffect implements Drawable, Pollable {
@@ -51,7 +51,7 @@ public class ParticleEffect implements Drawable, Pollable {
 
 	/**
 	 * Erzeugt ein neues Partikelsystem.
-	 *
+	 * 
 	 * @param position
 	 *            Ortsvektor der Position des Systems.
 	 * @param factory

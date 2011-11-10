@@ -14,25 +14,25 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * Beschreibung: Eine Tür, die geöffnet (aktiviert) werden kann
- *
+ * 
  * Spezifikationen: nicht blockbar, nicht schiebbar
- *
+ * 
  * Bewegungen: keine
- *
+ * 
  * Aggressivitäten: keine
- *
+ * 
  * Immunitäten: keine
- *
+ * 
  * Aktivierung: Die Tür öffnet sich
- *
+ * 
  * Deaktivierung: Die Tür schließt sich
- *
+ * 
  * Besonderheiten: blockt, wenn die Tür geschlossen ist
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Door extends ObjectTemplate implements Activable, Blockable {
 

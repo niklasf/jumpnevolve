@@ -4,6 +4,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
+import com.googlecode.jumpnevolve.graphics.ForegroundDrawable;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.effects.AirFlowEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
@@ -17,8 +19,10 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * @author Erik Wagner
  * 
+ *         TODO: Der Effekt wird noch nicht richtig angezeigt
  */
-public class AirFlow extends ObjectTemplate implements Activable {
+public class AirFlow extends ObjectTemplate implements Activable,
+		ForegroundDrawable {
 
 	private static final long serialVersionUID = 3461423177773856068L;
 
@@ -30,13 +34,14 @@ public class AirFlow extends ObjectTemplate implements Activable {
 			Vector direction, float force, boolean active) {
 		super(world, ShapeFactory.createRectangle(position, dimension,
 				direction.clockWiseAng()), 0.0f);
+		direction = direction.getDirection();
 		this.active = active;
-		this.force = direction.getDirection().mul(force);
+		this.force = direction.mul(GRAVITY).mul(force);
 
 		// Darstellungseffekt erstellen
-		this.effect = new ParticleEffect(position.sub(direction
-				.mul(dimension.x)), new AirFlowEmitterFactory(direction,
-				dimension.x * 2, dimension.y * 2, force));
+		this.effect = new ParticleEffect(position.sub(direction.mul(Math
+				.abs(dimension.y))), new AirFlowEmitterFactory(direction,
+				Math.abs(dimension.y) * 2, Math.abs(dimension.x) * 2, force));
 	}
 
 	public AirFlow(World world, Vector position, String arguments) {
@@ -94,8 +99,8 @@ public class AirFlow extends ObjectTemplate implements Activable {
 		this.effect.draw(g);
 	}
 
-	 @Override
-	 public void drawForEditor(Graphics g) {
-	 super.draw(g);
-	 }
+	@Override
+	public void drawForEditor(Graphics g) {
+		super.draw(g);
+	}
 }

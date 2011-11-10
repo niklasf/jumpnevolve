@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.editor.arguments.PositionMarker;
 import com.googlecode.jumpnevolve.game.GameObjects;
@@ -270,7 +271,7 @@ public class Editor2 extends Level implements Interfaceable {
 		// Nachfragen, ob das Programm wirklich beendet werden soll
 		// Bei "Ja" Editor beenden
 		if (this.parentMenu != null) {
-			System.out.println("Exit!");
+			Log.info("Exit the Editor");
 			this.parentMenu.switchBackToMainState();
 			Engine.getInstance().switchState(this.parentMenu);
 		} else {
@@ -431,8 +432,8 @@ public class Editor2 extends Level implements Interfaceable {
 			// Aktionen aus den Dialogen
 			if (function == InterfaceFunctions.EDITOR_SAVE) {
 				try {
-					this.saveLevel(this.transformToPath(this.dataDialog
-							.getContentable("Level speichern").getContent()));
+					this.saveLevel(this.dataDialog.getContentable(
+							"Level speichern").getContent());
 					this.dataDialog.hide();
 				} catch (IOException e) {
 					// TODO Fehlermeldung im Editor ausgeben
@@ -441,8 +442,8 @@ public class Editor2 extends Level implements Interfaceable {
 			}
 			if (function == InterfaceFunctions.EDITOR_LOAD) {
 				try {
-					this.loadLevel(this.transformToPath(this.dataDialog
-							.getContentable("Level laden").getContent()));
+					this.loadLevel(this.dataDialog
+							.getContentable("Level laden").getContent());
 					this.loadWithNewSettings();
 				} catch (IOException e) {
 					// TODO Fehlermeldung im Editor ausgeben
@@ -487,7 +488,8 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	public void loadLevel(String path) throws IOException {
-		System.out.println("Try loading: " + path);
+		path = this.transformToPath(path);
+		Log.info("Try loading: " + path);
 		BufferedReader levelFile = new BufferedReader(new FileReader(path));
 
 		// Die ersten drei Zeilen laden
@@ -554,7 +556,7 @@ public class Editor2 extends Level implements Interfaceable {
 		int highestID = 0;
 		String current = levelFile.readLine();
 		while (current != null) {
-			System.out.println("Lade Objekt: " + current);
+			Log.info("Lade Objekt: " + current);
 			if (current.split("_").length != 5) {
 				throw new IOException(
 						"Fehler im Aufbau der Leveldatei (Objektzeile: "
@@ -582,7 +584,8 @@ public class Editor2 extends Level implements Interfaceable {
 	@SuppressWarnings("unchecked")
 	public void saveLevel(String path) throws IOException {
 		System.out.println("Saving current level at: " + path);
-		FileOutputStream stream = new FileOutputStream(path);
+		FileOutputStream stream = new FileOutputStream(
+				this.transformToPath(path));
 		String firstLine = this.getDimensionsLine();
 		String secondLine = "\n" + this.getSettingsLine();
 		String thirdLine = "\n" + this.getPlayerLine();
@@ -607,6 +610,7 @@ public class Editor2 extends Level implements Interfaceable {
 
 	private void deleteObject(EditorObject object) {
 		if (object != null) {
+			Log.info("Lösche Objekt: " + object.getDataLine());
 			object.hideDialog();
 			this.objects.remove(object);
 			this.selected = null;

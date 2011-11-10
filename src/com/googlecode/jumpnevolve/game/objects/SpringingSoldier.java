@@ -11,11 +11,13 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein Soldat, der immer wieder so hoch springt, wie er vor dem Fallen war
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class SpringingSoldier extends Soldier implements Jumping {
+
+	private static final long serialVersionUID = -4562665300367627101L;
 
 	private float maxVelocityY = 0.0f;
 

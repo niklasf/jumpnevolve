@@ -21,9 +21,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Menü zum Auswählen aus vorhandenen Leveln
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class LevelSelection extends SubMenu {
 
@@ -35,7 +35,7 @@ public class LevelSelection extends SubMenu {
 
 	/**
 	 * Erstellt ein neues Menü zum Auswählen eines Levels
-	 *
+	 * 
 	 * @param levelPath
 	 *            Der Ordner, in dem sich die Level befinden, es werden auch die
 	 *            Unterordner durchsucht
@@ -53,6 +53,7 @@ public class LevelSelection extends SubMenu {
 		}
 		GridContainer grid = new GridContainer(1, 1);
 		grid.add(this.selectList, 0, 0);
+		grid.maximizeSize();
 		this.setMainContainer(grid);
 	}
 
@@ -79,7 +80,7 @@ public class LevelSelection extends SubMenu {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.googlecode.jumpnevolve.graphics.Pollable#poll(org.newdawn.slick.Input
 	 * , float)

@@ -200,7 +200,7 @@ class NextPolygon implements ConvexShape {
 					if (distWill > 0) {
 						colRe.setWillNotIntersect();
 					}
-					if (!(colRe.isIntersecting() && colRe.willIntersect())) {
+					if (!(colRe.isIntersecting() || colRe.willIntersect())) {
 						return colRe;
 					} else {
 						distIs = -distIs;

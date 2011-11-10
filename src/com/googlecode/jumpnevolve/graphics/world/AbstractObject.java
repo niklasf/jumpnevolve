@@ -24,6 +24,8 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.objects.SpringingSoldier;
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -49,7 +51,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
  * @author Erik Wagner
  */
 public abstract class AbstractObject implements Pollable, Drawable,
-		Serializable {
+		Serializable, SimpleObject {
 
 	private static final long serialVersionUID = -3990787994625166974L;
 
@@ -165,11 +167,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 			if (direction.equals(0, 0)) {
 				// Nichts tun
-
-				/*
-				 * move = 0.0f; direction = this.getVelocity().neg(); vel =
-				 * 0.0f;
-				 */
 			} else {
 				// Aktuelle Geschwindigkeit in die Bewegungsrichtung,
 				// grundsätzlich ertmal 0
@@ -203,9 +200,6 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		if (this instanceof Jumping) {
 			if (this.isWayBlocked(Shape.DOWN)) {
 				// Geschwindigkeit anhand der Sprunghöhe verändern
-				// FIXME: Formel funktioniert korrekt, wenn man sich der Spieler
-				// gleichzeitig noch seitlich bewegt, ansonsten springt er
-				// weniger hoch
 				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
 						* ((Jumping) this).getJumpingHeight() * GRAVITY));
 			}
@@ -556,6 +550,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return {@code true}, wenn das Objekt beweglich ist.
 	 */
+	@Override
 	public final boolean isMoveable() {
 		return this.mass != 0.0f;
 	}

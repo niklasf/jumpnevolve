@@ -29,7 +29,7 @@ import org.newdawn.slick.Sound;
  * Der ResourceManager läd Ressourcen wie Bilder oder Sounds vom Dateisystem.
  * Wenn mehrmals nach einer Ressource gefragt wird, kann sie jederzeit aus dem
  * Cache geholt werden.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class ResourceManager {
@@ -58,7 +58,7 @@ public class ResourceManager {
 	/**
 	 * FÃ¼gt Ressourcen in die Wartschleife ein, sodass sie geladen werden,
 	 * sobald die MÃ¶glichkeit besteht.
-	 *
+	 * 
 	 * @param identifier
 	 *            Pfad zur Ressource.
 	 */
@@ -77,9 +77,12 @@ public class ResourceManager {
 				this.images.put(identifier, new Image(identifier));
 			} else if (identifier.endsWith(".png?reverse")) { // Umgedrehted
 				// Bild laden
-				this.images.put(identifier, getImage(
-						identifier.substring(0, identifier.indexOf('?')))
-						.getFlippedCopy(true, false));
+				this.images
+						.put(identifier,
+								getImage(
+										identifier.substring(0,
+												identifier.indexOf('?')))
+										.getFlippedCopy(true, false));
 			} else if (identifier.endsWith(".ogg")) { // Sound laden
 				this.sounds.put(identifier, new Sound(identifier));
 			} else { // Ressourcentyp unbekannt
@@ -92,7 +95,7 @@ public class ResourceManager {
 
 	/**
 	 * Läd die gewünschte Bildressource vom Dateisystem oder aus dem Cache.
-	 *
+	 * 
 	 * @param id
 	 *            Pfad zur Bildressource.
 	 * @return Das Bild.
@@ -112,7 +115,7 @@ public class ResourceManager {
 	/**
 	 * Erzeugt ein Bild das in X-Richtung umgedreht wurde oder holt es aus dem
 	 * Cache.
-	 *
+	 * 
 	 * @param id
 	 *            Pfad zur Bildressource.
 	 * @return Das umgedrehte Bild.
@@ -131,7 +134,7 @@ public class ResourceManager {
 
 	/**
 	 * Läd eine Sounddatei vom Dateisystem oder aus dem Cache.
-	 *
+	 * 
 	 * @param id
 	 *            Pfad zur Soundresource.
 	 * @return Die Sounddatei.

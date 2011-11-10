@@ -204,5 +204,4 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	public boolean canBeBlockedBy(Blockable other) {
 		return true;
 	}
-
 }

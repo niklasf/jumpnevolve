@@ -297,7 +297,7 @@ public class EditorLevel extends Level implements Interfaceable {
 		}
 		// Spieler zeichnen
 		GraphicUtils.draw(g, new Circle(parent.getPlayerPosition(), 30.0f));
-		GraphicUtils.markPosition(g, parent.getPlayerPosition(), 5);
+		GraphicUtils.markPosition(g, parent.getPlayerPosition(), 5, Color.blue);
 		GraphicUtils.drawString(g, parent.getPlayerPosition(), "0000-Player");
 		this.gui.draw(g);
 	}

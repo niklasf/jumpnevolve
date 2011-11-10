@@ -12,15 +12,13 @@ public class RectangleDimension extends RelativePositionMarker {
 	private RelativePositionMarker referenceDirection;
 	private Vector lastRefernceDirection = Vector.UP;
 
-	public RectangleDimension(Editor2 editor,
-			PositionMarker referencePoint, String name,
-			Vector startPosition, Color color) {
+	public RectangleDimension(Editor2 editor, PositionMarker referencePoint,
+			String name, Vector startPosition, Color color) {
 		super(editor, referencePoint, name, MODUS_BOTH, OUTPUT_MODUS_RELATIVE,
 				startPosition, color);
 	}
 
-	public RectangleDimension(Editor2 editor,
-			PositionMarker referencePoint,
+	public RectangleDimension(Editor2 editor, PositionMarker referencePoint,
 			RelativePositionMarker referenceDirection, String name,
 			Vector startPosition, Color color) {
 		super(editor, referencePoint, name, MODUS_BOTH, OUTPUT_MODUS_RELATIVE,
@@ -52,10 +50,10 @@ public class RectangleDimension extends RelativePositionMarker {
 
 	@Override
 	public void initialize(String value) {
-		Vector dimension = Vector.parseVector(value);
-		this.position = dimension.rotate(
-				this.getReferenceVector().clockWiseAng()).add(
-				this.getParentPosition());
+		Vector dimension = Vector.parseVector(value).rotate(
+				this.getReferenceVector().clockWiseAng());
+		super.initialize(dimension.toString());
+		this.lastRefernceDirection = this.getReferenceVector();
 	}
 
 	@Override
@@ -82,8 +80,7 @@ public class RectangleDimension extends RelativePositionMarker {
 		}
 	}
 
-	private void setReferenceDirection(
-			RelativePositionMarker referenceDirection) {
+	private void setReferenceDirection(RelativePositionMarker referenceDirection) {
 		this.referenceDirection = referenceDirection;
 		this.lastRefernceDirection = this.getReferenceVector();
 	}
@@ -96,10 +93,8 @@ public class RectangleDimension extends RelativePositionMarker {
 				.getReferenceVector(), re = Vector.ZERO;
 
 		// Vektor entsprechend der Ausrichtung berechnen
-		re = new Vector(pos.mul(ref), pos.mul(ref
-				.rotate((float) (Math.PI / 2.0f))));
-
 		re = pos.rotate(-ref.clockWiseAng());
+
 		// Jedes Rechteck muss über Breite und Höhe verfügen
 		if ((int) re.x == 0) {
 			re = re.modifyX(1);
@@ -107,6 +102,8 @@ public class RectangleDimension extends RelativePositionMarker {
 		if ((int) re.y == 0) {
 			re = re.modifyY(1);
 		}
+
+		// Vektor als String zurückgeben
 		return re.toString();
 	}
 

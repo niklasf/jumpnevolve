@@ -15,24 +15,24 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * Beschreibung: Eine Plattform, die sich rauf und runter bewegt
- *
+ * 
  * Spezifikationen: blockbar, nicht schiebbar
- *
+ * 
  * Bewegungen: Masse = 1; vertikal in einem bestimmten Bereich --> 50 Pixel pro
  * Sekunde
- *
+ * 
  * Aggressivitäten: keine
- *
+ * 
  * Immunitäten: keine
- *
+ * 
  * Aktivierung: keine
- *
+ * 
  * Besonderheiten: keine
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
@@ -68,8 +68,10 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 			this.curDirection = Vector.UP;
 		}
 		if (this.getVelocity().y == 0) {
-			this.curDirection = Vector.UP;
+			this.curDirection = this.curDirection.neg();
 		}
+//		System.out.println("Direction: " + this.curDirection + " Vel: "
+//				+ this.getVelocity());
 	}
 
 	public void blockWay(Blockable blocker, CollisionResult colRe) {
@@ -97,11 +99,7 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	@Override
 	public boolean canBeBlockedBy(Blockable other) {
-		if (other instanceof AbstractObject) {
-			return !((AbstractObject) other).isMoveable();
-		} else {
-			return true;
-		}
+		return !other.isMoveable();
 	}
 
 	@Override

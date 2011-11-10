@@ -15,19 +15,21 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine sich in horizontaler Richtung bewegende Plattform.
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class SlidingPlattform extends ObjectTemplate implements Moving,
 		Blockable {
+
+	private static final long serialVersionUID = -3698619613073930651L;
 
 	private final float leftEnd, rightEnd;
 	private Vector curDirection = Vector.LEFT;
 
 	/**
 	 * Erzeugt eine neue Plattform, die sich nach rechts und links bewegt
-	 *
+	 * 
 	 * @param world
 	 *            Die Welt in die dieses Objekt geaddet wird
 	 * @param position
@@ -69,7 +71,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 			this.curDirection = Vector.LEFT;
 		}
 		if (this.getVelocity().x == 0) {
-			this.curDirection = Vector.LEFT;
+			this.curDirection = this.curDirection.neg();
 		}
 	}
 
@@ -90,11 +92,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 
 	@Override
 	public boolean canBeBlockedBy(Blockable other) {
-		if (other instanceof AbstractObject) {
-			return !((AbstractObject) other).isMoveable();
-		} else {
-			return true;
-		}
+		return !other.isMoveable();
 	}
 
 	@Override

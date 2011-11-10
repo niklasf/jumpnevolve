@@ -13,7 +13,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
  */
 public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 
-	private final Vector direction;
+	private final Vector direction, rotatedDirection;
 	private final Vector distance;
 	private final float speed;
 	private final float width;
@@ -24,19 +24,20 @@ public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 	public AirFlowEmitterFactory(Vector direction, float distance, float width,
 			float speed) {
 		this.direction = direction.getDirection();
+		this.rotatedDirection = this.direction.rotate((float) (Math.PI / 2));
 		Vector rawDist = this.direction.mul(distance);
 		rawDist = rawDist.modifyX(Math.abs(rawDist.x));
 		rawDist = rawDist.modifyY(Math.abs(rawDist.y));
 		this.distance = rawDist;
-		this.speed = Math.abs(speed);
-		this.width = width / 2;
+		this.speed = Math.abs(speed) / 50.0f;
+		this.width = width;
 	}
 
 	@Override
 	public ParticleEmitter createParticleEmitter() {
 		return new ParticleEmitterAdapter() {
 
-			private final int INTERVAL = (int) (AirFlowEmitterFactory.this.speed / 0.001);
+			private final int INTERVAL = (int) (AirFlowEmitterFactory.this.speed / 0.005f);
 
 			private int timer;
 
@@ -50,14 +51,14 @@ public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 					p.setColor(1.0f, 1.0f, 1.0f, 0.0f);
 					p.setPosition(
 							(float) ((Math.random() - 0.5f)
-									* AirFlowEmitterFactory.this.width * AirFlowEmitterFactory.this.direction.x),
+									* AirFlowEmitterFactory.this.width * AirFlowEmitterFactory.this.rotatedDirection.x),
 							(float) ((Math.random() - 0.5f)
-									* AirFlowEmitterFactory.this.width * AirFlowEmitterFactory.this.direction.y));
+									* AirFlowEmitterFactory.this.width * AirFlowEmitterFactory.this.rotatedDirection.y));
 					p.setVelocity(AirFlowEmitterFactory.this.direction.x
 							* AirFlowEmitterFactory.this.speed,
 							AirFlowEmitterFactory.this.direction.y
 									* AirFlowEmitterFactory.this.speed);
-					p.setColor(0.7f, 0.7f, 0.7f, 0.05f);
+					p.setColor(0.7f, 0.7f, 0.7f, 0.2f);
 					p.setSize(50.0f);
 				}
 			}
@@ -67,9 +68,9 @@ public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 						|| Math.abs(particle.getY()) > AirFlowEmitterFactory.this.distance.y) {
 					particle.kill();
 				}
-				particle.adjustVelocity(
-						((float) Math.random() - 0.5f) * 0.005f,
-						((float) Math.random() - 0.5f) * 0.005f);
+				particle.adjustVelocity(((float) Math.random() - 0.5f)
+						* 0.00005f * delta, ((float) Math.random() - 0.5f)
+						* 0.00005f * delta);
 			}
 		};
 	}

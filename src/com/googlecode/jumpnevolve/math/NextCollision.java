@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class NextCollision {
 
@@ -31,15 +31,15 @@ public class NextCollision {
 	public void addCollisionResult(CollisionResult result) {
 		this.results.add(result);
 		if (result.isIntersecting()) {
-			Vector restore = this.toRestoring(result.getIsOverlap(), result
-					.isOtherMoveable());
+			Vector restore = this.toRestoring(result.getIsOverlap(),
+					result.isOtherMoveable());
 			this.addIsRestoring(restore);
 			this.isIntersecting = true;
 			this.isIntersects.add(restore);
 		}
 		if (result.willIntersect()) {
-			Vector restore = this.toRestoring(result.getWillOverlap(), result
-					.isOtherMoveable());
+			Vector restore = this.toRestoring(result.getWillOverlap(),
+					result.isOtherMoveable());
 			this.addWillRestoring(restore);
 			this.willIntersect = true;
 			this.willIntersects.add(restore);
@@ -51,6 +51,7 @@ public class NextCollision {
 		this.restoringsWill[1] = Math.max(restoring.x, this.restoringsWill[1]);
 		this.restoringsWill[2] = Math.max(restoring.y, this.restoringsWill[2]);
 		this.restoringsWill[3] = Math.min(restoring.x, this.restoringsWill[3]);
+		this.addBlockedSide(restoring.neg().toShapeDirection());
 	}
 
 	private void addIsRestoring(Vector restoring) {
@@ -140,16 +141,16 @@ public class NextCollision {
 
 	/**
 	 * Korrigiert die Position eines Shapes nach dieser Kollision
-	 *
+	 * 
 	 * @param toCorrect
 	 *            Das Shape, dessen Position korrigiert werden soll
 	 * @return Das korrigierte Shape
 	 */
 	public NextShape correctPosition(NextShape toCorrect) {
 		Vector restore = Vector.ZERO;
-		if (isIntersecting) {
+		if (this.isIntersecting) {
 			restore = this.getIsRestoring();
-		} else if (willIntersect) {
+		} else if (this.willIntersect) {
 			restore = this.getWillRestoring();
 		}
 		if (!Float.isNaN(restore.x) && !Float.isNaN(restore.y)) {
@@ -161,7 +162,7 @@ public class NextCollision {
 
 	/**
 	 * Korrigiert die Richtung (und Länge) eines Vektors gemäß dieser Kollision
-	 *
+	 * 
 	 * @param toCorrect
 	 *            Der Vektor, der korrigiert werden soll
 	 * @return Der korrigierte Vektor
@@ -175,8 +176,10 @@ public class NextCollision {
 				if (ang > Math.PI / 2.0) {
 					blocked = blocked.rotateQuarterClockwise();
 					ang = toCorrect.ang(blocked);
-					vec = Vector.min(blocked.getDirection().mul(
-							toCorrect.abs() * (float) Math.cos(ang)), vec);
+					vec = Vector.min(
+							blocked.getDirection().mul(
+									toCorrect.abs() * (float) Math.cos(ang)),
+							vec);
 				}
 			}
 		}
@@ -184,8 +187,9 @@ public class NextCollision {
 	}
 
 	/**
-	 * Korrigiert die Richtung (und Länge) eines Vektors gemäß dieser Kollision
-	 *
+	 * Korrigiert die Richtung (und Länge) eines Kraft-Vektors gemäß dieser
+	 * Kollision
+	 * 
 	 * @param toCorrect
 	 *            Der Vektor, der korrigiert werden soll
 	 * @return Der korrigierte Vektor
@@ -205,8 +209,9 @@ public class NextCollision {
 			if (ang > Math.PI / 2.0) {
 				blocked = blocked.rotateQuarterClockwise();
 				ang = toCorrect.ang(blocked);
-				vec = Vector.min(blocked.getDirection().mul(
-						toCorrect.abs() * (float) Math.cos(ang)), vec);
+				vec = Vector.min(
+						blocked.getDirection().mul(
+								toCorrect.abs() * (float) Math.cos(ang)), vec);
 			}
 		}
 		return vec;
@@ -214,9 +219,9 @@ public class NextCollision {
 
 	/**
 	 * Invertiert diese Kollision, d.h. die Overlaps werden umgedreht
-	 *
+	 * 
 	 * Sollte nur bei einfachen Kollisionen verwendet werden
-	 *
+	 * 
 	 * @param otherMoveable
 	 *            Der Beweglichkeit-Status des Objekts, dem die invertierte
 	 *            Kollision zugeordnet wird
