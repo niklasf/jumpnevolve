@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.util.Log;
 
 /**
  * @author Erik Wagner
@@ -79,8 +80,8 @@ class NextPolygon implements ConvexShape {
 			this.up += this.center.y;
 			this.down += this.center.y;
 		} else {
-			System.out.println("Cannot finish polygon (" + super.toString()
-					+ ") with less than two points");
+			Log.error("Cannot finish polygon (" + super.toString()
+					+ ") with less than three points");
 		}
 	}
 

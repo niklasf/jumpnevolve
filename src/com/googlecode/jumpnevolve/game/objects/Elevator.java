@@ -70,8 +70,6 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 		if (this.getVelocity().y == 0) {
 			this.curDirection = this.curDirection.neg();
 		}
-//		System.out.println("Direction: " + this.curDirection + " Vel: "
-//				+ this.getVelocity());
 	}
 
 	public void blockWay(Blockable blocker, CollisionResult colRe) {
@@ -82,6 +80,7 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 		}
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
 				.getImage("textures/aluminium.png"), true);

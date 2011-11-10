@@ -18,6 +18,7 @@ import com.googlecode.jumpnevolve.game.objects.Fluid;
 import com.googlecode.jumpnevolve.game.objects.Goal;
 import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
+import com.googlecode.jumpnevolve.game.objects.HoverLift;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
@@ -61,15 +62,10 @@ public enum GameObjects implements InterfaceFunction {
 							new NumberSelection(null, "Active Time", 10, 1,
 									100, 1), null) })),
 
-	DOOR(
-			Door.class,
-			"textures/wood.png",
-			false,
-			new EditorObjectArguments(
-					new EditorArgumentAllocation[] { new EditorArgumentAllocation(
-							new RectangleDimension(null, null, "Maße",
-									new Vector(30, 10), Color.blue),
-							new int[] { -1 }) })),
+	DOOR(Door.class, "textures/wood.png", false, new EditorObjectArguments(
+			new EditorArgumentAllocation[] { new EditorArgumentAllocation(
+					new RectangleDimension(null, null, "Maße", new Vector(30,
+							10), Color.blue), new int[] { -1 }) })),
 
 	GROUND(
 			Ground.class,
@@ -88,9 +84,9 @@ public enum GameObjects implements InterfaceFunction {
 			new EditorObjectArguments(
 					new EditorArgumentAllocation[] {
 							new EditorArgumentAllocation(
-									new RectangleDimension(null, null,
-											"Maße", new Vector(30, 10),
-											Color.blue), new int[] { -1 }),
+									new RectangleDimension(null, null, "Maße",
+											new Vector(30, 10), Color.blue),
+									new int[] { -1 }),
 							new EditorArgumentAllocation(
 									new RelativePositionMarker(
 											null,
@@ -117,9 +113,9 @@ public enum GameObjects implements InterfaceFunction {
 			new EditorObjectArguments(
 					new EditorArgumentAllocation[] {
 							new EditorArgumentAllocation(
-									new RectangleDimension(null, null,
-											"Maße", new Vector(30, 10),
-											Color.blue), new int[] { -1 }),
+									new RectangleDimension(null, null, "Maße",
+											new Vector(30, 10), Color.blue),
+									new int[] { -1 }),
 							new EditorArgumentAllocation(
 									new RelativePositionMarker(
 											null,
@@ -141,60 +137,53 @@ public enum GameObjects implements InterfaceFunction {
 
 	FLUID(Fluid.class, "textures/water.png", false, new EditorObjectArguments(
 			new EditorArgumentAllocation[] {
-					new EditorArgumentAllocation(
-							new RectangleDimension(null, null, "Maße",
-									new Vector(30, 10), Color.blue),
+					new EditorArgumentAllocation(new RectangleDimension(null,
+							null, "Maße", new Vector(30, 10), Color.blue),
 							new int[] { -1 }),
-					new EditorArgumentAllocation(new NumberSelection(
-							null, "MaximumVelocity", 20, 1, 100, 1), null) })),
+					new EditorArgumentAllocation(new NumberSelection(null,
+							"MaximumVelocity", 20, 1, 100, 1), null) })),
 
 	CANNON(
 			Cannon.class,
 			"object-pictures/cannon.png",
 			false,
-			new EditorObjectArguments(
-					new EditorArgumentAllocation[] {
-							new EditorArgumentAllocation(new Checkbox(
-									null, "Activated", false), null),
-							new EditorArgumentAllocation(
-									new RelativePositionMarker(
-											null,
-											null,
-											"Schussrichtung",
-											RelativePositionMarker.MODUS_BOTH,
-											RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-											Vector.UP_RIGHT, Color.yellow),
-									new int[] { -1 }) })),
+			new EditorObjectArguments(new EditorArgumentAllocation[] {
+					new EditorArgumentAllocation(new Checkbox(null,
+							"Activated", false), null),
+					new EditorArgumentAllocation(new RelativePositionMarker(
+							null, null, "Schussrichtung",
+							RelativePositionMarker.MODUS_BOTH,
+							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
+							Vector.UP_RIGHT, Color.yellow), new int[] { -1 }) })),
 
 	SAVE_POINT(SavePoint.class, "object-pictures/savePoint-active.png", false),
 
 	GOAL(Goal.class, "object-pictures/goal.png", false),
 
 	// TODO: Unfertig
-	AIRFLOW(
-			AirFlow.class,
-			"textures/water.png",
-			false,
-			new EditorObjectArguments(
-					new EditorArgumentAllocation[] {
-							new EditorArgumentAllocation(
-									new RectangleDimension(null, null,
-											"Maße", new Vector(30, 10),
-											Color.blue), new int[] { -1, 1 }),
-							new EditorArgumentAllocation(
-									new RelativePositionMarker(
-											null,
-											null,
-											"Direction",
-											RelativePositionMarker.MODUS_BOTH,
-											RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
-											Vector.RIGHT.mul(30), Color.yellow),
-									new int[] { -1 }),
-							new EditorArgumentAllocation(
-									new NumberSelection(null, "Force", 10,
-											1, 100, 1), null),
-							new EditorArgumentAllocation(new Checkbox(
-									null, "Activated", false), null), }));
+	AIR_FLOW(AirFlow.class, "textures/water.png", false,
+			new EditorObjectArguments(new EditorArgumentAllocation[] {
+					new EditorArgumentAllocation(new RectangleDimension(null,
+							null, "Maße", new Vector(30, 10), Color.blue),
+							new int[] { -1, 1 }),
+					new EditorArgumentAllocation(new RelativePositionMarker(
+							null, null, "Direction",
+							RelativePositionMarker.MODUS_BOTH,
+							RelativePositionMarker.OUTPUT_MODUS_RELATIVE,
+							Vector.RIGHT.mul(30), Color.yellow),
+							new int[] { -1 }),
+					new EditorArgumentAllocation(new NumberSelection(null,
+							"Force", 10, 1, 100, 1), null),
+					new EditorArgumentAllocation(new Checkbox(null,
+							"Activated", false), null), })),
+
+	HOVER_LIFT(HoverLift.class, "textures/aluminium.png", false,
+			new EditorObjectArguments(new EditorArgumentAllocation[] {
+					new EditorArgumentAllocation(new RectangleDimension(null,
+							null, "Maße", new Vector(30, 10), Color.blue),
+							new int[] { -1 }),
+					new EditorArgumentAllocation(new NumberSelection(null,
+							"Tragbare Masse", 10, 1, 100, 1), null) }));
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -263,8 +252,10 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new SavePoint(level, position, level.getPlayer());
 		} else if (className.equals(GOAL.className)) {
 			newObject = new Goal(level, position);
-		} else if (className.equals(AIRFLOW.className)) {
+		} else if (className.equals(AIR_FLOW.className)) {
 			newObject = new AirFlow(level, position, arguments);
+		} else if (className.equals(HOVER_LIFT.className)) {
+			newObject = new HoverLift(level, position, arguments);
 		}
 		return newObject;
 	}

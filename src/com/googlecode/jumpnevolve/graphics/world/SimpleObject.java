@@ -20,4 +20,11 @@ public interface SimpleObject {
 	 * @return <code>true</code>, wenn dieses Objekt bewegbar ist
 	 */
 	public boolean isMoveable();
+
+	/**
+	 * Gibt die Masse des Objekts zurück
+	 * 
+	 * @return 0, wenn das Objekt keine Masse hat
+	 */
+	public float getMass();
 }

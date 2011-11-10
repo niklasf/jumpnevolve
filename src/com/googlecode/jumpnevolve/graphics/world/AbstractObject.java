@@ -366,6 +366,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	/**
 	 * @return Die Masse des Objekts.
 	 */
+	@Override
 	public final float getMass() {
 		return this.mass;
 	}

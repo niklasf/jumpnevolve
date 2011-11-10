@@ -50,7 +50,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	 * @param parent
 	 */
 	public PlayerFigure(World world, Vector position, Player parent) {
-		super(world, ShapeFactory.createCircle(position, 10), 5.0f);
+		super(world, ShapeFactory.createCircle(position, 10), 4.0f);
 		this.parent = parent;
 	}
 
