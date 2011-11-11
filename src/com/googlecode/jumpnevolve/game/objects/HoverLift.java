@@ -8,9 +8,10 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
+import com.googlecode.jumpnevolve.graphics.world.Client;
+import com.googlecode.jumpnevolve.graphics.world.ObjectGroup;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
-import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
@@ -22,26 +23,32 @@ import com.googlecode.jumpnevolve.math.Vector;
  * langsamer.
  * 
  * @author Erik Wagner
- * 
- *         FIXME: Der Lift bleibt bei einem Objekt mit mass == portableMass noch
- *         nicht stehen, sondern bewegt sich teilweise leicht, da das Objekt
- *         immer wieder nach oben geschoben wird
  */
-public class HoverLift extends ObjectTemplate implements Blockable {
+public class HoverLift extends ObjectTemplate implements Blockable,
+		ObjectGroup, Client {
 
 	private static final long serialVersionUID = -5540543276796403277L;
 
 	private final Vector upForce;
 
+	private final AbstractObject[] objects;
+
 	public HoverLift(World world, Vector position, Vector dimension,
 			float portableMass) {
-		super(world, ShapeFactory.createRectangle(position, dimension), 2.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension), 1.0f);
 		this.upForce = Vector.UP.mul(GRAVITY * portableMass);
+		ScoutObject scout = new ScoutObject(world, this.getShape(), this);
+		scout.moveCenter(Vector.UP.mul(dimension.y * 0.3f));
+		this.objects = new AbstractObject[] { scout };
 	}
 
 	public HoverLift(World world, Vector position, String arguments) {
 		this(world, position, Vector.parseVector(arguments.split(",")[0]),
 				Float.parseFloat(arguments.split(",")[1]));
+	}
+
+	private void applyDownForce(float value) {
+		this.applyForce(Vector.DOWN.mul(value));
 	}
 
 	@Override
@@ -61,19 +68,21 @@ public class HoverLift extends ObjectTemplate implements Blockable {
 	}
 
 	@Override
-	public void onGeneralCrash(AbstractObject other, CollisionResult colResult) {
-		byte blocked = colResult.getIsOverlap().toShapeDirection();
-		if (other.isMoveable()
-				&& (blocked == Shape.DOWN || blocked == Shape.DOWN_LEFT || blocked == Shape.DOWN_RIGHT)) {
-			// Kraft nach unten entsprechend der Masse des Objekts, das auf
-			// diesem steht
-			this.applyForce(Vector.DOWN.mul(other.getMass() * GRAVITY));
-		}
-	}
-
-	@Override
 	public void draw(Graphics g) {
 		GraphicUtils.texture(g, this.getShape(), ResourceManager.getInstance()
 				.getImage("textures/aluminium.png"), true);
+	}
+
+	@Override
+	public AbstractObject[] getObjects() {
+		return this.objects;
+	}
+
+	@Override
+	public void informAboutCrash(AbstractObject other, CollisionResult colRe,
+			ScoutObject scout) {
+		if (other.isMoveable()) {
+			this.applyDownForce(other.getMass() * GRAVITY);
+		}
 	}
 }

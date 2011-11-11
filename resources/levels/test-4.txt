@@ -1,0 +1,4 @@
+Leveldimensionen_1000_1000_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_(100.0| 0.0)
+AirFlow_(-103.0| 7.0)_0001-AirFlow_none_(32.411427| -63.304813),(65.0| -92.0),10,false

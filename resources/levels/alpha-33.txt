@@ -16,5 +16,6 @@ Soldier_(353.0| 527.0)_0018-Soldier_none_none
 Door_(375.0| 975.0)_0019-Door_none_(21.0| 7.0)
 Ground_(758.0| 1046.0)_0020-Ground_none_(257.0| 6.0)
 Goal_(985.0| 1008.0)_0021-Goal_none_none
-Ground_(219.0| 633.0)_0031-Ground_none_(9.0| -73.0)
-HoverLift_(187.0| 1046.0)_0033-HoverLift_none_(36.0| 5.0),10
+Elevator_(185.0| 1045.0)_0024-Elevator_none_(27.0| 4.0),902.0,1055.0
+Ground_(222.0| 994.0)_0031-Ground_none_(25.0| 6.0)
+AirFlow_(105.0| 901.0)_0032-AirFlow_none_(93.46581| 91.81033),(123.0| -133.0),15,true

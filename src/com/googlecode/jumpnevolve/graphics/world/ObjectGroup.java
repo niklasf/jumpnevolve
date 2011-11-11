@@ -11,5 +11,10 @@ package com.googlecode.jumpnevolve.graphics.world;
  */
 public interface ObjectGroup {
 
+	/**
+	 * Gibt die zusätzlichen Objekte dieses Objekts zurück
+	 * 
+	 * @return Ein Array der Objekte, <strong>ohne</strong> dieses Objekt selbst
+	 */
 	public AbstractObject[] getObjects();
 }

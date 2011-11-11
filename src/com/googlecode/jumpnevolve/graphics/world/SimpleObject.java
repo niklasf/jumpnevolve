@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.graphics.world;
 
+import com.googlecode.jumpnevolve.math.Vector;
+
 /**
  * Ein Interface für einfache Objekte, in der allgemeine Funktionen gesammelt
  * werden
@@ -27,4 +29,9 @@ public interface SimpleObject {
 	 * @return 0, wenn das Objekt keine Masse hat
 	 */
 	public float getMass();
+
+	/**
+	 * @return Die Position des Objekts
+	 */
+	public Vector getPosition();
 }

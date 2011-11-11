@@ -43,7 +43,7 @@ public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 
 	public Soldier(World world, Vector position) {
 		super(world, ShapeFactory.createRectangle(position, new Vector(20.0f,
-				20.0f)), 5.0f);
+				20.0f)), 5.1f);
 	}
 
 	@Override
