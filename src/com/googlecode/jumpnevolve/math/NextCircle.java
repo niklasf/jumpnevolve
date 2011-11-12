@@ -57,9 +57,12 @@ class NextCircle implements ConvexShape {
 		} else if (other instanceof NextPolygon) {
 			return other.getCollision(this, deltaVelocity.neg(), otherMoveable,
 					thisMoveable).invert();
+		} else {
+			// Leere, da nicht identifizierbar Kollision zurückgeben
+			colRe.setNotIntersecting();
+			colRe.setWillNotIntersect();
+			return colRe;
 		}
-		colRe.setNotIntersecting();
-		return colRe;
 	}
 
 	@Override

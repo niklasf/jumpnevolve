@@ -150,14 +150,12 @@ public class NextCollision {
 		Vector restore = Vector.ZERO;
 		if (this.isIntersecting) {
 			restore = this.getIsRestoring();
-		} else if (this.willIntersect) {
-			restore = this.getWillRestoring();
+			if (!Float.isNaN(restore.x) && !Float.isNaN(restore.y)) {
+				return toCorrect.modifyCenter(toCorrect.getCenter()
+						.add(restore));
+			}
 		}
-		if (!Float.isNaN(restore.x) && !Float.isNaN(restore.y)) {
-			return toCorrect.modifyCenter(toCorrect.getCenter().add(restore));
-		} else {
-			return toCorrect;
-		}
+		return toCorrect;
 	}
 
 	/**

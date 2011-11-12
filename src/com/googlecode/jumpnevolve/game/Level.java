@@ -18,6 +18,7 @@ import com.googlecode.jumpnevolve.graphics.effects.FireEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.FogEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.effects.SprayEmitterFactory;
+import com.googlecode.jumpnevolve.graphics.effects.WaterfallEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.Parameter;
