@@ -2,10 +2,8 @@ package com.googlecode.jumpnevolve.editor.arguments;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.editor.Editor2;
-import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
 import com.googlecode.jumpnevolve.math.Vector;
 
 public class RelativePositionMarker extends PositionMarker {

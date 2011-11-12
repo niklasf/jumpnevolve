@@ -25,7 +25,7 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * Jeder Zustand, den die Grafikengine einnehmen kann, muss von dieser Klasse
  * abgeleitet werden.
- *
+ * 
  * @author Niklas Fiekas
  */
 public abstract class AbstractState extends BasicGameState implements Pollable,
@@ -46,7 +46,7 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 	/**
 	 * Legt die Zoom Faktoren zur Umrechnung von virtuellen Koordinaten in
 	 * Pixelkoordinaten fest.
-	 *
+	 * 
 	 * @param zoomX
 	 *            Faktor für die X-Achse
 	 * @param zoomY
@@ -59,9 +59,9 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 
 	/**
 	 * Legt einen einheitlichen Zoomfaktor für die beiden Achsen fest.
-	 *
+	 * 
 	 * @see #setZoom(float, float)
-	 *
+	 * 
 	 * @param zoom
 	 *            Faktor
 	 */

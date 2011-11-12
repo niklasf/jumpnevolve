@@ -3,9 +3,9 @@ package com.googlecode.jumpnevolve.graphics.world;
 /**
  * Ein Interface für ein "lebendes" Objekt, welches Schaden erleiden und sterben
  * kann
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public interface Living extends Accompanying {
 
@@ -25,7 +25,7 @@ public interface Living extends Accompanying {
 
 	/**
 	 * Fügt dem Objekt Schaden zu
-	 *
+	 * 
 	 * @param damager
 	 *            Das Objekt, das diesem Objekt Schaden zufügt
 	 */

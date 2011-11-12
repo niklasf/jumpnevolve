@@ -23,19 +23,19 @@ import org.newdawn.slick.Input;
  * <p>
  * Dieser Timer hilft dabei Zeitabschnitte zu messen.
  * </p>
- *
+ * 
  * <p>
  * Die Genaugkeit hängt von der Rechenleistung des PCs ab, ist aber auf keinen
  * Fall für exakte Berechnungen geeignet.
  * </p>
- *
+ * 
  * <p>
  * Ein Timer hat die Zustände laufend und nicht laufend. Um zwischen diesen
  * Zuständen zu wechseln, kann er gestartet oder gestoppt werden. Nach dem
  * erzeugen läuft er noch <strong>nicht</strong>. Sobald die eingestellte Zeit
  * abgelaufen ist, wird der Timer gestoppt.
  * </p>
- *
+ * 
  * @author niklas
  */
 public class Timer implements Pollable {
@@ -66,7 +66,7 @@ public class Timer implements Pollable {
 
 	/**
 	 * Erzeugt einen Timer, der noch nicht läuft.
-	 *
+	 * 
 	 * @param time
 	 *            Einzustellende Zeit in Sekunden.
 	 */
@@ -77,7 +77,7 @@ public class Timer implements Pollable {
 
 	/**
 	 * Startet den Timer.
-	 *
+	 * 
 	 * @param time
 	 *            Einzustellende Zeit in Sekunden.
 	 */
@@ -125,7 +125,7 @@ public class Timer implements Pollable {
 
 	/**
 	 * Stellt die Zeit neu ein.
-	 *
+	 * 
 	 * @param time
 	 *            Einzustellende Zeit in Sekunden
 	 */

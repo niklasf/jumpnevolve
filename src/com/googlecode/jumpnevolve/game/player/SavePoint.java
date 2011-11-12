@@ -17,7 +17,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class SavePoint extends AbstractObject implements Activable {
 
@@ -72,12 +72,11 @@ public class SavePoint extends AbstractObject implements Activable {
 	@Override
 	public void draw(Graphics g) {
 		if (this.activated) {
-			GraphicUtils
-					.drawImage(
-							g,
-							this.getShape(),
-							ResourceManager.getInstance().getImage(
-									"object-pictures/savePoint-active.png"));
+			GraphicUtils.drawImage(
+					g,
+					this.getShape(),
+					ResourceManager.getInstance().getImage(
+							"object-pictures/savePoint-active.png"));
 		} else {
 			GraphicUtils.drawImage(
 					g,

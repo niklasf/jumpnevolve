@@ -20,7 +20,7 @@ package com.googlecode.jumpnevolve.graphics;
 /**
  * Fehler, der geworfen wird, wenn es Grafikprobleme gibt, die wahrscheinlich
  * nicht auf Java Ebene gelöst werden können.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class GraphicsError extends Error {

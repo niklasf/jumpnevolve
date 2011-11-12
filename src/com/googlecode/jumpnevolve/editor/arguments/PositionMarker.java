@@ -1,7 +1,5 @@
 package com.googlecode.jumpnevolve.editor.arguments;
 
-import javax.swing.text.AbstractDocument.Content;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -12,8 +10,6 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
-import com.googlecode.jumpnevolve.graphics.gui.Informable;
-import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceVectorTextfield;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;

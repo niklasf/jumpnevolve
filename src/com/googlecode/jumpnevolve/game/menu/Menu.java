@@ -14,16 +14,15 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.gui.Interfaceable;
 import com.googlecode.jumpnevolve.graphics.gui.MainGUI;
-import com.googlecode.jumpnevolve.graphics.gui.container.BorderContainer;
 import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
 import com.googlecode.jumpnevolve.graphics.world.Camera;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public abstract class Menu extends AbstractState implements Interfaceable {
 

@@ -5,7 +5,6 @@ import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.ForegroundDrawable;
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.effects.AirFlowEmitterFactory;
 import com.googlecode.jumpnevolve.graphics.effects.ParticleEffect;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;

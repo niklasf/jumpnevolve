@@ -27,7 +27,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * @author niklas
- *
+ * 
  */
 public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
@@ -35,7 +35,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/**
 	 * @return Die geteilte Instanz der Grafikengine.
-	 *
+	 * 
 	 * @throws GraphicsError
 	 *             Wenn ein OpenGL Fehler beim ersten Erzeugen der Instanz
 	 *             auftrat
@@ -67,7 +67,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#addState(com.googlecode
 	 * .jumpnevolve.graphics.AbstractState)
@@ -80,7 +80,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#containsState(com.
 	 * googlecode.jumpnevolve.graphics.AbstractState)
@@ -91,7 +91,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.googlecode.jumpnevolve.graphics.AbstractEngine#switchState(com.googlecode
 	 * .jumpnevolve.graphics.AbstractState)
@@ -107,7 +107,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#getCurrentState()
 	 */
 	public AbstractState getCurrentState() {
@@ -121,7 +121,7 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.googlecode.jumpnevolve.graphics.AbstractEngine#start()
 	 */
 	@Override

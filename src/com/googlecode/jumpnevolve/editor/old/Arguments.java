@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class Arguments extends JPanel {
 
@@ -28,7 +28,7 @@ public class Arguments extends JPanel {
 
 	/**
 	 * Initialisiert das Arguments-Objekt
-	 *
+	 * 
 	 * @param contents
 	 *            Inhalt der Argumente, pro contents-String wird ein Textfeld
 	 *            erzeugt
@@ -84,7 +84,7 @@ public class Arguments extends JPanel {
 	/**
 	 * Setzt die Argumente entsprechend dem übergebenen String aus einer
 	 * Leveldatei
-	 *
+	 * 
 	 * @param argumentSubString
 	 *            Der Argument-String aus einer Leveldatei für das entsprechende
 	 *            Objekt

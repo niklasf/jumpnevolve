@@ -25,7 +25,7 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 
 /**
  * Erzeugt einen Wasserfalleffekt.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class WaterfallEmitterFactory implements ParticleEmitterFactory {

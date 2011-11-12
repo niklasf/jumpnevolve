@@ -19,11 +19,11 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Eine Flüssigkeit, die die Geschwindigkeit der Objekte darin bis zu einer
  * gegebenen maximalen Geschwindigkeit vermindert
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  *         FIXME: Effekte sollen angezeigt werden (auf ganzer Breite des Fluid)
- *
+ * 
  *         FIXME: Objekte werden nicht richtig gebremst
  */
 public class Fluid extends ObjectTemplate {
@@ -67,9 +67,11 @@ public class Fluid extends ObjectTemplate {
 		if (other.isMoveable()) {
 			float velAbs = other.getVelocity().abs();
 			if (velAbs > this.maximumVelocity) {
-				other.applyForce(other.getVelocity().getDirection().mul(
-						(velAbs - maximumVelocity) * 2.0f * other.getMass())
-						.neg());
+				other.applyForce(other
+						.getVelocity()
+						.getDirection()
+						.mul((velAbs - maximumVelocity) * 2.0f
+								* other.getMass()).neg());
 			}
 		}
 	}

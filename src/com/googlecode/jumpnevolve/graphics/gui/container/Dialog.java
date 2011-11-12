@@ -5,13 +5,11 @@ package com.googlecode.jumpnevolve.graphics.gui.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
 import com.googlecode.jumpnevolve.graphics.gui.Informable;

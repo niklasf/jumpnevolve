@@ -5,7 +5,6 @@ import org.newdawn.slick.particles.ParticleEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 
 import com.googlecode.jumpnevolve.math.Vector;
-import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner

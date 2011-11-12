@@ -32,8 +32,8 @@ public class EditorObjectArguments {
 		}
 	}
 
-	private EditorArgument[] getArguments(int[] references,
-			EditorObject obj, ArrayList<EditorArgumentAllocation> args) {
+	private EditorArgument[] getArguments(int[] references, EditorObject obj,
+			ArrayList<EditorArgumentAllocation> args) {
 		if (references != null) {
 			EditorArgument[] re = new EditorArgument[references.length];
 			for (int i = 0; i < references.length; i++) {

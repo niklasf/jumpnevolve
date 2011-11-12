@@ -9,9 +9,6 @@ import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
-import com.googlecode.jumpnevolve.graphics.world.Blockable;
-import com.googlecode.jumpnevolve.graphics.world.World;
-import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 

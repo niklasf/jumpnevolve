@@ -90,7 +90,7 @@ public class Circle implements Shape {
 
 	/**
 	 * Erzeugt einen neuen Kreis.
-	 *
+	 * 
 	 * @param x
 	 *            X-Koordinate des Mittelpunkts
 	 * @param y
@@ -106,7 +106,7 @@ public class Circle implements Shape {
 
 	/**
 	 * Erzeugt einen neuen Kreis.
-	 *
+	 * 
 	 * @param position
 	 *            Ortsvektor des Mittelpunkts
 	 * @param radius

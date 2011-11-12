@@ -1,7 +1,6 @@
 package com.googlecode.jumpnevolve.graphics.gui;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 
 import com.googlecode.jumpnevolve.graphics.gui.container.InterfaceContainer;
 import com.googlecode.jumpnevolve.math.Rectangle;

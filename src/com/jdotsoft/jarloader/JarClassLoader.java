@@ -115,7 +115,7 @@ public class Launcher {
  * the temporary library file. Option to explore: use JNI function
  * UnregisterNatives(). See also native code in
  * ...\jdk\src\share\native\java\lang\ClassLoader.c
- *
+ * 
  * @version $Revision: 1.24 $
  */
 public class JarClassLoader extends ClassLoader {
@@ -145,7 +145,7 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param parent
 	 *            class loader parent
 	 */
@@ -216,7 +216,7 @@ public class JarClassLoader extends ClassLoader {
 	 * solves this problem. 5. Similar issues with native libraries:
 	 * <code>ClassLoader.findLibrary()</code> accepts ONLY string with absolute
 	 * path to the file with native library.
-	 *
+	 * 
 	 * @param inf
 	 *            JAR entry information
 	 * @return temporary file object presenting JAR entry
@@ -241,7 +241,7 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Loads specified JAR
-	 *
+	 * 
 	 * @param jarFile
 	 *            JAR file
 	 */
@@ -298,7 +298,7 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Finds native library entry.
-	 *
+	 * 
 	 * @param sLib
 	 *            Library name. For example for the name "Native" the Windows
 	 *            system returns entry for "Native.dll", the Linux system
@@ -335,7 +335,7 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Loads class from a JAR and searches for all jar-in-jar.
-	 *
+	 * 
 	 * @param sClassName
 	 *            class to load
 	 * @return loaded class
@@ -397,7 +397,7 @@ public class JarClassLoader extends ClassLoader {
 	/**
 	 * Deletes temporary files listed in the file. The method is called on
 	 * shutdown().
-	 *
+	 * 
 	 * @param sPersistentFile
 	 *            file name with temporary files list
 	 */
@@ -432,7 +432,7 @@ public class JarClassLoader extends ClassLoader {
 	 * Creates file with temporary files list. This list will be used to delete
 	 * temporary files on the next application launch. The method is called from
 	 * shutdown().
-	 *
+	 * 
 	 * @param sPersistentFile
 	 *            file name with temporary files list
 	 */
@@ -468,7 +468,7 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Checks how the application was loaded: from JAR or file system.
-	 *
+	 * 
 	 * @return true if application was started from JAR
 	 */
 	public boolean isLaunchedFromJar() {
@@ -478,7 +478,7 @@ public class JarClassLoader extends ClassLoader {
 	/**
 	 * Returns the name of the jar file main class, or null if no "Main-Class"
 	 * manifest attributes was defined.
-	 *
+	 * 
 	 * @return main class declared in JAR's manifest
 	 */
 	public String getManifestMainClass() {
@@ -496,14 +496,14 @@ public class JarClassLoader extends ClassLoader {
 
 	/**
 	 * Invokes main() method on class with provided parameters.
-	 *
+	 * 
 	 * @param sClass
 	 *            class name in form "MyClass" for default package or
 	 *            "com.abc.MyClass" for class in some package
-	 *
+	 * 
 	 * @param args
 	 *            arguments for the main() method or null
-	 *
+	 * 
 	 * @throws Throwable
 	 *             wrapper for many exceptions thrown while
 	 *             <p>
@@ -514,7 +514,7 @@ public class JarClassLoader extends ClassLoader {
 	 *             IllegalAccessException (disabled)
 	 *             <p>
 	 *             (3) Actual cause of InvocationTargetException
-	 *
+	 * 
 	 *             See
 	 *             {@link "http://java.sun.com/developer/Books/javaprogramming/JAR/api/jarclassloader.html"}
 	 *             and
@@ -563,7 +563,7 @@ public class JarClassLoader extends ClassLoader {
 	 * a class from a JAR without calling findClass(). This will "infect" the
 	 * loaded class with a system class loader. The system class loader will be
 	 * used to load all dependent classes and will fail for jar-in-jar classes.
-	 *
+	 * 
 	 * See also: http://www.cs.purdue.edu/homes/jv/smc/pubs/liang-oopsla98.pdf
 	 */
 	@Override
@@ -691,7 +691,7 @@ public class JarClassLoader extends ClassLoader {
 	/**
 	 * Read JAR entry and returns byte array of this JAR entry. This is a helper
 	 * method to load JAR entry into temporary file.
-	 *
+	 * 
 	 * @param inf
 	 *            JAR entry information object
 	 * @return byte array for the specified JAR entry
@@ -734,7 +734,7 @@ public class JarClassLoader extends ClassLoader {
 	 * See details
 	 * https://lists.xcf.berkeley.edu/lists/advanced-java/2001-January
 	 * /015374.html
-	 *
+	 * 
 	 * @throws ClassNotFoundException
 	 *             If the class could not be found.
 	 */

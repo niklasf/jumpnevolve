@@ -21,27 +21,27 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * Beschreibung: Ein Schleim der nach rechts und links läuft
- *
+ * 
  * Spezifikationen: blockbar, nicht schiebbar
- *
+ * 
  * Bewegungen: Schwerkraft wirkt; bewegt sich nach rechts und links und prallt
  * von Wänden ab; Geschwindigkeit: 10 Pixel pro Sekunde
- *
+ * 
  * Aggressivitäten: nur gegen den Spieler, der von rechts/links/unten kommt
- *
+ * 
  * Immunitäten: kann nur getötet werden, nachdem er beim ersten Mal gespalten
  * wurde
- *
+ * 
  * Aktivierung: keine
- *
+ * 
  * Deaktivierung: keine
- *
+ * 
  * Besonderheiten: teilt sich beim ersten Mal daraufspringen
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 		GravityActing, Blockable {

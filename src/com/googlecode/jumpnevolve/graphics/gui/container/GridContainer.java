@@ -3,11 +3,6 @@
  */
 package com.googlecode.jumpnevolve.graphics.gui.container;
 
-import java.util.Collection;
-
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-
 import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
 import com.googlecode.jumpnevolve.math.Rectangle;
 import com.googlecode.jumpnevolve.math.Shape;
@@ -18,9 +13,9 @@ import com.googlecode.jumpnevolve.math.Vector;
  * Rechtecke. Objekte können in verschiedenen Modi angeordnet werden (
  * {@link #MODUS_DEFAULT}, {@link #MODUS_X_LEFT} oder {@link #MODUS_X_RIGHT},
  * {@link #MODUS_Y_DOWN} oder {@link #MODUS_Y_UP}).
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class GridContainer extends InterfaceContainer {
 
@@ -64,7 +59,7 @@ public class GridContainer extends InterfaceContainer {
 	/**
 	 * Erzeugt einen neuen GridContainer, der seine Fläche in gleich große
 	 * Zellen unterteilt, in denen die Objekte gemäß der Modi angeordnet werden
-	 *
+	 * 
 	 * @param rows
 	 *            Die Anzahl der Reihen Gitters
 	 * @param cols
@@ -99,7 +94,7 @@ public class GridContainer extends InterfaceContainer {
 	/**
 	 * Erzeugt einen neuen GridContainer mit {@code modusX} =
 	 * {@link #MODUS_DEFAULT} und {@code modusY} = {@link #MODUS_DEFAULT}
-	 *
+	 * 
 	 * @see #GridContainer(int, int, int, int)
 	 */
 	public GridContainer(int rows, int cols) {
@@ -109,9 +104,9 @@ public class GridContainer extends InterfaceContainer {
 	/**
 	 * Fügt dem GridManager ein InterfacePart in einer bestimmten Zelle mit den
 	 * Default-Modi hinzu
-	 *
+	 * 
 	 * @see #add(InterfacePart, int, int, int, int)
-	 *
+	 * 
 	 * @param adding
 	 *            Der hinzuzufügen Objekt
 	 * @param row
@@ -128,7 +123,7 @@ public class GridContainer extends InterfaceContainer {
 	/**
 	 * Fügt dem GridManager ein InterfacePart in einer bestimmten Zelle mit
 	 * neuen Modi hinzu
-	 *
+	 * 
 	 * @param adding
 	 *            Der hinzuzufügen Objekt
 	 * @param row

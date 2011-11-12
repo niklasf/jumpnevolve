@@ -8,26 +8,26 @@ import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * Beschreibung: Ein Soldat der nach rechts und links läuft
- *
+ * 
  * Spezifikationen: siehe Soldier
- *
+ * 
  * Bewegungen: siehe Soldier; bewegt sich nach rechts und links und prallt von
  * Wänden ab; Geschwindigkeit: 10 Pixel pro Sekunde
- *
+ * 
  * Aggressivitäten: siehe Soldier
- *
+ * 
  * Immunitäten: siehe Soldier
- *
+ * 
  * Aktivierung: keine
- *
+ * 
  * Deaktivierung: keine
- *
+ * 
  * Besonderheiten: keine
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class WalkingSoldier extends Soldier implements Moving {
 

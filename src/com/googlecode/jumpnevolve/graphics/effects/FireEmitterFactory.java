@@ -22,7 +22,7 @@ import org.newdawn.slick.particles.effects.FireEmitter;
 
 /**
  * Erzeugt einen Feuereffekt.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class FireEmitterFactory implements ParticleEmitterFactory {

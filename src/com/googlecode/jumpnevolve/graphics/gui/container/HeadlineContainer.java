@@ -7,9 +7,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 /**
  * Ein InterfaceContainer, der die ihm zur Verfügung stehende Fläche in eine
  * Kopfzeile und einen darunterliegenden Hauptteil aufteilt
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class HeadlineContainer extends InterfaceContainer {
 
@@ -17,7 +17,7 @@ public class HeadlineContainer extends InterfaceContainer {
 
 	/**
 	 * Erzeugt einen neuen HeadlineContainer
-	 *
+	 * 
 	 * @param headlineCon
 	 *            Der InterfaceContainer, der die Kopfzeilen-Fläche einnimmt
 	 * @param mainCon

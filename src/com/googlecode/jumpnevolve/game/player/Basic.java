@@ -10,9 +10,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine Basis Figur für den Spieler
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  *         TODO: Werte anpassen
  */
 public class Basic implements Playable {

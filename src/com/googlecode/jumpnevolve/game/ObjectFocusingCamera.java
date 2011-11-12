@@ -23,7 +23,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine Kameraimplementierung, die die Kamera permanent auf ein Objekt richtet.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class ObjectFocusingCamera implements Camera {

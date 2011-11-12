@@ -23,7 +23,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Wird implementiert um Kameraeinstellungen zu erstellen.
- *
+ * 
  * @author Niklas Fiekas
  */
 public interface Camera extends Serializable {

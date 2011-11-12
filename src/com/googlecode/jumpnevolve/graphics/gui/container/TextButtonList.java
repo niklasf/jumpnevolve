@@ -18,7 +18,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class TextButtonList extends InterfaceContainer implements Informable {
 

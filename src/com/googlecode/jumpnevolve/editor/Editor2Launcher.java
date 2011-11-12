@@ -2,7 +2,6 @@ package com.googlecode.jumpnevolve.editor;
 
 import java.io.IOException;
 
-import com.googlecode.jumpnevolve.game.Levelloader;
 import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
 
@@ -10,7 +9,7 @@ public class Editor2Launcher {
 
 	/**
 	 * Startet den neuen Editor.
-	 *
+	 * 
 	 * @param args
 	 *            Kommandozeilenargumente
 	 * @throws IOException

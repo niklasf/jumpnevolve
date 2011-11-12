@@ -23,13 +23,13 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 
 /**
  * @author niklas
- *
+ * 
  */
 public class Jumpnevolve {
 
 	/**
 	 * Startet das Spiel.
-	 *
+	 * 
 	 * @param args
 	 *            Kommandozeilenargumente
 	 */

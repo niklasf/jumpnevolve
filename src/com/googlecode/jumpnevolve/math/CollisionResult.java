@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.math;
 
 /**
  * @author Erik Wagner
- *
+ * 
  */
 public class CollisionResult {
 
@@ -58,7 +58,7 @@ public class CollisionResult {
 
 	/**
 	 * Setzt die minimale Strecke zum Verschieben des Objekts
-	 *
+	 * 
 	 * @param translation
 	 *            Die Verschiebungsstrecke
 	 */
@@ -75,7 +75,7 @@ public class CollisionResult {
 
 	/**
 	 * Setzt die minimale Strecke zum Verschieben des Objekts
-	 *
+	 * 
 	 * @param translation
 	 *            Die Verschiebungsstrecke
 	 */

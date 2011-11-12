@@ -25,7 +25,7 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Erzeugt einen Nebeleffekt.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class FogEmitterFactory implements ParticleEmitterFactory {

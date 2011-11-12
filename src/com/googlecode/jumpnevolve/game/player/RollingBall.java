@@ -10,11 +10,11 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Ein RollingBall, den der Spieler spielen kann
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  *         TODO: Werte anpassen
- *
+ * 
  */
 public class RollingBall implements Playable {
 

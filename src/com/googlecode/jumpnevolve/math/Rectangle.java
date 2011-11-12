@@ -55,13 +55,13 @@ public class Rectangle implements Shape {
 	 * <p>
 	 * Erzeugt ein neues Rechteck.
 	 * </p>
-	 *
+	 * 
 	 * <p>
 	 * Wird eine negative Breite oder Höhe übergeben, werden die Parameter so
 	 * neu bestimmt, dass x|y die obere linke Ecke bleibt und Breite und Höhe
 	 * positiv sind.
 	 * </p>
-	 *
+	 * 
 	 * @param x
 	 *            Die X-Koordinate der oberen linken Ecke
 	 * @param y
@@ -70,7 +70,7 @@ public class Rectangle implements Shape {
 	 *            Die Breite
 	 * @param height
 	 *            Die Höhe
-	 *
+	 * 
 	 * @throws IllegalArgumentException
 	 *             Wenn Breite oder Höhe {@code 0} sind.
 	 */
@@ -94,19 +94,19 @@ public class Rectangle implements Shape {
 	 * <p>
 	 * Erzeugt ein neues Rechteck.
 	 * </p>
-	 *
+	 * 
 	 * <p>
 	 * Zwischen positiven und negativen Breiten- und Höhenangaben wird nicht
 	 * unterschieden.
 	 * </p>
-	 *
+	 * 
 	 * @param center
 	 *            Ortsvektor des Mittelpunktes
 	 * @param width
 	 *            Breite
 	 * @param height
 	 *            Höhe
-	 *
+	 * 
 	 * @throws IllegalArgumentException
 	 *             Wenn Breite oder Höhe {@code 0} sind.
 	 */
@@ -122,7 +122,7 @@ public class Rectangle implements Shape {
 
 	/**
 	 * @see #Rectangle(Vector, float, float)
-	 *
+	 * 
 	 * @param center
 	 *            Ortsvektor des Mittelpunkts
 	 * @param centerToCorner

@@ -10,9 +10,9 @@ import com.googlecode.jumpnevolve.math.Rectangle;
 
 /**
  * Interface wird von allem Klassen implementiert, die zum Interface gehören
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public interface InterfacePart extends Drawable, Pollable {
 
@@ -24,7 +24,7 @@ public interface InterfacePart extends Drawable, Pollable {
 
 	/**
 	 * Setzt das parent-Objekt dieses Objekts
-	 *
+	 * 
 	 * @param parent
 	 *            Das parent-Objekt
 	 */

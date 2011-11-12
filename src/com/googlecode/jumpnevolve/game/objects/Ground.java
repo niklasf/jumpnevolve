@@ -11,25 +11,25 @@ import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * Beschreibung: Normaler Boden, zum Gestalten der Landschaft
- *
+ * 
  * Spezifikationen: blockbar, nicht schiebbar
- *
+ * 
  * Bewegungen: keine
- *
+ * 
  * Aggressivitäten: keine
- *
+ * 
  * Immunitäten: keine
- *
+ * 
  * Aktivierung: keine
- *
+ * 
  * Deaktivierung: keine
- *
+ * 
  * Besonderheiten: beliebige Größe anhand eines Vektors
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Ground extends GroundTemplate {
 
@@ -40,8 +40,8 @@ public class Ground extends GroundTemplate {
 	}
 
 	public Ground(World world, Vector position, String arguments) {
-		super(world, ShapeFactory.createRectangle(position, Vector
-				.parseVector(arguments)));
+		super(world, ShapeFactory.createRectangle(position,
+				Vector.parseVector(arguments)));
 	}
 
 	@Override

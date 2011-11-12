@@ -21,7 +21,7 @@ import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
  * Läd und startet die Anwendung aus dem bin-Verzeichnis oder einem Archiv.
- *
+ * 
  * @author Niklas Fiekas
  */
 public class JumpnevolveLauncher {

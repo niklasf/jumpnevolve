@@ -21,7 +21,7 @@ import org.newdawn.slick.particles.ParticleEmitter;
 
 /**
  * Implementieren, um Partikeleffekte zur erzeugen.
- *
+ * 
  * @author Niklas Fiekas
  */
 public interface ParticleEmitterFactory {

@@ -6,9 +6,9 @@ import com.googlecode.jumpnevolve.graphics.world.Camera;
 
 /**
  * Ein Interfaceable ist ein Objekt, was ein Interface beinhalten kann
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public interface Interfaceable extends Pollable, Drawable, Informable {
 

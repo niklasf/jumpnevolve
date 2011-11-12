@@ -9,9 +9,9 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 /**
  * Eine KillingMachine mit Kaktus-Aussehen
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public class Cactus extends KillingMachine {
 

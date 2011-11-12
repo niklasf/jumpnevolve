@@ -3,19 +3,16 @@ package com.googlecode.jumpnevolve.game.menu;
 import com.googlecode.jumpnevolve.graphics.gui.Informable;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
-import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
 import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.container.HeadlineContainer;
 import com.googlecode.jumpnevolve.graphics.gui.container.InterfaceContainer;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
-import com.googlecode.jumpnevolve.math.Shape;
-import com.googlecode.jumpnevolve.math.Vector;
 
 /**
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  *         TODO: Einträge in ein SubMenu ermöglichen (TextButtonList)
  */
 public abstract class SubMenu extends HeadlineContainer implements Informable,

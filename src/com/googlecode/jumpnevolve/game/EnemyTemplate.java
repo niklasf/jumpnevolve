@@ -7,16 +7,16 @@ import com.googlecode.jumpnevolve.math.NextShape;
 
 /**
  * Die Vorlage für jede Art von Gegnern.
- *
+ * 
  * Ein Gegner zeichnet sich dadurch aus, dass er lebt und töten kann. Er kann
  * nicht geschoben oder aktiviert werden. Er kann blockbar sein, muss es aber
  * nicht.
- *
+ * 
  * Gegner töten normalerweise alle lebenden Objekte auf die sie stoßen bis auf
  * andere Gegner.
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public abstract class EnemyTemplate extends AbstractObject implements Fighting {
 

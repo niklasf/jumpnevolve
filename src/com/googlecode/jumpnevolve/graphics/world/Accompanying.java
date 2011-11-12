@@ -5,9 +5,9 @@ package com.googlecode.jumpnevolve.graphics.world;
 
 /**
  * Ein Interface für Objekte, die einer "Gruppe" zugehörig ist
- *
+ * 
  * @author Erik Wagner
- *
+ * 
  */
 public interface Accompanying {
 
@@ -19,7 +19,7 @@ public interface Accompanying {
 
 	/**
 	 * Die "Gruppe" des Objekts
-	 *
+	 * 
 	 * @return Eine der COMPANY-Konstanten aus {@link Accompanying}
 	 */
 	public int getCompany();

@@ -22,7 +22,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import com.googlecode.jumpnevolve.math.Circle;
-import com.googlecode.jumpnevolve.math.Line;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.PointLine;
 import com.googlecode.jumpnevolve.math.Rectangle;

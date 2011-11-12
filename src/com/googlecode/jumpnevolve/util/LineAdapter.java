@@ -5,7 +5,7 @@ package com.googlecode.jumpnevolve.util;
  * Standartimplementierung {@link LineListener}, die überschrieben werden kann
  * um nur eizelne Methoden vom Standartverhalten abweichen zu lassen.
  * </p>
- *
+ * 
  * <ul>
  * <li>Leere Zeilen werden ignoriert und das Parsen wird mit der nächsten Zeile
  * fortgesetzt.</li>
@@ -14,7 +14,7 @@ package com.googlecode.jumpnevolve.util;
  * <li>Erfolgreich gelesene und geparste Zeilen werden nicht weiter verarbeitet.
  * Das Parsen wird fortgesetzt.</li>
  * </ul>
- *
+ * 
  * @author Niklas Fiekas
  */
 public class LineAdapter implements LineListener {
