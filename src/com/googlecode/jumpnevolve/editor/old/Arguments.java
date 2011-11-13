@@ -15,6 +15,8 @@ import javax.swing.JTextField;
  */
 public class Arguments extends JPanel {
 
+	private static final long serialVersionUID = 4966216628735558134L;
+
 	private JTextField[] contents;
 	private char[] hyphen;
 	private boolean alreadyInitialize = false;

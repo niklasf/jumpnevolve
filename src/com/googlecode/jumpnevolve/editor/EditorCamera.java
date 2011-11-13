@@ -5,6 +5,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 public class EditorCamera implements Camera {
 
+	private static final long serialVersionUID = 4544520375814328603L;
+
 	private final Editor2 parent;
 
 	public EditorCamera(Editor2 parent) {

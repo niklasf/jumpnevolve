@@ -115,6 +115,8 @@ public abstract class Menu extends AbstractState implements Interfaceable {
 	public Camera getCamera() {
 		// Eine Kamera die immer auf das Zentrum der Engine fixiert ist
 		return new Camera() {
+			private static final long serialVersionUID = -8443861917665677557L;
+
 			@Override
 			public Vector getPosition() {
 				return new Vector(Engine.getInstance().getWidth() / 2.0f,

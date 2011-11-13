@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.googlecode.jumpnevolve.game.objects;
 
 import org.newdawn.slick.Graphics;
@@ -16,6 +13,8 @@ import com.googlecode.jumpnevolve.math.Vector;
  * 
  */
 public class Cannon extends Shooter {
+
+	private static final long serialVersionUID = -1165999636075257562L;
 
 	private Vector startPosition;
 	private final Vector shotDirection;

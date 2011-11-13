@@ -29,6 +29,8 @@ import com.googlecode.jumpnevolve.util.Masses;
  */
 public class Fluid extends ObjectTemplate {
 
+	private static final long serialVersionUID = 8268262299185461488L;
+
 	private final float maximumVelocity;
 	private final ParticleEffect effect1;
 	private final ParticleEffect effect2;

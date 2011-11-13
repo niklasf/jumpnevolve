@@ -15,6 +15,8 @@ import com.googlecode.jumpnevolve.util.Masses;
 
 public class Goal extends ObjectTemplate implements Activable {
 
+	private static final long serialVersionUID = 6604514156499181752L;
+
 	private final Level parent;
 
 	public Goal(Level level, Vector position) {

@@ -47,6 +47,8 @@ import com.googlecode.jumpnevolve.util.Masses;
 public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 		GravityActing, Blockable {
 
+	private static final long serialVersionUID = 7197530111176449977L;
+
 	private boolean divisble;
 	private Vector curDirection = Vector.ZERO;
 

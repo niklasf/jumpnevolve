@@ -21,6 +21,8 @@ import com.googlecode.jumpnevolve.util.Masses;
 public abstract class Shooter extends ObjectTemplate implements Activable,
 		Blockable {
 
+	private static final long serialVersionUID = -7659273604159649375L;
+
 	private final Timer timeToNextShot;
 
 	protected abstract void shot();

@@ -29,6 +29,8 @@ import com.googlecode.jumpnevolve.math.Vector;
 
 public class Editor extends JFrame implements ActionListener, ItemListener {
 
+	private static final long serialVersionUID = 3241031530238525323L;
+
 	private HashMap<String, ObjectSettings> objects = new HashMap<String, ObjectSettings>();
 	private ObjectSettings actSettings;
 	private JPanel contentPanel, auswahl, objectAuswahl, currentSettings,
