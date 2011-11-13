@@ -13,6 +13,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -43,7 +44,8 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	public Elevator(World world, Vector position, Vector dimension,
 			float downEnd, float upEnd) {
-		super(world, ShapeFactory.createRectangle(position, dimension), 2.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension),
+				Masses.ELEVATOR);
 		if (upEnd > downEnd) {
 			this.upEnd = downEnd;
 			this.downEnd = upEnd;

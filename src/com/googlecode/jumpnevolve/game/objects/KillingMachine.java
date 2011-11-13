@@ -12,6 +12,7 @@ import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -40,7 +41,8 @@ public abstract class KillingMachine extends EnemyTemplate implements
 	private static final long serialVersionUID = -5724600752326575341L;
 
 	public KillingMachine(World world, Vector position) {
-		super(world, ShapeFactory.createCircle(position, 15.0f), 20.0f);
+		super(world, ShapeFactory.createCircle(position, 15.0f),
+				Masses.KILLING_MACHINE);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * Ein Späher für andere Objekte.
@@ -59,7 +60,7 @@ public class ScoutObject extends ObjectTemplate {
 	 */
 	public ScoutObject(World world, NextShape shape, Client parent,
 			boolean moveWithParent) {
-		super(world, shape, 0.0f);
+		super(world, shape, Masses.NO_MASS);
 		this.parent = parent;
 		this.lastParentPosition = parent.getPosition();
 		this.moveWithParent = moveWithParent;

@@ -5,6 +5,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.NextShape;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * Die Vorlage für jede Art von Landschaft.
@@ -24,7 +25,7 @@ public abstract class GroundTemplate extends AbstractObject implements
 	private static final long serialVersionUID = 7287324851357837067L;
 
 	public GroundTemplate(World world, NextShape shape) {
-		super(world, shape, 0.0f);
+		super(world, shape, Masses.NO_MASS);
 	}
 
 	public boolean wantBlock(Blockable other) {

@@ -12,6 +12,7 @@ import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.NextShape;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * @author Erik Wagner
@@ -33,7 +34,7 @@ public abstract class Shooter extends ObjectTemplate implements Activable,
 	 */
 	public Shooter(World world, NextShape shape, float shotInterval,
 			boolean activated) {
-		super(world, shape, 0.0f);
+		super(world, shape, Masses.NO_MASS);
 		this.timeToNextShot = new Timer(shotInterval);
 		if (activated) {
 			this.timeToNextShot.start();

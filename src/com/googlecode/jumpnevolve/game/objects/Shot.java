@@ -27,16 +27,9 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	private static final long serialVersionUID = 4190924434159617029L;
 	private final Timer livingTime;
 
-	/**
-	 * @param world
-	 * @param shape
-	 * @param mass
-	 * @param blockable
-	 * @param pushable
-	 */
-	public Shot(World world, NextShape shape, float livingTime,
+	public Shot(World world, NextShape shape, float mass, float livingTime,
 			Vector shotDirection, float shotSpeed) {
-		super(world, shape, 0.1f, shotDirection.getDirection().mul(shotSpeed));
+		super(world, shape, mass, shotDirection.getDirection().mul(shotSpeed));
 		this.livingTime = new Timer(livingTime);
 		this.livingTime.start();
 	}

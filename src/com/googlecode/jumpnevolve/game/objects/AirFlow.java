@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * @author Erik Wagner
@@ -32,7 +33,7 @@ public class AirFlow extends ObjectTemplate implements Activable,
 	public AirFlow(World world, Vector position, Vector dimension,
 			Vector direction, float force, boolean active) {
 		super(world, ShapeFactory.createRectangle(position, dimension,
-				direction.clockWiseAng()), 0.0f);
+				direction.clockWiseAng()), Masses.NO_MASS);
 		direction = direction.getDirection();
 		this.active = active;
 		this.force = direction.mul(GRAVITY).mul(force);

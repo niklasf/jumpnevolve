@@ -11,6 +11,7 @@ import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 public class Goal extends ObjectTemplate implements Activable {
 
@@ -18,7 +19,7 @@ public class Goal extends ObjectTemplate implements Activable {
 
 	public Goal(Level level, Vector position) {
 		super(level, ShapeFactory.createRectangle(position, 60.0f, 63.75f),
-				0.0f);
+				Masses.NO_MASS);
 		this.parent = level;
 	}
 

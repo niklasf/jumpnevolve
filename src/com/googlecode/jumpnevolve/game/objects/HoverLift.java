@@ -14,6 +14,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * Ein Luft-Lift, der normalerweise ein Bestreben nach oben hat.
@@ -35,7 +36,8 @@ public class HoverLift extends ObjectTemplate implements Blockable,
 
 	public HoverLift(World world, Vector position, Vector dimension,
 			float portableMass) {
-		super(world, ShapeFactory.createRectangle(position, dimension), 1.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension),
+				Masses.HOVER_LIFT);
 		this.upForce = Vector.UP.mul(GRAVITY * portableMass);
 		ScoutObject scout = new ScoutObject(world, this.getShape(), this);
 		scout.moveCenter(Vector.UP.mul(dimension.y * 0.3f));

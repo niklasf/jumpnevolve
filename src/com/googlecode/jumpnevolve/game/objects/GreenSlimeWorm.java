@@ -19,6 +19,7 @@ import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -50,12 +51,14 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 	private Vector curDirection = Vector.ZERO;
 
 	public GreenSlimeWorm(World world, Vector position) {
-		super(world, ShapeFactory.createRectangle(position, 80.0f, 21.0f), 5.0f);
+		super(world, ShapeFactory.createRectangle(position, 80.0f, 21.0f),
+				Masses.GREEN_SLIME_WORM);
 		this.divisble = true;
 	}
 
 	private GreenSlimeWorm(World world, Vector position, boolean next) {
-		super(world, ShapeFactory.createRectangle(position, 50.0f, 13.0f), 5.0f);
+		super(world, ShapeFactory.createRectangle(position, 50.0f, 13.0f),
+				Masses.GREEN_SLIME_WORM);
 		this.divisble = false;
 	}
 

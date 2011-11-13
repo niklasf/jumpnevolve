@@ -15,6 +15,7 @@ import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.Shape;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -43,7 +44,7 @@ public class Soldier extends EnemyTemplate implements GravityActing, Blockable {
 
 	public Soldier(World world, Vector position) {
 		super(world, ShapeFactory.createRectangle(position, new Vector(20.0f,
-				20.0f)), 5.1f);
+				20.0f)), Masses.SOLDIER);
 	}
 
 	@Override

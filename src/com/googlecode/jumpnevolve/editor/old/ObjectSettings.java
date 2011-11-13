@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.googlecode.jumpnevolve.game.Level;
-import com.googlecode.jumpnevolve.game.OldGameObjects;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.math.Vector;
 

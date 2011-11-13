@@ -15,6 +15,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * Eine Flüssigkeit, die die Geschwindigkeit der Objekte darin bis zu einer
@@ -41,7 +42,8 @@ public class Fluid extends ObjectTemplate {
 	 */
 	public Fluid(World world, Vector position, Vector dimension,
 			float maximumVelocity) {
-		super(world, ShapeFactory.createRectangle(position, dimension), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension),
+				Masses.NO_MASS);
 		this.maximumVelocity = maximumVelocity;
 		this.effect1 = new ParticleEffect(position, new FogEmitterFactory());
 		this.effect2 = new ParticleEffect(position,

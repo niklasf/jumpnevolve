@@ -11,6 +11,7 @@ import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -40,7 +41,8 @@ public class Button extends ActivatingObject implements Activable {
 	private final float activatingTime;
 
 	public Button(World world, Vector position, float activatingTime) {
-		super(world, ShapeFactory.createRectangle(position, 30, 30), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, 30, 30),
+				Masses.NO_MASS);
 		this.remainingTime.setTime(activatingTime);
 		this.activatingTime = activatingTime;
 	}

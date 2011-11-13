@@ -12,6 +12,7 @@ import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Masses;
 
 /**
  * 
@@ -41,7 +42,8 @@ public class Door extends ObjectTemplate implements Activable, Blockable {
 	private boolean openingState = false;
 
 	public Door(World world, Vector position, Vector dimension) {
-		super(world, ShapeFactory.createRectangle(position, dimension), 0.0f);
+		super(world, ShapeFactory.createRectangle(position, dimension),
+				Masses.NO_MASS);
 	}
 
 	public Door(World world, Vector position, String arguments) {
