@@ -50,7 +50,7 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 	private static final long serialVersionUID = 7197530111176449977L;
 
 	private boolean divisble;
-	private Vector curDirection = Vector.ZERO;
+	private Vector curDirection = Vector.RIGHT;
 
 	public GreenSlimeWorm(World world, Vector position) {
 		super(world, ShapeFactory.createRectangle(position, 80.0f, 21.0f),
@@ -76,8 +76,8 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 		if (this.isWayBlocked(Shape.LEFT)) {
 			this.curDirection = Vector.RIGHT;
 		}
-		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.DOWN)) {
-			this.curDirection = Vector.RIGHT;
+		if (this.isWayBlocked(this.curDirection.toShapeDirection())) {
+			this.curDirection = this.curDirection.neg();
 		}
 	}
 
@@ -144,7 +144,7 @@ public class GreenSlimeWorm extends EnemyTemplate implements Moving,
 
 	@Override
 	public float getMovingSpeed() {
-		return 5.0f;
+		return MOVE_SLIMEWORM;
 	}
 
 	@Override

@@ -12,6 +12,11 @@ import com.googlecode.jumpnevolve.math.Vector;
  */
 public interface Moving extends SimpleObject {
 
+	public static final float MOVE_SOLDIER = 50.0f;
+	public static final float MOVE_SLIDING_PLATTFORM = 50.0f;
+	public static final float MOVE_ELEVATOR = 50.0f;
+	public static final float MOVE_SLIMEWORM = 20.0f;
+
 	/**
 	 * Gibt die Geschwindigkeit zurück, mit der sich das Objekt in x-Richtung
 	 * bewegen möchte

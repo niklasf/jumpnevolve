@@ -32,7 +32,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class WalkingSoldier extends Soldier implements Moving {
 
 	private static final long serialVersionUID = 3329079316071279296L;
-	private Vector curDirection = Vector.ZERO;
+	private Vector curDirection = Vector.RIGHT;
 
 	public WalkingSoldier(World world, Vector position) {
 		super(world, position);
@@ -47,8 +47,8 @@ public class WalkingSoldier extends Soldier implements Moving {
 		if (this.isWayBlocked(Shape.LEFT)) {
 			this.curDirection = Vector.RIGHT;
 		}
-		if (this.getVelocity().x == 0.0f && this.isWayBlocked(Shape.DOWN)) {
-			this.curDirection = Vector.RIGHT;
+		if (this.isWayBlocked(this.curDirection.toShapeDirection())) {
+			this.curDirection = this.curDirection.neg();
 		}
 	}
 
@@ -59,6 +59,6 @@ public class WalkingSoldier extends Soldier implements Moving {
 
 	@Override
 	public float getMovingSpeed() {
-		return 10.0f;
+		return MOVE_SOLDIER;
 	}
 }

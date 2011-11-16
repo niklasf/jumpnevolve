@@ -95,7 +95,7 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	@Override
 	public float getMovingSpeed() {
-		return 50.0f;
+		return MOVE_ELEVATOR;
 	}
 
 	@Override

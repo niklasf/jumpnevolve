@@ -6,6 +6,8 @@ package com.googlecode.jumpnevolve.graphics.world;
  */
 public interface Jumping extends SimpleObject {
 
+	public static final float JUMP_SOLDIER = 100;
+
 	/**
 	 * Gibt die Höhe des Sprungs zurück
 	 * 

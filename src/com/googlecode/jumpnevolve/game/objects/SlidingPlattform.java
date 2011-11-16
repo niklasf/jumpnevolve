@@ -88,7 +88,7 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 
 	@Override
 	public float getMovingSpeed() {
-		return 50.0f;
+		return MOVE_SLIDING_PLATTFORM;
 	}
 
 	@Override
