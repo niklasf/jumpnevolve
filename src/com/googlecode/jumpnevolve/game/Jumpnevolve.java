@@ -20,6 +20,7 @@ package com.googlecode.jumpnevolve.game;
 import com.googlecode.jumpnevolve.game.menu.MainMenu;
 import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author niklas
@@ -36,7 +37,7 @@ public class Jumpnevolve {
 	public static void main(String[] args) {
 		AbstractEngine engine = Engine.getInstance();
 
-		engine.setTargetFrameRate(100);
+		engine.setTargetFrameRate(Parameter.GAME_FPS_TARGET);
 		engine.switchState(new MainMenu("resources/levels/"));
 		engine.start();
 	}

@@ -8,17 +8,20 @@ import com.googlecode.jumpnevolve.editor.arguments.EditorObjectArguments;
 import com.googlecode.jumpnevolve.editor.arguments.NumberSelection;
 import com.googlecode.jumpnevolve.editor.arguments.RectangleDimension;
 import com.googlecode.jumpnevolve.editor.arguments.RelativePositionMarker;
+import com.googlecode.jumpnevolve.editor.arguments.TextContent;
 import com.googlecode.jumpnevolve.game.objects.AirFlow;
 import com.googlecode.jumpnevolve.game.objects.Button;
 import com.googlecode.jumpnevolve.game.objects.Cactus;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.FallingGround;
 import com.googlecode.jumpnevolve.game.objects.Fluid;
 import com.googlecode.jumpnevolve.game.objects.Goal;
 import com.googlecode.jumpnevolve.game.objects.GreenSlimeWorm;
 import com.googlecode.jumpnevolve.game.objects.Ground;
 import com.googlecode.jumpnevolve.game.objects.HoverLift;
+import com.googlecode.jumpnevolve.game.objects.InfoSign;
 import com.googlecode.jumpnevolve.game.objects.JumpingSoldier;
 import com.googlecode.jumpnevolve.game.objects.SlidingPlattform;
 import com.googlecode.jumpnevolve.game.objects.Soldier;
@@ -183,7 +186,25 @@ public enum GameObjects implements InterfaceFunction {
 							null, "Maße", new Vector(30, 10), Color.blue),
 							new int[] { -1 }),
 					new EditorArgumentAllocation(new NumberSelection(null,
-							"Tragbare Masse", 10, 1, 100, 1), null) }));
+							"Tragbare Masse", 10, 1, 100, 1), null) })),
+
+	INFO_SIGN(
+			InfoSign.class,
+			"object-pictures/infoSign.png",
+			false,
+			new EditorObjectArguments(
+					new EditorArgumentAllocation[] { new EditorArgumentAllocation(
+							new TextContent(null, "Content"), new int[] { -1 }) })),
+
+	FALLING_GROUND(
+			FallingGround.class,
+			"textures/stone.png",
+			false,
+			new EditorObjectArguments(
+					new EditorArgumentAllocation[] { new EditorArgumentAllocation(
+							new RectangleDimension(null, null, "Maße",
+									new Vector(30, 10), Color.blue),
+							new int[] { -1 }) }));
 
 	public final String className;
 	public final String editorSkinFileName;
@@ -256,6 +277,10 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new AirFlow(level, position, arguments);
 		} else if (className.equals(HOVER_LIFT.className)) {
 			newObject = new HoverLift(level, position, arguments);
+		} else if (className.equals(INFO_SIGN.className)) {
+			newObject = new InfoSign(level, position, arguments);
+		} else if (className.equals(FALLING_GROUND.className)) {
+			newObject = new FallingGround(level, position, arguments);
 		}
 		return newObject;
 	}

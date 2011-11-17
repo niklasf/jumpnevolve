@@ -166,6 +166,16 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 											this.content2);
 									this.input_timer.start(DELAY_LENGTH);
 								}
+								if (keyName.equals("comma")) {
+									this.changeContent(this.content1 += ",",
+											this.content2);
+									this.input_timer.start(DELAY_LENGTH);
+								}
+								if (keyName.equals("space")) {
+									this.changeContent(this.content1 += " ",
+											this.content2);
+									this.input_timer.start(DELAY_LENGTH);
+								}
 							}
 						}
 					}

@@ -24,6 +24,22 @@ package com.googlecode.jumpnevolve.util;
 public class Parameter {
 
 	/**
+	 * Die gewünschte FPS-Rate, die von der Engine angestrebt werden soll
+	 */
+	public static final int GAME_FPS_TARGET = 100;
+
+	/**
+	 * Die minimale FPS-Rate, unter der Frames als Lagg gewertet werden.
+	 * <p>
+	 * Im Falle eines Lags: Das Level wird für den jeweiligen Frame nicht
+	 * weiterberechnet
+	 * <p>
+	 * Der Wert sollte <strong>deutlich</strong> unterhalb von "GAME_FPS_TARGET"
+	 * liegen
+	 */
+	public static final int GAME_FPS_MINIMUM = 10;
+
+	/**
 	 * Die Schwerkraft, die auf Objekte wirkt
 	 */
 	public static final float GAME_ABSTRACTOBJECT_GRAVITY = 98.1f;
@@ -92,4 +108,19 @@ public class Parameter {
 	 * Das Interval für die Spray-Partikel
 	 */
 	public static final int EFFECTS_SPRAY_INTERVAL = 30;
+
+	/**
+	 * Die Größe der unbeschriebene Ränder rechts und links am Infoschild
+	 */
+	public static final float OBJECTS_INFOSIGN_SIDEDIST = 5.0f;
+
+	/**
+	 * Der Abstand, der zwischen den Zeilen eines Infoschilds eingefügt wird
+	 */
+	public static final float OBJECTS_INFOSIGN_LINEDIST = 2.0f;
+
+	/**
+	 * Der Zeit nach der der FallingGround zurückgesetzt wird
+	 */
+	public static final float OBJECTS_FALLINGGROUND_FALLINGTIME = 10.0f;
 }

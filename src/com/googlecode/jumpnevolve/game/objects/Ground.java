@@ -40,8 +40,7 @@ public class Ground extends GroundTemplate {
 	}
 
 	public Ground(World world, Vector position, String arguments) {
-		super(world, ShapeFactory.createRectangle(position,
-				Vector.parseVector(arguments)));
+		this(world, position, Vector.parseVector(arguments));
 	}
 
 	@Override

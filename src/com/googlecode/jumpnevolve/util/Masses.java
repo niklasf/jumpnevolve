@@ -20,5 +20,6 @@ public class Masses {
 	public static final float HOVER_LIFT = 1.0f;
 	public static final float GREEN_SLIME_WORM = 5.0f;
 	public static final float ELEVATOR = 2.0f;
+	public static final float FALLING_GROUND = 1.0f;
 
 }

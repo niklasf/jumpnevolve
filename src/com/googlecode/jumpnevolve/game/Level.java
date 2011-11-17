@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.menu.Menu;
 import com.googlecode.jumpnevolve.game.player.Player;
@@ -138,27 +139,33 @@ public class Level extends World {
 
 	@Override
 	public void poll(Input input, float secounds) {
-		// Nicht weitersimulieren, wenn das Ziel erreicht wurde
-		if (!this.finished) {
-			super.poll(input, secounds);
-			this.pollPlayer(input, secounds);
-			this.timer.poll(input, secounds);
-			if (this.timer.didFinish()) {
-				if (!this.failed) {
-					this.failed();
-				} else {
-					this.reload();
+		// Level ignoriert Lags und rechnet dann einfach nicht weiter
+		if (secounds < 1 / (float) Parameter.GAME_FPS_MINIMUM) {
+			// Nicht weitersimulieren, wenn das Ziel erreicht wurde
+			if (!this.finished) {
+				super.poll(input, secounds);
+				this.pollPlayer(input, secounds);
+				this.timer.poll(input, secounds);
+				if (this.timer.didFinish()) {
+					if (!this.failed) {
+						this.failed();
+					} else {
+						this.reload();
+					}
 				}
+			} else {
+				// Nur der Spieler bewegt sich noch und springt ständig
+				this.pollPlayer(input, secounds);
+			}
+			if (this.finishedEffect != null) {
+				this.finishedEffect.poll(input, secounds);
+			}
+			if (this.failedEffect != null) {
+				this.failedEffect.poll(input, secounds);
 			}
 		} else {
-			// Nur der Spieler bewegt sich noch und springt ständig
-			this.pollPlayer(input, secounds);
-		}
-		if (this.finishedEffect != null) {
-			this.finishedEffect.poll(input, secounds);
-		}
-		if (this.failedEffect != null) {
-			this.failedEffect.poll(input, secounds);
+			Log.info("Lag detektiert! : thisFrameSec = " + secounds + " maxFrameSec = "
+					+ 1 / (float)Parameter.GAME_FPS_MINIMUM);
 		}
 	}
 
