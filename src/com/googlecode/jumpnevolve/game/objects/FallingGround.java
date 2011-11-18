@@ -37,7 +37,7 @@ public class FallingGround extends ObjectTemplate implements Blockable {
 
 	@Override
 	public boolean wantBlock(Blockable other) {
-		return true;
+		return this.getPosition().y - startPosition.y < Parameter.OBJECTS_FALLINGGROUND_FALLINGDIST;
 	}
 
 	@Override
@@ -49,10 +49,11 @@ public class FallingGround extends ObjectTemplate implements Blockable {
 	protected void specialSettingsPerRound(Input input) {
 		if (this.falling.isRunning()) {
 			this.applyForce(Vector.DOWN.mul(this.getMass()
-					* Parameter.GAME_ABSTRACTOBJECT_GRAVITY));
+					* Parameter.GAME_ABSTRACTOBJECT_GRAVITY * 0.9f));
 		}
 		if (this.falling.didFinish()) {
 			this.setPosition(this.startPosition);
+			this.stopMoving();
 			this.falling.setTime(Parameter.OBJECTS_FALLINGGROUND_FALLINGTIME);
 		}
 	}
@@ -71,7 +72,9 @@ public class FallingGround extends ObjectTemplate implements Blockable {
 	}
 
 	public void draw(Graphics g) {
-		GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
-				.getImage("textures/stone.png"), false);
+		if (this.getPosition().y - startPosition.y < Parameter.OBJECTS_FALLINGGROUND_FALLINGDIST) {
+			GraphicUtils.texture(g, getShape(), ResourceManager.getInstance()
+					.getImage("textures/stone.png"), false);
+		}
 	}
 }

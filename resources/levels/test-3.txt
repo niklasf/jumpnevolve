@@ -1,0 +1,9 @@
+Leveldimensionen_1000_1000_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_(52.0| 134.0)
+Ground_(85.0| 176.0)_0001-Ground_none_(85.0| 12.0)
+Ground_(595.0| 176.0)_0002-Ground_none_(78.0| 9.0)
+FallingGround_(234.0| 179.0)_0003-FallingGround_none_(30.0| 10.0)
+FakeGround_(328.0| 181.0)_0004-FakeGround_none_(30.0| 10.0)
+FallingGround_(442.0| 180.0)_0005-FallingGround_none_(30.0| 10.0)
+Goal_(616.0| 136.0)_0006-Goal_none_none

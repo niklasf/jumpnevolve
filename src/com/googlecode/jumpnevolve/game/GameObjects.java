@@ -15,6 +15,7 @@ import com.googlecode.jumpnevolve.game.objects.Cactus;
 import com.googlecode.jumpnevolve.game.objects.Cannon;
 import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.game.objects.Elevator;
+import com.googlecode.jumpnevolve.game.objects.FakeGround;
 import com.googlecode.jumpnevolve.game.objects.FallingGround;
 import com.googlecode.jumpnevolve.game.objects.Fluid;
 import com.googlecode.jumpnevolve.game.objects.Goal;
@@ -204,6 +205,16 @@ public enum GameObjects implements InterfaceFunction {
 					new EditorArgumentAllocation[] { new EditorArgumentAllocation(
 							new RectangleDimension(null, null, "Maße",
 									new Vector(30, 10), Color.blue),
+							new int[] { -1 }) })),
+
+	FAKE_GROUND(
+			FakeGround.class,
+			"textures/stone.png",
+			false,
+			new EditorObjectArguments(
+					new EditorArgumentAllocation[] { new EditorArgumentAllocation(
+							new RectangleDimension(null, null, "Maße",
+									new Vector(30, 10), Color.blue),
 							new int[] { -1 }) }));
 
 	public final String className;
@@ -281,6 +292,8 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new InfoSign(level, position, arguments);
 		} else if (className.equals(FALLING_GROUND.className)) {
 			newObject = new FallingGround(level, position, arguments);
+		} else if (className.equals(FAKE_GROUND.className)) {
+			newObject = new FakeGround(level, position, arguments);
 		}
 		return newObject;
 	}

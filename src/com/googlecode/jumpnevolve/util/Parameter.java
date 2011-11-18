@@ -123,4 +123,9 @@ public class Parameter {
 	 * Der Zeit nach der der FallingGround zurückgesetzt wird
 	 */
 	public static final float OBJECTS_FALLINGGROUND_FALLINGTIME = 10.0f;
+
+	/**
+	 * Die maximale Distanz, die ein FallingGround fällt
+	 */
+	public static final float OBJECTS_FALLINGGROUND_FALLINGDIST = 300.0f;
 }
