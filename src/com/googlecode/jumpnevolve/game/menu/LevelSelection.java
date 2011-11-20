@@ -1,9 +1,14 @@
 package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
@@ -13,6 +18,8 @@ import com.googlecode.jumpnevolve.graphics.gui.container.GridContainer;
 import com.googlecode.jumpnevolve.graphics.gui.container.TextButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
+import com.googlecode.jumpnevolve.util.JarHandler;
+import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
  * Menü zum Auswählen aus vorhandenen Leveln
@@ -23,10 +30,11 @@ import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 public class LevelSelection extends SubMenu {
 
 	private static int number = 0;
-	private ArrayList<File> levels;
+	private ArrayList<String> levels;
 	private String currentClicked, currentOver, lastClicked;
 	private boolean interfaceClicked, interfaceOver, lastRoundClicked;
 	private TextButtonList selectList = new TextButtonList(6, 10);
+	private final String levelPath;
 
 	/**
 	 * Erstellt ein neues Menü zum Auswählen eines Levels
@@ -38,11 +46,47 @@ public class LevelSelection extends SubMenu {
 	public LevelSelection(Menu parent, String levelPath) {
 		super(parent, new GridContainer(1, 1), "LevelSelection"
 				+ getNextNumber());
-		this.levels = this.searchFiles(new File(levelPath), ".txt");
-		this.levels.addAll(this.searchFiles(new File(levelPath), ".lvl"));
-		for (File file : this.levels) {
+
+		this.levels = new ArrayList<String>();
+
+		if (JarHandler.existJar()) {
+
+			this.levelPath = "/" + levelPath;
+
+			// Wenn das Jar-Archiv existiert, dann Level aus dem Archiv laden
+			JarFile jFile = JarHandler.getJarFile();
+			Enumeration<JarEntry> jEntries = jFile.entries();
+			while (jEntries.hasMoreElements()) {
+				JarEntry jEntry = jEntries.nextElement();
+				if (jEntry.getName().endsWith(".txt")
+						|| jEntry.getName().endsWith(".lvl")) {
+					String name = jEntry.getName();
+					if (name.startsWith(this.levelPath.substring(1))) {
+						name = name.replaceAll(this.levelPath.substring(1), "");
+						this.levels.add(name);
+					}
+				}
+			}
+		} else {
+			// Levelpfad um "resources/" ergänzen, wenn nicht aus einem
+			// Jar-Archiv geladen
+			if (!levelPath.startsWith("resources/")) {
+				levelPath = "resources/" + levelPath;
+			}
+			this.levelPath = levelPath;
+
+			// Wenn Laden der Level aus Jar-Archiv nicht funktioniert, Level
+			// nach normalem Schema laden
+			this.levels.addAll(this.searchFiles(new File(this.levelPath),
+					".txt"));
+			this.levels.addAll(this.searchFiles(new File(this.levelPath),
+					".lvl"));
+		}
+
+		// Button-Liste erstellen
+		for (String file : this.levels) {
 			InterfaceTextButton button = new InterfaceTextButton(
-					InterfaceFunctions.LEVELSELECTION, file.getName());
+					InterfaceFunctions.LEVELSELECTION, file);
 			button.addInformable(this);
 			this.selectList.addTextButton(button);
 		}
@@ -57,13 +101,13 @@ public class LevelSelection extends SubMenu {
 		return "" + number;
 	}
 
-	private ArrayList<File> searchFiles(File dir, String find) {
+	private ArrayList<String> searchFiles(File dir, String find) {
 		File[] files = dir.listFiles();
-		ArrayList<File> matches = new ArrayList<File>();
+		ArrayList<String> matches = new ArrayList<String>();
 		if (files != null) {
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].getName().endsWith(find)) {
-					matches.add(files[i]);
+					matches.add(files[i].getName());
 				}
 				if (files[i].isDirectory()) {
 					matches.addAll(searchFiles(files[i], find));
@@ -73,13 +117,6 @@ public class LevelSelection extends SubMenu {
 		return matches;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.googlecode.jumpnevolve.graphics.Pollable#poll(org.newdawn.slick.Input
-	 * , float)
-	 */
 	@Override
 	public void poll(Input input, float secounds) {
 		lastRoundClicked = interfaceClicked;
@@ -100,12 +137,10 @@ public class LevelSelection extends SubMenu {
 	}
 
 	private String getFileName(String levelName) {
-		for (File file : this.levels) {
-			if (file.getName().equals(levelName)) {
-				return file.getPath();
-			}
+		if (!levelName.startsWith(levelPath)) {
+			levelName = levelPath + levelName;
 		}
-		return null;
+		return levelName;
 	}
 
 	@Override

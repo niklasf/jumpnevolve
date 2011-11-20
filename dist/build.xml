@@ -2,7 +2,7 @@
 <project default="Build" name="Build the project for distribution"
 	basedir="../">
 
-	<property name="distfile" value="jumpnevolve-pre-alpha-2.jar" />
+	<property name="distfile" value="jumpnevolve-alpha-1.jar" />
 
 	<target name="Build">
 

@@ -3,17 +3,22 @@ package com.googlecode.jumpnevolve.game;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.jar.JarFile;
 
 import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.objects.ActivatingObject;
+import com.googlecode.jumpnevolve.game.objects.Button;
+import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.JarHandler;
 
 /**
  * Zum Laden von Leveln.
@@ -32,13 +37,19 @@ public class Levelloader {
 	}
 
 	public void loadLevel() {
-		FileInputStream levelFile = null;
+		InputStream levelFile = null;
 
 		try {
-			levelFile = new FileInputStream(this.source);
-
 			if (this.source.toLowerCase().endsWith(".txt")) {
 				// TODO: ".txt" soll in ".lvl" geändert werden
+
+				Log.info("Lade .txt-Level aus " + source);
+
+				if (JarHandler.existJar()) {
+					levelFile = this.getClass().getResourceAsStream(source);
+				} else {
+					levelFile = new FileInputStream(source);
+				}
 
 				// Neues Level aus Textdatei erstellen
 				BufferedReader levelFileReader = new BufferedReader(
@@ -131,16 +142,26 @@ public class Levelloader {
 					newObject = GameObjects.loadObject(current, this.level);
 
 					if (newObject != null) {
+						if (newObject.getClass() == Button.class) {
+							System.out.println(current);
+						}
+						if (newObject.getClass() == Door.class) {
+							System.out.println(current);
+						}
 						boolean alreadyPutted = false;
 						if (newObject instanceof ActivatingObject) {
 							argumtensForActivating.add(activates.split(","));
 							activatingObjects.add((ActivatingObject) newObject);
 							alreadyPutted = true;
+							System.out.println("ObjectsToActivate: "
+									+ activates);
 						}
 						if (newObject instanceof Activable) {
 							activableObjects.put(name.toLowerCase(),
 									(Activable) newObject);
 							alreadyPutted = true;
+							System.out.println("ZuAktivierendes Objekt: "
+									+ name);
 						}
 						if (alreadyPutted == false) {
 							otherObjects.add(newObject);
@@ -149,17 +170,20 @@ public class Levelloader {
 
 					current = levelFileReader.readLine();
 				}
+
 				// Zuweisen der zu aktivierenden Objekte
 				for (int i = 0; i < activatingObjects.size(); i++) {
+					ActivatingObject activating = activatingObjects.get(i);
+					String[] arguments = argumtensForActivating.get(i);
 					for (int j = 0; j < argumtensForActivating.get(i).length; j++) {
-						if (activableObjects
-								.get(argumtensForActivating.get(i)[j]) != null) {
-							activatingObjects.get(i).addActivable(
-									activableObjects.get(argumtensForActivating
-											.get(i)[j].toLowerCase()));
+						Activable activable = activableObjects.get(arguments[j]
+								.toLowerCase());
+						if (activable != null) {
+							activating.addActivable(activable);
 						}
 					}
 				}
+
 				// Einfügen der Objekte in das Level
 				for (AbstractObject object : activatingObjects) {
 					this.level.add(object);

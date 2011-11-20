@@ -38,7 +38,7 @@ public class Jumpnevolve {
 		AbstractEngine engine = Engine.getInstance();
 
 		engine.setTargetFrameRate(Parameter.GAME_FPS_TARGET);
-		engine.switchState(new MainMenu("resources/levels/"));
+		engine.switchState(new MainMenu("levels/"));
 		engine.start();
 	}
 

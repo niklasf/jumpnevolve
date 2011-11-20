@@ -10,7 +10,6 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.Timer;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
-import com.googlecode.jumpnevolve.graphics.world.Moving;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.CollisionResult;
 import com.googlecode.jumpnevolve.math.ShapeFactory;

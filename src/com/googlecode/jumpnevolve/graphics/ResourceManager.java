@@ -25,6 +25,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import com.googlecode.jumpnevolve.util.JarHandler;
+
 /**
  * Der ResourceManager läd Ressourcen wie Bilder oder Sounds vom Dateisystem.
  * Wenn mehrmals nach einer Ressource gefragt wird, kann sie jederzeit aus dem
@@ -47,11 +49,15 @@ public class ResourceManager {
 	}
 
 	private String normalizeIdentifier(String identifier) {
-		if (!identifier.startsWith("resources/")) {
-			return "resources/" + identifier;
+		if (JarHandler.existJar()) {
+			return identifier;
 		} else {
-			throw new ResourceError(
-					"Resource identifiers should not start with resources/");
+			if (!identifier.startsWith("resources/")) {
+				return "resources/" + identifier;
+			} else {
+				throw new ResourceError(
+						"Resource identifiers should not start with resources/");
+			}
 		}
 	}
 
