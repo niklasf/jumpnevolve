@@ -3,7 +3,7 @@ package com.googlecode.jumpnevolve.editor.arguments;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.math.Vector;
 
 public class RectangleDimension extends RelativePositionMarker {
@@ -11,13 +11,13 @@ public class RectangleDimension extends RelativePositionMarker {
 	private RelativePositionMarker referenceDirection;
 	private Vector lastRefernceDirection = Vector.UP;
 
-	public RectangleDimension(Editor2 editor, PositionMarker referencePoint,
+	public RectangleDimension(Editor editor, PositionMarker referencePoint,
 			String name, Vector startPosition, Color color) {
 		super(editor, referencePoint, name, MODUS_BOTH, OUTPUT_MODUS_RELATIVE,
 				startPosition, color);
 	}
 
-	public RectangleDimension(Editor2 editor, PositionMarker referencePoint,
+	public RectangleDimension(Editor editor, PositionMarker referencePoint,
 			RelativePositionMarker referenceDirection, String name,
 			Vector startPosition, Color color) {
 		super(editor, referencePoint, name, MODUS_BOTH, OUTPUT_MODUS_RELATIVE,
@@ -41,7 +41,7 @@ public class RectangleDimension extends RelativePositionMarker {
 	}
 
 	@Override
-	public EditorArgument getClone(Editor2 editor) {
+	public EditorArgument getClone(Editor editor) {
 		return new RectangleDimension(editor, this.getParent(),
 				this.referenceDirection, this.getDialogPart().name,
 				this.position, color);

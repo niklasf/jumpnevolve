@@ -29,8 +29,8 @@ class Cannonball extends Shot {
 	 *            (--> wegen Schwerkraft)
 	 */
 	public Cannonball(World world, Vector position, Vector shotDirection) {
-		super(world, ShapeFactory.createCircle(position, 10), Masses.CANNONBALL,
-				10.0f, shotDirection, 200.0f);
+		super(world, ShapeFactory.createCircle(position, 10),
+				Masses.CANNONBALL, 10.0f, shotDirection, 200.0f);
 	}
 
 	public Cannonball(World world, Vector position, String arguments) {
@@ -39,6 +39,6 @@ class Cannonball extends Shot {
 
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
-				.getInstance().getImage("/object-pictures/cannonball.png"));
+				.getInstance().getImage("object-pictures/cannonball.png"));
 	}
 }

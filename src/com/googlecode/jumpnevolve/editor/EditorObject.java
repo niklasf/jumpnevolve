@@ -30,13 +30,13 @@ public class EditorObject implements Pollable, Drawable {
 	private String lastDataLine = "";
 
 	public Dialog settings = new Dialog();
-	public final Editor2 parent;
+	public final Editor parent;
 	public final String objectName, className;
 
 	/**
 	 *
 	 */
-	public EditorObject(Editor2 parent, String objectName, String className,
+	public EditorObject(Editor parent, String objectName, String className,
 			Vector startPosition) {
 		this.parent = parent;
 		this.objectName = objectName;

@@ -1,18 +1,18 @@
 package com.googlecode.jumpnevolve.editor.arguments;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextField;
 
 public class TextContent extends ArgumentForDialog {
 
-	public TextContent(Editor2 editor, String name) {
+	public TextContent(Editor editor, String name) {
 		super(editor, new InterfaceTextField(InterfaceFunctions.ERROR), name);
 	}
 
 	@Override
-	public EditorArgument getClone(Editor2 editor) {
+	public EditorArgument getClone(Editor editor) {
 		return new TextContent(editor, this.name);
 	}
 

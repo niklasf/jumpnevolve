@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.editor.arguments;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.Pollable;
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
@@ -12,19 +12,19 @@ import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
  */
 public abstract class EditorArgument implements Pollable, Drawable {
 
-	private final Editor2 editor;
+	private final Editor editor;
 
 	public abstract String getArgumentPart();
 
 	public abstract void initialize(String value);
 
-	public abstract EditorArgument getClone(Editor2 editor);
+	public abstract EditorArgument getClone(Editor editor);
 
 	public abstract void setArguments(EditorArgument parentArgs[]);
 
 	public abstract DialogPart getDialogPart();
 
-	public EditorArgument(Editor2 editor) {
+	public EditorArgument(Editor editor) {
 		this.editor = editor;
 	}
 
@@ -38,7 +38,7 @@ public abstract class EditorArgument implements Pollable, Drawable {
 	/**
 	 * @return Der Editor, dem das EditorArgument zugeordnet ist
 	 */
-	public Editor2 getEditor() {
+	public Editor getEditor() {
 		return this.editor;
 	}
 }

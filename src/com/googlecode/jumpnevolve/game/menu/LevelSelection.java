@@ -43,34 +43,37 @@ public class LevelSelection extends SubMenu {
 	 *            Der Ordner, in dem sich die Level befinden, es werden auch die
 	 *            Unterordner durchsucht
 	 */
-	public LevelSelection(Menu parent, String levelPath) {
-		super(parent, new GridContainer(1, 1), "LevelSelection"
-				+ getNextNumber());
+	public LevelSelection(Menu parent, String levelPath, String name) {
+		super(parent, new GridContainer(1, 1), name);
 
 		this.levels = new ArrayList<String>();
 
-		if (JarHandler.existJar()) {
+		if (JarHandler.existJar()
+				&& !levelPath.startsWith(System.getProperty("user.home"))) {
 
 			this.levelPath = "/" + levelPath;
 
-			// Wenn das Jar-Archiv existiert, dann Level aus dem Archiv laden
+			// Wenn das Jar-Archiv existiert, dann Level aus dem Archiv
+			// laden
 			JarFile jFile = JarHandler.getJarFile();
 			Enumeration<JarEntry> jEntries = jFile.entries();
 			while (jEntries.hasMoreElements()) {
 				JarEntry jEntry = jEntries.nextElement();
 				if (jEntry.getName().endsWith(".txt")
 						|| jEntry.getName().endsWith(".lvl")) {
-					String name = jEntry.getName();
-					if (name.startsWith(this.levelPath.substring(1))) {
-						name = name.replaceAll(this.levelPath.substring(1), "");
-						this.levels.add(name);
+					String entryName = jEntry.getName();
+					if (entryName.startsWith(this.levelPath.substring(1))) {
+						entryName = entryName.replaceAll(
+								this.levelPath.substring(1), "");
+						this.levels.add(entryName);
 					}
 				}
 			}
 		} else {
-			// Levelpfad um "resources/" ergänzen, wenn nicht aus einem
-			// Jar-Archiv geladen
-			if (!levelPath.startsWith("resources/")) {
+			// Levelpfad um "resources/" ergänzen, wenn das Programm nicht
+			// aus einem Jar-Archiv geladen
+			if (!levelPath.startsWith("resources/")
+					&& !levelPath.startsWith(System.getProperty("user.home"))) {
 				levelPath = "resources/" + levelPath;
 			}
 			this.levelPath = levelPath;
@@ -94,6 +97,10 @@ public class LevelSelection extends SubMenu {
 		grid.add(this.selectList, 0, 0);
 		grid.maximizeSize();
 		this.setMainContainer(grid);
+	}
+
+	public LevelSelection(Menu parent, String levelPath) {
+		this(parent, levelPath, "LevelSelection" + getNextNumber());
 	}
 
 	private static String getNextNumber() {

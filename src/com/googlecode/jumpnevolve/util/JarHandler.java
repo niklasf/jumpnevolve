@@ -33,11 +33,17 @@ public class JarHandler {
 	private static void createJar() {
 		if (!jChecked) {
 			try {
+				// Name des potentiellen Jar-Archivs ermitteln
 				createJarName();
 				jFile = new JarFile(jarName);
 				exist = true;
+				// Wenn das Jar-Archiv existiert, wird der Jumpnevolve-Ordner
+				// inklusive Unterordner im User-Verzeichnis angelegt
+				createJumpnevolveDirectory();
 				Log.info("Programm aus Jar-Archiv (" + jarName + ") gestartet");
 			} catch (Exception e) {
+				// Wird aufgerufen, wenn das Jar-Archiv nicht existiert
+				// (Exception beim Erstellen von "JarFile")
 				Log.info("Programm aus keinem Jar-Archiv gestartet");
 				exist = false;
 			}
@@ -60,5 +66,11 @@ public class JarHandler {
 	public static JarFile getJarFile() {
 		createJar();
 		return jFile;
+	}
+
+	private static void createJumpnevolveDirectory() {
+		File x = new File(System.getProperty("user.home")
+				+ "/.jumpnevolve/levels");
+		x.mkdirs();
 	}
 }

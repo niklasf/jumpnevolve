@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.IOException;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
@@ -16,7 +16,10 @@ public class MainMenu extends Menu {
 		super();
 		this.mainState = new SimpleSubMenu(this, "MainMenu");
 		super.addSubMenu(mainState);
-		this.addSubMenu(new LevelSelection(this, levelPath));
+		this.addSubMenu(new LevelSelection(this, levelPath, "DefaultLevels"));
+		this.addSubMenu(new LevelSelection(this, System
+				.getProperty("user.home") + "/.jumpnevolve/levels/",
+				"OwnLevels"));
 		this.addDirectButton("Editor", InterfaceFunctions.MENU_EDITOR);
 		// this.switchTo("LevelSelection1");
 	}
@@ -39,10 +42,8 @@ public class MainMenu extends Menu {
 			this.switchTo(function.getFunctionName().split("_")[1]);
 		} else if (function == InterfaceFunctions.MENU_EDITOR) {
 			try {
-				Engine.getInstance()
-						.switchState(
-								new Editor2(this, this.getWidth(), this
-										.getHeight(), 1));
+				Engine.getInstance().switchState(
+						new Editor(this, this.getWidth(), this.getHeight(), 1));
 			} catch (IOException e) {
 				System.out.println("Fehler beim Erstellen des Editors: "
 						+ e.getMessage());

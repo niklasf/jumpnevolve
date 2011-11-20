@@ -45,7 +45,8 @@ public class Levelloader {
 
 				Log.info("Lade .txt-Level aus " + source);
 
-				if (JarHandler.existJar()) {
+				if (JarHandler.existJar()
+						&& !source.startsWith(System.getProperty("user.home"))) {
 					levelFile = this.getClass().getResourceAsStream(source);
 				} else {
 					levelFile = new FileInputStream(source);
@@ -142,26 +143,16 @@ public class Levelloader {
 					newObject = GameObjects.loadObject(current, this.level);
 
 					if (newObject != null) {
-						if (newObject.getClass() == Button.class) {
-							System.out.println(current);
-						}
-						if (newObject.getClass() == Door.class) {
-							System.out.println(current);
-						}
 						boolean alreadyPutted = false;
 						if (newObject instanceof ActivatingObject) {
 							argumtensForActivating.add(activates.split(","));
 							activatingObjects.add((ActivatingObject) newObject);
 							alreadyPutted = true;
-							System.out.println("ObjectsToActivate: "
-									+ activates);
 						}
 						if (newObject instanceof Activable) {
 							activableObjects.put(name.toLowerCase(),
 									(Activable) newObject);
 							alreadyPutted = true;
-							System.out.println("ZuAktivierendes Objekt: "
-									+ name);
 						}
 						if (alreadyPutted == false) {
 							otherObjects.add(newObject);

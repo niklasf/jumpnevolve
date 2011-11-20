@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.util.Log;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.ContentListener;
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
@@ -56,7 +56,7 @@ public class PositionMarker extends EditorArgument implements ContentListener {
 	/**
 	 * @param editor
 	 */
-	public PositionMarker(Editor2 editor, String name, int modus,
+	public PositionMarker(Editor editor, String name, int modus,
 			Vector startPosition, Color color) {
 		super(editor);
 		this.modus = modus;
@@ -223,7 +223,7 @@ public class PositionMarker extends EditorArgument implements ContentListener {
 	}
 
 	@Override
-	public EditorArgument getClone(Editor2 editor) {
+	public EditorArgument getClone(Editor editor) {
 		PositionMarker re = new PositionMarker(editor,
 				this.getDialogPart().name, this.modus, this.position,
 				this.color);

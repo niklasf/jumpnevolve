@@ -3,7 +3,7 @@ package com.googlecode.jumpnevolve.editor.arguments;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.editor.Editor2;
+import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.math.Vector;
 
 public class RelativePositionMarker extends PositionMarker {
@@ -15,7 +15,7 @@ public class RelativePositionMarker extends PositionMarker {
 
 	protected final int outputModus;
 
-	public RelativePositionMarker(Editor2 editor,
+	public RelativePositionMarker(Editor editor,
 			PositionMarker referencePoint, String name, int modus,
 			int outputModus, Vector startPosition, Color color) {
 		super(editor, name, modus, startPosition, color);
@@ -41,7 +41,7 @@ public class RelativePositionMarker extends PositionMarker {
 	}
 
 	@Override
-	public EditorArgument getClone(Editor2 editor) {
+	public EditorArgument getClone(Editor editor) {
 		return new RelativePositionMarker(editor, this.getParent(),
 				this.getDialogPart().name, this.modus, this.outputModus,
 				this.position, this.color);

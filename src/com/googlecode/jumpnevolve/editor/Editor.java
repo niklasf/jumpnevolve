@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,13 +36,16 @@ import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 import com.googlecode.jumpnevolve.math.Circle;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.JarHandler;
 import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
  * 
+ *         TODO: Level aus dem Userverzeichnis sollten einfach in den Editor zu
+ *         laden sein (Checkbox o.Ä.)
  */
-public class Editor2 extends Level implements Interfaceable {
+public class Editor extends Level implements Interfaceable {
 
 	private static final int GUI_MODE_NONE = 0;
 	private static final int GUI_MODE_OBJECT = 1;
@@ -82,7 +86,7 @@ public class Editor2 extends Level implements Interfaceable {
 	 *            Die Subarea-Breite
 	 * @throws IOException
 	 */
-	public Editor2(MainMenu parent, String source, int width, int height,
+	public Editor(MainMenu parent, String source, int width, int height,
 			int subareaWidth) throws IOException {
 		super(new Levelloader(source), width, height, subareaWidth);
 
@@ -184,7 +188,7 @@ public class Editor2 extends Level implements Interfaceable {
 		this.setZoom(1);
 
 		// Default-Level laden
-		this.loadLevel(this.transformToPath(source));
+		this.loadLevel(source);
 	}
 
 	/**
@@ -198,16 +202,16 @@ public class Editor2 extends Level implements Interfaceable {
 	 *            Die Subarea-Breite
 	 * @throws IOException
 	 */
-	public Editor2(int width, int height, int subareaWidth) throws IOException {
+	public Editor(int width, int height, int subareaWidth) throws IOException {
 		this(null, DEFAULT_LEVEL, width, height, subareaWidth);
 	}
 
-	public Editor2(MainMenu parent, int width, int height, int subareaWidth)
+	public Editor(MainMenu parent, int width, int height, int subareaWidth)
 			throws IOException {
 		this(parent, DEFAULT_LEVEL, width, height, subareaWidth);
 	}
 
-	public Editor2(String source, int width, int height, int subareaWidth)
+	public Editor(String source, int width, int height, int subareaWidth)
 			throws IOException {
 		this(null, source, width, height, subareaWidth);
 	}
@@ -460,8 +464,8 @@ public class Editor2 extends Level implements Interfaceable {
 			}
 			if (function == InterfaceFunctions.EDITOR_SAVE_AND_EXIT) {
 				try {
-					this.saveLevel(this.transformToPath(this.exitDialog
-							.getContentable("Speichern als").getContent()));
+					this.saveLevel(this.exitDialog.getContentable(
+							"Speichern als").getContent());
 					this.dataDialog.hide();
 					this.exit();
 				} catch (IOException e) {
@@ -488,9 +492,16 @@ public class Editor2 extends Level implements Interfaceable {
 	}
 
 	public void loadLevel(String path) throws IOException {
-		path = this.transformToPath(path);
+		path = this.transformToInputPath(path);
 		Log.info("Try loading: " + path);
-		BufferedReader levelFile = new BufferedReader(new FileReader(path));
+
+		BufferedReader levelFile;
+		if (JarHandler.existJar()) {
+			levelFile = new BufferedReader(new InputStreamReader(this
+					.getClass().getResourceAsStream(path)));
+		} else {
+			levelFile = new BufferedReader(new FileReader(path));
+		}
 
 		// Die ersten drei Zeilen laden
 		String dimensionsLine = levelFile.readLine();
@@ -583,9 +594,12 @@ public class Editor2 extends Level implements Interfaceable {
 
 	@SuppressWarnings("unchecked")
 	public void saveLevel(String path) throws IOException {
+		path = this.transformToOutputPath(path);
+
 		System.out.println("Saving current level at: " + path);
-		FileOutputStream stream = new FileOutputStream(
-				this.transformToPath(path));
+
+		FileOutputStream stream = new FileOutputStream(path);
+
 		String firstLine = this.getDimensionsLine();
 		String secondLine = "\n" + this.getSettingsLine();
 		String thirdLine = "\n" + this.getPlayerLine();
@@ -620,15 +634,14 @@ public class Editor2 extends Level implements Interfaceable {
 
 	private void loadWithNewSettings() throws IOException {
 		Dialog.disableAll();
-		this.saveLevel(this.transformToPath("reload-save.txt"));
+		this.saveLevel("reload-save.txt");
 		AbstractEngine engine = Engine.getInstance();
-		engine.switchState(new Editor2(this.parentMenu, this
-				.transformToPath("reload-save.txt"), Integer
-				.parseInt(this.settingsDialog.getContentable("Breite")
+		engine.switchState(new Editor(this.parentMenu, "reload-save.txt",
+				Integer.parseInt(this.settingsDialog.getContentable("Breite")
 						.getContent()), Integer.parseInt(this.settingsDialog
-				.getContentable("Höhe").getContent()), Integer
-				.parseInt(this.settingsDialog.getContentable("Subarea-Breite")
-						.getContent())));
+						.getContentable("Höhe").getContent()), Integer
+						.parseInt(this.settingsDialog.getContentable(
+								"Subarea-Breite").getContent())));
 	}
 
 	/**
@@ -642,18 +655,60 @@ public class Editor2 extends Level implements Interfaceable {
 	 *            Der String, der umgeformt werden soll
 	 * @return Der umgeformte String
 	 */
-	private String transformToPath(String content) {
-		int lastPoint = content.indexOf(".");
-		if (lastPoint != -1) {
-			content = content.substring(0, lastPoint);
+	private String transformToInputPath(String content) {
+		if (content.startsWith(System.getProperty("user.home"))) {
+			return content;
 		}
-		content += ".txt";
-		String[] parts = content.split("/");
-		switch (parts.length) {
-		case 1:
-			return "resources/levels/" + content;
-		default:
-			return "resources/levels/" + parts[parts.length - 1];
+		if (JarHandler.existJar()) {
+			if (content.lastIndexOf("/") != -1) {
+				return "/levels" + content.substring(content.lastIndexOf("/"));
+			} else {
+				return "/levels/" + content;
+			}
+		} else {
+			int lastPoint = content.indexOf(".");
+			if (lastPoint != -1) {
+				content = content.substring(0, lastPoint);
+			}
+			content += ".txt";
+			String[] parts = content.split("/");
+			switch (parts.length) {
+			case 1:
+				return "resources/levels/" + content;
+			default:
+				return "resources/levels/" + parts[parts.length - 1];
+			}
+		}
+	}
+
+	/**
+	 * Formt den String so um, dass das Level in "resources/levels/" abgelegt
+	 * wird und die Endung ".txt" hat
+	 * 
+	 * Pfad-Angaben werden ignoriert, Inhalt hinter "." wird entfernt und durch
+	 * ".txt" ersetzt
+	 * 
+	 * @param content
+	 *            Der String, der umgeformt werden soll
+	 * @return Der umgeformte String
+	 */
+	private String transformToOutputPath(String content) {
+		if (JarHandler.existJar()) {
+			return System.getProperty("user.home") + "/jumpnevolve/levels/"
+					+ content.split("/")[content.split("/").length - 1];
+		} else {
+			int lastPoint = content.indexOf(".");
+			if (lastPoint != -1) {
+				content = content.substring(0, lastPoint);
+			}
+			content += ".txt";
+			String[] parts = content.split("/");
+			switch (parts.length) {
+			case 1:
+				return "resources/levels/" + content;
+			default:
+				return "resources/levels/" + parts[parts.length - 1];
+			}
 		}
 	}
 

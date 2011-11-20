@@ -6,7 +6,7 @@ import com.googlecode.jumpnevolve.graphics.AbstractEngine;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.util.Parameter;
 
-public class Editor2Launcher {
+public class EditorLauncher {
 
 	/**
 	 * Startet den neuen Editor.
@@ -19,7 +19,7 @@ public class Editor2Launcher {
 		AbstractEngine engine = Engine.getInstance();
 
 		engine.setTargetFrameRate(Parameter.GAME_FPS_TARGET);
-		engine.switchState(new Editor2(100, 100, 1));
+		engine.switchState(new Editor(100, 100, 1));
 		engine.start();
 	}
 }
