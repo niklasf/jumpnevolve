@@ -276,6 +276,7 @@ public class Editor extends Level implements Interfaceable {
 		// Bei "Ja" Editor beenden
 		if (this.parentMenu != null) {
 			Log.info("Exit the Editor");
+			Dialog.disableAll();
 			this.parentMenu.switchBackToMainState();
 			Engine.getInstance().switchState(this.parentMenu);
 		} else {
@@ -493,7 +494,8 @@ public class Editor extends Level implements Interfaceable {
 
 	public void loadLevel(String path) throws IOException {
 		path = this.transformToInputPath(path);
-		Log.info("Try loading: " + path);
+
+		Log.info("Versuche Level in Editor zu laden: " + path);
 
 		BufferedReader levelFile;
 		if (JarHandler.existJar()) {
@@ -567,7 +569,9 @@ public class Editor extends Level implements Interfaceable {
 		int highestID = 0;
 		String current = levelFile.readLine();
 		while (current != null) {
+
 			Log.info("Lade Objekt: " + current);
+
 			if (current.split("_").length != 5) {
 				throw new IOException(
 						"Fehler im Aufbau der Leveldatei (Objektzeile: "
@@ -590,13 +594,15 @@ public class Editor extends Level implements Interfaceable {
 			current = levelFile.readLine();
 		}
 		this.curID = highestID;
+
+		Log.info("Level erfolgreich geladen");
 	}
 
 	@SuppressWarnings("unchecked")
 	public void saveLevel(String path) throws IOException {
 		path = this.transformToOutputPath(path);
 
-		System.out.println("Saving current level at: " + path);
+		Log.info("Versuche Level zu speichern: " + path);
 
 		FileOutputStream stream = new FileOutputStream(path);
 
@@ -620,6 +626,8 @@ public class Editor extends Level implements Interfaceable {
 			}
 		}
 		stream.close();
+
+		Log.info("Speichern erfolgreich beendet");
 	}
 
 	private void deleteObject(EditorObject object) {
@@ -633,6 +641,7 @@ public class Editor extends Level implements Interfaceable {
 	}
 
 	private void loadWithNewSettings() throws IOException {
+		Log.info("Übernehme Einstellungen für den Editor");
 		Dialog.disableAll();
 		this.saveLevel("reload-save.txt");
 		AbstractEngine engine = Engine.getInstance();
@@ -656,7 +665,7 @@ public class Editor extends Level implements Interfaceable {
 	 * @return Der umgeformte String
 	 */
 	private String transformToInputPath(String content) {
-		if (content.startsWith(System.getProperty("user.home"))) {
+		if (content.startsWith(Parameter.PROGRAMM_DIRECTORY_LEVELS)) {
 			return content;
 		}
 		if (JarHandler.existJar()) {
@@ -694,7 +703,7 @@ public class Editor extends Level implements Interfaceable {
 	 */
 	private String transformToOutputPath(String content) {
 		if (JarHandler.existJar()) {
-			return System.getProperty("user.home") + "/jumpnevolve/levels/"
+			return Parameter.PROGRAMM_DIRECTORY_LEVELS
 					+ content.split("/")[content.split("/").length - 1];
 		} else {
 			int lastPoint = content.indexOf(".");

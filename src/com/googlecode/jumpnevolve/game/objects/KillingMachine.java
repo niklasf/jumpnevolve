@@ -2,7 +2,7 @@ package com.googlecode.jumpnevolve.game.objects;
 
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.game.EnemyTemplate;
+import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
@@ -35,8 +35,8 @@ import com.googlecode.jumpnevolve.util.Masses;
  * @author Erik Wagner
  * 
  */
-public abstract class KillingMachine extends EnemyTemplate implements
-		GravityActing, Blockable {
+public abstract class KillingMachine extends ObjectTemplate implements
+		GravityActing, Blockable, Damageable {
 
 	private static final long serialVersionUID = -5724600752326575341L;
 
@@ -47,10 +47,7 @@ public abstract class KillingMachine extends EnemyTemplate implements
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.isAlive() == false) {
-			this.getWorld().removeFromWorld(this);
-			// Aus allen Listen der Welt löschen, da dieses Objekt besiegt wurde
-		}
+		// Nichts tun
 	}
 
 	@Override
@@ -72,26 +69,6 @@ public abstract class KillingMachine extends EnemyTemplate implements
 	@Override
 	public boolean wantDamaging(Living object) {
 		return true;
-	}
-
-	@Override
-	public void damage(Damageable damager) {
-		this.killed();
-	}
-
-	@Override
-	public int getDeff(int kindOfDamage) {
-		return 0;
-	}
-
-	@Override
-	public int getHP() {
-		return 1;
-	}
-
-	@Override
-	public void killed() {
-		this.setAlive(false);
 	}
 
 	@Override

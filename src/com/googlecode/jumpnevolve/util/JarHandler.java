@@ -69,8 +69,9 @@ public class JarHandler {
 	}
 
 	private static void createJumpnevolveDirectory() {
-		File x = new File(System.getProperty("user.home")
-				+ "/.jumpnevolve/levels");
+		File x = new File(Parameter.PROGRAMM_DIRECTORY_LEVELS);
 		x.mkdirs();
+		Log.info("Benutztes Jumpnevolve-Verzeichnis: "
+				+ Parameter.PROGRAMM_DIRECTORY_MAIN);
 	}
 }

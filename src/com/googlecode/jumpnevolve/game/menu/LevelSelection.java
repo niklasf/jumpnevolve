@@ -1,14 +1,12 @@
 package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.newdawn.slick.Input;
-import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.Level;
 import com.googlecode.jumpnevolve.game.Levelloader;
@@ -19,7 +17,7 @@ import com.googlecode.jumpnevolve.graphics.gui.container.TextButtonList;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceTextButton;
 import com.googlecode.jumpnevolve.util.JarHandler;
-import com.jdotsoft.jarloader.JarClassLoader;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Menü zum Auswählen aus vorhandenen Leveln
@@ -48,42 +46,32 @@ public class LevelSelection extends SubMenu {
 
 		this.levels = new ArrayList<String>();
 
-		if (JarHandler.existJar()
-				&& !levelPath.startsWith(System.getProperty("user.home"))) {
-
-			this.levelPath = "/" + levelPath;
-
-			// Wenn das Jar-Archiv existiert, dann Level aus dem Archiv
-			// laden
-			JarFile jFile = JarHandler.getJarFile();
-			Enumeration<JarEntry> jEntries = jFile.entries();
-			while (jEntries.hasMoreElements()) {
-				JarEntry jEntry = jEntries.nextElement();
-				if (jEntry.getName().endsWith(".txt")
-						|| jEntry.getName().endsWith(".lvl")) {
-					String entryName = jEntry.getName();
-					if (entryName.startsWith(this.levelPath.substring(1))) {
-						entryName = entryName.replaceAll(
-								this.levelPath.substring(1), "");
-						this.levels.add(entryName);
-					}
-				}
-			}
-		} else {
-			// Levelpfad um "resources/" ergänzen, wenn das Programm nicht
-			// aus einem Jar-Archiv geladen
-			if (!levelPath.startsWith("resources/")
-					&& !levelPath.startsWith(System.getProperty("user.home"))) {
-				levelPath = "resources/" + levelPath;
-			}
+		if (levelPath.startsWith(Parameter.PROGRAMM_DIRECTORY_LEVELS)) {
+			// Level auf normale Art lokalisieren, wenn im Userverzeichnis
+			// gesucht werden soll
 			this.levelPath = levelPath;
+			this.levels = this.defaultFileSearch();
+		} else {
+			if (JarHandler.existJar()) {
 
-			// Wenn Laden der Level aus Jar-Archiv nicht funktioniert, Level
-			// nach normalem Schema laden
-			this.levels.addAll(this.searchFiles(new File(this.levelPath),
-					".txt"));
-			this.levels.addAll(this.searchFiles(new File(this.levelPath),
-					".lvl"));
+				this.levelPath = "/" + levelPath;
+
+				// Wenn das Jar-Archiv existiert, dann Level aus dem Archiv
+				// laden
+				this.levels = this.jarFileSearch();
+
+			} else {
+				// Levelpfad um "resources/" ergänzen, wenn das Programm nicht
+				// aus einem Jar-Archiv geladen
+				if (!levelPath.startsWith("resources/")) {
+					levelPath = "resources/" + levelPath;
+				}
+				this.levelPath = levelPath;
+
+				// Wenn Laden der Level aus Jar-Archiv nicht funktioniert, Level
+				// nach normalem Schema laden
+				this.levels = this.defaultFileSearch();
+			}
 		}
 
 		// Button-Liste erstellen
@@ -97,6 +85,36 @@ public class LevelSelection extends SubMenu {
 		grid.add(this.selectList, 0, 0);
 		grid.maximizeSize();
 		this.setMainContainer(grid);
+	}
+
+	private ArrayList<String> jarFileSearch() {
+		ArrayList<String> re = new ArrayList<String>();
+
+		JarFile jFile = JarHandler.getJarFile();
+		Enumeration<JarEntry> jEntries = jFile.entries();
+
+		while (jEntries.hasMoreElements()) {
+			JarEntry jEntry = jEntries.nextElement();
+			if (jEntry.getName().endsWith(".txt")
+					|| jEntry.getName().endsWith(".lvl")) {
+				String entryName = jEntry.getName();
+				if (entryName.startsWith(this.levelPath.substring(1))) {
+					entryName = entryName.replaceAll(
+							this.levelPath.substring(1), "");
+					re.add(entryName);
+				}
+			}
+		}
+		return re;
+	}
+
+	private ArrayList<String> defaultFileSearch() {
+		ArrayList<String> re = new ArrayList<String>();
+
+		re.addAll(this.searchFiles(new File(this.levelPath), ".txt"));
+		re.addAll(this.searchFiles(new File(this.levelPath), ".lvl"));
+
+		return re;
 	}
 
 	public LevelSelection(Menu parent, String levelPath) {

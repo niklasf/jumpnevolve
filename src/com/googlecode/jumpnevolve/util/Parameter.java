@@ -24,6 +24,28 @@ package com.googlecode.jumpnevolve.util;
 public class Parameter {
 
 	/**
+	 * Der gesamte Pfad zu dem Ordner, in dem die jumpnevolve-Dateien
+	 * gespeichert werden sollen
+	 * <p>
+	 * Dieser Ordner befindet sich immer im "user.home"-Verzeichnis
+	 * 
+	 * @see java.lang.System#getProperty
+	 */
+	public static final String PROGRAMM_DIRECTORY_MAIN = System
+			.getProperty("user.home") + "/jumpnevolve/";
+
+	/**
+	 * Der gesamte Pfad zu dem Ordner, in dem die jumpnevolve-Custom-Level
+	 * gespeichert werden
+	 * <p>
+	 * Dieser Pfad leitet sich vom Main-Ordner für jumpnevolve ab
+	 * 
+	 * @see Parameter#PROGRAMM_DIRECTORY_MAIN
+	 */
+	public static final String PROGRAMM_DIRECTORY_LEVELS = PROGRAMM_DIRECTORY_MAIN
+			+ "levels/";
+
+	/**
 	 * Die gewünschte FPS-Rate, die von der Engine angestrebt werden soll
 	 */
 	public static final int GAME_FPS_TARGET = 100;
@@ -128,4 +150,16 @@ public class Parameter {
 	 * Die maximale Distanz, die ein FallingGround fällt
 	 */
 	public static final float OBJECTS_FALLINGGROUND_FALLINGDIST = 300.0f;
+
+	/**
+	 * Die minimale Geschwindigkeit, mit der sich Schüsse bewegen
+	 * <p>
+	 * Werden sie langsamer, so werden sie aus der Welt entfernt
+	 */
+	public static final float OBJECTS_SHOT_MINIVEL = 1.0f;
+
+	/**
+	 * Der Abstand zwischen den Schüssen einer Cannon
+	 */
+	public static final float OBJECTS_CANNON_SHOTINTERVAL = 1.2f;
 }

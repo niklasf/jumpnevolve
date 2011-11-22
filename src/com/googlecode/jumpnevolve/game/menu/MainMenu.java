@@ -7,6 +7,7 @@ import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunctions;
 import com.googlecode.jumpnevolve.graphics.gui.objects.InterfaceObject;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 public class MainMenu extends Menu {
 
@@ -16,10 +17,10 @@ public class MainMenu extends Menu {
 		super();
 		this.mainState = new SimpleSubMenu(this, "MainMenu");
 		super.addSubMenu(mainState);
-		this.addSubMenu(new LevelSelection(this, levelPath, "DefaultLevels"));
-		this.addSubMenu(new LevelSelection(this, System
-				.getProperty("user.home") + "/.jumpnevolve/levels/",
-				"OwnLevels"));
+		this.addSubMenu(new LevelSelection(this, "demo-levels/", "AlphaLevels"));
+		this.addSubMenu(new LevelSelection(this, levelPath, "TestLevels"));
+		this.addSubMenu(new LevelSelection(this,
+				Parameter.PROGRAMM_DIRECTORY_LEVELS, "OwnLevels"));
 		this.addDirectButton("Editor", InterfaceFunctions.MENU_EDITOR);
 		// this.switchTo("LevelSelection1");
 	}

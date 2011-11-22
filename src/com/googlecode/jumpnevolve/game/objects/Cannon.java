@@ -7,6 +7,7 @@ import com.googlecode.jumpnevolve.graphics.ResourceManager;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
@@ -27,7 +28,7 @@ public class Cannon extends Shooter {
 	 */
 	public Cannon(World world, Vector position, boolean activated,
 			Vector shotDirection) {
-		super(world, ShapeFactory.createRectangle(position, 50, 50), 1.0f,
+		super(world, ShapeFactory.createRectangle(position, 50, 50), Parameter.OBJECTS_CANNON_SHOTINTERVAL,
 				activated);
 		this.shotDirection = shotDirection.getDirection();
 		this.startPosition = this.getPosition().add(
@@ -41,8 +42,14 @@ public class Cannon extends Shooter {
 	}
 
 	public void draw(Graphics g) {
-		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
-				.getInstance().getImage("object-pictures/cannon.png"));
+		if (this.shotDirection.x >= 0) {
+			GraphicUtils.drawImage(g, this.getShape(), ResourceManager
+					.getInstance().getImage("object-pictures/cannon.png")
+					.getFlippedCopy(true, false));
+		} else {
+			GraphicUtils.drawImage(g, this.getShape(), ResourceManager
+					.getInstance().getImage("object-pictures/cannon.png"));
+		}
 	}
 
 	@Override

@@ -22,15 +22,16 @@ public class InfoSign extends ObjectTemplate implements ForegroundDrawable {
 
 	private static final long serialVersionUID = -1622095244494997229L;
 
+	private static InfoSign activeSign = null;
+
 	private static final float SIDE_DISTANCE = Parameter.OBJECTS_INFOSIGN_SIDEDIST;
 	private static final float LINE_DISTANCE = Parameter.OBJECTS_INFOSIGN_LINEDIST;
 	private final String[] contents;
-	private boolean extended = false;
 	private NextShape extendedShape;
 
 	public InfoSign(World world, Vector position, String[] contents) {
 		super(world,
-				ShapeFactory.createRectangle(position, new Vector(50, 50)),
+				ShapeFactory.createRectangle(position, new Vector(30, 50)),
 				Masses.NO_MASS);
 		this.contents = contents;
 	}
@@ -41,13 +42,13 @@ public class InfoSign extends ObjectTemplate implements ForegroundDrawable {
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		this.extended = false;
+		activeSign = null;
 	}
 
 	@Override
 	public void onGeneralCrash(AbstractObject other, CollisionResult colResult) {
 		if (other instanceof PlayerFigure) {
-			this.extended = true;
+			activeSign = this;
 		}
 	}
 
@@ -55,20 +56,16 @@ public class InfoSign extends ObjectTemplate implements ForegroundDrawable {
 	public void draw(Graphics g) {
 		GraphicUtils.drawImage(g, this.getShape(), ResourceManager
 				.getInstance().getImage("object-pictures/infoSign.png"));
-		if (this.extended) {
-			g.pushTransform();
-			g.resetTransform();
-			g.translate(Engine.getInstance().getWidth() / 2.0f, Engine
-					.getInstance().getHeight() / 2.0f);
-			this.drawExtended(g);
-			g.popTransform();
-		}
 	}
 
 	private void drawExtended(Graphics g) {
 		this.createExtendedShape(g);
+		g.translate(Engine.getInstance().getWidth() / 2.0f, Engine
+				.getInstance().getHeight() / 2.0f);
 		GraphicUtils.texture(g, this.extendedShape, ResourceManager
-				.getInstance().getImage("textures/wood.png"), true);
+				.getInstance().getImage("textures/wood.png"), false);
+		g.translate(-this.extendedShape.getBoundingRect().width / 2.0f,
+				-this.extendedShape.getBoundingRect().height / 2.0f);
 		for (int i = 0; i < this.contents.length; i++) {
 			GraphicUtils.drawString(g, new Vector(SIDE_DISTANCE, LINE_DISTANCE
 					* (i + 1) + g.getFont().getLineHeight() * i),
@@ -87,7 +84,16 @@ public class InfoSign extends ObjectTemplate implements ForegroundDrawable {
 			height = (height + LINE_DISTANCE) * this.contents.length
 					+ LINE_DISTANCE;
 			Vector dim = new Vector(width / 2.0f, height / 2.0f);
-			this.extendedShape = ShapeFactory.createRectangle(dim, dim);
+			this.extendedShape = ShapeFactory.createRectangle(Vector.ZERO, dim);
+		}
+	}
+
+	public static void drawActiveSign(Graphics g) {
+		if (activeSign != null) {
+			g.pushTransform();
+			g.resetTransform();
+			activeSign.drawExtended(g);
+			g.popTransform();
 		}
 	}
 }

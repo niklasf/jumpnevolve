@@ -38,6 +38,6 @@ Cannon_(1193.0| 207.0)_0041-Cannon_none_true,(83.0| -93.0)
 Ground_(1051.0| 166.0)_0042-Ground_none_(61.0| 9.0)
 Ground_(1195.0| 241.0)_0043-Ground_none_(34.0| 9.0)
 Goal_(1048.0| 126.0)_0044-Goal_none_none
-InfoSign_(90.0| 600.0)_0045-InfoSign_none_Willkommen im zweiten Level von Jump'n'evolve
-InfoSign_(2274.0| 638.0)_0046-InfoSign_none_Gut gemacht
-InfoSign_(2367.0| 200.0)_0047-InfoSign_none_Passen Sie gut auf sich auf
+InfoSign_(90.0| 600.0)_0045-InfoSign_none_Willkommen im zweiten Level von Jump'n'evolve, ,Hier werden Ihnen die Gegner des Spiels präsentiert,Zuerst stoßen Sie auf die einfachen Soldaten,Überwinden Sie diese und lesen Sie dann die zweite Hinweistafel
+InfoSign_(2274.0| 638.0)_0046-InfoSign_none_Gut gemacht, ,Die Soldaten sind die einfachsten Gegner in Jump'n'evolve,Die schwierigeren Gegner warten weiter oben auf Sie,Folgen Sie dem Pfad nach oben und wenden sich dann nach links,Am Ende des Weges finden Sie das Ziel
+InfoSign_(2367.0| 200.0)_0047-InfoSign_none_Passen Sie gut auf sich auf,Nicht alle Gegner verhalten sich so wie die Soldaten

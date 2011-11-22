@@ -16,6 +16,7 @@ import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.NextCollision;
 import com.googlecode.jumpnevolve.math.NextShape;
 import com.googlecode.jumpnevolve.math.Vector;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * @author Erik Wagner
@@ -25,18 +26,30 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 		GravityActing, Blockable, ForegroundDrawable {
 
 	private static final long serialVersionUID = 4190924434159617029L;
+
+	private static final float MINIMUM_SQUARE_VELOCITY = Parameter.OBJECTS_SHOT_MINIVEL
+			* Parameter.OBJECTS_SHOT_MINIVEL;
+
 	private final Timer livingTime;
+
+	private Timer toLowVel;
 
 	public Shot(World world, NextShape shape, float mass, float livingTime,
 			Vector shotDirection, float shotSpeed) {
 		super(world, shape, mass, shotDirection.getDirection().mul(shotSpeed));
 		this.livingTime = new Timer(livingTime);
 		this.livingTime.start();
+		this.toLowVel = new Timer(livingTime / 5.0f);
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.livingTime.didFinish()) {
+		if (this.getVelocity().squareAbs() < MINIMUM_SQUARE_VELOCITY) {
+			this.toLowVel.start();
+		} else {
+			this.toLowVel.stop();
+		}
+		if (this.livingTime.didFinish() || this.toLowVel.didFinish()) {
 			this.getWorld().removeFromWorld(this);
 		}
 	}
@@ -45,6 +58,7 @@ public abstract class Shot extends ObjectTemplate implements Damageable,
 	public void poll(Input input, float secounds) {
 		super.poll(input, secounds);
 		this.livingTime.poll(input, secounds);
+		this.toLowVel.poll(input, secounds);
 	}
 
 	@Override

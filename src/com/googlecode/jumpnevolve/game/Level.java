@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.menu.Menu;
+import com.googlecode.jumpnevolve.game.objects.InfoSign;
 import com.googlecode.jumpnevolve.game.player.Player;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
@@ -164,8 +165,9 @@ public class Level extends World {
 				this.failedEffect.poll(input, secounds);
 			}
 		} else {
-			Log.info("Lag detektiert! : thisFrameSec = " + secounds + " maxFrameSec = "
-					+ 1 / (float)Parameter.GAME_FPS_MINIMUM);
+			Log.warn("Lag detektiert! : thisFrameSec = " + secounds
+					+ " maxFrameSec = " + 1
+					/ (float) Parameter.GAME_FPS_MINIMUM);
 		}
 	}
 
@@ -180,6 +182,7 @@ public class Level extends World {
 		if (this.finished) {
 			this.drawFinishedScreen(g);
 		}
+		InfoSign.drawActiveSign(g);
 		this.drawPlayer(g);
 	}
 

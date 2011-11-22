@@ -20,7 +20,7 @@ package com.googlecode.jumpnevolve.game;
 import com.jdotsoft.jarloader.JarClassLoader;
 
 /**
- * Läd und startet die Anwendung aus dem bin-Verzeichnis oder einem Archiv.
+ * Lädt und startet die Anwendung aus dem bin-Verzeichnis oder einem Archiv.
  * 
  * @author Niklas Fiekas
  */

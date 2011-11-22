@@ -19,6 +19,7 @@ import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.JarHandler;
+import com.googlecode.jumpnevolve.util.Parameter;
 
 /**
  * Zum Laden von Leveln.
@@ -46,7 +47,8 @@ public class Levelloader {
 				Log.info("Lade .txt-Level aus " + source);
 
 				if (JarHandler.existJar()
-						&& !source.startsWith(System.getProperty("user.home"))) {
+						&& !source
+								.startsWith(Parameter.PROGRAMM_DIRECTORY_LEVELS)) {
 					levelFile = this.getClass().getResourceAsStream(source);
 				} else {
 					levelFile = new FileInputStream(source);
