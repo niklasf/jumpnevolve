@@ -43,6 +43,13 @@ public class InterfaceButton extends InterfaceObject {
 				BUTTON_DIMENSION);
 	}
 
+	public InterfaceButton(InterfaceFunction function, int key, String iconPath) {
+		super(function, key);
+		this.icon = iconPath;
+		this.shape = new Rectangle(Vector.ZERO, BUTTON_DIMENSION,
+				BUTTON_DIMENSION);
+	}
+
 	@Override
 	public void draw(Graphics g) {
 		Vector pos = this.getCenterVector();

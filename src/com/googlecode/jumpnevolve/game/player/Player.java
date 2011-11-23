@@ -56,10 +56,10 @@ public class Player implements Pollable, Interfaceable {
 		// Liste mit Spielfiguren erstellen
 		ButtonList selectList = new ButtonList(2, 10);
 		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.FIGURE_ROLLING_BALL,
+				InterfaceFunctions.FIGURE_ROLLING_BALL, Input.KEY_1,
 				"object-pictures/figure-rolling-ball.png"));
 		selectList.addButton(new InterfaceButton(
-				InterfaceFunctions.FIGURE_JUMPING_CROSS,
+				InterfaceFunctions.FIGURE_JUMPING_CROSS, Input.KEY_2,
 				"object-pictures/figure-cross.png"));
 
 		// Finish-Dialog erstellen

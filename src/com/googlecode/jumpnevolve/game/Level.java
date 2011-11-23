@@ -45,6 +45,7 @@ public class Level extends World {
 	public Level(Levelloader loader, int width, int height, int subareaWidth) {
 		super(width, height, subareaWidth);
 		this.loader = loader;
+		InfoSign.disableActiveSign();
 	}
 
 	/**
@@ -181,8 +182,9 @@ public class Level extends World {
 		}
 		if (this.finished) {
 			this.drawFinishedScreen(g);
+		} else {
+			InfoSign.drawActiveSign(g);
 		}
-		InfoSign.drawActiveSign(g);
 		this.drawPlayer(g);
 	}
 

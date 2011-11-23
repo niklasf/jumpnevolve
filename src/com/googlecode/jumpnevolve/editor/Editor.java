@@ -363,7 +363,7 @@ public class Editor extends Level implements Interfaceable {
 				} else {
 					this.selected = object;
 				}
-			} else if (input.isKeyDown(Input.KEY_DELETE)) {
+			} else if (input.isKeyPressed(Input.KEY_DELETE)) {
 				this.deleteObject(this.selected);
 			}
 		}

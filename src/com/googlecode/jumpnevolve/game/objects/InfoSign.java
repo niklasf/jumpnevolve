@@ -96,4 +96,8 @@ public class InfoSign extends ObjectTemplate implements ForegroundDrawable {
 			g.popTransform();
 		}
 	}
+
+	public static void disableActiveSign() {
+		activeSign = null;
+	}
 }

@@ -27,6 +27,12 @@ public class InterfaceCheckbox extends InterfaceObject implements Contentable {
 		this.value = startValue;
 	}
 
+	public InterfaceCheckbox(InterfaceFunction function, int key,
+			boolean startValue) {
+		super(function, key);
+		this.value = startValue;
+	}
+
 	@Override
 	public Rectangle getNeededSize() {
 		return this.shape;

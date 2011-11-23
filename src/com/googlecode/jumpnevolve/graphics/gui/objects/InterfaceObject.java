@@ -50,9 +50,11 @@ public abstract class InterfaceObject implements InterfacePart {
 	public final InterfaceFunction function;
 	public InterfaceContainer parent;
 	private int status;
-	private boolean wasClicked = false, interfaceableAdded = false;
+	private boolean interfaceableAdded = false;
 
 	protected ArrayList<Informable> toInform = new ArrayList<Informable>();
+
+	private final int key;
 
 	private static InterfaceObject LastSelected = null;
 
@@ -62,7 +64,12 @@ public abstract class InterfaceObject implements InterfacePart {
 	 *            {@link InterfaceFunctions})
 	 */
 	public InterfaceObject(InterfaceFunction function) {
+		this(function, Input.KEY_ENTER);
+	}
+
+	public InterfaceObject(InterfaceFunction function, int key) {
 		this.function = function;
+		this.key = key;
 	}
 
 	public void setParentContainer(InterfaceContainer parent) {
@@ -91,29 +98,23 @@ public abstract class InterfaceObject implements InterfacePart {
 		if (this.getNeededSize()
 				.modifyCenter(this.getCenterVector())
 				.isPointInThis(new Vector(input.getMouseX(), input.getMouseY()))) {
-			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				Object[] infos = this.toInform.toArray();
-				for (Object informable : infos) {
-					((Informable) informable).mouseClickedAction(this);
-				}
-				if (this.wasClicked) {
-					this.status = STATUS_DOWN;
-				} else {
-					this.status = STATUS_PRESSED;
-				}
-				this.wasClicked = true;
-				LastSelected = this;
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				onMouseDown(STATUS_PRESSED);
+			} else if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				onMouseDown(STATUS_DOWN);
 			} else {
 				Object[] infos = this.toInform.toArray();
 				for (Object informable : infos) {
 					((Informable) informable).mouseOverAction(this);
 				}
 				this.status = STATUS_MOUSE_OVER;
-				this.wasClicked = false;
 			}
 		} else {
-			this.status = STATUS_NOTHING;
-			this.wasClicked = false;
+			if (this.key != Input.KEY_ENTER && input.isKeyPressed(this.key)) {
+				this.onMouseDown(STATUS_PRESSED);
+			} else {
+				this.status = STATUS_NOTHING;
+			}
 		}
 		if (this.isSelected()) {
 			Object[] infos = this.toInform.toArray();
@@ -121,6 +122,15 @@ public abstract class InterfaceObject implements InterfacePart {
 				((Informable) informable).objectIsSelected(this);
 			}
 		}
+	}
+
+	private void onMouseDown(int downOrPressed) {
+		Object[] infos = this.toInform.toArray();
+		for (Object informable : infos) {
+			((Informable) informable).mouseClickedAction(this);
+		}
+		this.status = downOrPressed;
+		LastSelected = this;
 	}
 
 	/**

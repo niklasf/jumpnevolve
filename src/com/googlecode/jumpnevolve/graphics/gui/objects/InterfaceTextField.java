@@ -33,6 +33,16 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 
 	private ArrayList<ContentListener> listener = new ArrayList<ContentListener>();
 
+	public InterfaceTextField(InterfaceFunction function, int key,
+			boolean writeable) {
+		super(function, key);
+		this.writeable = writeable;
+	}
+
+	public InterfaceTextField(InterfaceFunction function, int key) {
+		this(function, key, true);
+	}
+
 	public InterfaceTextField(InterfaceFunction function, boolean writeable) {
 		super(function);
 		this.writeable = writeable;
@@ -143,39 +153,32 @@ public class InterfaceTextField extends InterfaceObject implements Contentable {
 					}
 				}
 			} else {
-				if (!this.input_timer.isRunning()) {
-					for (int i = 0; i < 255; i++) {
-						if (input.isKeyDown(i)) {
-							String keyName = Input.getKeyName(i).toLowerCase();
-							if (keyName.length() == 1) {
-								if (input.isKeyDown(Input.KEY_LSHIFT)
-										|| input.isKeyDown(Input.KEY_RSHIFT)) {
-									keyName = keyName.toUpperCase();
-								}
-								this.changeContent(this.content1 += keyName,
+				for (int i = 0; i < 255; i++) {
+					if (input.isKeyPressed(i)) {
+						String keyName = Input.getKeyName(i).toLowerCase();
+						if (keyName.length() == 1) {
+							if (input.isKeyDown(Input.KEY_LSHIFT)
+									|| input.isKeyDown(Input.KEY_RSHIFT)) {
+								keyName = keyName.toUpperCase();
+							}
+							this.changeContent(this.content1 += keyName,
+									this.content2);
+						} else {
+							if (keyName.equals("period")) {
+								this.changeContent(this.content1 += ".",
 										this.content2);
-								this.input_timer.start(DELAY_LENGTH);
-							} else {
-								if (keyName.equals("period")) {
-									this.changeContent(this.content1 += ".",
-											this.content2);
-									this.input_timer.start(DELAY_LENGTH);
-								}
-								if (keyName.equals("minus")) {
-									this.changeContent(this.content1 += "-",
-											this.content2);
-									this.input_timer.start(DELAY_LENGTH);
-								}
-								if (keyName.equals("comma")) {
-									this.changeContent(this.content1 += ",",
-											this.content2);
-									this.input_timer.start(DELAY_LENGTH);
-								}
-								if (keyName.equals("space")) {
-									this.changeContent(this.content1 += " ",
-											this.content2);
-									this.input_timer.start(DELAY_LENGTH);
-								}
+							}
+							if (keyName.equals("minus")) {
+								this.changeContent(this.content1 += "-",
+										this.content2);
+							}
+							if (keyName.equals("comma")) {
+								this.changeContent(this.content1 += ",",
+										this.content2);
+							}
+							if (keyName.equals("space")) {
+								this.changeContent(this.content1 += " ",
+										this.content2);
 							}
 						}
 					}

@@ -40,6 +40,12 @@ public class InterfaceTextButton extends InterfaceObject {
 		this.buttonText = buttonText;
 	}
 
+	public InterfaceTextButton(InterfaceFunction function, int key,
+			String buttonText) {
+		super(function, key);
+		this.buttonText = buttonText;
+	}
+
 	public static void setTextHeight(int newHeight) {
 		if (newHeight > 0) {
 			size = newHeight;
