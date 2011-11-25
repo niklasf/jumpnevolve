@@ -142,6 +142,18 @@ public class Parameter {
 	public static final float OBJECTS_INFOSIGN_LINEDIST = 2.0f;
 
 	/**
+	 * Die Einrückung des Endtextes des Infoschild
+	 * 
+	 * @see Parameter#OBJECTS_INFOSIGN_ENDTEXT
+	 */
+	public static final float OBJECTS_INFOSIGN_ENDINDENT = 100.0f;
+
+	/**
+	 * Der End-Infotext für das Infoschild
+	 */
+	public static final String OBJECTS_INFOSIGN_ENDTEXT = "Enter drücken oder Linksklick zum Weiterspielen";
+
+	/**
 	 * Der Zeit nach der der FallingGround zurückgesetzt wird
 	 */
 	public static final float OBJECTS_FALLINGGROUND_FALLINGTIME = 10.0f;
@@ -162,4 +174,5 @@ public class Parameter {
 	 * Der Abstand zwischen den Schüssen einer Cannon
 	 */
 	public static final float OBJECTS_CANNON_SHOTINTERVAL = 1.2f;
+
 }

@@ -47,10 +47,6 @@ import com.googlecode.jumpnevolve.util.Parameter;
  */
 public class Editor extends Level implements Interfaceable {
 
-	private static final int GUI_MODE_NONE = 0;
-	private static final int GUI_MODE_OBJECT = 1;
-	private static final int GUI_MODE_OTHER = 2;
-	private static final int GUI_MODE_DIALOG = 3;
 	private static final String DEFAULT_LEVEL = Parameter.EDITOR_EDITOR_DEFAULTLEVEL;
 	private static final float OBJECT_DELAY = Parameter.EDITOR_EDITOR_DELAY;
 
@@ -63,8 +59,6 @@ public class Editor extends Level implements Interfaceable {
 	private boolean cameraMove;
 	private Vector oldClick;
 	private InterfaceFunction lastFunction;
-	private int curGuiMode = GUI_MODE_NONE;
-	private int lastGuiMode = GUI_MODE_NONE;
 	private Dialog settingsDialog, playerDialog, dataDialog, exitDialog;
 	private GridContainer objectSettingsPlace = new GridContainer(1, 1);
 	private PositionMarker playerPosition;
@@ -265,12 +259,6 @@ public class Editor extends Level implements Interfaceable {
 		this.cameraPos = newPos;
 	}
 
-	private void setGuiMode(int guiMode) {
-		this.lastGuiMode = this.curGuiMode;
-		this.curGuiMode = guiMode;
-
-	}
-
 	private void exit() {
 		// Nachfragen, ob das Programm wirklich beendet werden soll
 		// Bei "Ja" Editor beenden
@@ -313,14 +301,14 @@ public class Editor extends Level implements Interfaceable {
 			Vector mousePos = new Vector(input.getMouseX(), input.getMouseY());
 			Vector translatedMousePos = this.translateMousePos(mousePos);
 			if (!guiAction) {
-				if (this.lastGuiMode == GUI_MODE_OBJECT
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
 						&& this.lastFunction instanceof GameObjects
 						&& !this.newObjectTimer.isRunning()) {
 					this.addNewObject((GameObjects) this.lastFunction,
 							translatedMousePos);
 					this.newObjectTimer.start(OBJECT_DELAY);
+					this.lastFunction = null;
 				}
-				this.lastGuiMode = GUI_MODE_NONE;
 			}
 			if (this.selected == null) {
 				this.playerPosition.poll(input, secounds);
@@ -408,12 +396,9 @@ public class Editor extends Level implements Interfaceable {
 		if (!Dialog.isAnyDialogActive()) {
 			// Aktionen, wenn kein Dialog aktiv ist
 			if (function instanceof GameObjects) {
-				this.setGuiMode(GUI_MODE_OBJECT);
 			} else if (function == InterfaceFunctions.EDITOR_DELETE) {
-				this.setGuiMode(GUI_MODE_OTHER);
 				this.nextDelete = true;
 			} else {
-				this.setGuiMode(GUI_MODE_OTHER);
 				if (function == InterfaceFunctions.EDITOR_SETTINGS) {
 					this.settingsDialog.show();
 				}
@@ -433,7 +418,6 @@ public class Editor extends Level implements Interfaceable {
 				}
 			}
 		} else {
-			this.setGuiMode(GUI_MODE_DIALOG);
 			// Aktionen aus den Dialogen
 			if (function == InterfaceFunctions.EDITOR_SAVE) {
 				try {
@@ -484,7 +468,6 @@ public class Editor extends Level implements Interfaceable {
 	@Override
 	public void mouseOverAction(InterfaceObject object) {
 		this.guiAction = true;
-		this.setGuiMode(GUI_MODE_NONE);
 	}
 
 	@Override

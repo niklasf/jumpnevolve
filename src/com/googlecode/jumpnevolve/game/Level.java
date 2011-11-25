@@ -143,27 +143,38 @@ public class Level extends World {
 	public void poll(Input input, float secounds) {
 		// Level ignoriert Lags und rechnet dann einfach nicht weiter
 		if (secounds < 1 / (float) Parameter.GAME_FPS_MINIMUM) {
-			// Nicht weitersimulieren, wenn das Ziel erreicht wurde
-			if (!this.finished) {
-				super.poll(input, secounds);
-				this.pollPlayer(input, secounds);
-				this.timer.poll(input, secounds);
-				if (this.timer.didFinish()) {
-					if (!this.failed) {
-						this.failed();
-					} else {
-						this.reload();
-					}
+			// Spiel pausieren, solange ein Info-Schild angezeigt wird
+			if (InfoSign.isSignActive()) {
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)
+						|| input.isKeyDown(Input.KEY_ENTER)) {
+					// Info-Schild ausschalten, wenn die linke Maustaste
+					// gedrückt wurde
+					InfoSign.disableActiveSign();
 				}
 			} else {
-				// Nur der Spieler bewegt sich noch und springt ständig
-				this.pollPlayer(input, secounds);
-			}
-			if (this.finishedEffect != null) {
-				this.finishedEffect.poll(input, secounds);
-			}
-			if (this.failedEffect != null) {
-				this.failedEffect.poll(input, secounds);
+				// Nicht weitersimulieren, wenn das Ziel erreicht wurde
+				if (!this.finished) {
+					super.poll(input, secounds);
+					this.pollPlayer(input, secounds);
+					this.timer.poll(input, secounds);
+					if (this.timer.didFinish()) {
+						if (!this.failed) {
+							this.failed();
+						} else {
+							this.reload();
+						}
+					}
+				} else {
+					// Nur der Spieler bewegt sich noch und springt ständig
+					this.pollPlayer(input, secounds);
+					InfoSign.disableActiveSign();
+				}
+				if (this.finishedEffect != null) {
+					this.finishedEffect.poll(input, secounds);
+				}
+				if (this.failedEffect != null) {
+					this.failedEffect.poll(input, secounds);
+				}
 			}
 		} else {
 			Log.warn("Lag detektiert! : thisFrameSec = " + secounds
