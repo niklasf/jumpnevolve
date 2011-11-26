@@ -13,7 +13,7 @@ import com.googlecode.jumpnevolve.math.Vector;
 public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 
 	private final Vector direction, rotatedDirection;
-	private final Vector distance;
+	private final float distance;
 	private final float speed;
 	private final float width;
 
@@ -23,12 +23,9 @@ public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 	public AirFlowEmitterFactory(Vector direction, float distance, float width,
 			float speed) {
 		this.direction = direction.getDirection();
-		this.rotatedDirection = this.direction.rotate((float) (Math.PI / 2));
-		Vector rawDist = this.direction.mul(distance);
-		rawDist = rawDist.modifyX(Math.abs(rawDist.x));
-		rawDist = rawDist.modifyY(Math.abs(rawDist.y));
-		this.distance = rawDist;
-		this.speed = Math.abs(speed) / 50.0f;
+		this.rotatedDirection = this.direction.rotateQuarterClockwise();
+		this.distance = Math.abs(distance);
+		this.speed = Math.abs(speed) / 25.0f;
 		this.width = width;
 	}
 
@@ -57,14 +54,14 @@ public class AirFlowEmitterFactory implements ParticleEmitterFactory {
 							* AirFlowEmitterFactory.this.speed,
 							AirFlowEmitterFactory.this.direction.y
 									* AirFlowEmitterFactory.this.speed);
-					p.setColor(0.7f, 0.7f, 0.7f, 0.2f);
+					p.setColor(0.8f, 0.8f, 0.8f, 0.25f);
 					p.setSize(50.0f);
 				}
 			}
 
 			public void updateParticle(Particle particle, int delta) {
-				if (Math.abs(particle.getX()) > AirFlowEmitterFactory.this.distance.x
-						|| Math.abs(particle.getY()) > AirFlowEmitterFactory.this.distance.y) {
+				if (new Vector(particle.getX(), particle.getY()).squareAbs() > AirFlowEmitterFactory.this.distance
+						* AirFlowEmitterFactory.this.distance) {
 					particle.kill();
 				}
 				particle.adjustVelocity(((float) Math.random() - 0.5f)

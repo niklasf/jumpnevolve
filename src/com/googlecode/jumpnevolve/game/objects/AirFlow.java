@@ -36,7 +36,7 @@ public class AirFlow extends ObjectTemplate implements Activable,
 				direction.clockWiseAng()), Masses.NO_MASS);
 		direction = direction.getDirection();
 		this.active = active;
-		this.force = direction.mul(GRAVITY).mul(force);
+		this.force = direction.mul(GRAVITY * force);
 
 		// Darstellungseffekt erstellen
 		this.effect = new ParticleEffect(position.sub(direction.mul(Math

@@ -32,7 +32,7 @@ public class Parameter {
 	 * @see java.lang.System#getProperty
 	 */
 	public static final String PROGRAMM_DIRECTORY_MAIN = System
-			.getProperty("user.home") + "/jumpnevolve/";
+			.getProperty("user.home") + "/.jumpnevolve/";
 
 	/**
 	 * Der gesamte Pfad zu dem Ordner, in dem die jumpnevolve-Custom-Level
@@ -58,6 +58,8 @@ public class Parameter {
 	 * <p>
 	 * Der Wert sollte <strong>deutlich</strong> unterhalb von "GAME_FPS_TARGET"
 	 * liegen
+	 * 
+	 * @see Parameter#GAME_FPS_TARGET
 	 */
 	public static final int GAME_FPS_MINIMUM = 10;
 
@@ -69,7 +71,7 @@ public class Parameter {
 	/**
 	 * Die maximale Geschwindigkeit, die ein Objekt erreichen kann
 	 * <p>
-	 * Wird verwendet um zu verhindern, dass Kollisionen nicht erkannt werden
+	 * Wird verwendet, um zu verhindern, dass Kollisionen nicht erkannt werden
 	 */
 	public static final float GAME_ABSTRACTOBJECT_MAXVELOCITY = 300.0f;
 

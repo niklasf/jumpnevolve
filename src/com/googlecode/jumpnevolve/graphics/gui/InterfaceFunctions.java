@@ -30,7 +30,7 @@ public enum InterfaceFunctions implements InterfaceFunction {
 
 	MENU_BACKTOMAINMENU(), MENU_EDITOR(),
 
-	LEVEL_EXIT();
+	LEVEL_EXIT(), GAME_EXIT();
 
 	private InterfaceFunctions() {
 	}

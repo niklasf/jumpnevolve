@@ -51,8 +51,8 @@ public class RectangleDimension extends RelativePositionMarker {
 	public void initialize(String value) {
 		Vector dimension = Vector.parseVector(value).rotate(
 				this.getReferenceVector().clockWiseAng());
-		super.initialize(dimension.toString());
 		this.lastRefernceDirection = this.getReferenceVector();
+		super.initialize(dimension.toString());
 	}
 
 	@Override
@@ -94,13 +94,10 @@ public class RectangleDimension extends RelativePositionMarker {
 		// Vektor entsprechend der Ausrichtung berechnen
 		re = pos.rotate(-ref.clockWiseAng());
 
+		// Dimensionsangaben sind immer positiv
 		// Jedes Rechteck muss über Breite und Höhe verfügen
-		if ((int) re.x == 0) {
-			re = re.modifyX(1);
-		}
-		if ((int) re.y == 0) {
-			re = re.modifyY(1);
-		}
+		re = re.modifyX(Math.max(Math.abs(re.x), 1));
+		re = re.modifyY(Math.max(Math.abs(re.y), 1));
 
 		// Vektor als String zurückgeben
 		return re.toString();

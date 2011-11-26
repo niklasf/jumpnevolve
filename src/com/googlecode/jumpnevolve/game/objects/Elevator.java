@@ -63,10 +63,10 @@ public class Elevator extends ObjectTemplate implements Moving, Blockable {
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.getPosition().y <= this.upEnd) {
+		if (this.getShape().getUpperEnd() <= this.upEnd) {
 			this.curDirection = Vector.DOWN;
 		}
-		if (this.getPosition().y >= this.downEnd) {
+		if (this.getShape().getLowerEnd() >= this.downEnd) {
 			this.curDirection = Vector.UP;
 		}
 		if (this.getVelocity().y == 0) {

@@ -126,10 +126,10 @@ public abstract class InterfaceObject implements InterfacePart {
 
 	private void onMouseDown(int downOrPressed) {
 		Object[] infos = this.toInform.toArray();
+		this.status = downOrPressed;
 		for (Object informable : infos) {
 			((Informable) informable).mouseClickedAction(this);
 		}
-		this.status = downOrPressed;
 		LastSelected = this;
 	}
 

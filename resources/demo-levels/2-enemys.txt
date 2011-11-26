@@ -1,4 +1,4 @@
-Leveldimensionen_3000_1000_1
+Leveldimensionen_3000_1024_1
 Leveleinstellungen_1,1_1000_default
 Player_RollingBall_RollingBall,JumpingCross_(18.0| 557.0)
 Ground_(103.0| 662.0)_0001-Ground_none_(104.0| 13.0)

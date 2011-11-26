@@ -11,7 +11,7 @@ public class Masses {
 
 	public static final float NO_MASS = 0.0f;
 
-	public static final float PLAYER = 4.0f;
+	public static final float PLAYER = 5.5f;
 
 	public static final float SOLDIER = 5.0f;
 	public static final float SLIDING_PLATTFORM = 5.0f;

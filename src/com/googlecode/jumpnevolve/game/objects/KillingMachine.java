@@ -52,8 +52,8 @@ public abstract class KillingMachine extends ObjectTemplate implements
 
 	@Override
 	public boolean canDamage(NextCollision col) {
-		return col.isBlocked(Shape.DOWN) || col.isBlocked(Shape.RIGHT)
-				|| col.isBlocked(Shape.LEFT);
+		// Kann immer beschädigen
+		return true;
 	}
 
 	@Override

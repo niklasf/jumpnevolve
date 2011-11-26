@@ -11,6 +11,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.editor.arguments.PositionMarker;
@@ -64,6 +65,8 @@ public class Editor extends Level implements Interfaceable {
 	private PositionMarker playerPosition;
 	private MainMenu parentMenu;
 	private Timer newObjectTimer = new Timer(OBJECT_DELAY);
+	private boolean firstRoundPoll = true;
+	private boolean toReload = false;
 
 	/**
 	 * Erzeugt einen Editor mit einem bestimmten Level als Starteinstellung
@@ -268,7 +271,7 @@ public class Editor extends Level implements Interfaceable {
 			this.parentMenu.switchBackToMainState();
 			Engine.getInstance().switchState(this.parentMenu);
 		} else {
-			// TODO: Programm direkt beenden
+			System.exit(0);
 		}
 	}
 
@@ -289,6 +292,22 @@ public class Editor extends Level implements Interfaceable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void poll(Input input, float secounds) {
+		// Alle Objekte einmal pollen, wenn das Level gerade geladen wurde
+		if (this.firstRoundPoll) {
+			for (EditorObject obj : this.objects) {
+				obj.poll(input, secounds);
+			}
+			this.firstRoundPoll = false;
+		}
+		// Editor neu laden, wenn gerade ein Level manuell geladen wurde
+		if (this.toReload) {
+			try {
+				this.loadWithNewSettings();
+			} catch (IOException e) {
+				// TODO Fehlermeldung im Editor ausgeben
+				e.printStackTrace();
+			}
+		}
 		this.guiAction = false;
 		this.gui.poll(input, secounds);
 		if (this.selected != null) {
@@ -433,7 +452,7 @@ public class Editor extends Level implements Interfaceable {
 				try {
 					this.loadLevel(this.dataDialog
 							.getContentable("Level laden").getContent());
-					this.loadWithNewSettings();
+					this.toReload = true;
 				} catch (IOException e) {
 					// TODO Fehlermeldung im Editor ausgeben
 					e.printStackTrace();
@@ -577,6 +596,8 @@ public class Editor extends Level implements Interfaceable {
 			current = levelFile.readLine();
 		}
 		this.curID = highestID;
+
+		this.firstRoundPoll = true;
 
 		Log.info("Level erfolgreich geladen");
 	}

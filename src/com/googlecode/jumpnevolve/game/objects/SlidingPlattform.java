@@ -65,10 +65,10 @@ public class SlidingPlattform extends ObjectTemplate implements Moving,
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		if (this.getPosition().x <= this.leftEnd) {
+		if (this.getHorizontalStart() <= this.leftEnd) {
 			this.curDirection = Vector.RIGHT;
 		}
-		if (this.getPosition().x >= this.rightEnd) {
+		if (this.getHorizontalEnd() >= this.rightEnd) {
 			this.curDirection = Vector.LEFT;
 		}
 		if (this.getVelocity().x == 0) {

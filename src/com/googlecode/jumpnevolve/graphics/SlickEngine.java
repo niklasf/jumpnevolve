@@ -128,7 +128,8 @@ public class SlickEngine extends AppGameContainer implements AbstractEngine {
 	public void start() {
 		// Vollbildmodus starten
 		try {
-			super.setDisplayMode(1000, 600, false);
+			super.setDisplayMode(this.getScreenWidth(), this.getScreenHeight(),
+					true);
 		} catch (SlickException e) {
 			throw new GraphicsError(e);
 		}

@@ -29,7 +29,7 @@ public class LevelSelection extends SubMenu {
 
 	private static int number = 0;
 	private ArrayList<String> levels;
-	private String currentClicked, currentOver, lastClicked;
+	private String currentClicked = "", currentOver = "", lastClicked = "";
 	private boolean interfaceClicked, interfaceOver, lastRoundClicked;
 	private TextButtonList selectList = new TextButtonList(6, 10);
 	private final String levelPath;
@@ -173,7 +173,12 @@ public class LevelSelection extends SubMenu {
 		super.mouseClickedAction(object);
 		if (object.getFunction() == InterfaceFunctions.LEVELSELECTION
 				&& object instanceof InterfaceTextButton) {
-			this.currentClicked = ((InterfaceTextButton) object).getText();
+			if (object.getStatus() == InterfaceObject.STATUS_PRESSED) {
+				this.currentClicked = ((InterfaceTextButton) object).getText();
+			} else if (lastClicked.equals(((InterfaceTextButton) object)
+					.getText())) {
+				this.currentClicked = ((InterfaceTextButton) object).getText();
+			}
 		}
 		this.interfaceClicked = true;
 	}
