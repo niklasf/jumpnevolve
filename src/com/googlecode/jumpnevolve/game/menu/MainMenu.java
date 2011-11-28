@@ -18,7 +18,7 @@ public class MainMenu extends Menu {
 		this.mainState = new SimpleSubMenu(this, "MainMenu");
 		super.addSubMenu(mainState);
 		this.addSubMenu(new LevelSelection(this, "demo-levels/", "AlphaLevels"));
-		//this.addSubMenu(new LevelSelection(this, levelPath, "TestLevels"));
+		this.addSubMenu(new LevelSelection(this, levelPath, "TestLevels"));
 		this.addSubMenu(new LevelSelection(this,
 				Parameter.PROGRAMM_DIRECTORY_LEVELS, "OwnLevels"));
 		this.addDirectButton("Editor", InterfaceFunctions.MENU_EDITOR);

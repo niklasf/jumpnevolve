@@ -139,13 +139,13 @@ public enum GameObjects implements InterfaceFunction {
 											Vector.LEFT.mul(30), Color.green),
 									new int[] { -1 }) })),
 
-	FLUID(Fluid.class, "textures/water.png", false, new EditorObjectArguments(
-			new EditorArgumentAllocation[] {
-					new EditorArgumentAllocation(new RectangleDimension(null,
-							null, "Maße", new Vector(30, 10), Color.blue),
-							new int[] { -1 }),
-					new EditorArgumentAllocation(new NumberSelection(null,
-							"MaximumVelocity", 20, 1, 100, 1), null) })),
+//	FLUID(Fluid.class, "textures/water.png", false, new EditorObjectArguments(
+//			new EditorArgumentAllocation[] {
+//					new EditorArgumentAllocation(new RectangleDimension(null,
+//							null, "Maße", new Vector(30, 10), Color.blue),
+//							new int[] { -1 }),
+//					new EditorArgumentAllocation(new NumberSelection(null,
+//							"MaximumVelocity", 20, 1, 100, 1), null) })),
 
 	CANNON(
 			Cannon.class,
@@ -276,8 +276,8 @@ public enum GameObjects implements InterfaceFunction {
 			newObject = new GreenSlimeWorm(level, position);
 		} else if (className.equals(SLIDING_PLATTFORM.className)) {
 			newObject = new SlidingPlattform(level, position, arguments);
-		} else if (className.equals(FLUID.className)) {
-			newObject = new Fluid(level, position, arguments);
+//		} else if (className.equals(FLUID.className)) {
+//			newObject = new Fluid(level, position, arguments);
 		} else if (className.equals(CANNON.className)) {
 			newObject = new Cannon(level, position, arguments);
 		} else if (className.equals(SAVE_POINT.className)) {

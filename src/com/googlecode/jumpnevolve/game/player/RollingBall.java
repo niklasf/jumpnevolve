@@ -63,4 +63,9 @@ public class RollingBall implements Playable {
 		return ShapeFactory.createCircle(Vector.ZERO, 10.0f);
 	}
 
+	@Override
+	public float getElasticityFactor() {
+		return 0;
+	}
+
 }

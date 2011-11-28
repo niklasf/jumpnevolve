@@ -541,4 +541,21 @@ public class Vector implements Cloneable, Serializable {
 			}
 		}
 	}
+
+	/**
+	 * Berechnet den Winkel von diesem Vektor im Uhrzeigersinn zu einem zweiten
+	 * Vektor
+	 * 
+	 * @param other
+	 *            Der zweite Vektor
+	 * @return Der Winkel <strong>im Uhrzeigersinn</strong>
+	 */
+	public float clockWiseAng(Vector other) {
+		float thisAng = clockWiseAng(), otherAng = other.clockWiseAng();
+		if (thisAng <= otherAng) {
+			return otherAng - thisAng;
+		} else {
+			return ((float) Math.PI) * 2 - (thisAng - otherAng);
+		}
+	}
 }

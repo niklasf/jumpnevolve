@@ -41,4 +41,9 @@ public class SpringingSoldier extends Soldier implements Jumping {
 		return this.maxVelocityY;
 	}
 
+	@Override
+	public boolean wantJump() {
+		return true;
+	}
+
 }

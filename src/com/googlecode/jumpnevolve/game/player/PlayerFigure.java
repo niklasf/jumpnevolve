@@ -12,6 +12,7 @@ import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.graphics.world.Activating;
 import com.googlecode.jumpnevolve.graphics.world.Blockable;
 import com.googlecode.jumpnevolve.graphics.world.Damageable;
+import com.googlecode.jumpnevolve.graphics.world.ElasticBlockable;
 import com.googlecode.jumpnevolve.graphics.world.Fighting;
 import com.googlecode.jumpnevolve.graphics.world.GravityActing;
 import com.googlecode.jumpnevolve.graphics.world.Jumping;
@@ -34,7 +35,7 @@ import com.googlecode.jumpnevolve.util.Masses;
  */
 public class PlayerFigure extends AbstractObject implements Fighting,
 		Activating, GravityActing, Moving, Jumping, Blockable,
-		ForegroundDrawable {
+		ForegroundDrawable, ElasticBlockable {
 
 	private static final long serialVersionUID = -861952852028764393L;
 
@@ -58,10 +59,12 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	@Override
 	protected void specialSettingsPerRound(Input input) {
 		if (this.isAlive() == false) {
-			this.setPosition(this.parent.getLastSave());
 			// Zurücksetzen zum letzten Speicherort
+			this.setPosition(this.parent.getLastSave());
+			this.stopMoving();
 
-			this.setAlive(true); // Wiederbeleben
+			// Wiederbeleben
+			this.setAlive(true);
 
 			// TODO: Punkte abziehen o.Ä.
 		}
@@ -189,11 +192,7 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 
 	@Override
 	public float getJumpingHeight() {
-		if (this.jumps) {
-			return this.parent.getCurPlayable().getJumpingHeight();
-		} else {
-			return 0.0f;
-		}
+		return this.parent.getCurPlayable().getJumpingHeight();
 	}
 
 	@Override
@@ -204,5 +203,15 @@ public class PlayerFigure extends AbstractObject implements Fighting,
 	@Override
 	public boolean canBeBlockedBy(Blockable other) {
 		return true;
+	}
+
+	@Override
+	public float getElasticityFactor() {
+		return this.parent.getCurPlayable().getElasticityFactor();
+	}
+
+	@Override
+	public boolean wantJump() {
+		return this.jumps;
 	}
 }

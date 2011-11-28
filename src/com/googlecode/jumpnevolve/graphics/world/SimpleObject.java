@@ -34,4 +34,9 @@ public interface SimpleObject {
 	 * @return Die Position des Objekts
 	 */
 	public Vector getPosition();
+
+	/**
+	 * @return Der Impuls des Objekts
+	 */
+	public Vector getImpulse();
 }

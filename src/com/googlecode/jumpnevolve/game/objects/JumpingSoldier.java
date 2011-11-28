@@ -37,4 +37,9 @@ public class JumpingSoldier extends Soldier implements Jumping {
 	public float getJumpingHeight() {
 		return 100.0f;
 	}
+
+	@Override
+	public boolean wantJump() {
+		return true;
+	}
 }

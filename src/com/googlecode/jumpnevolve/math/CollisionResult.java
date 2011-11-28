@@ -33,6 +33,7 @@ public class CollisionResult {
 	 */
 	public void setNotIntersecting() {
 		this.isIntersecting = false;
+		this.isOverlap = Vector.ZERO;
 	}
 
 	/**
@@ -47,6 +48,7 @@ public class CollisionResult {
 	 */
 	public void setWillNotIntersect() {
 		this.willIntersect = false;
+		this.willOverlap = Vector.ZERO;
 	}
 
 	/**

@@ -60,4 +60,9 @@ public class Basic implements Playable {
 				.getInstance().getImage("object-pictures/figure-cross.png"));
 	}
 
+	@Override
+	public float getElasticityFactor() {
+		return 0;
+	}
+
 }

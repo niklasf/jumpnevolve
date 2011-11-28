@@ -14,4 +14,6 @@ public interface Jumping extends SimpleObject {
 	 * @return >0.0f
 	 */
 	public float getJumpingHeight();
+
+	public boolean wantJump();
 }

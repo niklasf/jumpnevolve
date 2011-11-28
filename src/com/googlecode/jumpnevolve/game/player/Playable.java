@@ -33,4 +33,6 @@ public interface Playable extends Drawable {
 	public boolean isDamageable();
 
 	public NextShape getShape();
+
+	public float getElasticityFactor();
 }

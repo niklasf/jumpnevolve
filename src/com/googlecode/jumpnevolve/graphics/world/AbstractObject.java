@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import com.googlecode.jumpnevolve.game.player.PlayerFigure;
 import com.googlecode.jumpnevolve.graphics.Drawable;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.Pollable;
@@ -70,6 +71,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 	private Vector velocity = Vector.ZERO;
 
+	private Vector impulseBuffer = Vector.ZERO;
+
 	private boolean alive = true;
 
 	// Attribute pro Runde
@@ -85,6 +88,8 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 
 	private NextCollision collision;
+
+	private int impulseChanges = 0;
 
 	// Methode für die spezifischen Einstellungen pro Runde
 
@@ -196,7 +201,7 @@ public abstract class AbstractObject implements Pollable, Drawable,
 
 		}
 		if (this instanceof Jumping) {
-			if (this.isWayBlocked(Shape.DOWN)) {
+			if (this.isWayBlocked(Shape.DOWN) && ((Jumping) this).wantJump()) {
 				// Geschwindigkeit anhand der Sprunghöhe verändern
 				this.velocity = this.velocity.modifyY((float) -Math.sqrt(2.0
 						* ((Jumping) this).getJumpingHeight() * GRAVITY));
@@ -244,6 +249,38 @@ public abstract class AbstractObject implements Pollable, Drawable,
 					if (this instanceof Blockable && other instanceof Blockable) {
 						other.blockWay((Blockable) this, colResult.invert());
 						this.blockWay((Blockable) other, colResult);
+
+						// Nur elastische Crashs durchführen, wenn der Crash
+						// bereits vorliegt
+						if (colResult.isIntersecting()) {
+							if (this instanceof ElasticBlockable) {
+								if (other instanceof ElasticBlockable) {
+									// Berechnen der neuen Impulse durch
+									// entsprechende Addition der alten Impulse
+									Vector thisImpulse = this.onElasticCrash(
+											other, colResult.getIsOverlap()
+													.neg()), otherImpulse = other
+											.onElasticCrash(this,
+													colResult.getIsOverlap());
+
+									// Setzen der neuen Impulse, aber je mit
+									// halber Länge, da beide alten Impulse in
+									// den Rechnungen insgesamt doppelt
+									// vorkommen
+									this.setImpulse(thisImpulse.mul(0.5f));
+									other.setImpulse(otherImpulse.mul(0.5f));
+								} else {
+									// Neuen Impuls für dieses Objekt setzen
+									this.setImpulse(this.onElasticCrash(other,
+											colResult.getIsOverlap()));
+
+								}
+							} else if (other instanceof ElasticBlockable) {
+								// Neuen Impuls für das andere Objekt setzen
+								other.setImpulse(other.onElasticCrash(this,
+										colResult.getIsOverlap()));
+							}
+						}
 					}
 
 					// Wenn sich die Objekte bereits überschneiden onCrash() für
@@ -268,6 +305,13 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public void endRound() {
 		if (this.mass != 0.0f) { // Beweglich
+
+			// Impuls ändern
+			if (this.impulseChanges != 0) {
+				this.velocity = this.impulseBuffer.div(this.impulseChanges);
+				this.impulseBuffer = Vector.ZERO;
+				this.impulseChanges = 0;
+			}
 
 			// Korrektur von Kraft, Geschwindigkeit und Shape
 			this.shape = this.collision.correctPosition(this.shape);
@@ -342,6 +386,36 @@ public abstract class AbstractObject implements Pollable, Drawable,
 		this.applyForce(Vector.DOWN.mul(GRAVITY * this.mass));
 	}
 
+	private Vector onElasticCrash(AbstractObject other, Vector lot) {
+		Vector thisNegImpulse = this.getImpulse().neg();
+		Vector usedLot;
+		if (!thisNegImpulse.isZero()) {
+			if (lot.isZero()) {
+				return this.getImpulse();
+			} else {
+				usedLot = lot;
+			}
+			float ang = usedLot.clockWiseAng(thisNegImpulse);
+			if (ang < 3 * Math.PI / 2 && ang > Math.PI / 2) {
+				return this.getImpulse();
+			}
+			Vector newImpulse = thisNegImpulse.rotate(-2 * ang)
+					.add(other.getImpulse())
+					.mul(((ElasticBlockable) this).getElasticityFactor());
+			return newImpulse;
+		} else {
+			return Vector.ZERO;
+		}
+	}
+
+	private void setImpulse(Vector newImpulse) {
+		if (this.isMoveable() && !newImpulse.isZero()) {
+			this.impulseBuffer = this.impulseBuffer.add(newImpulse
+					.div(this.mass));
+			this.impulseChanges++;
+		}
+	}
+
 	/**
 	 * Setzt die Richtung zum "Blocker" als blockiert Wird in
 	 * {@link #endRound()} beim Setzen der neuen Position ausgewertet
@@ -374,6 +448,13 @@ public abstract class AbstractObject implements Pollable, Drawable,
 	 */
 	public final Vector getVelocity() {
 		return this.velocity;
+	}
+
+	/**
+	 * @return Der Impuls des Objekts
+	 */
+	public Vector getImpulse() {
+		return this.velocity.mul(this.mass);
 	}
 
 	/**
