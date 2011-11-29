@@ -6,6 +6,7 @@ package com.googlecode.jumpnevolve.graphics.gui.objects;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.graphics.gui.Informable;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
@@ -83,7 +84,7 @@ public abstract class InterfaceObject implements InterfacePart {
 				this.interfaceableAdded = true;
 			}
 		} else {
-			System.out.println("Parent enthält dieses Objekt nicht");
+			Log.error("Parent enthält dieses Objekt nicht");
 		}
 	}
 

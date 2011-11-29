@@ -200,7 +200,7 @@ public class PositionMarker extends EditorArgument implements ContentListener {
 					+ "|" + value));
 			break;
 		default:
-			System.out.println("UNKOWN-MODUS: " + this.modus);
+			Log.warn("UNKOWN-MODUS: " + this.modus);
 			this.changePosition(Vector.parseVector(value));
 			break;
 		}

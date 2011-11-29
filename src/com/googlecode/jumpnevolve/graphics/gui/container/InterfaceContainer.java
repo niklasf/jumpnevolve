@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.gui.InterfacePart;
@@ -47,7 +48,7 @@ public abstract class InterfaceContainer implements InterfacePart {
 		if (parent.contains(this)) {
 			this.parentContainer = parent;
 		} else {
-			System.out.println("Parent enthält dieses Objekt nicht");
+			Log.error("Parent enthält dieses Objekt nicht");
 		}
 	}
 

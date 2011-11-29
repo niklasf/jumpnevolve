@@ -2,6 +2,8 @@ package com.googlecode.jumpnevolve.game.menu;
 
 import java.io.IOException;
 
+import org.newdawn.slick.util.Log;
+
 import com.googlecode.jumpnevolve.editor.Editor;
 import com.googlecode.jumpnevolve.graphics.Engine;
 import com.googlecode.jumpnevolve.graphics.gui.InterfaceFunction;
@@ -47,7 +49,7 @@ public class MainMenu extends Menu {
 				Engine.getInstance().switchState(
 						new Editor(this, this.getWidth(), this.getHeight(), 1));
 			} catch (IOException e) {
-				System.out.println("Fehler beim Erstellen des Editors: "
+				Log.error("Fehler beim Erstellen des Editors: "
 						+ e.getMessage());
 				e.printStackTrace();
 			}

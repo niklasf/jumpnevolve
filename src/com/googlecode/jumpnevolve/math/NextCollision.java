@@ -2,6 +2,8 @@ package com.googlecode.jumpnevolve.math;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.util.Log;
+
 /**
  * @author Erik Wagner
  * 
@@ -132,9 +134,16 @@ public class NextCollision {
 			return this.collidingSides[2];
 		case Shape.LEFT:
 			return this.collidingSides[3];
+		case Shape.DOWN_LEFT:
+			return this.collidingSides[2] || this.collidingSides[3];
+		case Shape.DOWN_RIGHT:
+			return this.collidingSides[2] || this.collidingSides[1];
+		case Shape.UP_LEFT:
+			return this.collidingSides[0] || this.collidingSides[3];
+		case Shape.UP_RIGHT:
+			return this.collidingSides[0] || this.collidingSides[1];
 		default:
-			System.out.println("Fehler bei Kollision, falsche Richtung: "
-					+ direction);
+			Log.error("Fehler bei Kollision, falsche Richtung: " + direction);
 			return false;
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.graphics.gui.Contentable;
 import com.googlecode.jumpnevolve.graphics.gui.DialogPart;
@@ -235,7 +236,7 @@ public class Dialog extends InterfaceContainer implements Informable {
 				return part.part;
 			}
 		}
-		System.out.println("Item not found");
+		Log.error("Item not found");
 		return null;
 	}
 

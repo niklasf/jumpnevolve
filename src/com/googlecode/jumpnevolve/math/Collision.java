@@ -3,6 +3,8 @@ package com.googlecode.jumpnevolve.math;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.newdawn.slick.util.Log;
+
 /**
  * @author Erik Wagner
  * 
@@ -137,8 +139,7 @@ public class Collision {
 		case Shape.UP_RIGHT:
 			return this.collidingSides[0] || this.collidingSides[1];
 		default:
-			System.out.println("Fehler bei Kollision, falsche Richtung: "
-					+ direction);
+			Log.error("Fehler bei Kollision, falsche Richtung: " + direction);
 			return false;
 		}
 	}

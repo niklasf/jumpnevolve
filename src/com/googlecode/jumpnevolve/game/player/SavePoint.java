@@ -2,6 +2,7 @@ package com.googlecode.jumpnevolve.game.player;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.ObjectTemplate;
 import com.googlecode.jumpnevolve.graphics.GraphicUtils;
@@ -38,7 +39,7 @@ public class SavePoint extends ObjectTemplate implements Activable {
 	public void activate(Activating activator) {
 		this.parent.setActivSavepoint(this.getPosition());
 		this.activated = true;
-		System.out.println("SavePoint activated at " + this.getPosition());
+		Log.info("SavePoint activated at " + this.getPosition());
 	}
 
 	@Override

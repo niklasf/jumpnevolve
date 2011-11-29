@@ -75,10 +75,10 @@ public class Level extends World {
 			save.writeObject(this);
 			save.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Fehler beim Speichern des Levels\n");
+			Log.error("Fehler beim Speichern des Levels\n");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Fehler beim Speichern des Levels\n");
+			Log.error("Fehler beim Speichern des Levels\n");
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +115,7 @@ public class Level extends World {
 	}
 
 	private void reload() {
-		System.out.println("Reload Level");
+		Log.info("Reload Level");
 		Level newLevel = Levelloader.asyncLoadLevel(this.loader.source);
 		newLevel.player.setParentMenu(this.player.getParentMenu());
 		Engine.getInstance().switchState(newLevel);
