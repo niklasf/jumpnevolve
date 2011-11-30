@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.jar.JarFile;
 
+import org.newdawn.slick.util.DefaultLogSystem;
 import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.objects.ActivatingObject;
@@ -37,7 +38,10 @@ public class Levelloader {
 		this.source = source;
 	}
 
-	public void loadLevel() {
+	/**
+	 * Lädt das Level, das diesem Levelloader zugeordnet ist
+	 */
+	private void loadLevel() {
 		InputStream levelFile = null;
 
 		try {
@@ -88,17 +92,21 @@ public class Levelloader {
 				}
 			} else {
 				// Fehler beim Erkennen der Dateiart
-				throw new IOException("Nicht-verarbeitbare Dateiendung");
+				throw new IOException("Nicht-verarbeitbare Dateiendung: "
+						+ source);
 			}
 		} catch (IOException e) {
+			// Allgemeinen Fehler ausgeben
 			Log.error("Fehler beim Laden des Levels:\n" + e.getMessage());
-			e.printStackTrace();
+			e.printStackTrace(DefaultLogSystem.out);
 		} finally {
 			if (levelFile != null) {
 				try {
 					levelFile.close();
 				} catch (IOException e) {
+					// Fehler beim Schließen des Streams ausgeben
 					Log.error(e);
+					e.printStackTrace(DefaultLogSystem.out);
 				}
 			}
 		}

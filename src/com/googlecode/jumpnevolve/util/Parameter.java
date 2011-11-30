@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.util;
 
+import com.googlecode.jumpnevolve.math.Vector;
+
 /**
  * Eine Klasse, in der Konstanten für alle anderen Klassen aus Jumpnevolve
  * gesammelt werden, damit sie an einer zentralen Stelle eingesehen und geändert
@@ -187,5 +189,7 @@ public class Parameter {
 	 * Der Abstand zwischen den Schüssen einer Cannon
 	 */
 	public static final float OBJECTS_CANNON_SHOTINTERVAL = 1.2f;
+
+	public static final float CAMPAIGN_MARKER_RADIUS = 10.0f;
 
 }
