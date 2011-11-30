@@ -1,0 +1,5 @@
+Leveldimensionen_1000_1000_1
+Leveleinstellungen_1,1_1000_default
+Player_RollingBall_RollingBall,JumpingCross_(87.0| 299.0)
+Ground_(353.0| 341.0)_0001-Ground_none_(315.0| 10.0)
+InfoSign_(399.0| 282.0)_0002-InfoSign_none_dies-ist,ein-test

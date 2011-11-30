@@ -46,6 +46,17 @@ public class Parameter {
 			+ "levels/";
 
 	/**
+	 * Der gesamte Pfad zu dem Ordner, in dem die jumpnevolve-Kampagnen
+	 * gespeichert werden
+	 * <p>
+	 * Dieser Pfad leitet sich vom Main-Ordner für jumpnevolve ab
+	 * 
+	 * @see Parameter#PROGRAMM_DIRECTORY_MAIN
+	 */
+	public static final String PROGRAMM_DIRECTORY_CAMPAIGNS = PROGRAMM_DIRECTORY_MAIN
+			+ "campaigns/";
+
+	/**
 	 * Die gewünschte FPS-Rate, die von der Engine angestrebt werden soll
 	 */
 	public static final int GAME_FPS_TARGET = 100;
