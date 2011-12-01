@@ -8,14 +8,12 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
 
 import org.newdawn.slick.util.DefaultLogSystem;
 import org.newdawn.slick.util.Log;
 
 import com.googlecode.jumpnevolve.game.objects.ActivatingObject;
-import com.googlecode.jumpnevolve.game.objects.Button;
-import com.googlecode.jumpnevolve.game.objects.Door;
 import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
 import com.googlecode.jumpnevolve.graphics.world.Activable;
 import com.googlecode.jumpnevolve.math.Vector;
@@ -47,15 +45,28 @@ public class Levelloader {
 		try {
 			// Datei als InputStream vorbereiten
 			if (JarHandler.existJar()
-					&& !source.startsWith(Parameter.PROGRAMM_DIRECTORY_LEVELS)) {
-				levelFile = this.getClass().getResourceAsStream(source);
+					&& !this.source
+							.startsWith(Parameter.PROGRAMM_DIRECTORY_LEVELS)) {
+				// Aus Jar-Archiv laden
+				levelFile = this.getClass().getResourceAsStream(this.source);
 			} else {
-				levelFile = new FileInputStream(source);
+				if (this.source.contains("!")
+						&& this.source
+								.startsWith(Parameter.PROGRAMM_DIRECTORY_CAMPAIGNS)) {
+					// Aus Zip-Archiv einer Kampagne laden
+					ZipFile zip = new ZipFile(this.source.substring(0,
+							this.source.indexOf("!")));
+					levelFile = zip.getInputStream(zip.getEntry(this.source
+							.substring(this.source.indexOf("!") + 1)));
+				} else {
+					// Nach dem direkten Pfad laden
+					levelFile = new FileInputStream(this.source);
+				}
 			}
 
 			// Einordnen, was für eine Datei geladen wird
 			if (this.source.toLowerCase().endsWith(".txt")) {
-				Log.info("Lade .txt-Level aus " + source);
+				Log.info("Lade .txt-Level aus " + this.source);
 
 				// BufferedReader zum Laden der Datei erstellen
 				BufferedReader levelFileReader = new BufferedReader(
@@ -65,7 +76,7 @@ public class Levelloader {
 				this.loadTxtLevel(levelFileReader);
 
 			} else if (this.source.toLowerCase().endsWith(".lvl")) {
-				Log.info("Lade .lvl-Level aus " + source);
+				Log.info("Lade .lvl-Level aus " + this.source);
 
 				// BufferedReader zum Laden der Datei erstellen
 				BufferedReader levelFileReader = new BufferedReader(
@@ -75,7 +86,7 @@ public class Levelloader {
 				this.loadLvlLevel(levelFileReader);
 
 			} else if (this.source.toLowerCase().endsWith(".dat")) {
-				Log.info("Lade Speicherstand aus " + source);
+				Log.info("Lade Speicherstand aus " + this.source);
 
 				// Speicherung laden --> Level-Objekt
 				ObjectInputStream objectLevelFile = new ObjectInputStream(
@@ -93,7 +104,7 @@ public class Levelloader {
 			} else {
 				// Fehler beim Erkennen der Dateiart
 				throw new IOException("Nicht-verarbeitbare Dateiendung: "
-						+ source);
+						+ this.source);
 			}
 		} catch (IOException e) {
 			// Allgemeinen Fehler ausgeben
