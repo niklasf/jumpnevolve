@@ -23,5 +23,10 @@ public class Campaign {
 
 	public void setMap(CampaignMap map) {
 		this.map = map;
+		this.map.setParentCampaign(this);
+	}
+
+	public void start(String name) {
+		// TODO: Level laden und starten
 	}
 }

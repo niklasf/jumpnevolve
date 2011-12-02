@@ -12,6 +12,7 @@ import java.util.zip.ZipFile;
 
 import org.newdawn.slick.util.Log;
 
+import com.googlecode.jumpnevolve.math.Vector;
 import com.googlecode.jumpnevolve.util.Parameter;
 
 public class CampaignLoader {
@@ -67,13 +68,23 @@ public class CampaignLoader {
 					Integer.parseInt(split[2]), transformSource(this.source)
 							+ "!images/" + split[3]);
 			current = reader.readLine();
+			ArrayList<String[]> connections = new ArrayList<String[]>();
 			while (current != null) {
 				split = current.split("_");
 				if (split[0].equals("Level")) {
-
+					// LevelMarker auf der Map hinzufügen
+					// Level_NameDesLevels_PositionDesMarkers
+					map.addLevel(split[1], Vector.parseVector(split[2]),
+							LevelMarker.STATUS_NOTAVAIBLE);
+				} else if (split[0].equals("Connection")) {
+					connections.add(split);
 				}
 				// TODO: Informationen verarbeiten
 				current = reader.readLine();
+			}
+			for (String[] strings : connections) {
+				map.addConnection(Vector.parseVector(strings[1]),
+						Vector.parseVector(strings[2]));
 			}
 			this.campaign.setMap(map);
 

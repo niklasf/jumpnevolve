@@ -1,5 +1,7 @@
 package com.googlecode.jumpnevolve.game.campaign;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -11,21 +13,26 @@ import com.googlecode.jumpnevolve.util.Parameter;
 
 public class LevelMarker implements Drawable {
 
-	private static final int STATUS_FINISHED = 0;
-	private static final int STATUS_AVAIABLE = 1;
-	private static final int STATUS_NOTAVAIBLE = 2;
-	public final String levelSource;
+	public static final int STATUS_FINISHED = 0;
+	public static final int STATUS_AVAIABLE = 1;
+	public static final int STATUS_NOTAVAIBLE = 2;
+	public final String name;
 	private int status;
-	private Vector position;
+	public final Vector position;
+	private ArrayList<LevelConnection> connections = new ArrayList<LevelConnection>();
 
-	public LevelMarker(String source, Vector position, int status) {
-		this.levelSource = source;
+	public LevelMarker(String name, Vector position, int status) {
+		this.name = name;
 		this.status = status;
 		this.position = position;
 	}
 
 	public LevelMarker(String source, Vector position) {
 		this(source, position, STATUS_NOTAVAIBLE);
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override
@@ -47,5 +54,18 @@ public class LevelMarker implements Drawable {
 					Parameter.CAMPAIGN_MARKER_RADIUS), Color.red);
 			break;
 		}
+	}
+
+	public void addConnection(LevelConnection levelConnection) {
+		this.connections.add(levelConnection);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<LevelConnection> getConnections() {
+		return (ArrayList<LevelConnection>) this.connections.clone();
+	}
+
+	public int getStatus() {
+		return this.status;
 	}
 }
