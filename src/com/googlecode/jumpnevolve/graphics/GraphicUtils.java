@@ -331,4 +331,8 @@ public class GraphicUtils {
 				+ distance);
 		g.setColor(save);
 	}
+
+	public static void drawLine(Graphics g, Vector vector, Vector vector2) {
+		g.drawLine(vector.x, vector.y, vector2.x, vector2.y);
+	}
 }

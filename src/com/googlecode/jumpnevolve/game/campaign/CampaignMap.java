@@ -1,5 +1,6 @@
 package com.googlecode.jumpnevolve.game.campaign;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.newdawn.slick.GameContainer;
@@ -47,6 +48,18 @@ public class CampaignMap extends AbstractState {
 	public void poll(Input input, float secounds) {
 		if (input.isKeyPressed(Input.KEY_ENTER)) {
 			this.startLevel();
+		} else {
+			Vector mousePos = new Vector(input.getMouseX(), input.getMouseY())
+					.add(this.camera.getPosition()).add(
+							Engine.getInstance().getWidth() / 2.0f,
+							Engine.getInstance().getHeight() / 2.0f);
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				LevelMarker newLevel = this.currentLevel
+						.getLevelInDirection(mousePos
+								.sub(this.currentLevel.position));
+
+				this.currentLevel = newLevel;
+			}
 		}
 	}
 

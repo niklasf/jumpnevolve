@@ -22,7 +22,7 @@ public class CampaignLoader {
 	private Campaign campaign = null;
 
 	public CampaignLoader(String source) {
-		this.source = source;
+		this.source = transformSource(source);
 	}
 
 	public Campaign getCampaign() {
@@ -35,7 +35,7 @@ public class CampaignLoader {
 	private void loadCampaign() {
 		ZipFile zip = null;
 		try {
-			zip = new ZipFile(new File(transformSource(source)));
+			zip = new ZipFile(new File(this.source));
 			Enumeration<? extends ZipEntry> entries = zip.entries();
 			HashMap<String, ZipEntry> entryList = new HashMap<String, ZipEntry>();
 			while (entries.hasMoreElements()) {
@@ -47,8 +47,14 @@ public class CampaignLoader {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					zip.getInputStream(entryList.get("main"))));
 			String current = reader.readLine();
+			String[] split = current.split("_");
+			this.campaign = new Campaign(this);
 			while (current != null) {
+				split = current.split("_");
 				// TODO: Informationen verarbeiten
+				if (split[0].equalsIgnoreCase("Level")) {
+					this.campaign.addLevel(split[1], split[2]);
+				}
 				current = reader.readLine();
 			}
 
@@ -57,7 +63,7 @@ public class CampaignLoader {
 			reader = new BufferedReader(new InputStreamReader(
 					zip.getInputStream(entryList.get("main"))));
 			current = reader.readLine();
-			String[] split = current.split("_");
+			split = current.split("_");
 			if (!(split.length == 4)) {
 				throw new IOException(
 						"Erste Map-Zeile hat nicht das korrekte Format: "
@@ -65,18 +71,18 @@ public class CampaignLoader {
 			}
 			// Map mit der ersten Zeile erstellen
 			CampaignMap map = new CampaignMap(Integer.parseInt(split[1]),
-					Integer.parseInt(split[2]), transformSource(this.source)
-							+ "!images/" + split[3]);
+					Integer.parseInt(split[2]), this.source + "!images/"
+							+ split[3]);
 			current = reader.readLine();
 			ArrayList<String[]> connections = new ArrayList<String[]>();
 			while (current != null) {
 				split = current.split("_");
-				if (split[0].equals("Level")) {
+				if (split[0].equalsIgnoreCase("Level")) {
 					// LevelMarker auf der Map hinzufügen
 					// Level_NameDesLevels_PositionDesMarkers
 					map.addLevel(split[1], Vector.parseVector(split[2]),
 							LevelMarker.STATUS_NOTAVAIBLE);
-				} else if (split[0].equals("Connection")) {
+				} else if (split[0].equalsIgnoreCase("Connection")) {
 					connections.add(split);
 				}
 				// TODO: Informationen verarbeiten
@@ -89,7 +95,7 @@ public class CampaignLoader {
 			this.campaign.setMap(map);
 
 		} catch (IOException e) {
-			Log.error("Kampagne konnte nicht geladen werden: " + source
+			Log.error("Kampagne konnte nicht geladen werden: " + this.source
 					+ " Fehlermeldung: " + e);
 			e.printStackTrace();
 		} finally {

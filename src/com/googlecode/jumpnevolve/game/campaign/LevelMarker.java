@@ -1,6 +1,8 @@
 package com.googlecode.jumpnevolve.game.campaign;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -19,7 +21,7 @@ public class LevelMarker implements Drawable {
 	public final String name;
 	private int status;
 	public final Vector position;
-	private ArrayList<LevelConnection> connections = new ArrayList<LevelConnection>();
+	private HashMap<Vector, LevelMarker> connections = new HashMap<Vector, LevelMarker>();
 
 	public LevelMarker(String name, Vector position, int status) {
 		this.name = name;
@@ -57,15 +59,35 @@ public class LevelMarker implements Drawable {
 	}
 
 	public void addConnection(LevelConnection levelConnection) {
-		this.connections.add(levelConnection);
+		if (levelConnection.pos1 == this) {
+			this.connections.put(
+					levelConnection.pos2.position.sub(this.position),
+					levelConnection.pos2);
+		} else {
+			this.connections.put(
+					levelConnection.pos1.position.sub(this.position),
+					levelConnection.pos1);
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<LevelConnection> getConnections() {
-		return (ArrayList<LevelConnection>) this.connections.clone();
+	public Collection<LevelMarker> getConnections() {
+		return this.connections.values();
 	}
 
 	public int getStatus() {
 		return this.status;
+	}
+
+	public LevelMarker getLevelInDirection(Vector direction) {
+		float minAng = Float.POSITIVE_INFINITY;
+		Vector cur = null;
+		for (Vector vec : this.connections.keySet()) {
+			float ang = vec.ang(direction);
+			if (ang < minAng) {
+				cur = vec;
+				minAng = ang;
+			}
+		}
+		return this.connections.get(cur);
 	}
 }
