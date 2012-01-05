@@ -1,6 +1,6 @@
 package com.googlecode.jumpnevolve.game.physic;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -21,16 +21,21 @@ public class Follower extends AbstractObject {
 	private static final long serialVersionUID = 336126625516157155L;
 
 	private final AbstractObject toFollow;
-	private ArrayList<Vector> points = new ArrayList<Vector>();
+	private LinkedList<Vector> points = new LinkedList<Vector>();
+	private final int maxSize;
 
-	public Follower(World world, AbstractObject toFollow) {
+	public Follower(World world, AbstractObject toFollow, int maxSize) {
 		super(world, ShapeFactory.createCircle(Vector.ZERO, 1));
 		this.toFollow = toFollow;
+		this.maxSize = maxSize;
 	}
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		this.points.add(this.toFollow.getPosition());
+		this.points.addFirst(this.toFollow.getPosition());
+		if(this.points.size() > this.maxSize){
+			this.points.removeLast();
+		}
 	}
 
 	public void draw(Graphics g) {

@@ -39,7 +39,7 @@ public abstract class AbstractState extends BasicGameState implements Pollable,
 		this.ID = id++;
 	}
 
-	public static final float DEFAULT_ZOOM = 200;
+	public static final float DEFAULT_ZOOM = 1;
 
 	protected float zoomX = DEFAULT_ZOOM, zoomY = DEFAULT_ZOOM;
 

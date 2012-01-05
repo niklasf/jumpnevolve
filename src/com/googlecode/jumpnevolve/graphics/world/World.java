@@ -300,7 +300,7 @@ public class World extends AbstractState {
 		return "backgrounds/" + background;
 	}
 
-	private void drawBackground(Graphics g) {
+	protected void drawBackground(Graphics g) {
 		GraphicUtils.drawImage(g, ShapeFactory
 				.createRectangle(new Vector(this.width / 2.0f,
 						this.height / 2.0f), this.width, this.height),

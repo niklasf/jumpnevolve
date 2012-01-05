@@ -1,13 +1,15 @@
 package com.googlecode.jumpnevolve.game.physic;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import com.googlecode.jumpnevolve.graphics.world.AbstractObject;
+import com.googlecode.jumpnevolve.graphics.GraphicUtils;
 import com.googlecode.jumpnevolve.graphics.world.World;
 import com.googlecode.jumpnevolve.math.ShapeFactory;
 import com.googlecode.jumpnevolve.math.Vector;
 
-public class Electron extends AbstractObject {
+public class Electron extends PhysicalObject {
 
 	private static final long serialVersionUID = 1640350044318674935L;
 
@@ -17,13 +19,10 @@ public class Electron extends AbstractObject {
 
 	@Override
 	protected void specialSettingsPerRound(Input input) {
-		this.applyForce(Vector.UP.mul(0.2f));
-		this.applyForce(this.getVelocity().rotate((float) (Math.PI / 2.0f)));
+		// this.applyForce(this.getVelocity().rotate((float) (Math.PI / 2.0f)));
 	}
 
-	/*
-	 * public void draw(Graphics g) { GraphicUtils.texture(g, this.getShape(),
-	 * ResourceManager.getInstance() .getImage("textures/aluminium.png"), true);
-	 * }
-	 */
+	public void draw(Graphics g) {
+		//GraphicUtils.markPosition(g, this.getPosition(), 1.0f, Color.yellow);
+	}
 }
